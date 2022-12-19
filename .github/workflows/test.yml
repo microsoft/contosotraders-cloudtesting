@@ -1,9 +1,0 @@
-name: contoso-traders-provisioning-deployment
-
-on:
-  workflow_dispatch:
-
-jobs:
-  provision-and-deploy:
-    uses: microsoft/ContosoTraders/.github/workflows/contoso-traders-provisioning-deployment-template.yml@mithun/manual-approvals
-    secrets: inherit

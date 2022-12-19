@@ -1,0 +1,112 @@
+name: contoso-traders-load-testing
+
+on:
+  workflow_dispatch:
+
+env:
+  KV_NAME: contosotraderskv
+  LOAD_TEST_SERVICE_NAME: contoso-traders-loadtest
+  RESOURCE_GROUP_NAME: contoso-traders-rg
+
+jobs:
+  load-test-carts-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+        with:
+          repository: microsoft/contosotraders
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      # extract the endpoint url of the aca app from kv
+      - name: fetch cartsApiEndpoint
+        uses: azure/CLI@v1
+        id: fetch-cartsApiEndpoint
+        with:
+          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} -n cartsApiEndpoint --query "value" -o tsv)" >> $GITHUB_OUTPUT
+      - name: load test (carts API)
+        uses: Azure/load-testing@v1.1.7
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./tests/loadtests/contoso-traders-carts.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ secrets.ENVIRONMENT }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ steps.fetch-cartsApiEndpoint.outputs.cartsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/ShoppingCart/loadtest"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
+
+  load-test-products-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      # extract the endpoint url of the aks app from kv
+      - name: fetch productsApiEndpoint
+        uses: azure/CLI@v1
+        id: fetch-productsApiEndpoint
+        with:
+          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} -n productsApiEndpoint --query "value" -o tsv)" >> $GITHUB_OUTPUT
+      - name: load test (products API)
+        uses: Azure/load-testing@v1.1.7
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./tests/loadtests/contoso-traders-products.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ secrets.ENVIRONMENT }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ steps.fetch-productsApiEndpoint.outputs.productsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/Products/1"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
