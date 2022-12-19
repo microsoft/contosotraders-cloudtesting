@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  run-playwright-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -20,10 +20,13 @@ jobs:
           node-version: 16
       - name: install dependencies
         run: npm ci
+        working-directory: src/ContosoTraders.Ui.Website
       - name: install playwright browsers
         run: npx playwright install --with-deps
+        working-directory: src/ContosoTraders.Ui.Website
       - name: run playwright tests
         run: npx playwright test
+        working-directory: src/ContosoTraders.Ui.Website
       - name: upload playwright report
         uses: actions/upload-artifact@v3
         if: always()
