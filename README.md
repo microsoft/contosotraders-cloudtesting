@@ -8,7 +8,7 @@
   * [UI](https://cloudtesting.contosotraders.com/)
   * [Carts API](https://contoso-traders-cartsctprod.politebay-207fb230.eastus.azurecontainerapps.io/swagger)
   * [Products API](https://contoso-traders-productsctprod.eastus.cloudapp.azure.com/swagger/)
-* [Deployment Guide](@TODO)
+* [Deployment Guide](./demo-scripts/app-deployment-guide.md)
 * [Contributing](./CONTRIBUTING.md)
 * [Bicep Templates](./iac/)
 * [Github Workflows](./.github/workflows/)
