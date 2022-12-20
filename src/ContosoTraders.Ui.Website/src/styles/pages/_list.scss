@@ -1,0 +1,251 @@
+// -----------------------------------------------------------------------------
+// This file contains styles that are specific to the Products List pages.
+// -----------------------------------------------------------------------------
+.list {
+    margin-top: 137px;
+    .breadcrump{
+        padding: 24px 70px;
+        p{
+            margin: 0;
+            text-transform: capitalize;
+            span{
+                font-family: 'Heebo';
+                font-size: 14px;
+                font-weight: 400;
+            }
+            b{
+                font-family: 'Heebo';
+                font-size: 14px;
+                font-weight: 500;
+                a{
+                    color: #000000;
+                    &:hover{
+                      color: #2974f0 !important;
+                      text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+    &__content {
+        padding: 0 70px;
+        .mainHeading{
+            font-family: 'Inter';
+            font-weight: 600;
+            font-size: 24px;
+            padding: 24px 0;
+            margin: 0;
+            text-transform: capitalize;
+        }
+        .list__aside{
+            padding-right: 32px;
+            .AccordionSection{
+                .MuiAccordion-root{
+                    border-bottom: 1px solid #ebe9ef !important;
+                    .panelSummary{
+                        padding-left: 0;
+                        font-family: 'Inter';
+                        font-weight: 500;
+                        font-size: 16px;
+                        color: #13101E;
+                        border-top: none;
+                        border-bottom: 1px solid #ebe9ef !important;
+                        img{
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+                    .MuiAccordionDetails-root{
+                        padding: 16px !important;
+                        .descpAttributes{
+                            display: flex;
+                            align-items: center;
+                            label{
+                                margin: 0 0 0 10px;
+                                color: #626262;
+                                font-family: 'Inter';
+                                font-weight: 500;
+                                font-size: 16px;
+                            }
+                            .MuiCheckbox-root{
+                                // padding: 0 9px;
+                                width: 18px;
+                                height: 18px;
+                                background: #2874F0 0% 0% no-repeat padding-box;
+                                border-radius: 2px;
+                                cursor: pointer;
+                            }
+                            .Mui-checked{
+                                color: #2874F0 !important;
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .offer_banner{
+        display: flex;
+        background-color: #ebeaef;//#ecf3f3
+        background-image: linear-gradient(180deg, #ebeaef 80%, #ecf3f3 20%);
+        align-items: center;
+        margin: 0 70px;
+        .banner__buttons{
+            grid-template-columns: repeat(2, 1fr) !important;
+            img{
+                height: 134px;
+                margin: 10px 0 10px 140px;
+            }
+        }
+        .firstHeading{
+            font-family: 'Poppins';
+            font-size: 24px;
+            color: #13101E;
+            margin: 0;
+        }
+        .secondHeading{
+            font-family: 'Inter';
+            font-size: 45px;
+            color:#13101E;
+            margin: 0;
+        }
+    }
+
+    // &__aside {
+    //     grid-column-end: span 3;
+    // }
+
+    // &__panel {
+    //     background-color: $color-background-light;
+    //     top: -100vh;
+    //     height: 100vh;
+    //     left: 0;
+    //     padding: $padding-xl;
+    //     position: absolute;
+    //     transition: top $animation-speed-regular $animation-type-regular;
+    //     width: 100%;
+    //     will-change: top;
+
+    //     @media (min-width: $mq-m) {
+    //         top: auto;
+    //         padding: 0;
+    //         position: relative;
+    //     }
+
+    //     &.is-opened {
+    //         top: 0;
+    //         padding: $padding-xl;
+    //         z-index: $z-index-l;
+    //     }
+
+    //     .btn--primary {
+    //         bottom: $space-l;
+    //         position: absolute;
+    //         left: 50%;
+    //         transform: translateX(-50%);
+
+    //         @media (min-width: $mq-m) {
+    //             display: none;
+    //         }
+    //     }
+    // }
+
+    // .btn__reset {
+    //     border: 0;
+    //     background-color: transparent;
+    // }
+
+    // @media (min-width: $mq-m) {
+    //     .btn--float {
+    //         display: none;
+    //     }
+    // }
+
+    .list-grid {
+        .filter-section{
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            .page{
+                margin-right: auto;
+            }
+        }
+        .pagination{
+            display: flex;
+            padding: 44px 0 24px 0;
+            justify-content: flex-end;
+            .MuiPagination-ul{
+                background: #F1F1F1;
+                padding: 4px;
+                border-radius: 12px;
+                margin-right: 8px;
+            }
+            .MuiPaginationItem-textPrimary{
+                background-color: #F1F1F1;
+                width: 42px;
+                height: 28px;
+                border-radius: 8px;
+                color: #626262;
+                font-family: 'Inter';
+                font-weight: 500;
+                font-size: 12px;
+            }
+            .MuiPaginationItem-textPrimary.Mui-selected{
+                background-color: #000000;
+                color: #fff !important;
+            }
+            .nextBtn{
+                background-color: #000000;
+                color: #fff;
+                padding: 7px 20px;
+                min-width: 67px;
+                height: 36px;
+                border-radius: 12px;
+                border: none;
+                font-family: 'Inter';
+                font-weight: 500;
+                font-size: 12px;
+            }
+        }
+        // display: grid;
+        // grid-column-gap: $grid-gap-m;
+        // grid-template-columns: repeat(12, 1fr);
+        // grid-column-end: span 12;
+
+        // @media (min-width: $mq-m) {
+        //     grid-column-end: span 9;
+        //     grid-row-gap: 5rem;
+        // }
+
+        .card__item {
+            grid-column: span 12;
+
+            @media (min-width: 30rem) {
+                grid-column: span 6;
+            }
+
+            @media (min-width: 68.75rem) {
+                grid-column: span 4;
+            }
+        }
+
+        .card__photo {
+            height: 12rem;
+            margin-top: -2.125rem;
+            width: 12rem;
+
+            @media (min-width: 34.25em) {
+                height: 14rem;
+                width: 14rem;
+            }
+        }
+
+        .btn {
+            box-shadow: $box-shadow-l;
+            margin-bottom: -$margin-m;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+}

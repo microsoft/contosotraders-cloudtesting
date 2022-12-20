@@ -1,0 +1,71 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@azure/communication-administration": "^1.0.0-beta.4",
+    "@azure/communication-calling": "^1.0.0",
+    "@azure/communication-chat": "^1.0.0",
+    "@azure/communication-common": "^1.0.0",
+    "@azure/communication-signaling": "^1.0.0-beta.5",
+    "@azure/cosmos": "^2.0.5",
+    "@azure/logger": "^1.0.2",
+    "@azure/msal-browser": "^2.31.0",
+    "@babel/helper-compilation-targets": "^7.13.16",
+    "@babel/helper-regex": "^7.10.5",
+    "@fluentui/react": "^7.170.0",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.61",
+    "@microsoft/applicationinsights-react-js": "^2.5.4",
+    "@microsoft/applicationinsights-web": "^2.6.2",
+    "axios": "^0.18.1",
+    "date-fns": "^2.0.0-beta.5",
+    "dotenv": "^8.6.0",
+    "formik": "^2.2.9",
+    "history": "^4.9.0",
+    "i18next": "^15.0.6",
+    "izitoast": "^1.4.0",
+    "material-ui-dropzone": "^3.5.0",
+    "msal": "^1.4.10",
+    "office-ui-fabric-react": "^7.170.0",
+    "prop-types": "^15.8.1",
+    "qs": "^6.10.1",
+    "react": "^16.14.0",
+    "react-a11y-dialog": "^4.2.0",
+    "react-dom": "^16.14.0",
+    "react-i18next": "^9.0.10",
+    "react-material-ui-carousel": "^3.4.2",
+    "react-redux": "^6.0.0",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-s-alert": "^1.4.1",
+    "react-scripts": "^3.4.4",
+    "react-scroll": "^1.8.2",
+    "recompose": "^0.30.0",
+    "redux": "^4.1.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "sass": "^1.55.0",
+    "yup": "^0.32.11"
+  },
+  "scripts": {
+    "start": "react-scripts --max_old_space_size=8000 start",
+    "build": "react-scripts --max_old_space_size=8000 build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@playwright/test": "^1.29.0",
+    "babel-plugin-macros": "^2.8.0"
+  }
+}

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: contoso-traders-products
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+  selector:
+    app: contoso-traders-products
