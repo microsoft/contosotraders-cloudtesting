@@ -1,14 +1,27 @@
-# Project
+# Contoso Traders - Cloud Testing
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+![Logo](./docs/images/logo-1280x640.png)
 
-As the maintainer of this project, please make a few updates:
+## Documentation and Resources
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+* Application Links
+  * [UI](https://cloudtesting.contosotraders.com/)
+  * [Carts API](https://contoso-traders-cartsctprod.politebay-207fb230.eastus.azurecontainerapps.io/swagger)
+  * [Products API](https://contoso-traders-productsctprod.eastus.cloudapp.azure.com/swagger/)
+* [Deployment Guide](@TODO)
+* [Contributing](./CONTRIBUTING.md)
+* [Bicep Templates](./iac/)
+* [Github Workflows](./.github/workflows/)
+  * [![contoso-traders-provisioning-deployment](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-provisioning-deployment.yml/badge.svg)](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-provisioning-deployment.yml)
+  * [![contoso-traders-load-testing](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-load-testing.yml/badge.svg)](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-load-testing.yml)
+  * [![contoso-traders-playwright-testing](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-playwright-testing.yml/badge.svg)](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-playwright-testing.yml)
+
+## Demo Scripts
+
+* [DevOps](./demo-scripts/devops/walkthrough.md)
+* [Azure Load Testing Service](./demo-scripts/azure-load-testing-service/walkthrough.md)
+* [Azure Chaos Studio](./demo-scripts/azure-chaos-studio/walkthrough.md)
+* [Testing With Playwright](./demo-scripts/testing-with-playwright/walkthrough.md)
 
 ## Contributing
 
@@ -26,8 +39,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Trademarks
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
+trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
