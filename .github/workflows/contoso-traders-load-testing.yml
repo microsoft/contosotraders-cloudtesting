@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v3
-        with:
-          repository: microsoft/contosotraders
       - name: azure login
         uses: azure/login@v1
         with:
@@ -66,8 +64,6 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v3
-        with:
-          repository: microsoft/contosotraders
       - name: azure login
         uses: azure/login@v1
         with:
