@@ -1,0 +1,2121 @@
+{
+  "properties": {
+    "lenses": {
+      "0": {
+        "order": 0,
+        "parts": {
+          "0": {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Web/serverFarms/contoso-traders-productstest"
+                          },
+                          "name": "CpuPercentage",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.web/serverfarms",
+                          "metricVisualization": {
+                            "displayName": "CPU Percentage"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Web/serverFarms/contoso-traders-productstest"
+                          },
+                          "name": "MemoryPercentage",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.web/serverfarms",
+                          "metricVisualization": {
+                            "displayName": "Memory Percentage"
+                          }
+                        }
+                      ],
+                      "title": "Products API : AppSvcPlan : Max CPU% and Max Memory%",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Web/serverFarms/contoso-traders-productstest"
+                          },
+                          "name": "CpuPercentage",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.web/serverfarms",
+                          "metricVisualization": {
+                            "displayName": "CPU Percentage"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Web/serverFarms/contoso-traders-productstest"
+                          },
+                          "name": "MemoryPercentage",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.web/serverfarms",
+                          "metricVisualization": {
+                            "displayName": "Memory Percentage"
+                          }
+                        }
+                      ],
+                      "title": "Products API : AppSvcPlan : Max CPU%, Max Mem%",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "1": {
+            "position": {
+              "x": 0,
+              "y": 2,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Web/sites/contoso-traders-productstest"
+                          },
+                          "name": "Http5xx",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Http Server Errors",
+                            "resourceDisplayName": "contoso-traders-productstest"
+                          }
+                        }
+                      ],
+                      "title": "Http 5xx",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 2
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Web/sites/contoso-traders-productstest"
+                          },
+                          "name": "Http5xx",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Http Server Errors",
+                            "resourceDisplayName": "contoso-traders-productstest"
+                          }
+                        }
+                      ],
+                      "title": "Products API : AppSvc : Http 5xx Errors",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "2": {
+            "position": {
+              "x": 4,
+              "y": 2,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Web/sites/contoso-traders-productstest"
+                          },
+                          "name": "Requests",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Requests"
+                          }
+                        }
+                      ],
+                      "title": "Products API : AppSvc : Sum Requests",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Web/sites/contoso-traders-productstest"
+                          },
+                          "name": "Requests",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Requests"
+                          }
+                        }
+                      ],
+                      "title": "Products API : AppSvc : Requests",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "3": {
+            "position": {
+              "x": 8,
+              "y": 2,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Web/sites/contoso-traders-productstest"
+                          },
+                          "name": "HttpResponseTime",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Response Time"
+                          }
+                        }
+                      ],
+                      "title": "Products API : AppSvc : Response Time",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Web/sites/contoso-traders-productstest"
+                          },
+                          "name": "HttpResponseTime",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.web/sites",
+                          "metricVisualization": {
+                            "displayName": "Response Time"
+                          }
+                        }
+                      ],
+                      "title": "Products API : AppSvc : Response Time",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "4": {
+            "position": {
+              "x": 0,
+              "y": 4,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Sql/servers/contoso-traders-productstest/databases/productsdb"
+                          },
+                          "name": "dtu_limit",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.sql/servers/databases",
+                          "metricVisualization": {
+                            "displayName": "DTU Limit"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Sql/servers/contoso-traders-productstest/databases/productsdb"
+                          },
+                          "name": "dtu_used",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.sql/servers/databases",
+                          "metricVisualization": {
+                            "displayName": "DTU used"
+                          }
+                        }
+                      ],
+                      "title": "Products DB : Sql : DTU Utilization",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Sql/servers/contoso-traders-productstest/databases/productsdb"
+                          },
+                          "name": "dtu_limit",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.sql/servers/databases",
+                          "metricVisualization": {
+                            "displayName": "DTU Limit"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Sql/servers/contoso-traders-productstest/databases/productsdb"
+                          },
+                          "name": "dtu_used",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.sql/servers/databases",
+                          "metricVisualization": {
+                            "displayName": "DTU used"
+                          }
+                        }
+                      ],
+                      "title": "Products DB : Sql : DTU Utilization",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "5": {
+            "position": {
+              "x": 4,
+              "y": 4,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Sql/servers/contoso-traders-productstest/databases/productsdb"
+                          },
+                          "name": "dtu_consumption_percent",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.sql/servers/databases",
+                          "metricVisualization": {
+                            "displayName": "DTU percentage"
+                          }
+                        }
+                      ],
+                      "title": "Products DB : Sql : DTU% ",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.Sql/servers/contoso-traders-productstest/databases/productsdb"
+                          },
+                          "name": "dtu_consumption_percent",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.sql/servers/databases",
+                          "metricVisualization": {
+                            "displayName": "DTU percentage"
+                          }
+                        }
+                      ],
+                      "title": "Products DB : Sql : DTU% ",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "6": {
+            "position": {
+              "x": 0,
+              "y": 6,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Total Requests",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Stocks DB : CosmosDB : Requests",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Total Requests",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Stocks DB : CosmosDB : Requests",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "7": {
+            "position": {
+              "x": 4,
+              "y": 6,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequestUnits",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Total Request Units",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Stocks DB : CosmosDB : RUs",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequestUnits",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Total Request Units",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Stocks DB : CosmosDB : RUs",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "8": {
+            "position": {
+              "x": 8,
+              "y": 6,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Throttled Requests (429s)",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Stocks DB : CosmosDB : Throttled Requests (429s)",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "StatusCode",
+                            "operator": 0,
+                            "values": [
+                              "429"
+                            ]
+                          }
+                        ]
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Throttled Requests (429s)",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Stocks DB : CosmosDB : Throttled Requests (429s)",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "StatusCode": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "429"
+                    ]
+                  }
+                },
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "9": {
+            "position": {
+              "x": 12,
+              "y": 6,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "StocksDB : CosmosDB : Normalized RU Consumption",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "StocksDB : CosmosDB : Normalized RU Consumption",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "10": {
+            "position": {
+              "x": 0,
+              "y": 8,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.App/containerApps/contoso-traders-cartstest"
+                          },
+                          "name": "UsageNanoCores",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "CPU Usage"
+                          }
+                        }
+                      ],
+                      "title": "Carts API : ACA : CPU Usage",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.App/containerApps/contoso-traders-cartstest"
+                          },
+                          "name": "UsageNanoCores",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "CPU Usage"
+                          }
+                        }
+                      ],
+                      "title": "Carts API : ACA : CPU Usage",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "11": {
+            "position": {
+              "x": 4,
+              "y": 8,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.App/containerApps/contoso-traders-cartstest"
+                          },
+                          "name": "Requests",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Requests"
+                          }
+                        }
+                      ],
+                      "title": "Carts API : ACA : Requests",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.App/containerApps/contoso-traders-cartstest"
+                          },
+                          "name": "Requests",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Requests"
+                          }
+                        }
+                      ],
+                      "title": "Carts API : ACA : Requests",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "12": {
+            "position": {
+              "x": 8,
+              "y": 8,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.App/containerApps/contoso-traders-cartstest"
+                          },
+                          "name": "Replicas",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Replica Count"
+                          }
+                        }
+                      ],
+                      "title": "Carts API : ACA : Replica Count",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.App/containerApps/contoso-traders-cartstest"
+                          },
+                          "name": "Replicas",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Replica Count"
+                          }
+                        }
+                      ],
+                      "title": "Carts API : ACA : Replica Count",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "13": {
+            "position": {
+              "x": 0,
+              "y": 10,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Total Requests",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Carts DB : CosmosDB : Requests",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Total Requests",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Carts DB : CosmosDB : Requests",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "14": {
+            "position": {
+              "x": 4,
+              "y": 10,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequestUnits",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Total Request Units",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Carts DB : CosmosDB : RUs",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequestUnits",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Total Request Units",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Carts DB : CosmosDB : RUs",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "15": {
+            "position": {
+              "x": 8,
+              "y": 10,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Total Requests",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Carts DB : CosmosDB : Throttled Requests (429s)",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "filterCollection": {
+                        "filters": [
+                          {
+                            "key": "StatusCode",
+                            "operator": 0,
+                            "values": [
+                              "429"
+                            ]
+                          }
+                        ]
+                      },
+                      "grouping": {
+                        "dimension": "StatusCode",
+                        "top": 50
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "TotalRequests",
+                          "aggregationType": 7,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Total Requests",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Carts DB : CosmosDB : Throttled Requests (429s)",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      },
+                      "grouping": {
+                        "dimension": "StatusCode",
+                        "top": 50
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "StatusCode": {
+                  "model": {
+                    "operator": "equals",
+                    "values": [
+                      "429"
+                    ]
+                  }
+                },
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          },
+          "16": {
+            "position": {
+              "x": 12,
+              "y": 10,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Carts DB : CosmosDB : Normalized RU Consumption",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 1800000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/d0c33f09-f408-4bb7-935e-c53c50358a38/resourceGroups/contoso-traders-rg/providers/Microsoft.DocumentDB/databaseAccounts/contoso-traders-cartstest"
+                          },
+                          "name": "NormalizedRUConsumption",
+                          "aggregationType": 3,
+                          "namespace": "microsoft.documentdb/databaseaccounts",
+                          "metricVisualization": {
+                            "displayName": "Normalized RU Consumption",
+                            "color": null
+                          }
+                        }
+                      ],
+                      "title": "Carts DB : CosmosDB : Normalized RU Consumption",
+                      "titleKind": 2,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideSubtitle": false
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "30m"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 24,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        },
+        "filterLocale": {
+          "value": "en-us"
+        },
+        "filters": {
+          "value": {
+            "MsPortalFx_TimeRange": {
+              "model": {
+                "format": "utc",
+                "granularity": "auto",
+                "relative": "24h"
+              },
+              "displayCache": {
+                "name": "UTC Time",
+                "value": "Past 24 hours"
+              },
+              "filteredPartIds": [
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d3e",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d40",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d42",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d44",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d46",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d48",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d4a",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d4c",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d4e",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d50",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d52",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d54",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d56",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d58",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d5a",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d5c",
+                "StartboardPart-MonitorChartPart-0d25c87b-86d2-4f4c-b66c-ada9ac7b3d5e"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "contoso-traders-dashboardtest",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "contoso-traders-dashboardtest"
+  },
+  "apiVersion": "2015-08-01-preview"
+}
