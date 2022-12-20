@@ -3,7 +3,7 @@ import { withRouter, Link, useHistory } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { alpha, makeStyles } from '@material-ui/core/styles';
-import {AppBar, InputAdornment, TextField} from '@material-ui/core';
+import {AppBar, InputAdornment, TextField, Button } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
@@ -182,17 +182,17 @@ function TopAppBar(props) {
 
   const { loggedIn } = props.userInfo;
 
-  // const onClickLogIn = async() => {
-  //   let user = await authService.login();
-  //   if(user)
-  //   {
-  //       user['loggedIn'] = true;
-  //       user['isB2c'] = true;
-  //       user['token'] = sessionStorage.getItem('msal.idtoken');
-  //       localStorage.setItem('state',JSON.stringify(user))
-  //       props.submitAction(user);
-  //   }
-  // }
+  const onClickLogIn = async() => {
+    let user = await authService.login();
+    if(user)
+    {
+        user['loggedIn'] = true;
+        user['isB2c'] = true;
+        user['token'] = sessionStorage.getItem('msal.idtoken');
+        localStorage.setItem('state',JSON.stringify(user))
+        props.submitAction(user);
+    }
+  }
   const onClickLogout = () => {
     localStorage.clear();
 
@@ -402,10 +402,10 @@ function TopAppBar(props) {
               </Badge>
             </IconButton>
           </div> :
-          null
-            // <Button className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={() => onClickLogIn()} >
-            //   Login
-            // </Button>
+          // null
+            <Button className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={() => onClickLogIn()} >
+              Login
+            </Button>
           }
           <div className={classes.sectionMobile}>
             <IconButton
