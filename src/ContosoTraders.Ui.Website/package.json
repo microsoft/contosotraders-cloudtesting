@@ -19,7 +19,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "@microsoft/applicationinsights-react-js": "^2.5.4",
     "@microsoft/applicationinsights-web": "^2.6.2",
-    "axios": "^0.18.1",
+    "axios": "^0.21.2",
     "date-fns": "^2.0.0-beta.5",
     "dotenv": "^8.6.0",
     "formik": "^2.2.9",
