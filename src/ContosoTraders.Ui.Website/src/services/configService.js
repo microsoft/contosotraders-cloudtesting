@@ -9,7 +9,7 @@ const APIUrlShoppingCart = process.env.REACT_APP_APIUrlShoppingCart;
 const UseB2C = process.env.REACT_APP_USEB2C;
 const B2cAuthority = process.env.REACT_APP_B2CAUTHORITY;
 const B2cClientId =  process.env.REACT_APP_B2CCLIENTID;
-const B2cScopes = process.env.REACT_APP_B2CSCOPES;
+const B2cScopes = [process.env.REACT_APP_B2CSCOPES];
 const userEmail = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null;
 
 const _HeadersConfig = (token, devspaces = undefined) => {
