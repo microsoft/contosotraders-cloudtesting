@@ -1,0 +1,1 @@
+﻿global using ContosoTraders.Api.Core.Controllers;

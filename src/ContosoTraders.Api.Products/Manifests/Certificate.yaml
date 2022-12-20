@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls-secret
+spec:
+  secretName: tls-secret
+  dnsNames:
+    #Note: The '{AKS_FQDN}' token will be substituted with the actual DNS label of the ingress controller's public IP by github workflow.
+    - {AKS_FQDN}
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
