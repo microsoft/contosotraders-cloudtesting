@@ -1,6 +1,6 @@
 # Contoso Traders - Cloud Testing
 
-![Logo](./docs/images/logo-1280x640.png)
+![Logo](https://github.com/microsoft/ContosoTraders/blob/main/docs/images/logo-1280x640.png)
 
 ## Documentation and Resources
 
