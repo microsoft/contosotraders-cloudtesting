@@ -6,6 +6,11 @@ test.beforeEach(async({page})=>{
   await page.goto('/');
 })
 
+test('shows page in dark mode', async ({ page }) => {
+  await page.locator('input.MuiSwitch-input').check()
+  await expect(page.locator('.App')).toHaveAttribute('class', 'App dark')
+})
+
 test('Login', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'show 4 new mails' }).click();

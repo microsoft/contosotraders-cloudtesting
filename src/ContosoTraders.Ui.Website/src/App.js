@@ -86,7 +86,7 @@ class App extends Component {
     );
 
     return (
-      <div className="App">
+      <div className={`App ${this.props.theme ? 'dark' : 'light' }`}>
         <Fragment>
           <div className="mainHeader">
             <HeaderMessage type="warning" icon={warningIcon} message="This Is A Demo Store For Testing Purposes — No Orders Shall Be Fulfilled."/>
@@ -133,6 +133,11 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => state.login;
+const mapStateToProps = (state) => { 
+  return { 
+    userInfo : state.login.userInfo,
+    theme :  state.theme.theme
+  }
+};
 
 export default withRouter(connect(mapStateToProps)(App));
