@@ -13,7 +13,6 @@
 * [Bicep Templates](./iac/)
 * [Github Workflows](./.github/workflows/)
   * [![contoso-traders-provisioning-deployment](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-provisioning-deployment.yml/badge.svg)](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-provisioning-deployment.yml)
-  * [![contoso-traders-load-testing](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-load-testing.yml/badge.svg)](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-load-testing.yml)
   * [![contoso-traders-playwright-testing](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-playwright-testing.yml/badge.svg)](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-playwright-testing.yml)
 
 ## Demo Scripts
