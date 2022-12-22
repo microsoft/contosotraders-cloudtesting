@@ -302,7 +302,7 @@ jobs:
 
   deploy-ui:
     runs-on: ubuntu-latest
-    needs: [provision-infrastructure, deploy-carts-api, deploy-products-api]
+    needs: [deploy-carts-api, deploy-products-api]
     steps:
       - name: checkout code
         uses: actions/checkout@v3
@@ -346,7 +346,7 @@ jobs:
 
   load-test-carts-api:
     runs-on: ubuntu-latest
-    needs: [provision-infrastructure, deploy-carts-api]
+    needs: [deploy-carts-api]
     steps:
       - name: checkout code
         uses: actions/checkout@v3
@@ -397,7 +397,7 @@ jobs:
 
   load-test-products-api:
     runs-on: ubuntu-latest
-    needs: [provision-infrastructure, deploy-products-api]
+    needs: [deploy-products-api]
     steps:
       - name: checkout code
         uses: actions/checkout@v3
