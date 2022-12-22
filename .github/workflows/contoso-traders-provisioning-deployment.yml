@@ -26,8 +26,8 @@ env:
   CARTS_ACA_NAME: contoso-traders-carts
   CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
   CDN_PROFILE_NAME: contoso-traders-cdn
-  SUB_DEPLOYMENT_REGION: eastus2
   KV_NAME: contosotraderskv
+  LOAD_TEST_SERVICE_NAME: contoso-traders-loadtest
   PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
   PRODUCTS_DB_NAME: productsdb
   PRODUCTS_DB_SERVER_NAME: contoso-traders-products
@@ -38,6 +38,7 @@ env:
   PRODUCTS_CDN_ENDPOINT_NAME: contoso-traders-images
   RESOURCE_GROUP_NAME: contoso-traders-rg
   STORAGE_ACCOUNT_NAME: contosotradersimg
+  SUB_DEPLOYMENT_REGION: eastus2
   UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
   UI_STORAGE_ACCOUNT_NAME: contosotradersui2
   USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
@@ -342,3 +343,105 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.UI_CDN_ENDPOINT_NAME }}${{ secrets.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.ENVIRONMENT }}'
+
+  load-test-carts-api:
+    runs-on: ubuntu-latest
+    needs: [provision-infrastructure, deploy-carts-api]
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      # extract the endpoint url of the aca app from kv
+      - name: fetch cartsApiEndpoint
+        uses: azure/CLI@v1
+        id: fetch-cartsApiEndpoint
+        with:
+          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} -n cartsApiEndpoint --query "value" -o tsv)" >> $GITHUB_OUTPUT
+      - name: load test (carts API)
+        uses: Azure/load-testing@v1.1.7
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./tests/loadtests/contoso-traders-carts.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ secrets.ENVIRONMENT }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ steps.fetch-cartsApiEndpoint.outputs.cartsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/ShoppingCart/loadtest"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
+
+  load-test-products-api:
+    runs-on: ubuntu-latest
+    needs: [provision-infrastructure, deploy-products-api]
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      # extract the endpoint url of the aks app from kv
+      - name: fetch productsApiEndpoint
+        uses: azure/CLI@v1
+        id: fetch-productsApiEndpoint
+        with:
+          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} -n productsApiEndpoint --query "value" -o tsv)" >> $GITHUB_OUTPUT
+      - name: load test (products API)
+        uses: Azure/load-testing@v1.1.7
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./tests/loadtests/contoso-traders-products.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ secrets.ENVIRONMENT }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ steps.fetch-productsApiEndpoint.outputs.productsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/Products/1"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
