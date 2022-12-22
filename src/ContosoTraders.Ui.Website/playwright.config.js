@@ -6,7 +6,8 @@ const { devices } = require('@playwright/test');
  * https://github.com/motdotla/dotenv
  */
 // require('dotenv').config();
-
+import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config()
 
 /**
  * @see https://playwright.dev/docs/test-configuration
