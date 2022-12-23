@@ -80,7 +80,7 @@ The test failed in Microsoft Edge browser and passed for all other browsers.
 
 # Testing Scenarios
 
-Search by text
+**Search by text**
 
 Click the search bar on the header
 
@@ -102,6 +102,19 @@ This will result in the listing of products as per the searched keyword.
 Any issue with the API or redirected url will trigger an error message while testing.
 
 ![Test Case Image](./media/16.png)
+
+**Enable Dark Mode**
+
+Select the toggle button for Dark mode on the right side of header. Checking it will turn the application to dark mode.
+
+DARK MODE OFF
+
+![Test Case Image](./media/25.png)
+
+DARK MODE ON
+
+![Test Case Image](./media/26.png)
+
 
 
 # Complex Testing Scenarios
