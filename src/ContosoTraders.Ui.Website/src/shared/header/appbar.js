@@ -3,7 +3,7 @@ import { withRouter, Link, useHistory } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { alpha, makeStyles } from '@material-ui/core/styles';
-import {AppBar, InputAdornment, TextField, Button } from '@material-ui/core';
+import {AppBar, InputAdornment, TextField, Button, FormGroup, FormControlLabel, Switch } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
@@ -19,7 +19,7 @@ import WishlistIcon from '../../assets/images/original/Contoso_Assets/Icons/wish
 import ProfileIcon from '../../assets/images/original/Contoso_Assets/Icons/profile_icon.svg'
 import BagIcon from '../../assets/images/original/Contoso_Assets/Icons/cart_icon.svg'
 import UploadFile from '../uploadFile/uploadFile';
-import { clickAction, submitAction } from '../../actions/actions';
+import { clickAction, submitAction, handleThemeChange } from '../../actions/actions';
 import AuthB2CService from '../../services/authB2CService';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -407,6 +407,9 @@ function TopAppBar(props) {
               Login
             </Button>
           }
+          <FormGroup>
+            <FormControlLabel labelPlacement="start" control={<Switch aria-label='theme change' id="theme" color="primary" onChange={(e) => props.handleThemeChange(e.target.checked)}/>} label="Dark Mode" />
+          </FormGroup>
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -425,6 +428,15 @@ function TopAppBar(props) {
     </div>
   );
 }
-const mapStateToProps = state => state.login;
-
-export default withRouter(connect(mapStateToProps, { clickAction, submitAction })(TopAppBar));
+const mapStateToProps = (state) => { 
+  return { 
+    userInfo : state.login.userInfo,
+    theme :  state.theme.theme
+  }
+};
+const mapDispatchToProps = (dispatch) => ({
+  handleThemeChange: (value) => dispatch(handleThemeChange(value)),
+  clickAction, 
+  submitAction,
+})
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopAppBar));

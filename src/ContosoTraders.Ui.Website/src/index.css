@@ -188,7 +188,7 @@ body {
 }
 /* mainHeader */
 .mainHeader{
-  background-color: #fff;
+  /* background-color: #fff; */
   position: fixed;
   z-index: 100;
   width: 100%;
@@ -589,7 +589,7 @@ button[aria-label='Next'] {
   background-color: #fff;
 }
 .LaptopSection .LapHeadSection {
-  margin-top: 70px;
+  padding-top: 70px;
 }
 
 .LaptopSection .LapHead {
@@ -613,7 +613,7 @@ button[aria-label='Next'] {
 }
 .LaptopSection .LaptopButtondiv {
   text-align: center;
-  margin: 50px 0px 50px 0px;
+  padding: 50px 0px 50px 0px;
 }
 .LaptopSection .LaptopButton {
   text-align: center;
