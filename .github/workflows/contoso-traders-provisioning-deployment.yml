@@ -344,7 +344,7 @@ jobs:
         with:
           inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.UI_CDN_ENDPOINT_NAME }}${{ secrets.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.ENVIRONMENT }}'
 
-  load-test-carts-api:
+  load-tests-carts-api:
     runs-on: ubuntu-latest
     needs: [deploy-carts-api]
     steps:
@@ -395,7 +395,7 @@ jobs:
               }
             ]
 
-  load-test-products-api:
+  load-tests-products-api:
     runs-on: ubuntu-latest
     needs: [deploy-products-api]
     steps:
@@ -446,7 +446,7 @@ jobs:
               }
             ]
 
-  run-playwright-tests:
+  playwright-tests-ui:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     needs: [deploy-ui]
