@@ -22,6 +22,9 @@ test('Login', async ({ page }) => {
   await page1.locator('[name=passwd]').click();
   await page1.locator('[name=passwd]').fill('wQf4yMFy6BcT3JQ@ywUE');
   await page1.getByRole('button', { name: 'Sign in' }).click();
+  if(await page1.$$('#idSIButton9')){
+    await page1.locator('#idSIButton9').click();
+  }
   await page1.getByRole('button', { name: 'Approve a request on my Microsoft Authenticator app' }).click();
   // await Promise.all([
   //   // Waits for the next response matching some conditions
