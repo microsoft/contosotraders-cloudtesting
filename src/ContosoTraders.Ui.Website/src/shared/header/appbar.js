@@ -407,7 +407,7 @@ function TopAppBar(props) {
               Login
             </Button>
           }
-          <FormGroup>
+          <FormGroup className='theme-class'>
             <FormControlLabel labelPlacement="start" control={<Switch aria-label='theme change' id="theme" color="primary" onChange={(e) => props.handleThemeChange(e.target.checked)}/>} label="Dark Mode" />
           </FormGroup>
           <div className={classes.sectionMobile}>
