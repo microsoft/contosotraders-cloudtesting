@@ -28,9 +28,9 @@
    * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62400/swagger`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
 6. Run the UI locally:
-   * You'll have to manually update this source code file to point to the locally running APIs above: `src\ContosoTraders.Ui.Website\src\services\configService.js`
-     * line #09: `const APIUrl = 'https://localhost:62300/v1';`
-     * line #10: `const APIUrlShoppingCart = 'https://localhost:62400/v1';`
+   * You'll have to manually update this source code file to point to the locally running APIs above: `src\ContosoTraders.Ui.Website\.env`
+     * line #01: `const APIUrl = 'https://localhost:62300/v1';`
+     * line #02: `const APIUrlShoppingCart = 'https://localhost:62400/v1';`
    * Open a cmd window and navigate to the `src/ContosoTraders.Ui.Website` folder.
    * Run `npm install`.
    * Run `npm run start`. This will start the UI on `http://localhost:3000`.
