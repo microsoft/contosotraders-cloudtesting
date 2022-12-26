@@ -912,7 +912,14 @@ margin-right: auto;
 .ErrorSection .ButtonSection{
     text-align: center;
 }
-
+.theme-class > label{
+  border: 1px solid lightgray;
+  background-color: #a2a2a2;
+  border-radius: 20px;
+  padding: 3px 12px;
+  margin: 0;
+  color: #fff;
+}
 @media screen and (max-width : 1439px){
   .ProductContainerSection .ProductDetailsSection .CartButton, .ProductContainerSection .ProductDetailsSection .WishListButton{
     width: 250px !important;
