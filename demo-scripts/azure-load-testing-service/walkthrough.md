@@ -1,8 +1,8 @@
-# Autoscaling Cloud Native Apps on Azure: Overview
+# Azure Load Testing Service: Overview
 
 ## Key Takeaways
 
-In this demo, you'll get an overview of the autoscaling features of various Azure services like ACA (Azure Container Apps) and AKS (Azure Kubernetes Service).
+In this demo, you'll get an overview of Azure's Load Testing Service; a managed service that can be used to simulate load on your application's APIs.
 
 You'll also get an insight into how to use Azure Monitor to monitor the application's performance and health.
 
@@ -10,7 +10,7 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 ## Before You Begin
 
-* There are some prerequisites for this demo mentioned in the [application deployment guide](../docs/../../docs/app-deployment-guide.md). After executing all the steps mentioned in that document, the application's infrastructure will be provisioned on Azure, and the latest code will be deployed as well.
+* There are some prerequisites for this demo mentioned in the [application deployment guide](../app-deployment-guide.md). After executing all the steps mentioned in that document, the application's infrastructure will be provisioned on Azure, and the latest code will be deployed as well.
 
 ## Walkthrough: Metrics & Dashboards
 
@@ -30,11 +30,31 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![ACA Metrics Chart Pinning](./media/aca-metrics-pin.png)
 
-## Walkthrough: Load Testing & Autoscaling
+## Walkthrough: Creating a Load Test
 
-1. We have a GitHub workflow that executes load tests on the application's APIs. The workflow can be launched on-demand from the GitHub Actions tab of this repository.
+1. In the Azure portal, you can navigate to the Azure Load Testing service in the `contoso-traders-rg` resource group.
 
-   ![github workflow](./media/github-workflow.png)
+   ![@TODO load testing service](./media/load-test-browse.png)
+
+2. You can create a new load test as follows: Navigate to the `Tests` section, and then click on `Create` > `Create a Quick Test` button.
+
+   ![@TODO load testing service](./media/load-test-create-1.png)
+
+3. In the `Quick Test` blade, you can specify the name of the load test, and the target URL. You can also specify the number of concurrent users, and the duration of the test. See example below:
+
+   ![@TODO load testing service](./media/load-test-create-2.png)
+
+> **Note**: The steps above have already been executed for you (i.e. the load test has already been setup for you). You can skip to the next section for instructions on how to run the load test.
+
+## Walkthrough: Running the Load Test
+
+## Walkthrough: Reviewing the Load Test Results
+
+## Walkthrough: Load Testing
+
+1. We have a GitHub workflow that executes load tests on the application's APIs. This workflow is automatically triggered on every checkin to the `main` branch. Specifically the load tests are run on the `Product API` and `Carts API` immediately after they're deployed to the AKS cluster and ACA respectively.
+
+   ![@TODO: github workflow](./media/github-workflow.png)
 
 2. The workflow uses a github action to invoke the [Azure Load Testing](https://learn.microsoft.com/en-us/azure/load-testing/) service and simulates load on the application's `Product API` and `Carts API`, which are hosted on AKS and ACA respectively.
 
