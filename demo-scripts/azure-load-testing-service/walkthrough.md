@@ -76,7 +76,19 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![load testing service](./media/load-test-completed.png)
 
-## Walkthrough: Reviewing the Load Test Results
+## Walkthrough: Incorporate Server Side Metrics
+
+1. Click on the `App Components` button. Then from the flyout, select the `contoso-traders-carts` CosmosDB component. This will add relevant metrics from the CosmosDB to the load test dashboard.
+
+   ![load testing service](./media/load-test-server-side-metrics.png)
+
+2. Re-run the load test, and you'll see the impact of the synthetic load on the DB (in real-time).
+
+   ![load testing service](./media/load-test-run-2.png)
+
+> **Note**: Unfortunately, ACA metrics are not yet supported in Azure Load Testing's server side metrics. This feature will be coming soon.
+
+## Walkthrough: Monitoring the Load Test
 
 ## Walkthrough: Load Testing
 
