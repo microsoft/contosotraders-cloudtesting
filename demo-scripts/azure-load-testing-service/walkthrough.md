@@ -4,7 +4,7 @@
 
 In this demo, you'll get an overview of Azure's Load Testing Service; a managed service that can be used to simulate load on your application's APIs.
 
-You'll also get an insight into how to use Azure Monitor to monitor the application's performance and health.
+You'll also get an insight into how to incorporate server-side metrics into the load test dashboard.
 
 All these are especially crucial for an e-commerce application like Contoso Traders, which is expected to instantly handle a large, sudden spike in number of users, with low latency and no downtime.
 
@@ -34,15 +34,15 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 1. In the Azure portal, you can navigate to the Azure Load Testing service in the `contoso-traders-rg` resource group.
 
-   ![@TODO load testing service](./media/load-test-browse.png)
+   ![load testing service](./media/load-test-browse.png)
 
 2. You can create a new load test as follows: Navigate to the `Tests` section, and then click on `Create` > `Create a Quick Test` button.
 
-   ![@TODO load testing service](./media/load-test-create-1.png)
+   ![load testing service](./media/load-test-create-1.png)
 
 3. In the `Quick Test` blade, you can specify the name of the load test, and the target URL. You can also specify the number of concurrent users, and the duration of the test. See example below:
 
-   ![@TODO load testing service](./media/load-test-create-2.png)
+   ![load testing service](./media/load-test-create-2.png)
 
 > **Note**: The target URL is the URL from the `Carts API` that you identified in the previous section.
 
@@ -106,11 +106,11 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 1. We have a GitHub workflow that executes load tests on the application's APIs. This workflow is automatically triggered on every checkin to the `main` branch. Specifically the load tests are run on the `Product API` and `Carts API` immediately after they're deployed to the AKS cluster and ACA respectively.
 
-   ![@TODO: github workflow](./media/github-workflow.png)
+   ![github workflow](./media/github-workflow-2.png)
 
 2. The workflow uses a github action to invoke the [Azure Load Testing](https://learn.microsoft.com/en-us/azure/load-testing/) service and simulates load on the application's `Product API` and `Carts API`, which are hosted on AKS and ACA respectively.
 
-   ![workflow for load testing](./media/github-workflow2.png)
+   ![workflow for load testing](./media/github-workflow-3.png)
 
    ![github action for load testing](./media/github-action.png)
 
@@ -120,14 +120,6 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![load testing portal](./media/portal-load-test.png)
 
-4. You can also direct the load testing service to extract & correlate metrics from the concerned Azure Services. This will give you a great overview of how the various APIs/databases performed under load, whether the users got throttled/rate-limited, whether the average round-trip latency increased etc. In the example below, it has correlated metrics from Azure CosmosDB (which is used by Carts API).
-
-   ![load testing cosmos](./media/portal-load-test-cosmos.png)
-
-5. You can also revisit the earlier metric charts in ACA. It'll now have updated with the latest data after the load test. Of particular interest is the replica count chart of `Carts API`, which shows the instances auto-scaled out under increasing load. After load subsided, the instances auto-scaled back in to zero.
-
-   ![load testing ACA](./media/aca-metrics2.png)
-
 ## Summary
 
-In this demo, you got an overview of the autoscaling features of Azure services like ACA (Azure Container Apps). You can now head over to a [detailed demo](./technical-walkthrough.md) of AKS autoscaling.
+In this demo, you got an overview of Azure's Load Testing Service including how to create a load test, run it, and review the results. You also saw how to incorporate server-side metrics from Azure Services, and how to export the JMX file and results. Finally, you saw how to create a new load test from the JMX file, and how to use a GitHub workflow to execute load tests on the application's APIs.
