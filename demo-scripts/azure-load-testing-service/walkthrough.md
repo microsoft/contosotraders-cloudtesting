@@ -12,6 +12,16 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 * There are some prerequisites for this demo mentioned in the [application deployment guide](../app-deployment-guide.md). After executing all the steps mentioned in that document, the application's infrastructure will be provisioned on Azure, and the latest code will be deployed as well.
 
+## Walkthrough: Identify the Load Test Target
+
+1. In the Azure portal, you can navigate to the Azure Container App in the `contoso-traders-rg` resource group. This is the application that hosts the `Carts API`.
+
+   ![ACA](./media/aca-2.png)
+
+2. You can get the URL of the `Carts API` by as shown below.
+
+   ![ACA](./media/aca-endpoint.png)
+
 ## Walkthrough: Metrics & Dashboards
 
 1. In the Azure portal, you can navigate to the Azure Container App in the `contoso-traders-rg` resource group.
