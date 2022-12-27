@@ -22,6 +22,14 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![ACA](./media/aca-endpoint.png)
 
+3. In a separate browser tab, enter the following url in the address bar to load the API's swagger page: `<ACA url>/swagger/index.html`
+
+   ![ACA](./media/aca-swagger.png)
+
+4. You can now identify the API that you want to load test. In this case, we'll be load testing the `Carts API`'s `GET <ACA url>/v1/ShoppingCart/loadtest` endpoint. Please note down this endpoint for later use.
+
+   ![ACA](./media/aca-swagger-2.png)
+
 ## Walkthrough: Metrics & Dashboards
 
 1. In the Azure portal, you can navigate to the Azure Container App in the `contoso-traders-rg` resource group.
@@ -54,7 +62,7 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![@TODO load testing service](./media/load-test-create-2.png)
 
-> **Note**: The steps above have already been executed for you (i.e. the load test has already been setup for you). You can skip to the next section for instructions on how to run the load test.
+> **Note**: The target URL is the URL from the `Carts API` that you identified in the previous section.
 
 ## Walkthrough: Running the Load Test
 
