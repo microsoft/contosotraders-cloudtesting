@@ -1,4 +1,6 @@
-﻿namespace ContosoTraders.Api.Carts.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace ContosoTraders.Api.Carts.Controllers;
 
 [Route("v1/[controller]")]
 public class ShoppingCartController : ContosoTradersControllerBase
@@ -11,9 +13,14 @@ public class ShoppingCartController : ContosoTradersControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCart([FromHeader(Name = RequestHeaderConstants.HeaderNameUserEmail)] string userEmail)
+    public async Task<IActionResult> GetCart()
     {
+        var userEmail = User.HasClaim(claim => claim.Type == "preferred_username")
+            ? User.Claims.Single(claim => claim.Type == "preferred_username").Value
+            : "Anonymous";
+
         var request = new GetCartRequest
         {
             Email = userEmail?.ToLowerInvariant()

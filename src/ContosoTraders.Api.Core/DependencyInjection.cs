@@ -1,11 +1,13 @@
 ﻿using System.Reflection;
 using Azure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Logging;
 
 [assembly: FunctionsStartup(typeof(DependencyInjection))]
@@ -50,6 +52,10 @@ public class DependencyInjection : FunctionsStartup
                     {
                         ManagedIdentityClientId = builder.Configuration["ManagedIdentityClientId"]
                     }));
+
+        builder.Services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
         ConfigureServicesInternal(builder.Services, builder.Configuration);
 
@@ -134,10 +140,10 @@ public class DependencyInjection : FunctionsStartup
         app.UseHttpsRedirection();
         app.UseCors(_allowSpecificOrigins);
 
-#if TODO_INVESTIGATE_LATER
+//#if TODO_INVESTIGATE_LATER
         app.UseAuthorization(); // very important, else [Authorize] will not work in controllers.
         app.UseAuthentication();
-#endif
+//#endif
 
         app.MapControllers();
     }
