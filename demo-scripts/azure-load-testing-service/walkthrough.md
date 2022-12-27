@@ -66,6 +66,16 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 ## Walkthrough: Running the Load Test
 
+1. Once you've entered the load test specifications above, you can run it by clicking on the `Run` button.
+
+   ![load testing service](./media/load-test-run.png)
+
+2. The load test will take about 2 minutes to complete. Once done, it'll display the summary and client-side metrics.
+
+   ![load testing service](./media/load-test-in-progress.png)
+
+   ![load testing service](./media/load-test-completed.png)
+
 ## Walkthrough: Reviewing the Load Test Results
 
 ## Walkthrough: Load Testing
