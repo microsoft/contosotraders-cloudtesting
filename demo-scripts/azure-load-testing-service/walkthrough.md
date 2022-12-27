@@ -84,6 +84,18 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![load testing ACA](./media/aca-metrics2.png)
 
+## Walkthrough: Export the JMX File
+
+1. Navigate back to the Load Testing service, and click on the recently concluded test run. From there you can click on `Download` > `Input File`. This will download the JMX file in a zip archive.
+
+   ![load testing service](./media/load-test-export-jmx.png)
+
+2. You can review the JMX file by simply loading it up in notepad or VSCode.
+
+   ![load testing service](./media/load-test-jmx-view.png)
+
+## Walkthrough: Create New Load Test from JMX File
+
 ## Walkthrough: Load Testing
 
 1. We have a GitHub workflow that executes load tests on the application's APIs. This workflow is automatically triggered on every checkin to the `main` branch. Specifically the load tests are run on the `Product API` and `Carts API` immediately after they're deployed to the AKS cluster and ACA respectively.
