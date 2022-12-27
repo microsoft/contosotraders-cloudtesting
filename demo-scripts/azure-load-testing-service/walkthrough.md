@@ -102,6 +102,20 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 ## Walkthrough: Create New Load Test from JMX File
 
+1. You can create a new load test from the JMX file that you downloaded in the previous section. Navigate to the `Tests` section, and then click on `Create` > `Create a Test from JMX File` button. Then follows the below sequence of steps
+
+   ![load testing service](./media/import-jmx-1.png)
+
+   ![load testing service](./media/import-jmx-2.png)
+
+   ![load testing service](./media/import-jmx-3.png)
+
+   ![load testing service](./media/import-jmx-4.png)
+
+   ![load testing service](./media/import-jmx-5.png)
+
+   ![load testing service](./media/import-jmx-6.png)
+
 ## Walkthrough: Github Workflow For Load Testing
 
 1. We have a GitHub workflow that executes load tests on the application's APIs. This workflow is automatically triggered on every checkin to the `main` branch. Specifically the load tests are run on the `Product API` and `Carts API` immediately after they're deployed to the AKS cluster and ACA respectively.
