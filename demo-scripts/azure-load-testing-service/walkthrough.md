@@ -30,24 +30,6 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![ACA](./media/aca-swagger-2.png)
 
-## Walkthrough: Metrics & Dashboards
-
-1. In the Azure portal, you can navigate to the Azure Container App in the `contoso-traders-rg` resource group.
-
-   ![ACA](./media/aca.png)
-
-2. For demo purposes, we have configured a `HTTP Scaling` rule that horizontally scales out additional replicas when the number of concurrent requests exceeds a threshold (`3` in this case). ACA also supports automatic scale-in to zero when traffic dips below threshold.
-
-   ![ACA Scaling Rules](./media/aca-scaling-rules.png)
-
-3. In the metrics tab, you can see the various metrics measured & published by the ACA infrastructure. You can create a metric chart that combines two metrics: `replica count` vs `requests`. This will help you visualize the increase in replica count under load.
-
-   ![ACA Metrics Chart](./media/aca-metrics.png)
-
-4. Finally, you can pin this metric chart to the dashboard for easy access. This dashboard can be a shared-team dashboard, or a private dashboard.
-
-   ![ACA Metrics Chart Pinning](./media/aca-metrics-pin.png)
-
 ## Walkthrough: Creating a Load Test
 
 1. In the Azure portal, you can navigate to the Azure Load Testing service in the `contoso-traders-rg` resource group.
@@ -88,7 +70,19 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 > **Note**: Unfortunately, ACA metrics are not yet supported in Azure Load Testing's server side metrics. This feature will be coming soon.
 
-## Walkthrough: Monitoring the Load Test
+## Walkthrough: Review ACA Metrics & Dashboards
+
+1. In the Azure portal, you can navigate to the Azure Container App in the `contoso-traders-rg` resource group.
+
+   ![ACA](./media/aca.png)
+
+2. For demo purposes, we have configured a `HTTP Scaling` rule that horizontally scales out additional replicas when the number of concurrent requests exceeds a threshold (`3` in this case). ACA also supports automatic scale-in to zero when traffic dips below threshold.
+
+   ![ACA Scaling Rules](./media/aca-scaling-rules.png)
+
+3. In the metrics tab, you can see the various metrics measured & published by the ACA infrastructure. You can create a metric chart that combines two metrics: `replica count` vs `requests`. It'll now have updated with the latest data after the load test. Of particular interest is the replica count chart of `Carts API`, which shows the instances auto-scaled out under increasing load. After load subsided, the instances auto-scaled back in to zero.
+
+   ![load testing ACA](./media/aca-metrics2.png)
 
 ## Walkthrough: Load Testing
 
