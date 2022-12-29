@@ -136,7 +136,7 @@ class App extends Component {
 const mapStateToProps = (state) => { 
   return { 
     userInfo : state.login.userInfo,
-    theme :  state.theme.theme
+    theme :  state.login.theme
   }
 };
 

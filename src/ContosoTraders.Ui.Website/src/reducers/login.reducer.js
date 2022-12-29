@@ -1,4 +1,4 @@
-import { FORM_EMAIL, SAVE_USER, REMOVE_USER } from '../types/types';
+import { FORM_EMAIL, SAVE_USER, REMOVE_USER, THEME_CHANGE } from '../types/types';
 
 let userInfo = JSON.parse(localStorage.getItem('state'));
 
@@ -10,9 +10,9 @@ const initialDefaultState = {
             email: '',
             type: ''
         }
-    }
+    },
+    theme : false
 }
-
 const defaultState = userInfo ? { userInfo } : { ...initialDefaultState };
 
 export default (state = defaultState, action) => {
@@ -21,6 +21,8 @@ export default (state = defaultState, action) => {
             return { ...state, ...action };
         case SAVE_USER:
             return { userInfo: action.userInfo };
+        case THEME_CHANGE:
+            return { ...state, [action.field] : action.value };
         case REMOVE_USER:
             return { ...initialDefaultState };
         default:

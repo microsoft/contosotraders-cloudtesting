@@ -143,7 +143,7 @@ const FormProfile = (props) => {
 const mapStateToProps = (state) => { 
   return { 
     userInfo : state.login.userInfo,
-    theme :  state.theme.theme
+    theme :  state.login.theme
   }
 };
 export default connect(mapStateToProps, null)(FormProfile);
