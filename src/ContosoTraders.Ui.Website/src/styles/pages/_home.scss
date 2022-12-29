@@ -19,6 +19,13 @@ $darkgrey:#222222;
 .dark {
     background-color: $darkgrey !important;
     color: $light !important;
+    .appbar .iconButton{
+        background: #fff;
+        color: #000;
+        width: 40px;
+        height: 40px;
+        margin: 0 10px;
+    }
     a{
         color: $light !important; 
     }
