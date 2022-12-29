@@ -1,8 +1,8 @@
-# Azure Load Testing Service: Overview
+# Azure Load Testing: Overview
 
 ## Key Takeaways
 
-In this demo, you'll get an overview of Azure's Load Testing Service; a managed service that can be used to simulate load on your application's APIs.
+In this demo, you'll get an overview of Azure's Load Testing service; a managed service that can be used to simulate load on your application's APIs.
 
 You'll also get an insight into how to incorporate server-side metrics into the load test dashboard.
 
@@ -34,15 +34,15 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 1. In the Azure portal, you can navigate to the Azure Load Testing service in the `contoso-traders-rg` resource group.
 
-   ![load testing service](./media/load-test-browse.png)
+   ![load testing](./media/load-test-browse.png)
 
 2. You can create a new load test as follows: Navigate to the `Tests` section, and then click on `Create` > `Create a Quick Test` button.
 
-   ![load testing service](./media/load-test-create-1.png)
+   ![load testing](./media/load-test-create-1.png)
 
 3. In the `Quick Test` blade, you can specify the name of the load test, and the target URL. You can also specify the number of concurrent users, and the duration of the test. See example below:
 
-   ![load testing service](./media/load-test-create-2.png)
+   ![load testing](./media/load-test-create-2.png)
 
 > **Note**: The target URL is the URL from the `Carts API` that you identified in the previous section.
 
@@ -50,23 +50,23 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 1. Once you've entered the load test specifications above, you can run it by clicking on the `Run` button.
 
-   ![load testing service](./media/load-test-run.png)
+   ![load testing](./media/load-test-run.png)
 
 2. The load test will take about 2 minutes to complete. Once done, it'll display the summary and client-side metrics.
 
-   ![load testing service](./media/load-test-in-progress.png)
+   ![load testing](./media/load-test-in-progress.png)
 
-   ![load testing service](./media/load-test-completed.png)
+   ![load testing](./media/load-test-completed.png)
 
 ## Walkthrough: Incorporate Server Side Metrics
 
 1. Click on the `App Components` button. Then from the flyout, select the `contoso-traders-carts` CosmosDB component. This will add relevant metrics from the CosmosDB to the load test dashboard.
 
-   ![load testing service](./media/load-test-server-side-metrics.png)
+   ![load testing](./media/load-test-server-side-metrics.png)
 
 2. Re-run the load test, and you'll see the impact of the synthetic load on the DB (in real-time).
 
-   ![load testing service](./media/load-test-run-2.png)
+   ![load testing](./media/load-test-run-2.png)
 
 > **Note**: Unfortunately, ACA metrics are not yet supported in Azure Load Testing's server side metrics. This feature will be coming soon.
 
@@ -88,33 +88,33 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 1. Navigate back to the Load Testing service, and click on the recently concluded test run. From there you can click on `Download` > `Input File`. This will download the JMX file in a zip archive.
 
-   ![load testing service](./media/load-test-export-jmx.png)
+   ![load testing](./media/load-test-export-jmx.png)
 
 2. You can review the JMX file by simply loading it up in notepad or VSCode.
 
-   ![load testing service](./media/load-test-jmx-view.png)
+   ![load testing](./media/load-test-jmx-view.png)
 
 3. The load test results can also be downloaded via in the `Download` > `Results` button. This will download a CSV file (inside a zip archive).
 
-   ![load testing service](./media/load-test-export-results.png)
+   ![load testing](./media/load-test-export-results.png)
 
-   ![load testing service](./media/load-test-results-view.png)
+   ![load testing](./media/load-test-results-view.png)
 
 ## Walkthrough: Create New Load Test from JMX File
 
 1. You can create a new load test from the JMX file that you downloaded in the previous section. Navigate to the `Tests` section, and then click on `Create` > `Create a Test from JMX File` button. Then follows the below sequence of steps
 
-   ![load testing service](./media/import-jmx-1.png)
+   ![load testing](./media/import-jmx-1.png)
 
-   ![load testing service](./media/import-jmx-2.png)
+   ![load testing](./media/import-jmx-2.png)
 
-   ![load testing service](./media/import-jmx-3.png)
+   ![load testing](./media/import-jmx-3.png)
 
-   ![load testing service](./media/import-jmx-4.png)
+   ![load testing](./media/import-jmx-4.png)
 
-   ![load testing service](./media/import-jmx-5.png)
+   ![load testing](./media/import-jmx-5.png)
 
-   ![load testing service](./media/import-jmx-6.png)
+   ![load testing](./media/import-jmx-6.png)
 
 ## Walkthrough: Github Workflow For Load Testing
 
@@ -136,4 +136,4 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
 ## Summary
 
-In this demo, you got an overview of Azure's Load Testing Service including how to create a load test, run it, and review the results. You also saw how to incorporate server-side metrics from Azure Services, and how to export the JMX file and results. Finally, you saw how to create a new load test from the JMX file, and how to use a GitHub workflow to execute load tests on the application's APIs.
+In this demo, you got an overview of Azure's Load Testing service; including how to create a load test, run it, and review the results. You also saw how to incorporate server-side metrics from Azure Services, and how to export the JMX file and results. Finally, you saw how to create a new load test from the JMX file, and how to use a GitHub workflow to execute load tests on the application's APIs.
