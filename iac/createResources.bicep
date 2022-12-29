@@ -606,8 +606,8 @@ resource cartsapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
     environmentId: cartsapiacaenv.id
     template: {
       scale: {
-        minReplicas: 0
-        maxReplicas: 4
+        minReplicas: 1
+        maxReplicas: 10
         rules: [
           {
             name: 'http-scaling-rule'
