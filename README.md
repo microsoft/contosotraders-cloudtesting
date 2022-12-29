@@ -17,7 +17,7 @@
 ## Demo Scripts
 
 * [DevOps](./demo-scripts/devops/walkthrough.md)
-* [Azure Load Testing Service](./demo-scripts/azure-load-testing-service/walkthrough.md)
+* [Azure Load Testing](./demo-scripts/azure-load-testing-service/walkthrough.md)
 * [Azure Chaos Studio](./demo-scripts/azure-chaos-studio/walkthrough.md)
 * [Testing With Playwright](./demo-scripts/testing-with-playwright/walkthrough.md)
 
