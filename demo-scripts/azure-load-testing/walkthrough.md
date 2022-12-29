@@ -116,21 +116,28 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![load testing](./media/import-jmx-6.png)
 
-## Walkthrough: Github Workflow For Load Testing
+## Walkthrough: Regression Testing with Github Workflows
 
 1. We have a GitHub workflow that executes load tests on the application's APIs. This workflow is automatically triggered on every checkin to the `main` branch. Specifically the load tests are run on the `Product API` and `Carts API` immediately after they're deployed to the AKS cluster and ACA respectively.
 
    ![github workflow](./media/github-workflow-2.png)
 
-2. The workflow uses a github action to invoke the [Azure Load Testing](https://learn.microsoft.com/en-us/azure/load-testing/) service and simulates load on the application's `Product API` and `Carts API`, which are hosted on AKS and ACA respectively.
-
-   ![workflow for load testing](./media/github-workflow-3.png)
+2. The workflow uses a github action to invoke the [Azure Load Testing](https://learn.microsoft.com/en-us/azure/load-testing/) service and simulate load on the application's `Product API` and `Carts API`, which are hosted on AKS and ACA respectively.
 
    ![github action for load testing](./media/github-action.png)
 
-3. The load test takes about 2 minutes to execute. Once done, you can navigate to the Azure Portal to get more in-depth details about the test.
+3. The workflow file references a load test configuration file (yml), which specifies:
+   1. The load test parameters.
+   2. The JMX/JMeter script to be used.
+   3. The pass/fail criteria for the test.
 
-   ![load testing result](./media/github-workflow3.png)
+   See [example file](../../tests/loadtests/contoso-traders-carts.yaml).
+
+   ![load test config file](./media/load-test-config-file.png)
+
+4. The load test takes about 3 minutes to execute. Once done, you can navigate to the Azure Portal to get more in-depth details about the test.
+
+   ![workflow for load testing](./media/github-workflow-3.png)
 
    ![load testing portal](./media/portal-load-test.png)
 
