@@ -111,25 +111,26 @@ All these are especially crucial for an e-commerce application like Contoso Trad
    1. Increase the number of concurrent users to `250` (from original `5`).
    2. Change the test duration to `300` seconds (from original `120` seconds)
    3. Change the ramp-up time to `300` seconds (from original `120` seconds).
-   4. Increase the number of engine instances to `20` (from original `1`).
 
    ![app breakpoint](./media/app-breakpoint-2.png)
 
+3. Increase the number of engine instances to `20` (from original `1`).
+
    ![app breakpoint](./media/app-breakpoint-3.png)
 
-3. Run the modified load test. You'll notice that the application starts to eventually fail under the increased load.
+4. Run the modified load test. You'll notice that the application starts to eventually fail under the increased load.
 
    ![app breakpoint](./media/app-breakpoint-4.png)
 
-4. App Insights can help us narrow down the root cause of the error. Navigate to the `contoso-traders-rg` resource group, and click on the `contoso-traders-aictprod` resource.
+5. App Insights can help us narrow down the root cause of the error. Navigate to the `contoso-traders-rg` resource group, and click on the `contoso-traders-aictprod` resource.
 
    ![app breakpoint](./media/app-breakpoint-5.png)
 
-5. In the App Insights blade, click on the `Failures` tab. Narrow down the time range to (say) the last 30 minutes. You'll see the listed failures (sampled by App Insights) that occurred during the load test.
+6. In the App Insights blade, click on the `Failures` tab. Narrow down the time range to (say) the last 30 minutes. You'll see the listed failures (sampled by App Insights) that occurred during the load test.
 
    ![app breakpoint](./media/app-breakpoint-6.png)
 
-6. Clicking on any one sample will give you a detailed view of the error (including stack trace in case of an exception). In this case, the error is a `500` error, caused by a `TaskCanceledException` (due to a gateway timeout in CosmosDB). This is a good indication that the application is failing due to a performance bottleneck.
+7. Clicking on any one sample will give you a detailed view of the error (including stack trace in case of an exception). In this case, the error is a `500` error, caused by a `TaskCanceledException` (due to a gateway timeout in CosmosDB). This is a good indication that the application is failing due to a performance bottleneck.
 
    ![app breakpoint](./media/app-breakpoint-7.png)
 
