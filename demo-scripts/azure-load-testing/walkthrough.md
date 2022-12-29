@@ -131,13 +131,22 @@ All these are especially crucial for an e-commerce application like Contoso Trad
    2. The JMX/JMeter script to be used.
    3. The pass/fail criteria for the test.
 
-   See [example file](../../tests/loadtests/contoso-traders-carts.yaml).
+   See an example of a load test configuration file below.
 
-   ![load test config file](./media/load-test-config-file.png)
+   ```yaml
+   testName: contoso-traders-carts
+   testPlan: contoso-traders-carts.jmx
+   engineInstances: 1
+   failureCriteria:
+      - avg(response_time_ms) > 5000
+      - percentage(error) > 20
+   ```
 
-4. The load test takes about 3 minutes to execute. Once done, you can navigate to the Azure Portal to get more in-depth details about the test.
+4. The load test takes about 3 minutes to execute. In this specific example, you can see that the load test failed since the average response time exceeded the specified threshold of 5000ms.
 
    ![workflow for load testing](./media/github-workflow-3.png)
+
+5. Once done, you can navigate to the Azure Portal to get more in-depth details about the test.
 
    ![load testing portal](./media/portal-load-test.png)
 
