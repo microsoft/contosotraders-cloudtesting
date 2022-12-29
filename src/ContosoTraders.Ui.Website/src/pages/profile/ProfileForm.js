@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import { connect } from 'react-redux';
 import {
   Button,
   Grid,
@@ -16,12 +17,21 @@ import my_wishlist_icon from "../../assets/images/original/Contoso_Assets/profil
 import my_address_book_icons from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_address_book_icons.svg";
 import my_orders_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_orders_icon.svg";
 import Breadcrump from "../../components/breadcrumb";
+import AuthB2CService from "../../services/authB2CService";
 
-const FormProfile = () => {
- 
+const FormProfile = (props) => {
+  const authService = new AuthB2CService();
   const { page } = useParams()
   const [activeState, setActiveState] = React.useState(page);
+  const onClickLogout = () => {
+    localStorage.clear();
 
+    if (props.userInfo.isB2c) {
+      authService.logout();
+    }
+    props.clickAction();
+    props.history.push('/');
+  }
   return (
     <div className="ProfileSection">
       <Breadcrump currentPath="My Profile"/>
@@ -31,6 +41,7 @@ const FormProfile = () => {
           className="logout-btn"
           variant="outlined"
           color="primary"
+          onClick={onClickLogout}
           startIcon={<Avatar src={logout_icon} className="deleteIconsvg"/>}
         >
           Logout
@@ -129,5 +140,10 @@ const FormProfile = () => {
     </div>
   );
 };
-
-export default FormProfile;
+const mapStateToProps = (state) => { 
+  return { 
+    userInfo : state.login.userInfo,
+    theme :  state.theme.theme
+  }
+};
+export default connect(mapStateToProps, null)(FormProfile);

@@ -186,11 +186,11 @@ function TopAppBar(props) {
     let user = await authService.login();
     if(user)
     {
-        user['loggedIn'] = true;
-        user['isB2c'] = true;
-        user['token'] = sessionStorage.getItem('msal.idtoken');
-        localStorage.setItem('state',JSON.stringify(user))
-        props.submitAction(user);
+      user['loggedIn'] = true;
+      user['isB2c'] = true;
+      user['token'] = sessionStorage.getItem('msal.idtoken');
+      localStorage.setItem('state',JSON.stringify(user))
+      props.submitAction(user);
     }
   }
   const onClickLogout = () => {
@@ -436,7 +436,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => ({
   handleThemeChange: (value) => dispatch(handleThemeChange(value)),
+  submitAction: (user) => dispatch(submitAction(user)),
   clickAction, 
-  submitAction,
 })
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopAppBar));

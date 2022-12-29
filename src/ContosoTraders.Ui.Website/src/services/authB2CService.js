@@ -26,14 +26,18 @@ export default class AuthB2CService {
     }
 
     login = async () => {
-        let loginResponse = await this.msalAgent.loginPopup(
+        let responseUser;
+        await this.msalAgent.loginPopup(
             {
                 scopes: ConfigService._B2cScopes,
                 prompt: 'select_account'
             }
-        );
-        const user = loginResponse.account;
-        return (user) ? user : null;
+        ).then(response => {
+            responseUser = response.account;
+        }).catch((err) => {
+            console.log('err',err)
+        });
+        return (responseUser) ? responseUser : null;
         // this.msalAgent.loginRedirect({scopes:ConfigService._B2cScopes});
         // this.msalAgent.handleRedirectPromise((response) => {
         //     console.log(response)
