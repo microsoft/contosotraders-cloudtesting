@@ -40,7 +40,7 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![load testing](./media/load-test-create-1.png)
 
-3. In the `Quick Test` blade, you can specify the name of the load test, and the target URL. You can also specify the number of concurrent users, and the duration of the test. See example below:
+3. In the `Quick Test` blade, you can specify the target URL. You can also specify the number of concurrent users, and the duration of the test. See example below:
 
    ![load testing](./media/load-test-create-2.png)
 
@@ -100,25 +100,42 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![load testing](./media/load-test-results-view.png)
 
-## Walkthrough: Create New Load Test from JMX File
+## Walkthrough: Identify application's breakpoints
 
-1. You can create a new load test from the JMX file that you downloaded in the previous section. Navigate to the `Tests` section, and then click on `Create` > `Create a Test from JMX File` button. Then follows the below sequence of steps
+1. Let us now modify the existing load test. We'll use it to put the application under increasing load, ultimately leading to failure. The goal is to identify the application's breakpoints (performance bottlenecks).
 
-   ![load testing](./media/import-jmx-1.png)
+   ![app breakpoint](./media/app-breakpoint-1.png)
 
-   ![load testing](./media/import-jmx-2.png)
+2. Modify the existing test configuration as follows:
 
-   ![load testing](./media/import-jmx-3.png)
+   1. Increase the number of concurrent users to `250` (from original `5`).
+   2. Change the test duration to `300` seconds (from original `120` seconds)
+   3. Change the ramp-up time to `300` seconds (from original `120` seconds).
+   4. Increase the number of engine instances to `20` (from original `1`).
 
-   ![load testing](./media/import-jmx-4.png)
+   ![app breakpoint](./media/app-breakpoint-2.png)
 
-   ![load testing](./media/import-jmx-5.png)
+   ![app breakpoint](./media/app-breakpoint-3.png)
 
-   ![load testing](./media/import-jmx-6.png)
+3. Run the modified load test. You'll notice that the application starts to eventually fail under the increased load.
+
+   ![app breakpoint](./media/app-breakpoint-4.png)
+
+4. App Insights can help us narrow down the root cause of the error. Navigate to the `contoso-traders-rg` resource group, and click on the `contoso-traders-aictprod` resource.
+
+   ![app breakpoint](./media/app-breakpoint-5.png)
+
+5. In the App Insights blade, click on the `Failures` tab. Narrow down the time range to (say) the last 30 minutes. You'll see the listed failures (sampled by App Insights) that occurred during the load test.
+
+   ![app breakpoint](./media/app-breakpoint-6.png)
+
+6. Clicking on any one sample will give you a detailed view of the error (including stack trace in case of an exception). In this case, the error is a `500` error, caused by a `TaskCanceledException` (due to a gateway timeout in CosmosDB). This is a good indication that the application is failing due to a performance bottleneck.
+
+   ![app breakpoint](./media/app-breakpoint-7.png)
 
 ## Walkthrough: Regression Testing with Github Workflows
 
-1. We have a GitHub workflow that executes load tests on the application's APIs. This workflow is automatically triggered on every checkin to the `main` branch. Specifically the load tests are run on the `Product API` and `Carts API` immediately after they're deployed to the AKS cluster and ACA respectively.
+1. We have a GitHub workflow that executes load tests on the application's APIs. This workflow is automatically triggered on every checkin to the `main` branch. Specifically the load tests are run on the `Product API` and `Carts API` immediately after they're deployed to the AKS cluster and ACA respectively. This will help identify if any code (or infra) change causes the application performance to degrade under (simulated) load.
 
    ![github workflow](./media/github-workflow-2.png)
 
@@ -126,7 +143,7 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![github action for load testing](./media/github-action.png)
 
-3. The workflow file references a load test configuration file (yml), which specifies:
+3. The workflow file references a load test configuration file (yml), which specifies the following:
    1. The load test parameters.
    2. The JMX/JMeter script to be used.
    3. The pass/fail criteria for the test.
