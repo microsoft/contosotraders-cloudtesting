@@ -1,4 +1,7 @@
 testName: contoso-traders-carts
 testPlan: contoso-traders-carts.jmx
-description: 
+description:
 engineInstances: 1
+failureCriteria:
+  - avg(response_time_ms) > 5000
+  - percentage(error) > 20
