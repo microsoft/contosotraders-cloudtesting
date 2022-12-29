@@ -383,11 +383,11 @@ jobs:
               },
               {
                 "name": "threads_per_engine",
-                "value": "200"
+                "value": "5"
               },
               {
                 "name": "ramp_up_time",
-                "value": "120"
+                "value": "0"
               },
               {
                 "name": "duration_in_sec",
@@ -434,11 +434,11 @@ jobs:
               },
               {
                 "name": "threads_per_engine",
-                "value": "200"
+                "value": "5"
               },
               {
                 "name": "ramp_up_time",
-                "value": "120"
+                "value": "0"
               },
               {
                 "name": "duration_in_sec",
