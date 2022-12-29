@@ -20,10 +20,10 @@ test('Login', async ({ page }) => {
   await page1.locator('[name=loginfmt]').fill('TailwindTraders.User@spektrasystems.com');
   await page1.getByRole('button', { name: 'Next' }).click();
   await page1.locator('[name=passwd]').click();
-  await page1.locator('[name=passwd]').fill('wQf4yMFy6BcT3JQ@ywUE');
+  await page1.locator('[name=passwd]').fill('Spektra123!@#');
   await page1.getByRole('button', { name: 'Sign in' }).click();
   if(await page1.$$('#idSIButton9')){
-    await page1.locator('#idSIButton9').click();
+    page1.locator('#idSIButton9').click();
   }
   await page1.getByRole('button', { name: 'Approve a request on my Microsoft Authenticator app' }).click();
   // await Promise.all([
