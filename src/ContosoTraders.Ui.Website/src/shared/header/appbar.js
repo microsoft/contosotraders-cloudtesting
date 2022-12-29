@@ -431,12 +431,12 @@ function TopAppBar(props) {
 const mapStateToProps = (state) => { 
   return { 
     userInfo : state.login.userInfo,
-    theme :  state.theme.theme
+    theme :  state.login.theme
   }
 };
 const mapDispatchToProps = (dispatch) => ({
   handleThemeChange: (value) => dispatch(handleThemeChange(value)),
   submitAction: (user) => dispatch(submitAction(user)),
-  clickAction, 
+  clickAction: () => dispatch(clickAction()), 
 })
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopAppBar));

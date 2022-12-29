@@ -14,10 +14,8 @@ export const clickAction = () => ({
     type: REMOVE_USER,
 });
 
-export const handleThemeChange = (value) => {
-    return{
-        type  : THEME_CHANGE,
-        value : value,
-        field : 'theme'
-    };
-}
+export const handleThemeChange = (value) => ({
+    type  : THEME_CHANGE,
+    value : value,
+    field : 'theme'
+});

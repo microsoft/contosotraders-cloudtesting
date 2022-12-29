@@ -22,10 +22,10 @@ test('Login', async ({ page }) => {
   await page1.locator('[name=passwd]').click();
   await page1.locator('[name=passwd]').fill('Spektra123!@#');
   await page1.getByRole('button', { name: 'Sign in' }).click();
-  if(await page1.$$('#idSIButton9')){
-    page1.locator('#idSIButton9').click();
-  }
-  await page1.getByRole('button', { name: 'Approve a request on my Microsoft Authenticator app' }).click();
+  // if(await page1.$$('#idSIButton9')){
+  //   page1.locator('#idSIButton9').click();
+  // }
+  // await page1.getByRole('button', { name: 'Approve a request on my Microsoft Authenticator app' }).click();
   // await Promise.all([
   //   // Waits for the next response matching some conditions
   //   page.waitForResponse(response => response.url() === `${process.env.REACT_APP_APIUrl}/products/landing` && response.status() === 200),
