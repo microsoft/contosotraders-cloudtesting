@@ -83,10 +83,10 @@ public class DependencyInjection : FunctionsStartup
 
         // injecting the cosmosdb clients
         var stocksDbConnectionString = configuration[KeyVaultConstants.SecretNameStocksDbConnectionString];
-        services.AddScoped(_ => new CosmosClient(stocksDbConnectionString).GetDatabase(CosmosConstants.DatabaseNameStocks));
+        services.AddSingleton(_ => new CosmosClient(stocksDbConnectionString).GetDatabase(CosmosConstants.DatabaseNameStocks));
 
         var cartsDbConnectionString = configuration[KeyVaultConstants.SecretNameCartsDbConnectionString];
-        services.AddScoped(_ => new CosmosClient(cartsDbConnectionString).GetDatabase(CosmosConstants.DatabaseNameCarts));
+        services.AddSingleton(_ => new CosmosClient(cartsDbConnectionString).GetDatabase(CosmosConstants.DatabaseNameCarts));
 
         // inject services
         services
