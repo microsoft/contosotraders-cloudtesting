@@ -16,7 +16,7 @@ dotenv.config()
 const config = {
   testDir: './tests',
   /* Maximum time one test can run for. */
-  timeout: 60 * 1000,
+  timeout: 30 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -103,7 +103,10 @@ const config = {
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'npm run start',
-    port: 3000,
+    // port: 3000,
+    url: process.env.BaseUrlForPlaywrightTesting || 'http://localhost:3000/',
+    timeout: 60 * 1000,
+    reuseExistingServer: !process.env.CI,
   },
 };
 
