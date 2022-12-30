@@ -103,7 +103,10 @@ const config = {
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'npm run start',
-    port: 3000,
+    // port: 3000,
+    url: process.env.BaseUrlForPlaywrightTesting || 'http://localhost:3000/',
+    timeout: 60 * 1000,
+    reuseExistingServer: !process.env.CI,
   },
 };
 
