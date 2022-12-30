@@ -26,7 +26,7 @@ public class ContosoTradersControllerBase : ControllerBase
         }
         catch (OperationCanceledException operationCanceledException)
         {
-            return new OkObjectResult(operationCanceledException.Message);
+            return new OkObjectResult(operationCanceledException.Message); // graceful exit with 200/OK
         }
     }
 }
