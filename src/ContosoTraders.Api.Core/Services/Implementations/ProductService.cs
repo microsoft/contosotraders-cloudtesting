@@ -1,6 +1,4 @@
-﻿using ContosoTraders.Api.Core.Models.Implementations.Dto;
-using Microsoft.EntityFrameworkCore;
-using Type = ContosoTraders.Api.Core.Models.Implementations.Dao.Type;
+﻿using Type = ContosoTraders.Api.Core.Models.Implementations.Dao.Type;
 
 namespace ContosoTraders.Api.Core.Services.Implementations;
 

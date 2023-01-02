@@ -64,10 +64,7 @@ public class ShoppingCartController : ContosoTradersControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> LoadTest()
     {
-        var request = new GetCartRequest
-        {
-            Email = "testuser@contosotraders.com"
-        };
+        var request = new LoadTestRequest();
 
         return await ProcessHttpRequestAsync(request);
     }

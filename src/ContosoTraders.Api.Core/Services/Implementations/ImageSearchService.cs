@@ -44,8 +44,8 @@ internal class ImageSearchService : ContosoTradersServiceBase, IImageSearchServi
         }
 
         var productList = products
-                     .GroupBy(p => p.Id)
-                     .Select(p => p.First());
+            .GroupBy(p => p.Id)
+            .Select(p => p.First());
 
         return productList;
     }

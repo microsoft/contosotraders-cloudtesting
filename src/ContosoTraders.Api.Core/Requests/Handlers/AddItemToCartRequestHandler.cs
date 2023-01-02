@@ -17,7 +17,7 @@ internal class AddItemToCartRequestHandler : IRequestPreProcessor<AddItemToCartR
 
         var responseMessage = $"{request.CartItem.Name} added to shopping cart, id: {request.CartItem.ProductId}";
 
-        return new ObjectResult(responseMessage) {StatusCode = 201};
+        return new ObjectResult(responseMessage) { StatusCode = 201 };
     }
 
     public async Task Process(AddItemToCartRequest request, CancellationToken cancellationToken)

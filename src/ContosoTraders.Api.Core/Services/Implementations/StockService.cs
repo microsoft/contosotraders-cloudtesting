@@ -11,7 +11,7 @@ internal class StockService : ContosoTradersServiceBase, IStockService
 
     public async Task<StockDto> GetStockAsync(int productId, CancellationToken cancellationToken = default)
     {
-        var requestDto = new StockDto {ProductId = productId, StockCount = 0};
+        var requestDto = new StockDto { ProductId = productId, StockCount = 0 };
 
         var requestDao = Mapper.Map<StockDao>(requestDto);
 
@@ -26,7 +26,7 @@ internal class StockService : ContosoTradersServiceBase, IStockService
 
     public async Task<StockDto> DecrementStockCountAsync(int productId, CancellationToken cancellationToken)
     {
-        var requestDto = new StockDto {ProductId = productId, StockCount = 0};
+        var requestDto = new StockDto { ProductId = productId, StockCount = 0 };
 
         var requestDao = Mapper.Map<StockDao>(requestDto);
 
