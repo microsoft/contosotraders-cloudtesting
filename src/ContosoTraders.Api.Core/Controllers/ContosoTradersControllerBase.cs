@@ -24,9 +24,5 @@ public class ContosoTradersControllerBase : ControllerBase
         {
             return new BadRequestObjectResult(validationException.Message);
         }
-        catch (OperationCanceledException operationCanceledException)
-        {
-            return new OkObjectResult(operationCanceledException.Message); // graceful exit with 200/OK
-        }
     }
 }
