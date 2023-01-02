@@ -114,7 +114,7 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![app breakpoint](./media/app-breakpoint-2.png)
 
-3. Increase the number of engine instances to `20` (from original `1`).
+3. Increase the number of engine instances to `45` (from original `1`).
 
    ![app breakpoint](./media/app-breakpoint-3.png)
 
