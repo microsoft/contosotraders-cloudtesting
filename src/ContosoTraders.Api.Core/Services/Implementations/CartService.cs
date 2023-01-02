@@ -11,17 +11,15 @@ internal class CartService : ContosoTradersServiceBase, ICartService
 
     public async Task<IEnumerable<CartDto>> GetCartAsync(string email, CancellationToken cancellationToken = default)
     {
-        var allCartItemsDao = await _cartRepository.ListAsync(null, cancellationToken);
+        var filterClause = $"LOWER(c.Email) = '{email.ToLower()}'";
 
-        var cartItemsDao = allCartItemsDao.Where(cart => cart.Email == email).ToList();
+        var cartItemDaos = await _cartRepository.ListAsync(filterClause, cancellationToken);
 
-        if (cartItemsDao is null) throw new CartNotFoundException(email);
+        if (!cartItemDaos.Any()) throw new CartNotFoundException(email);
 
-        var cartItemsDto = new List<CartDto>();
+        var cartItemDtos = cartItemDaos.Select(item => Mapper.Map<CartDto>(item)).ToList();
 
-        cartItemsDao.ForEach(item => cartItemsDto.Add(Mapper.Map<CartDto>(item)));
-
-        return cartItemsDto;
+        return cartItemDtos;
     }
 
     public async Task AddItemToCartAsync(CartDto cartItemDto, CancellationToken cancellationToken = default)

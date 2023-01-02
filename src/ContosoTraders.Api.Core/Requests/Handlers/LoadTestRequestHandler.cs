@@ -24,7 +24,7 @@ internal class LoadTestRequestHandler : IRequestHandler<LoadTestRequest, IAction
             var newCartDto = new CartDto
             {
                 Email = email,
-                Quantity = 2,
+                Quantity = 1,
                 ProductId = 17,
                 Name = "Dell Optiplex 380 17 inch (43.18 cms) Desktop",
                 Price = 1399,
@@ -37,7 +37,12 @@ internal class LoadTestRequestHandler : IRequestHandler<LoadTestRequest, IAction
             cartDtos = await _cartService.GetCartAsync(email, cancellationToken);
         }
 
-        foreach (var cartDto in cartDtos) await _cartService.UpdateCartItemQuantityAsync(cartDto, cancellationToken);
+        foreach (var cartDto in cartDtos)
+        {
+            cartDto.Quantity += 1;
+
+            await _cartService.UpdateCartItemQuantityAsync(cartDto, cancellationToken);
+        }
 
         return new OkResult();
     }
