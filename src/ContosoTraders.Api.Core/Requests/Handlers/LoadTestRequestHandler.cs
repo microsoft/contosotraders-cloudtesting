@@ -32,18 +32,11 @@ internal class LoadTestRequestHandler : IRequestHandler<LoadTestRequest, IAction
                 CartItemId = Guid.NewGuid().ToString()
             };
 
-            await _cartService.AddItemToCartAsync(newCartDto, cancellationToken);
+            await _cartService.UpdateCartItemQuantityAsync(newCartDto, cancellationToken); // upsert
 
             cartDtos = await _cartService.GetCartAsync(email, cancellationToken);
         }
 
-        foreach (var cartDto in cartDtos)
-        {
-            cartDto.Quantity += 1;
-
-            await _cartService.UpdateCartItemQuantityAsync(cartDto, cancellationToken);
-        }
-
-        return new OkResult();
+        return new OkObjectResult(cartDtos);
     }
 }
