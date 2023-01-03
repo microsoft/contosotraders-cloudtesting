@@ -2,15 +2,19 @@
 
 ## Key Takeaways
 
-In this demo, you'll get an overview of Azure's Load Testing service; a managed service that can be used to simulate load on your application's APIs.
+In this demo, you'll get an overview of Azure's Load Testing service; a managed service that can be used to simulate load on your application's UI and APIs endpoints.
 
-You'll also get an insight into how to incorporate server-side metrics into the load test dashboard.
+You'll also get an insight into:
+
+- how to identify an application's breaking point under incrementally increasing load.
+- how to leverage server-side metrics and Azure AppInsights to identify the performance bottleneck.
+- how to guard your application against performance regressions leveraging load testing in CI/CD pipelines.
 
 All these are especially crucial for an e-commerce application like Contoso Traders, which is expected to instantly handle a large, sudden spike in number of users, with low latency and no downtime.
 
 ## Before You Begin
 
-* There are some prerequisites for this demo mentioned in the [application deployment guide](../app-deployment-guide.md). After executing all the steps mentioned in that document, the application's infrastructure will be provisioned on Azure, and the latest code will be deployed as well.
+There are some prerequisites for this demo mentioned in the [application deployment guide](../app-deployment-guide.md). After executing all the steps mentioned in that document, the application's infrastructure will be provisioned on Azure, and the latest code will be deployed as well.
 
 ## Walkthrough: Identify the Load Test Target
 
@@ -114,7 +118,7 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![app breakpoint](./media/app-breakpoint-2.png)
 
-3. Increase the number of engine instances to `45` (from original `1`).
+3. Increase the number of engine instances to `2` (from original `1`).
 
    ![app breakpoint](./media/app-breakpoint-3.png)
 
@@ -122,15 +126,19 @@ All these are especially crucial for an e-commerce application like Contoso Trad
 
    ![app breakpoint](./media/app-breakpoint-4.png)
 
-5. App Insights can help us narrow down the root cause of the error. Navigate to the `contoso-traders-rg` resource group, and click on the `contoso-traders-aictprod` resource.
+5. If you add the server-side metrics for the `contoso-traders-cartsctprod` CosmosDB, you'll notice that the DB's normalized RU consumption eventually starts to peg at 100% under load.
+
+   ![app breakpoint](./media/app-breakpoint-4-2.png)
+
+6. App Insights can help us narrow down the root cause of the error. Navigate to the `contoso-traders-rg` resource group, and click on the `contoso-traders-aictprod` resource.
 
    ![app breakpoint](./media/app-breakpoint-5.png)
 
-6. In the App Insights blade, click on the `Failures` tab. Narrow down the time range to (say) the last 30 minutes. You'll see the listed failures (sampled by App Insights) that occurred during the load test.
+7. In the App Insights blade, click on the `Failures` tab. Narrow down the time range to (say) the last 30 minutes. You'll see the listed failures (sampled by App Insights) that occurred during the load test.
 
    ![app breakpoint](./media/app-breakpoint-6.png)
 
-7. Clicking on any one sample will give you a detailed view of the error (including stack trace in case of an exception). In this case, the error is a `500` error, caused by a `TaskCanceledException` (due to a gateway timeout in CosmosDB). This is a good indication that the application is failing due to a performance bottleneck.
+8. Clicking on any one sample will give you a detailed view of the error (including stack trace in case of an exception). In this case, the error is a `500` error, caused by a `TaskCanceledException` (due to a gateway timeout in CosmosDB). This is a good indication that the application is failing due to a performance bottleneck.
 
    ![app breakpoint](./media/app-breakpoint-7.png)
 
