@@ -1,4 +1,7 @@
-# Contoso Traders - Cloud Testing
+# Contoso Traders - Cloud Testing Tools
+
+## Overview
+This repository include source code, deployment templates and demo scripts to help you experience Azure Load Testing, Azure Chaos Studio, Playwright & GitHub Actions. 
 
 ![Logo](https://github.com/microsoft/ContosoTraders/blob/main/docs/images/logo-1280x640.png)
 
