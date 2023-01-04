@@ -1,5 +1,5 @@
 # Setup Repo Locally using VS Code
-- git clone https://github.com/microsoft/ContosoTraders.git
+- git clone https://github.com/microsoft/ContosoTraders-CloudTesting.git
 
 - Go to ContosoTraders/src/ContosoTraders.Ui.Website/
 
@@ -105,7 +105,7 @@ Any issue with the API or redirected url will trigger an error message while tes
 
 # Complex Testing Scenarios
 
-Login using Microsoft Account Azzure ID.
+Login using Microsoft Account Azure ID.
 
 Click LOGIN button in header
 
