@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import {AppBar, InputAdornment, TextField, Button } from '@material-ui/core';
 //#region Uncomment below lines to run dark mode tests
-// import {FormGroup, FormControlLabel, Switch } from '@material-ui/core';
+import {FormGroup, FormControlLabel, Switch } from '@material-ui/core';
 //#endregion
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -411,9 +411,9 @@ function TopAppBar(props) {
             </Button>
           }
           {/* #region Uncomment below lines to run dark mode tests */}
-          {/* <FormGroup className='theme-class'>
+          { <FormGroup className='theme-class'>
             <FormControlLabel labelPlacement="start" control={<Switch aria-label='theme change' id="theme" color="primary" onChange={(e) => props.handleThemeChange(e.target.checked)}/>} label="Dark Mode" />
-          </FormGroup> */}
+          </FormGroup>}
           {/* #endregion */}
           <div className={classes.sectionMobile}>
             <IconButton
