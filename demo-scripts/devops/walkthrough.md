@@ -138,6 +138,7 @@ Let us make the changes and experience magic of GitHub Actions.
     
 11. Once the workflow successfully completes, you can navigate to your Contoso Traders URL and see that the dark mode functionality is now added to the website.
 
+    ![image](media/darkmode.png)
 
    
    
