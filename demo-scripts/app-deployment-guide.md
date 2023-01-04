@@ -5,9 +5,10 @@ While it’s possible to deploy overall solution using Azure Portal, CLI, PowerS
 
 This will deploy all components defined in the Contoso Traders [architecture](../demo-scripts/images/contoso-traders-enhancements.drawio.png)
 
-Once Contoso Traders is deployed in your Azure subscription, you will be able to run through demo scripts explaining various capabilities and use-cases for Azure Load Testing, Azure Chaod Studio, Playwright & GitHub Actions. 
+You will be able to go through demo scripts outlining various features and use-cases for Azure Load Testing, Azure Chaos Studio, Playwright, and GitHub Actions after Contoso Traders is deployed in your Azure subscription.
 
-As part of deploying the application, you will be completing following items
+You will be executing the following tasks as part of deploying the application:
+
 1.	Create an Azure Service Principal for GitHub Actions to authenticate with your Azure subscription.
 2.	Clone this repo in your GitHub Account and Setup GitHub Secrets
 3.	Run GitHub Actions workflows to deploy the app. 
@@ -17,6 +18,7 @@ As part of deploying the application, you will be completing following items
 <html><h3>Pre-Requisites</h3></html>
 
 You will need following before we start with deployment. 
+
 1.	An Azure Subscription with Owner rights. If you don't have an Azure subscription, create a free account before you begin by clicking [here](https://azure.microsoft.com/free/).
 2.	A GitHub Account. You can create a free account [here](https://github.com/). 
 
@@ -31,7 +33,7 @@ You will need to register required resource providers on your Azure subscription
 	1. Microsoft.Operationsmanagement
 	2. Microsoft.Cdn
 	
-      ![img1](images/Dapp2.png)
+      ![img1](images/rpregister.png)
       
       
       ![img2](images/cdnregister.png)
@@ -116,7 +118,7 @@ Fork the Contoso Traders Repo
 	
 	![img7](images/Repofork.png)
 
-3.	You should now a clone of this repository in your GitHub Account, with https://github.com/YOURUSERNAME/ContosoTraders. 
+3.	You should now a clone of this repository in your GitHub Account, with https://github.com/YOURUSERNAME/ContosoTraders-CloudTesting. 
 4.	You will be using this repository for deployment. Since it exists in your GitHub Account, you will be able to make changes to the contents as well, including source code. 
 
 
@@ -131,7 +133,7 @@ These secretes will be used by GitHub Action Workflows during deployment and CI/
 	
 Let’s get started
 
-1. Login to GitHub and navigate to your fork of Contoso traders repository. https://github.com/YOURUSERNAME/ContosoTraders.
+1. Login to GitHub and navigate to your fork of Contoso traders repository. https://github.com/YOURUSERNAME/ContosoTraders-CloudTesting.
 2. Under your repository name, click on the "Settings" tab.
 	
 	![img8](images/settingsgithub.png)
@@ -191,7 +193,7 @@ We will be using following workflows as part of deployment.  You can review work
 
 Let’s get started. 
 
-1. Login to GitHub and navigate to your fork of Contoso traders repository. https://github.com/YOURUSERNAME/ContosoTraders
+1. Login to GitHub and navigate to your fork of Contoso traders repository. https://github.com/YOURUSERNAME/ContosoTraders-CloudTesting
 2. Navigate to Actions and Accept enabling the workflows
 		
 	![img13](images/workflowenable.png)
@@ -257,12 +259,7 @@ Please refer to the architecture walkthrough demo script and technical walkthrou
 	
 If you would like to add a custom domain, like contosotraders.com, you can purchase the domain and add to CDN profile. Please see documentation [here](https://learn.microsoft.com/en-us/azure/cdn/cdn-map-content-to-custom-domain?tabs=azure-dns%2Cazure-portal%2Cazure-portal-cleanup).
 
-<h2>Deploy Inventory Management PowerApps</h2>
 
-If you are interested, you can follow these steps to deploy the inventory management application used by internal users for managing product pricing, stock etc. 
-It will be hosted using Power Apps and will use Power Automate & MS Teams to enable a full inventory management and approval workflow.
-Please follow the instructions here: [Deploy Inventory Management Power App](./Inventory-power-app-deployment-guide.md)
-		
 
 
 <h2>Try Out Demo Scripts</h2>
@@ -272,13 +269,13 @@ As further learning, you can try running through some of the demo scripts listed
 
 
 
-  | Scenario                                  | Level                                                                                                                                                                                       |
+  | Scenario                                  | Link                                                                                                                                                                                       |
   | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | Cloud Native App Architecture Walkthrough | [Overview](../demo-scripts/cloud-native-app-architecture/overview.md) \| [Technical Walkthrough](../demo-scripts/cloud-native-app-architecture/technical-walkthrough.md)                      |
-  | Autoscaling Cloud Native Apps in Azure    | [Overview](../demo-scripts/autoscaling-cloud-native-apps-azure/overview.md) \| [Technical Walkthrough](../demo-scripts/autoscaling-cloud-native-apps-azure/technical-walkthrough.md)          |
-  | DevSecOps Journey with GitHub + Azure     | [Overview](../demo-scripts/devsecops/overview.md) \| [Technical Walkthrough](../demo-scripts/devsecops/technical-walkthrough.md)                                                              |
-  | Low Code App Development Power Platform   | [Overview](../demo-scripts/low-code-development/overview.md) \| [Technical Walkthrough](../demo-scripts/low-code-development/technical-walkthrough.md) |
-  | Intelligent Apps with Azure AI Services   | [Overview](../demo-scripts/intelligent-apps-with-azure-ai-services/overview.md) \| [Technical Walkthrough](../demo-scripts/intelligent-apps-with-azure-ai-services/technical-walkthrough.md)  |
+  | DevOps with GitHub Actions |  [Technical Walkthrough](../demo-scripts/devops/walkthrough.md)         |
+  | Azure Load Testing    | [Technical Walkthrough](../demo-scripts/azure-load-testing/walkthrough.md)          |
+  | Azure Chaos Studio    | [Technical Walkthrough](../demo-scripts/azure-chaos-studio/walkthrough.md)     |
+  | Testing with Playwright  | [Technical Walkthrough](../demo-scripts/testing-with-playwright/walkthrough.md) |
+
 			
 
 
