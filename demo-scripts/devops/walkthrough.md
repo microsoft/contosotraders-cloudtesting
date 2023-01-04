@@ -143,9 +143,8 @@ Let us make the changes and experience magic of GitHub Actions.
    
 ## Summary 
 
-In this scenario, we looked at how GitHub Actions and Advanced Security features can help organizations build an effective DevSecOps process, enhancing overall productivity and security posture of software development lifecycle. 
+In this scenario, we looked at how GitHub Actions can incorporate entire lifecycle of application deployment, performance testing & testing with playwright as part of CI/CD cycle. 
 
-We also looked at Microsoft Defender for Cloud integration with GitHub.  
   
 ## Additional Reading  
 
