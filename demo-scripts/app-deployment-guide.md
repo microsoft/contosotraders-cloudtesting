@@ -265,7 +265,7 @@ If you would like to add a custom domain, like contosotraders.com, you can purch
 <h2>Try Out Demo Scripts</h2>
 			
 
-As further learning, you can try running through some of the demo scripts listed below which’d help in understanding the Azure Cloud Native Technologies.
+As further learning, you can try running through some of the demo scripts listed below which’d help in understanding the testing tools & technologies with Azure Cloud.
 
 
 
@@ -304,7 +304,7 @@ This includes some of the common problems you may during deployment and approach
 	**Please note that the workflow provisions all resources through bicep templates, scripts etc. We’ve observed that in many cases, Azure subscription resource cache does not get updated fast enough before the next dependent step starts executing.
 	If you find workflow failure error due to missing Azure resources (Key vault, CDN, container apps etc, please re-run the failed jobs.**
 	
-<h3>Known Issues</h3>
+<h2>Known Issues</h2>
 	
 When you run the workflow, it shows following warnings.
 	
