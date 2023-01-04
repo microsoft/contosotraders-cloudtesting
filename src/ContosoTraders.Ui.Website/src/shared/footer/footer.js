@@ -8,6 +8,37 @@ import { ReactComponent as Logo } from '../../assets/images/logo-horizontal.svg'
 
 
 const Footer = () => {
+    React.useEffect(() => {
+        getLocation();
+    }, []);
+    const [lat, setLat] = React.useState(null);
+  const [lng, setLng] = React.useState(null);
+  const [status, setStatus] = React.useState(null);
+  const [location, setLocation] = React.useState(null);
+
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      setStatus('Geolocation is not supported by your browser');
+    } else {
+      setStatus('Locating...');
+      navigator.geolocation.getCurrentPosition((position) => {
+        setStatus(null);
+        setLat(position.coords.latitude);
+        setLng(position.coords.longitude);
+        const geoApiUrl= `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=en`;
+
+        fetch(geoApiUrl)
+        .then(res => res.json())
+        .then(data => {
+            let address = data.locality+', '+data.city
+            setLocation(address)
+        })
+      }, () => {
+        setStatus('Unable to retrieve your location');
+      });
+    }
+  }
+
   return (
     <div className='footer-container'>
     <Grid container className='footer-grid-container'>
@@ -63,6 +94,15 @@ const Footer = () => {
                     </div> 
                 </li>
             </ul>
+            <ul>
+                <li className='main-element'>Your Current location</li>
+                {status && <li className='list-element'>{status}</li>}
+                {lat && <input id="latitude" value={lat} type="hidden"/>}
+                {lng && <input id="longitude" value={lng} type="hidden"/>}
+                {location && <address id="current-location">{location}</address>}
+            </ul>
+            {/* <button aria-label='get-location-btn' onClick={() => getLocation()} >sdfsdf</button> */}
+            <input name="console" type="text"/>
         </Grid>
     </Grid>
     </div>

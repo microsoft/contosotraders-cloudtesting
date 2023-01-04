@@ -1,7 +1,6 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 let _productid = 1;
-
 test.beforeEach(async({page})=>{
   await page.goto('/');
 })
@@ -10,6 +9,42 @@ test.describe('Dark Mode', () => {
     await page.locator('input.MuiSwitch-input').check()
     await expect(page.locator('.App')).toHaveAttribute('class', 'App dark')
   })
+});
+test('Test with geolocation', async ({ page, context, request }) => {
+  const ipTest = await request.get('http://ip-api.com/json');
+  expect(ipTest.status()).toBe(200);
+  expect(ipTest.ok()).toBeTruthy();
+  const zip = JSON.parse(await ipTest.text())
+
+  const getLoc = await request.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${zip.zip}&key=AIzaSyD4F-54JAXsiRIUG621ZLFShFWnOJzQbjc`);
+  expect(getLoc.status()).toBe(200);
+  expect(getLoc.ok()).toBeTruthy();
+  const getCoords = JSON.parse(await getLoc.text())
+  // const zip = await Promise.all([
+  //   page.waitForResponse(res => {
+  //     // const text = await response.text();
+  //     return res.body()
+  //     &&
+  //     res.url() == 'http://ip-api.com/json'
+  //   })
+  // ])
+  await page.locator('[name=console]').fill(getCoords.status);
+  const latitude = await page.locator('input#latitude').inputValue();
+  const longitude = await page.locator('input#longitude').inputValue();
+  const response = await request.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+  expect(response.status()).toBe(200);
+  expect(response.ok()).toBeTruthy();
+  if(latitude != null && longitude != null){
+    await context.setGeolocation({ longitude: parseFloat(longitude), latitude: parseFloat(latitude) });
+  }
+  await Promise.all([
+    page.waitForSelector('#current-location'),
+    // page.waitForSelector('#element2')
+  ]);
+  // await page.goto('https://www.openstreetmap.org');
+  // await page.locator('[aria-label="Show My Location"]').click();
+  // await page.goto('https://maps.google.com');
+  // await page.locator('[aria-label="Show Your Location"]').click();
 });
 test('Login', async ({ page }) => {
   await page.goto('/');

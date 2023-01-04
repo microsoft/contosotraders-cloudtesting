@@ -43,6 +43,8 @@ const config = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    permissions: ['geolocation'],
+    geolocation: { longitude: 77.58011900653081, latitude: 12.96265905579749 },
   },
 
   /* Configure projects for major browsers */
@@ -105,7 +107,7 @@ const config = {
     command: 'npm run start',
     // port: 3000,
     url: process.env.BaseUrlForPlaywrightTesting || 'http://localhost:3000/',
-    timeout: 60 * 1000,
+    timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },
 };
