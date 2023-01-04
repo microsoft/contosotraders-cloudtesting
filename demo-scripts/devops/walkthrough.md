@@ -105,8 +105,6 @@ Let us make the changes and experience magic of GitHub Actions.
    
 4. To make it easier for you to complete this change, source code already include code blocks for adding dark mode functionality. You will need to uncomment the code block, let's start by clicking on edit **symbol (2)**.
 
-    ![image](media/L300-3.png)
-
 5. Uncomment line number 8, 414,415 & 416. 
 
     ![image](media/uncommentcode1.png)
