@@ -1,10 +1,18 @@
 <html><h1> Contoso Traders - Deployment Guide </h1></html>
 
-
 This deployment  guide is designed to help you deploy Contoso Traders application in your Azure environment. Contoso Trader is a micro-services-based application, leveraging various Azure services including Azure Kubernetes Service, App Services, Cosmos DB, SQL Database and many more. 
 While it’s possible to deploy overall solution using Azure Portal, CLI, PowerShell, ARM Templates, we will be using a combination of GitHub Actions and bicep templates to automate the provisioning of overall solution. 
 
-This will deploy all components defined in the Contoso Traders [architecture](../docs/architecture/contoso-traders-enhancements.drawio.png) 
+This will deploy all components defined in the Contoso Traders [architecture](../demo-scripts/images/contoso-traders-enhancements.drawio.png)
+
+Once Contoso Traders is deployed in your Azure subscription, you will be able to run through demo scripts explaining various capabilities and use-cases for Azure Load Testing, Azure Chaod Studio, Playwright & GitHub Actions. 
+
+As part of deploying the application, you will be completing following items
+1.	Create an Azure Service Principal for GitHub Actions to authenticate with your Azure subscription.
+2.	Clone this repo in your GitHub Account and Setup GitHub Secrets
+3.	Run GitHub Actions workflows to deploy the app. 
+4.	Test & Validate. 
+
 
 <html><h3>Pre-Requisites</h3></html>
 
