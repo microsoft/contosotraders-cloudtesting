@@ -12,7 +12,7 @@ You will be executing the following tasks as part of deploying the application:
 1.	Create an Azure Service Principal for GitHub Actions to authenticate with your Azure subscription.
 2.	Clone this repo in your GitHub Account and Setup GitHub Secrets
 3.	Run GitHub Actions workflows to deploy the app. 
-4.	Test & Validate. 
+4.	Start testing with Azure Load Testing, Chaos Studio & Playwright. 
 
 
 <html><h3>Pre-Requisites</h3></html>
