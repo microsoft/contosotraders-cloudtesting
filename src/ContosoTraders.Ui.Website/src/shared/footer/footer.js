@@ -21,21 +21,30 @@ const Footer = () => {
       setStatus('Geolocation is not supported by your browser');
     } else {
       setStatus('Locating...');
-      navigator.geolocation.getCurrentPosition((position) => {
+    //   navigator.geolocation.getCurrentPosition((position) => {
+    const geoApiUrl1 = `http://ip-api.com/json`;
+    
+    fetch(geoApiUrl1)
+    .then(res => res.json())
+    .then(data => {
+        // console.log('data',data)
+        // let address = data.city+', '+data.regionName
+        // setLocation(address)
         setStatus(null);
-        setLat(position.coords.latitude);
-        setLng(position.coords.longitude);
-        const geoApiUrl= `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=en`;
-
-        fetch(geoApiUrl)
-        .then(res => res.json())
-        .then(data => {
-            let address = data.locality+', '+data.city
-            setLocation(address)
+        setLat(data.lat);
+        setLng(data.log);
+        const geoApiUrl2 = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${data.lat}&longitude=${data.log}&localityLanguage=en`;
+            fetch(geoApiUrl2)
+            .then(res => res.json())
+            .then(dat => {
+                setStatus(null);
+                let address = dat.locality+', '+dat.city
+                setLocation(address)
+            })
         })
-      }, () => {
-        setStatus('Unable to retrieve your location');
-      });
+    //   }, () => {
+    //     setStatus('Unable to retrieve your location');
+    //   });
     }
   }
 
@@ -101,8 +110,6 @@ const Footer = () => {
                 {lng && <input id="longitude" value={lng} type="hidden"/>}
                 {location && <address id="current-location">{location}</address>}
             </ul>
-            {/* <button aria-label='get-location-btn' onClick={() => getLocation()} >sdfsdf</button> */}
-            <input name="console" type="text"/>
         </Grid>
     </Grid>
     </div>

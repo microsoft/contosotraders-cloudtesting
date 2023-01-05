@@ -18,11 +18,6 @@ test('Test with geolocation', async ({ page, context, request }) => {
   expect(ipTest.ok()).toBeTruthy();
   const location = JSON.parse(await ipTest.text())
 
-  // const getLoc = await request.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${zip.zip}&key=AIzaSyD4F-54JAXsiRIUG621ZLFShFWnOJzQbjc`);
-  // expect(getLoc.status()).toBe(200);
-  // expect(getLoc.ok()).toBeTruthy();
-  // const getCoords = JSON.parse(await getLoc.text())
-
   const latitude = location.lat//await page.locator('input#latitude').inputValue();
   const longitude = location.lon//await page.locator('input#longitude').inputValue();
   const response = await request.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
@@ -33,11 +28,10 @@ test('Test with geolocation', async ({ page, context, request }) => {
   }
   await Promise.all([
     page.waitForSelector('#current-location'),
-    // page.waitForSelector('#element2')
   ]);
   // await page.screenshot({ path: 'screenshot.png', fullPage: true });
-  await page.goto('https://www.openstreetmap.org');
-  await page.locator('[aria-label="Show My Location"]').click();
+  // await page.goto('https://www.openstreetmap.org');
+  // await page.locator('[aria-label="Show My Location"]').click();
   // await page.goto('https://maps.google.com');
   // await page.locator('[aria-label="Show Your Location"]').click();
 });
