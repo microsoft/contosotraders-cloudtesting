@@ -1,5 +1,5 @@
 # Setup Repo Locally using VS Code
-- git clone https://github.com/microsoft/ContosoTraders.git
+- git clone https://github.com/microsoft/ContosoTraders-CloudTesting.git
 
 - Go to ContosoTraders/src/ContosoTraders.Ui.Website/
 
@@ -103,23 +103,9 @@ Any issue with the API or redirected url will trigger an error message while tes
 
 ![Test Case Image](./media/16.png)
 
-**Enable Dark Mode**
-
-Select the toggle button for Dark mode on the right side of header. Checking it will turn the application to dark mode.
-
-DARK MODE OFF
-
-![Test Case Image](./media/25.png)
-
-DARK MODE ON
-
-![Test Case Image](./media/26.png)
-
-
-
 # Complex Testing Scenarios
 
-Login using Microsoft Account Azzure ID.
+Login using Microsoft Account Azure ID.
 
 Click LOGIN button in header
 

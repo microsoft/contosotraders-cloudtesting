@@ -42,9 +42,14 @@ const config = {
     baseURL: process.env.BaseUrlForPlaywrightTesting || 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    // trace: 'on-first-retry',
+    trace: 'on',
+    screenshot: 'only-on-failure', // Capture screenshot after each test failure.
+    video: 'retain-on-failure', //Record video only when retrying a test for the first time.
+    // headless: true,
     permissions: ['geolocation'],
     geolocation: { longitude: 77.58011900653081, latitude: 12.96265905579749 },
+    
   },
 
   /* Configure projects for major browsers */
