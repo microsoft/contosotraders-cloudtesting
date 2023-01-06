@@ -8,6 +8,46 @@ import { ReactComponent as Logo } from '../../assets/images/logo-horizontal.svg'
 
 
 const Footer = () => {
+    React.useEffect(() => {
+        getLocation();
+    }, []);
+    const [lat, setLat] = React.useState(null);
+  const [lng, setLng] = React.useState(null);
+  const [status, setStatus] = React.useState(null);
+  const [location, setLocation] = React.useState(null);
+
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      setStatus('Geolocation is not supported by your browser');
+    } else {
+      setStatus('Locating...');
+    //   navigator.geolocation.getCurrentPosition((position) => {
+    const geoApiUrl1 = `http://ip-api.com/json`;
+    
+    fetch(geoApiUrl1)
+    .then(res => res.json())
+    .then(data => {
+        // console.log('data',data)
+        // let address = data.city+', '+data.regionName
+        // setLocation(address)
+        setStatus(null);
+        setLat(data.lat);
+        setLng(data.log);
+        const geoApiUrl2 = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${data.lat}&longitude=${data.log}&localityLanguage=en`;
+            fetch(geoApiUrl2)
+            .then(res => res.json())
+            .then(dat => {
+                setStatus(null);
+                let address = dat.locality+', '+dat.city
+                setLocation(address)
+            })
+        })
+    //   }, () => {
+    //     setStatus('Unable to retrieve your location');
+    //   });
+    }
+  }
+
   return (
     <div className='footer-container'>
     <Grid container className='footer-grid-container'>
@@ -62,6 +102,13 @@ const Footer = () => {
                         </div>
                     </div> 
                 </li>
+            </ul>
+            <ul>
+                <li className='main-element'>Your Current location</li>
+                {status && <li className='list-element'>{status}</li>}
+                {lat && <input id="latitude" value={lat} type="hidden"/>}
+                {lng && <input id="longitude" value={lng} type="hidden"/>}
+                {location && <address id="current-location">{location}</address>}
             </ul>
         </Grid>
     </Grid>
