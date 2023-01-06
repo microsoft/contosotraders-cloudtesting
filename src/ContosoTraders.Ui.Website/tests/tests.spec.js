@@ -1,7 +1,6 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 let _productid = 1;
-
 test.beforeEach(async({page})=>{
   await page.goto('/');
 })
@@ -13,6 +12,29 @@ test.beforeEach(async({page})=>{
 //   })
 // });
 //#endregion
+test('Test with geolocation', async ({ page, context, request }) => {
+  const ipTest = await request.get('http://ip-api.com/json');
+  expect(ipTest.status()).toBe(200);
+  expect(ipTest.ok()).toBeTruthy();
+  const location = JSON.parse(await ipTest.text())
+
+  const latitude = location.lat//await page.locator('input#latitude').inputValue();
+  const longitude = location.lon//await page.locator('input#longitude').inputValue();
+  const response = await request.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+  expect(response.status()).toBe(200);
+  expect(response.ok()).toBeTruthy();
+  if(latitude != null && longitude != null){
+    await context.setGeolocation({ longitude: parseFloat(longitude), latitude: parseFloat(latitude) });
+  }
+  await Promise.all([
+    page.waitForSelector('#current-location'),
+  ]);
+  // await page.screenshot({ path: 'screenshot.png', fullPage: true });
+  // await page.goto('https://www.openstreetmap.org');
+  // await page.locator('[aria-label="Show My Location"]').click();
+  // await page.goto('https://maps.google.com');
+  // await page.locator('[aria-label="Show Your Location"]').click();
+});
 test('Login', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'show 4 new mails' }).click();
