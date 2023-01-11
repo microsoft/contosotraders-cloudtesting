@@ -120,7 +120,7 @@ jobs:
       #   run: npx playwright install --with-deps
       #   working-directory: src/ContosoTraders.Ui.Website
       - name: run playwright tests
-        run: npx playwright test
+        run: HOME=/root npx playwright test
         working-directory: src/ContosoTraders.Ui.Website
       - name: upload playwright report
         uses: actions/upload-artifact@v3
