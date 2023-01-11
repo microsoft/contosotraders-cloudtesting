@@ -1296,3 +1296,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
 
 // outputs
 ////////////////////////////////////////////////////////////////////////////////
+
+output cartsApiEndpoint string = 'https://${cartsapiaca.properties.configuration.ingress.fqdn}'
+output uiCdnEndpoint string = 'https://${cdnprofile_ui2endpoint.properties.hostName}'

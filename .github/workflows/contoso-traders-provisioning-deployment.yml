@@ -70,6 +70,8 @@ jobs:
       # az deployment group create -g contoso-traders-rg --template-file .\createResources.bicep --parameters .\createResources.parameters.json
       # Note: The `createResources.parameters.json` file contains the parameters for the deployment; specifically the environment name.
       # You can modify the parameters to customize the deployment.
+      # Note: The bicep template outputs are not shown in the logs. You can extract the outputs as shown here:
+      # https://github.com/Azure/arm-deploy#another-example-on-how-to-use-this-action-to-get-the-output-of-arm-template
       - name: create resources
         uses: Azure/arm-deploy@v1
         with:
