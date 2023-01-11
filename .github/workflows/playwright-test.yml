@@ -95,7 +95,7 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.29.0-focal
+      image: mcr.microsoft.com/playwright:v1.29.1-focal
     needs: [deploy-ui]
     steps:
       - name: checkout code
