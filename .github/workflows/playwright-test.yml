@@ -107,8 +107,6 @@ jobs:
         with:
           name: .env
           path: ./src/ContosoTraders.Ui.Website/
-      - name: TEMP display contents of .env file
-        run: cat ./src/ContosoTraders.Ui.Website/.env
       - name: install node
         uses: actions/setup-node@v3
         with:
