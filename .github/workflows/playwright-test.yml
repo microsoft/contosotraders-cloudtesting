@@ -37,8 +37,7 @@ env:
 
 jobs:
 
-  playwright-tests-ui:
-    timeout-minutes: 10
+  deploy-ui:
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
@@ -57,11 +56,6 @@ jobs:
         id: get-productsApiEndpoint
         with:
           inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-      - name: get ui cdn endpoint
-        uses: azure/CLI@v1
-        id: get-uiCdnEndpoint
-        with:
-          inlineScript: echo "uiCdnEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
       - name: substitute tokens in ui configuration
         uses: cschleiden/replace-tokens@v1.2
         with:
@@ -71,7 +65,44 @@ jobs:
         env:
           CARTS_API_ENDPOINT: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
           PRODUCTS_API_ENDPOINT: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
-          UI_CDN_ENDPOINT: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+      - name: npm install
+        run: npm install
+        working-directory: src/ContosoTraders.Ui.Website
+      - name: npm run build
+        run: npm run build
+        working-directory: src/ContosoTraders.Ui.Website
+      - name: deploy to storage
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az storage blob sync --account-name '${{ env.UI_STORAGE_ACCOUNT_NAME }}${{ secrets.ENVIRONMENT }}' -c '$web' -s 'src/ContosoTraders.Ui.Website/build'
+      - name: purge CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.UI_CDN_ENDPOINT_NAME }}${{ secrets.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.ENVIRONMENT }}'
+      - name: upload .env file to run artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: .env
+          path: ./src/ContosoTraders.Ui.Website/.env
+
+  playwright-tests-ui:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    needs: [deploy-ui]
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: download .env file from run artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: .env
+          path: ./src/ContosoTraders.Ui.Website/
+      - name: TEMP display contents of .env file
+        run: cat ./src/ContosoTraders.Ui.Website/.env
       - name: install node
         uses: actions/setup-node@v3
         with:
