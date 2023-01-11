@@ -27,21 +27,33 @@ const Footer = () => {
     fetch(geoApiUrl1)
     .then(res => res.json())
     .then(data => {
-        // console.log('data',data)
-        // let address = data.city+', '+data.regionName
-        // setLocation(address)
         setStatus(null);
         setLat(data.lat);
         setLng(data.log);
-        const geoApiUrl2 = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${data.lat}&longitude=${data.log}&localityLanguage=en`;
-            fetch(geoApiUrl2)
-            .then(res => res.json())
-            .then(dat => {
-                setStatus(null);
-                let address = dat.locality+', '+dat.city
-                setLocation(address)
-            })
+        
+        //Another third party api
+        // const geoApiUrl2 = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${data.lat}&longitude=${data.lon}&localityLanguage=en`;
+        // fetch(geoApiUrl2)
+        // .then(res => res.json())
+        // .then(dat => {
+        //     setStatus(null);
+        //     let address = dat.locality+', '+dat.city
+        //     setLocation(address)
+        // })
+
+        //Microsoft API
+        let point = data.lat+','+data.lon
+        let BingMapsKey = `AkLj1p_g1w7lFb8lJZ-XnicObnu2-ydEpmn6eryraluxl_x3bDo0Jx6w58b7ZJt2`
+        const geoApiUrlForAddress = `http://dev.virtualearth.net/REST/v1/Locations/${point}?key=${BingMapsKey}`;
+        fetch(geoApiUrlForAddress)
+        .then(res => res.json())
+        .then(dat => {
+            console.log(dat)
+            setStatus(null);
+            let address = dat.resourceSets[0].resources[0].address.locality+', '+dat.resourceSets[0].resources[0].address.countryRegion;
+            setLocation(address)
         })
+    })
     //   }, () => {
     //     setStatus('Unable to retrieve your location');
     //   });

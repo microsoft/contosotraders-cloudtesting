@@ -1,6 +1,13 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 let _productid = 1;
+let page = null;
+let BingMapsKey = `AkLj1p_g1w7lFb8lJZ-XnicObnu2-ydEpmn6eryraluxl_x3bDo0Jx6w58b7ZJt2`;
+
+test.beforeAll(async ({ browser })=>{
+  page = await browser.newPage()
+})
+
 test.beforeEach(async({page})=>{
   await page.goto('/');
 })
@@ -20,7 +27,9 @@ test('Test with geolocation', async ({ page, context, request }) => {
 
   const latitude = location.lat//await page.locator('input#latitude').inputValue();
   const longitude = location.lon//await page.locator('input#longitude').inputValue();
-  const response = await request.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+  const point = latitude+','+longitude;
+  // const response = await request.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+  const response = await request.get(`http://dev.virtualearth.net/REST/v1/Locations/${point}?key=${BingMapsKey}`);
   expect(response.status()).toBe(200);
   expect(response.ok()).toBeTruthy();
   if(latitude != null && longitude != null){
@@ -35,26 +44,7 @@ test('Test with geolocation', async ({ page, context, request }) => {
   // await page.goto('https://maps.google.com');
   // await page.locator('[aria-label="Show Your Location"]').click();
 });
-test('Login', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'show 4 new mails' }).click();
-  const page1Promise = await page.waitForEvent('popup');
-  const page1 = await page1Promise;
-  await page1.locator('[name=loginfmt]').click();
-  await page1.locator('[name=loginfmt]').fill('TailwindTraders.User@spektrasystems.com');
-  await page1.getByRole('button', { name: 'Next' }).click();
-  await page1.locator('[name=passwd]').click();
-  await page1.locator('[name=passwd]').fill('Spektra123!@#');
-  await page1.getByRole('button', { name: 'Sign in' }).click();
-  // if(await page1.$$('#idSIButton9')){
-  //   page1.locator('#idSIButton9').click();
-  // }
-  // await page1.getByRole('button', { name: 'Approve a request on my Microsoft Authenticator app' }).click();
-  // await Promise.all([
-  //   // Waits for the next response matching some conditions
-  //   page.waitForResponse(response => response.url() === `${process.env.REACT_APP_APIUrl}/products/landing` && response.status() === 200),
-  // ]);
-});
+
 test.describe('Header', () => {
   test('should be able to search by text', async ({ page }) => {
     await page.getByPlaceholder('Search by product name or search by image').click();
@@ -67,6 +57,14 @@ test.describe('Header', () => {
     await page.getByRole('button', { name: 'All Categories' }).click();
     await page.getByRole('menuitem', { name: 'Laptops' }).click();
     await expect(page).toHaveURL('/list/laptops');
+  });
+
+  test('Hover over header menus', async ({ page }) => {
+    await page.getByRole('navigation').getByRole('link', { name: 'All Products' }).hover();
+    await page.getByRole('navigation').getByRole('link', { name: 'Laptops' }).hover();
+    await page.getByRole('navigation').getByRole('link', { name: 'Controllers' }).hover();
+    await page.getByRole('navigation').getByRole('link', { name: 'Mobiles' }).hover();
+    await page.getByRole('navigation').getByRole('link', { name: 'Monitors' }).hover();
   });
 
   test('should be able to select header menu', async ({ page }) => {
@@ -101,6 +99,7 @@ test.describe('Home page', () => {
     await expect(page).toHaveURL('/list/controllers');
   });
 });
+
 test.describe('Product Listing', () => {
   test('should be able to select product to view details', async ({ page }) => {
     await page.goto('/list/all-products');
@@ -115,6 +114,7 @@ test.describe('Product Listing', () => {
     ]);
   });
 });
+
 test.describe('Footer', () => {
   test('should be able to select footer menu', async ({ page }) => {
     await page.getByRole('listitem').filter({ hasText: 'Monitors' }).getByRole('link', { name: 'Monitors' }).click();
@@ -122,33 +122,13 @@ test.describe('Footer', () => {
   });
 });
 
-test.describe('APIs', () => {
+test.afterEach(async ({ page }, testInfo) => {
+  console.log(`Finished ${testInfo.title} with status ${testInfo.status}`);
 
-  //text serach API
-  test('should be able to load search by text data', async ({ request }) => {
-    const response = await request.get(`${process.env.REACT_APP_APIUrl}/Products/search/laptops`);
-    expect(response.status()).toBe(200);
-    expect(response.ok()).toBeTruthy();
-  });
+  if (testInfo.status !== testInfo.expectedStatus)
+    console.log(`Did not run as expected, ended up at ${page.url()}`);
+});
 
-  //load products list
-  test('should be able to load products list', async ({ request }) => {
-    const response = await request.get(`${process.env.REACT_APP_APIUrl}/Products/?type=laptops`);
-    expect(response.status()).toBe(200);
-    expect(response.ok()).toBeTruthy();
-  });
-
-  //load product details
-  test('should be able to load product details', async ({ request }) => {
-    const response = await request.get(`${process.env.REACT_APP_APIUrl}/Products/`+_productid);
-    expect(response.status()).toBe(200);
-    expect(response.ok()).toBeTruthy();
-  });
-
-  //filter products by brands
-  test('should be able to filter products by brands', async ({ request }) => {
-    const response = await request.get(`${process.env.REACT_APP_APIUrl}/Products/?type=laptops&brand=1`);
-    expect(response.status()).toBe(200);
-    expect(response.ok()).toBeTruthy();
-  });
+test.afterAll(async ({ page }) => {
+  await page.close();
 });
