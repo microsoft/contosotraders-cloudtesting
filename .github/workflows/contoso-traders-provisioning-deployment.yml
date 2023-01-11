@@ -467,6 +467,11 @@ jobs:
         id: get-productsApiEndpoint
         with:
           inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: get ui cdn endpoint
+        uses: azure/CLI@v1
+        id: get-uiCdnEndpoint
+        with:
+          inlineScript: echo "uiCdnEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
       - name: substitute tokens in ui configuration
         uses: cschleiden/replace-tokens@v1.2
         with:
@@ -476,6 +481,7 @@ jobs:
         env:
           CARTS_API_ENDPOINT: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
           PRODUCTS_API_ENDPOINT: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
+          UI_CDN_ENDPOINT: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
       - name: install node
         uses: actions/setup-node@v3
         with:

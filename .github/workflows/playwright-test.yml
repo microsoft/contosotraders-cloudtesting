@@ -1,0 +1,94 @@
+name: playwright-test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["mithun/playwright-docker"]
+
+env:
+  # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
+  # metadata will be stored, and not where the resource groups will be deployed.
+  ACR_NAME: contosotradersacr
+  AKS_CLUSTER_NAME: contoso-traders-aks
+  AKS_DNS_LABEL: contoso-traders-products
+  AKS_NODES_RESOURCE_GROUP_NAME: contoso-traders-aks-nodes-rg
+  AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
+  AKS_SECRET_NAME_KV_ENDPOINT: contoso-traders-kv-endpoint
+  AKS_SECRET_NAME_MI_CLIENTID: contoso-traders-mi-clientid
+  CARTS_ACA_NAME: contoso-traders-carts
+  CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
+  CDN_PROFILE_NAME: contoso-traders-cdn
+  KV_NAME: contosotraderskv
+  LOAD_TEST_SERVICE_NAME: contoso-traders-loadtest
+  PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
+  PRODUCTS_DB_NAME: productsdb
+  PRODUCTS_DB_SERVER_NAME: contoso-traders-products
+  PRODUCTS_DB_USER_NAME: localadmin
+  PRODUCT_DETAILS_CONTAINER_NAME: product-details
+  PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME: contosotradersimg
+  PRODUCT_LIST_CONTAINER_NAME: product-list
+  PRODUCTS_CDN_ENDPOINT_NAME: contoso-traders-images
+  RESOURCE_GROUP_NAME: contoso-traders-rg
+  STORAGE_ACCOUNT_NAME: contosotradersimg
+  SUB_DEPLOYMENT_REGION: eastus2
+  UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
+  UI_STORAGE_ACCOUNT_NAME: contosotradersui2
+  USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
+
+jobs:
+
+  playwright-tests-ui:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: get carts api endpoint
+        uses: azure/CLI@v1
+        id: get-cartsApiEndpoint
+        with:
+          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: get products api endpoint
+        uses: azure/CLI@v1
+        id: get-productsApiEndpoint
+        with:
+          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: get ui cdn endpoint
+        uses: azure/CLI@v1
+        id: get-uiCdnEndpoint
+        with:
+          inlineScript: echo "uiCdnEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: substitute tokens in ui configuration
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: "{{"
+          tokenSuffix: "}}"
+          files: ./src/ContosoTraders.Ui.Website/.env
+        env:
+          CARTS_API_ENDPOINT: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
+          PRODUCTS_API_ENDPOINT: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
+          UI_CDN_ENDPOINT: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+      - name: install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: install dependencies
+        run: npm ci
+        working-directory: src/ContosoTraders.Ui.Website
+      - name: install playwright browsers
+        run: npx playwright install --with-deps
+        working-directory: src/ContosoTraders.Ui.Website
+      - name: run playwright tests
+        run: npx playwright test
+        working-directory: src/ContosoTraders.Ui.Website
+      - name: upload playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: src/ContosoTraders.Ui.Website/playwright-report/
+          retention-days: 30
