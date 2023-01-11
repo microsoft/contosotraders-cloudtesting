@@ -100,25 +100,16 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v3
-      # - name: azure login
-      #   uses: azure/login@v1
-      #   with:
-      #     creds: ${{ secrets.SERVICEPRINCIPAL }}
       - name: download .env file from run artifacts
         uses: actions/download-artifact@v3
         with:
           name: .env
           path: ./src/ContosoTraders.Ui.Website/
-      # - name: install node
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16
       - name: install dependencies
         run: npm ci
         working-directory: src/ContosoTraders.Ui.Website
-      # - name: install playwright browsers
-      #   run: npx playwright install --with-deps
-      #   working-directory: src/ContosoTraders.Ui.Website
+      # Note: The 'HOME=/root' is required to workaround below mentioned issue:
+      # https://github.com/microsoft/playwright/issues/6500
       - name: run playwright tests
         run: HOME=/root npx playwright test
         working-directory: src/ContosoTraders.Ui.Website
