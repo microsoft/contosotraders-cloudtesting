@@ -2,7 +2,6 @@
 const { test, expect } = require('@playwright/test');
 let _productid = 1;
 let page = null;
-let BingMapsKey = `AkLj1p_g1w7lFb8lJZ-XnicObnu2-ydEpmn6eryraluxl_x3bDo0Jx6w58b7ZJt2`;
 
 test.beforeAll(async ({ browser })=>{
   page = await browser.newPage()
@@ -20,7 +19,7 @@ test.beforeEach(async({page})=>{
 // });
 //#endregion
 test('Test with geolocation', async ({ page, context, request }) => {
-  const ipTest = await request.get('https://geolocation-db.com/json/8d382830-904e-11ed-97d5-0de223189653');
+  const ipTest = await request.get(`${process.env.REACT_APP_GeolocationAPI}`);
   expect(ipTest.status()).toBe(200);
   expect(ipTest.ok()).toBeTruthy();
   const location = JSON.parse(await ipTest.text())
@@ -29,7 +28,7 @@ test('Test with geolocation', async ({ page, context, request }) => {
   const longitude = location.longitude//await page.locator('input#longitude').inputValue();
   const point = latitude+','+longitude;
   // const response = await request.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
-  const response = await request.get(`http://dev.virtualearth.net/REST/v1/Locations/${point}?key=${BingMapsKey}`);
+  const response = await request.get(`${process.env.REACT_APP_GeoApiBaseURL}/Locations/${point}?key=${process.env.REACT_APP_BingMapsKey}`);
   expect(response.status()).toBe(200);
   expect(response.ok()).toBeTruthy();
   if(latitude != null && longitude != null){

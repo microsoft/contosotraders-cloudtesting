@@ -21,10 +21,8 @@ const Footer = () => {
       setStatus('Geolocation is not supported by your browser');
     } else {
       setStatus('Locating...');
-    //   navigator.geolocation.getCurrentPosition((position) => {
-    const geoApiUrl1 = `https://geolocation-db.com/json/8d382830-904e-11ed-97d5-0de223189653`;
-    
-    fetch(geoApiUrl1)
+    //   navigator.geolocation.getCurrentPosition((position) => {    
+    fetch(process.env.REACT_APP_GeolocationAPI)
     .then(res => res.json())
     .then(data => {
         setStatus(null);
@@ -43,8 +41,7 @@ const Footer = () => {
 
         //Microsoft API
         let point = data.latitude+','+data.longitude
-        let BingMapsKey = `AkLj1p_g1w7lFb8lJZ-XnicObnu2-ydEpmn6eryraluxl_x3bDo0Jx6w58b7ZJt2`
-        const geoApiUrlForAddress = `http://dev.virtualearth.net/REST/v1/Locations/${point}?key=${BingMapsKey}`;
+        const geoApiUrlForAddress = `${process.env.REACT_APP_GeoApiBaseURL}/Locations/${point}?key=${process.env.REACT_APP_BingMapsKey}`;
         fetch(geoApiUrlForAddress)
         .then(res => res.json())
         .then(dat => {
