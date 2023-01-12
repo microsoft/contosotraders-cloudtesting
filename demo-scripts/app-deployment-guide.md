@@ -1,9 +1,12 @@
-<html><h1> Contoso Traders - Deployment Guide </h1></html>
+# Contoso Traders - Deployment Guide
 
-This deployment  guide is designed to help you deploy Contoso Traders application in your Azure environment. Contoso Trader is a micro-services-based application, leveraging various Azure services including Azure Kubernetes Service, App Services, Cosmos DB, SQL Database and many more. 
-While it’s possible to deploy overall solution using Azure Portal, CLI, PowerShell, ARM Templates, we will be using a combination of GitHub Actions and bicep templates to automate the provisioning of overall solution. 
+This deployment guide is designed to help you deploy the Contoso Traders application in your Azure environment. Contoso Trader is a micro-services-based application, leveraging various Azure services including Azure Kubernetes Service, App Services, Cosmos DB, SQL Database and many more.
 
-This will deploy all components defined in the Contoso Traders [architecture](../demo-scripts/images/contoso-traders-enhancements.drawio.png)
+We will be using a combination of GitHub actions, Azure Bicep templates and Azure CLI to automate the provisioning of the overall solution.
+
+This will deploy all components defined in the Contoso Traders architecture.
+
+![Contoso Traders Architecture](../docs/architecture/contoso-traders-enhancements.drawio.png)
 
 You will be able to go through demo scripts outlining various features and use-cases for Azure Load Testing, Azure Chaos Studio, Playwright, and GitHub Actions after Contoso Traders is deployed in your Azure subscription.
 
@@ -304,26 +307,22 @@ This includes some of the common problems you may during deployment and approach
 	**Please note that the workflow provisions all resources through bicep templates, scripts etc. We’ve observed that in many cases, Azure subscription resource cache does not get updated fast enough before the next dependent step starts executing.
 	If you find workflow failure error due to missing Azure resources (Key vault, CDN, container apps etc, please re-run the failed jobs.**
 	
-<h2>Known Issues</h2>
-	
+## Known Deployment Issues
+
 When you run the workflow, it shows following warnings.
-	
+
 **Error: WARNING: /home/runner/work/ContosoTraders/ContosoTraders/iac/createResources.bicep(191,50) : Warning no-hardcoded-env-urls: Environment URLs should not be hardcoded. Use the environment() function to ensure compatibility across clouds. Found this disallowed host: "database.windows.net". **
 
 **Warning: WARNING: /home/runner/work/ContosoTraders/ContosoTraders/iac/createResources.bicep(191,50) : Warning no-hardcoded-env-urls: Environment URLs should not be hardcoded. Use the environment() function to ensure compatibility across clouds. Found this disallowed host: "database.windows.net". **
 
+This does not block the deployment and workflow will run successfully. It does not have any other impact. It is being tracked here: microsoft/ContosoTraders/#68.
 
-This does not block the deployment and workflow will run successfully. It does not have any other impact. It is being tracked here https://github.com/microsoft/ContosoTraders/issues/68 
+## Questions & Support
 
+This project is community supported. Please don't hesitate to raise a [GitHub issue](https://github.com/microsoft/ContosoTraders-CloudTesting/issues/new/choose) in case of issues/questions.
 
+## Cleanup
 
-<h2>Questions & Support</h2>
-	
-This project is community supported. Please raise issue via GitHub incase of issues/questions. 
+Once you are done deploying, testing, exploring, you should delete the provisioned resources to prevent incurring additional costs.
 
-<h2>Cleanup</h2>
-
-Once you are done deploying, testing, exploring, you can delete the provisioned RGs to prevent incurring additional cost. 
-Delete the following resource groups.
-1.	contoso-traders-rg
-2.	contoso-traders-aks-nodes-rg
+Once done, you can safely delete the `contoso-traders-rg` resource group. The `contoso-traders-aks-nodes-rg` will be automatically deleted as part of the AKS cluster deletion.
