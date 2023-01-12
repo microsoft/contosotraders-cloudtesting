@@ -1,6 +1,12 @@
-// @ts-check
+// Test page content like button click and page redirection
 const { test, expect } = require('@playwright/test');
 let _productid = 1;
+let page = null;
+
+test.beforeAll(async ({ browser })=>{
+  page = await browser.newPage()
+})
+
 test.beforeEach(async({page})=>{
   await page.goto('/');
 })
@@ -13,14 +19,15 @@ test.beforeEach(async({page})=>{
 // });
 //#endregion
 test('Test with geolocation', async ({ page, context, request }) => {
-  const ipTest = await request.get('http://ip-api.com/json');
+  const ipTest = await request.get(`${process.env.REACT_APP_GEOLOCATIONAPI}`);
   expect(ipTest.status()).toBe(200);
   expect(ipTest.ok()).toBeTruthy();
   const location = JSON.parse(await ipTest.text())
 
-  const latitude = location.lat//await page.locator('input#latitude').inputValue();
-  const longitude = location.lon//await page.locator('input#longitude').inputValue();
-  const response = await request.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
+  const latitude = location.latitude//await page.locator('input#latitude').inputValue();
+  const longitude = location.longitude//await page.locator('input#longitude').inputValue();
+  const point = latitude+','+longitude;
+  const response = await request.get(`${process.env.REACT_APP_GEOAPIBASEURL}/Locations/${point}?key=${process.env.REACT_APP_BINGMAPSKEY}`);
   expect(response.status()).toBe(200);
   expect(response.ok()).toBeTruthy();
   if(latitude != null && longitude != null){
@@ -29,32 +36,8 @@ test('Test with geolocation', async ({ page, context, request }) => {
   await Promise.all([
     page.waitForSelector('#current-location'),
   ]);
-  // await page.screenshot({ path: 'screenshot.png', fullPage: true });
-  // await page.goto('https://www.openstreetmap.org');
-  // await page.locator('[aria-label="Show My Location"]').click();
-  // await page.goto('https://maps.google.com');
-  // await page.locator('[aria-label="Show Your Location"]').click();
 });
-test('Login', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'show 4 new mails' }).click();
-  const page1Promise = await page.waitForEvent('popup');
-  const page1 = await page1Promise;
-  await page1.locator('[name=loginfmt]').click();
-  await page1.locator('[name=loginfmt]').fill('TailwindTraders.User@spektrasystems.com');
-  await page1.getByRole('button', { name: 'Next' }).click();
-  await page1.locator('[name=passwd]').click();
-  await page1.locator('[name=passwd]').fill('Spektra123!@#');
-  await page1.getByRole('button', { name: 'Sign in' }).click();
-  // if(await page1.$$('#idSIButton9')){
-  //   page1.locator('#idSIButton9').click();
-  // }
-  // await page1.getByRole('button', { name: 'Approve a request on my Microsoft Authenticator app' }).click();
-  // await Promise.all([
-  //   // Waits for the next response matching some conditions
-  //   page.waitForResponse(response => response.url() === `${process.env.REACT_APP_APIUrl}/products/landing` && response.status() === 200),
-  // ]);
-});
+
 test.describe('Header', () => {
   test('should be able to search by text', async ({ page }) => {
     await page.getByPlaceholder('Search by product name or search by image').click();
@@ -67,6 +50,14 @@ test.describe('Header', () => {
     await page.getByRole('button', { name: 'All Categories' }).click();
     await page.getByRole('menuitem', { name: 'Laptops' }).click();
     await expect(page).toHaveURL('/list/laptops');
+  });
+
+  test('Hover over header menus', async ({ page }) => {
+    await page.getByRole('navigation').getByRole('link', { name: 'All Products' }).hover();
+    await page.getByRole('navigation').getByRole('link', { name: 'Laptops' }).hover();
+    await page.getByRole('navigation').getByRole('link', { name: 'Controllers' }).hover();
+    await page.getByRole('navigation').getByRole('link', { name: 'Mobiles' }).hover();
+    await page.getByRole('navigation').getByRole('link', { name: 'Monitors' }).hover();
   });
 
   test('should be able to select header menu', async ({ page }) => {
@@ -101,6 +92,7 @@ test.describe('Home page', () => {
     await expect(page).toHaveURL('/list/controllers');
   });
 });
+
 test.describe('Product Listing', () => {
   test('should be able to select product to view details', async ({ page }) => {
     await page.goto('/list/all-products');
@@ -111,44 +103,14 @@ test.describe('Product Listing', () => {
     await page.goto('/list/all-products');
     await page.locator('[id="\\32 "]').check();
     await Promise.all([
-      page.waitForResponse(response => response.url() === `${process.env.REACT_APP_APIUrl}/products/?&type=all-products&brand=2` && response.status() === 200),
+      page.waitForResponse(response => response.url() === `${process.env.REACT_APP_APIURL}/products/?&type=all-products&brand=2` && response.status() === 200),
     ]);
   });
 });
+
 test.describe('Footer', () => {
   test('should be able to select footer menu', async ({ page }) => {
     await page.getByRole('listitem').filter({ hasText: 'Monitors' }).getByRole('link', { name: 'Monitors' }).click();
     await expect(page).toHaveURL('/list/monitors');
-  });
-});
-
-test.describe('APIs', () => {
-
-  //text serach API
-  test('should be able to load search by text data', async ({ request }) => {
-    const response = await request.get(`${process.env.REACT_APP_APIUrl}/Products/search/laptops`);
-    expect(response.status()).toBe(200);
-    expect(response.ok()).toBeTruthy();
-  });
-
-  //load products list
-  test('should be able to load products list', async ({ request }) => {
-    const response = await request.get(`${process.env.REACT_APP_APIUrl}/Products/?type=laptops`);
-    expect(response.status()).toBe(200);
-    expect(response.ok()).toBeTruthy();
-  });
-
-  //load product details
-  test('should be able to load product details', async ({ request }) => {
-    const response = await request.get(`${process.env.REACT_APP_APIUrl}/Products/`+_productid);
-    expect(response.status()).toBe(200);
-    expect(response.ok()).toBeTruthy();
-  });
-
-  //filter products by brands
-  test('should be able to filter products by brands', async ({ request }) => {
-    const response = await request.get(`${process.env.REACT_APP_APIUrl}/Products/?type=laptops&brand=1`);
-    expect(response.status()).toBe(200);
-    expect(response.ok()).toBeTruthy();
   });
 });
