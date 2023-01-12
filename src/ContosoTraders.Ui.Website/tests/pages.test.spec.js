@@ -1,4 +1,4 @@
-// @ts-check
+// Test page content like button click and page redirection
 const { test, expect } = require('@playwright/test');
 let _productid = 1;
 let page = null;
@@ -19,7 +19,7 @@ test.beforeEach(async({page})=>{
 // });
 //#endregion
 test('Test with geolocation', async ({ page, context, request }) => {
-  const ipTest = await request.get(`${process.env.REACT_APP_GeolocationAPI}`);
+  const ipTest = await request.get(`${process.env.REACT_APP_GEOLOCATIONAPI}`);
   expect(ipTest.status()).toBe(200);
   expect(ipTest.ok()).toBeTruthy();
   const location = JSON.parse(await ipTest.text())
@@ -27,8 +27,7 @@ test('Test with geolocation', async ({ page, context, request }) => {
   const latitude = location.latitude//await page.locator('input#latitude').inputValue();
   const longitude = location.longitude//await page.locator('input#longitude').inputValue();
   const point = latitude+','+longitude;
-  // const response = await request.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
-  const response = await request.get(`${process.env.REACT_APP_GeoApiBaseURL}/Locations/${point}?key=${process.env.REACT_APP_BingMapsKey}`);
+  const response = await request.get(`${process.env.REACT_APP_GEOAPIBASEURL}/Locations/${point}?key=${process.env.REACT_APP_BINGMAPSKEY}`);
   expect(response.status()).toBe(200);
   expect(response.ok()).toBeTruthy();
   if(latitude != null && longitude != null){
@@ -37,11 +36,6 @@ test('Test with geolocation', async ({ page, context, request }) => {
   await Promise.all([
     page.waitForSelector('#current-location'),
   ]);
-  // await page.screenshot({ path: 'screenshot.png', fullPage: true });
-  // await page.goto('https://www.openstreetmap.org');
-  // await page.locator('[aria-label="Show My Location"]').click();
-  // await page.goto('https://maps.google.com');
-  // await page.locator('[aria-label="Show Your Location"]').click();
 });
 
 test.describe('Header', () => {
@@ -109,7 +103,7 @@ test.describe('Product Listing', () => {
     await page.goto('/list/all-products');
     await page.locator('[id="\\32 "]').check();
     await Promise.all([
-      page.waitForResponse(response => response.url() === `${process.env.REACT_APP_APIUrl}/products/?&type=all-products&brand=2` && response.status() === 200),
+      page.waitForResponse(response => response.url() === `${process.env.REACT_APP_APIURL}/products/?&type=all-products&brand=2` && response.status() === 200),
     ]);
   });
 });

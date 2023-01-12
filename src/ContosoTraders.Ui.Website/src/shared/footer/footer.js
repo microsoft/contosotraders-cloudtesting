@@ -21,27 +21,16 @@ const Footer = () => {
       setStatus('Geolocation is not supported by your browser');
     } else {
       setStatus('Locating...');
-    //   navigator.geolocation.getCurrentPosition((position) => {    
-    fetch(process.env.REACT_APP_GeolocationAPI)
+    fetch(process.env.REACT_APP_GEOLOCATIONAPI)
     .then(res => res.json())
     .then(data => {
         setStatus(null);
         setLat(data.latitude);
         setLng(data.longitude);
-        
-        //Another third party api
-        // const geoApiUrl2 = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${data.latitude}&longitude=${data.longitude}&localityLanguage=en`;
-        // fetch(geoApiUrl2)
-        // .then(res => res.json())
-        // .then(dat => {
-        //     setStatus(null);
-        //     let address = dat.locality+', '+dat.city
-        //     setLocation(address)
-        // })
 
         //Microsoft API
         let point = data.latitude+','+data.longitude
-        const geoApiUrlForAddress = `${process.env.REACT_APP_GeoApiBaseURL}/Locations/${point}?key=${process.env.REACT_APP_BingMapsKey}`;
+        const geoApiUrlForAddress = `${process.env.REACT_APP_GEOAPIBASEURL}/Locations/${point}?key=${process.env.REACT_APP_BINGMAPSKEY}`;
         fetch(geoApiUrlForAddress)
         .then(res => res.json())
         .then(dat => {
@@ -51,9 +40,6 @@ const Footer = () => {
             setLocation(address)
         })
     })
-    //   }, () => {
-    //     setStatus('Unable to retrieve your location');
-    //   });
     }
   }
 
