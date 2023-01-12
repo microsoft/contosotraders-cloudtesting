@@ -85,7 +85,6 @@ var cartsApiAcaContainerDetailsName = '${prefixHyphenated}-carts${env}'
 var cartsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
 var cartsApiSettingNameManagedIdentityClientId = 'ManagedIdentityClientId'
 
-
 // storage account (product images)
 var productImagesStgAccName = '${prefix}img${env}'
 var productImagesProductDetailsContainerName = 'product-details'
@@ -937,13 +936,13 @@ resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-
         }
       ]
     }
-    originHostHeader: skip(productimagesstgacc.properties.primaryEndpoints.blob, 8)
+    originHostHeader: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
     origins: [
       {
-        name: skip(productimagesstgacc.properties.primaryEndpoints.blob, 8)
+        name: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
         properties: {
-          hostName: skip(productimagesstgacc.properties.primaryEndpoints.blob, 8)
-          originHostHeader: skip(productimagesstgacc.properties.primaryEndpoints.blob, 8)
+          hostName: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
+          originHostHeader: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
         }
       }
     ]
@@ -1020,13 +1019,13 @@ resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-prev
         }
       ]
     }
-    originHostHeader: skip(uistgacc.properties.primaryEndpoints.web, 8)
+    originHostHeader: replace(replace(uistgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
     origins: [
       {
-        name: skip(uistgacc.properties.primaryEndpoints.web, 8)
+        name: replace(replace(uistgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
         properties: {
-          hostName: skip(uistgacc.properties.primaryEndpoints.web, 8)
-          originHostHeader: skip(uistgacc.properties.primaryEndpoints.web, 8)
+          hostName: replace(replace(uistgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
+          originHostHeader: replace(replace(uistgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
         }
       }
     ]
@@ -1131,13 +1130,13 @@ resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-pre
         }
       ]
     }
-    originHostHeader: skip(ui2stgacc.properties.primaryEndpoints.web, 8)
+    originHostHeader: replace(replace(ui2stgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
     origins: [
       {
-        name: skip(ui2stgacc.properties.primaryEndpoints.web, 8)
+        name: replace(replace(ui2stgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
         properties: {
-          hostName: skip(ui2stgacc.properties.primaryEndpoints.web, 8)
-          originHostHeader: skip(ui2stgacc.properties.primaryEndpoints.web, 8)
+          hostName: replace(replace(ui2stgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
+          originHostHeader: replace(replace(ui2stgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
         }
       }
     ]
