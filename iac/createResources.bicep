@@ -939,7 +939,7 @@ resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-
     originHostHeader: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
     origins: [
       {
-        name: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
+        name: replace(replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', ''), '.', '-')
         properties: {
           hostName: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
           originHostHeader: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
@@ -1022,7 +1022,7 @@ resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-prev
     originHostHeader: replace(replace(uistgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
     origins: [
       {
-        name: replace(replace(uistgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
+        name: replace(replace(replace(uistgacc.properties.primaryEndpoints.web, 'https://', ''), '/', ''), '.', '-')
         properties: {
           hostName: replace(replace(uistgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
           originHostHeader: replace(replace(uistgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
@@ -1133,7 +1133,7 @@ resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-pre
     originHostHeader: replace(replace(ui2stgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
     origins: [
       {
-        name: replace(replace(ui2stgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
+        name: replace(replace(replace(ui2stgacc.properties.primaryEndpoints.web, 'https://', ''), '/', ''), '.', '-')
         properties: {
           hostName: replace(replace(ui2stgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
           originHostHeader: replace(replace(ui2stgacc.properties.primaryEndpoints.web, 'https://', ''), '/', '')
