@@ -80,7 +80,6 @@ jobs:
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./iac/createResources.bicep
           parameters: ./iac/createResources.parameters.json env=${{ secrets.ENVIRONMENT }} sqlPassword=${{ secrets.SQL_PASSWORD }}
-          failOnStdErr: false # @TODO: Remove this later. Temporarily added to suppress warnings-as-errors during execution.
       # Add the logged-in service principal to the key vault access policy
       - name: add service principal to kv access policy
         uses: azure/CLI@v1
