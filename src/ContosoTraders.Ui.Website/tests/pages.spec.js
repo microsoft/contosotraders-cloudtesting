@@ -121,14 +121,3 @@ test.describe('Footer', () => {
     await expect(page).toHaveURL('/list/monitors');
   });
 });
-
-test.afterEach(async ({ page }, testInfo) => {
-  console.log(`Finished ${testInfo.title} with status ${testInfo.status}`);
-
-  if (testInfo.status !== testInfo.expectedStatus)
-    console.log(`Did not run as expected, ended up at ${page.url()}`);
-});
-
-test.afterAll(async ({ page }) => {
-  await page.close();
-});
