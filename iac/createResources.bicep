@@ -937,13 +937,13 @@ resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-
         }
       ]
     }
-    originHostHeader: productimagesstgacc.properties.primaryEndpoints.blob
+    originHostHeader: skip(productimagesstgacc.properties.primaryEndpoints.blob, 8)
     origins: [
       {
-        name: productimagesstgacc.properties.primaryEndpoints.blob
+        name: skip(productimagesstgacc.properties.primaryEndpoints.blob, 8)
         properties: {
-          hostName: productimagesstgacc.properties.primaryEndpoints.blob
-          originHostHeader: productimagesstgacc.properties.primaryEndpoints.blob
+          hostName: skip(productimagesstgacc.properties.primaryEndpoints.blob, 8)
+          originHostHeader: skip(productimagesstgacc.properties.primaryEndpoints.blob, 8)
         }
       }
     ]
@@ -1020,13 +1020,13 @@ resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-prev
         }
       ]
     }
-    originHostHeader: uistgacc.properties.primaryEndpoints.web
+    originHostHeader: skip(uistgacc.properties.primaryEndpoints.web, 8)
     origins: [
       {
-        name: uistgacc.properties.primaryEndpoints.web
+        name: skip(uistgacc.properties.primaryEndpoints.web, 8)
         properties: {
-          hostName: uistgacc.properties.primaryEndpoints.web
-          originHostHeader: uistgacc.properties.primaryEndpoints.web
+          hostName: skip(uistgacc.properties.primaryEndpoints.web, 8)
+          originHostHeader: skip(uistgacc.properties.primaryEndpoints.web, 8)
         }
       }
     ]
@@ -1131,13 +1131,13 @@ resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-pre
         }
       ]
     }
-    originHostHeader: ui2stgacc.properties.primaryEndpoints.web
+    originHostHeader: skip(ui2stgacc.properties.primaryEndpoints.web, 8)
     origins: [
       {
-        name: ui2stgacc.properties.primaryEndpoints.web
+        name: skip(ui2stgacc.properties.primaryEndpoints.web, 8)
         properties: {
-          hostName: ui2stgacc.properties.primaryEndpoints.web
-          originHostHeader: ui2stgacc.properties.primaryEndpoints.web
+          hostName: skip(ui2stgacc.properties.primaryEndpoints.web, 8)
+          originHostHeader: skip(ui2stgacc.properties.primaryEndpoints.web, 8)
         }
       }
     ]
