@@ -934,13 +934,13 @@ resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-
         }
       ]
     }
-    originHostHeader: '${productImagesStgAccName}.blob.core.windows.net' // @TODO: Hack, fix later
+    originHostHeader: productimagesstgacc.properties.primaryEndpoints.blob
     origins: [
       {
-        name: '${productImagesStgAccName}-blob-core-windows-net' // @TODO: Hack, fix later
+        name: productimagesstgacc.properties.primaryEndpoints.blob
         properties: {
-          hostName: '${productImagesStgAccName}.blob.core.windows.net' // @TODO: Hack, fix later
-          originHostHeader: '${productImagesStgAccName}.blob.core.windows.net' // @TODO: Hack, fix later
+          hostName: productimagesstgacc.properties.primaryEndpoints.blob
+          originHostHeader: productimagesstgacc.properties.primaryEndpoints.blob
         }
       }
     ]
@@ -1017,13 +1017,13 @@ resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-prev
         }
       ]
     }
-    originHostHeader: '${uiStgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
+    originHostHeader: uistgacc.properties.primaryEndpoints.web
     origins: [
       {
-        name: '${uiStgAccName}-z13-web-core-windows-net' // @TODO: Hack, fix later
+        name: uistgacc.properties.primaryEndpoints.web
         properties: {
-          hostName: '${uiStgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
-          originHostHeader: '${uiStgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
+          hostName: uistgacc.properties.primaryEndpoints.web
+          originHostHeader: uistgacc.properties.primaryEndpoints.web
         }
       }
     ]
@@ -1128,13 +1128,13 @@ resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-pre
         }
       ]
     }
-    originHostHeader: '${ui2StgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
+    originHostHeader: ui2stgacc.properties.primaryEndpoints.web
     origins: [
       {
-        name: '${ui2StgAccName}-z13-web-core-windows-net' // @TODO: Hack, fix later
+        name: ui2stgacc.properties.primaryEndpoints.web
         properties: {
-          hostName: '${ui2StgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
-          originHostHeader: '${ui2StgAccName}.z13.web.core.windows.net' // @TODO: Hack, fix later
+          hostName: ui2stgacc.properties.primaryEndpoints.web
+          originHostHeader: ui2stgacc.properties.primaryEndpoints.web
         }
       }
     ]
