@@ -39,11 +39,12 @@ const config = {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.REACT_APP_BaseUrlForPlaywrightTesting || 'http://localhost:3000',
+    baseURL: process.env.REACT_APP_BaseUrlForPlaywrightTesting,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     permissions: ['geolocation'],
+    geolocation: { latitude: 50.8551729, longitude: 4.340312 },
     screenshot: 'only-on-failure',
     video: 'on-first-retry',
   },
@@ -104,13 +105,13 @@ const config = {
   // outputDir: 'test-results/',
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: 'npm run start',
-    // port: 3000,
-    url: process.env.REACT_APP_BaseUrlForPlaywrightTesting || 'http://localhost:3000/',
-    timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
-  },
+  // webServer: {
+  //   command: 'npm run start',
+  //   // port: 3000,
+  //   url: process.env.BaseUrlForPlaywrightTesting || 'http://localhost:3000/',
+  //   timeout: 120 * 1000,
+  //   reuseExistingServer: !process.env.CI,
+  // },
 };
 
 module.exports = config;

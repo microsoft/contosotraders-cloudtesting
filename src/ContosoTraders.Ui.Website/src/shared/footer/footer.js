@@ -22,17 +22,17 @@ const Footer = () => {
     } else {
       setStatus('Locating...');
     //   navigator.geolocation.getCurrentPosition((position) => {
-    const geoApiUrl1 = `http://ip-api.com/json`;
+    const geoApiUrl1 = `https://geolocation-db.com/json/8d382830-904e-11ed-97d5-0de223189653`;
     
     fetch(geoApiUrl1)
     .then(res => res.json())
     .then(data => {
         setStatus(null);
-        setLat(data.lat);
-        setLng(data.log);
+        setLat(data.latitude);
+        setLng(data.longitude);
         
         //Another third party api
-        // const geoApiUrl2 = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${data.lat}&longitude=${data.lon}&localityLanguage=en`;
+        // const geoApiUrl2 = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${data.latitude}&longitude=${data.longitude}&localityLanguage=en`;
         // fetch(geoApiUrl2)
         // .then(res => res.json())
         // .then(dat => {
@@ -42,7 +42,7 @@ const Footer = () => {
         // })
 
         //Microsoft API
-        let point = data.lat+','+data.lon
+        let point = data.latitude+','+data.longitude
         let BingMapsKey = `AkLj1p_g1w7lFb8lJZ-XnicObnu2-ydEpmn6eryraluxl_x3bDo0Jx6w58b7ZJt2`
         const geoApiUrlForAddress = `http://dev.virtualearth.net/REST/v1/Locations/${point}?key=${BingMapsKey}`;
         fetch(geoApiUrlForAddress)

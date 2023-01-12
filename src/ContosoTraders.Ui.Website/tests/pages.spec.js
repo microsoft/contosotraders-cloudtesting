@@ -20,13 +20,13 @@ test.beforeEach(async({page})=>{
 // });
 //#endregion
 test('Test with geolocation', async ({ page, context, request }) => {
-  const ipTest = await request.get('http://ip-api.com/json');
+  const ipTest = await request.get('https://geolocation-db.com/json/8d382830-904e-11ed-97d5-0de223189653');
   expect(ipTest.status()).toBe(200);
   expect(ipTest.ok()).toBeTruthy();
   const location = JSON.parse(await ipTest.text())
 
-  const latitude = location.lat//await page.locator('input#latitude').inputValue();
-  const longitude = location.lon//await page.locator('input#longitude').inputValue();
+  const latitude = location.latitude//await page.locator('input#latitude').inputValue();
+  const longitude = location.longitude//await page.locator('input#longitude').inputValue();
   const point = latitude+','+longitude;
   // const response = await request.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
   const response = await request.get(`http://dev.virtualearth.net/REST/v1/Locations/${point}?key=${BingMapsKey}`);

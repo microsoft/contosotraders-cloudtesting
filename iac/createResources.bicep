@@ -41,6 +41,7 @@ var kvSecretNameImagesEndpoint = 'imagesEndpoint'
 var kvSecretNameCognitiveServicesEndpoint = 'cognitiveServicesEndpoint'
 var kvSecretNameCognitiveServicesAccountKey = 'cognitiveServicesAccountKey'
 var kvSecretNameAppInsightsConnStr = 'appInsightsConnectionString'
+var kvSecretNameUiCdnEndpoint = 'uiCdnEndpoint'
 
 // user-assigned managed identity (for key vault access)
 var userAssignedMIForKVAccessName = '${prefixHyphenated}-mi-kv-access${environment}'
@@ -269,6 +270,16 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     properties: {
       contentType: 'connection string to the app insights instance'
       value: appinsights.properties.ConnectionString
+    }
+  }
+
+  // secret
+  resource kv_secretUiCdnEndpoint 'secrets' = {
+    name: kvSecretNameUiCdnEndpoint
+    tags: resourceTags
+    properties: {
+      contentType: 'endpoint url (cdn endpoint) of the ui'
+      value: cdnprofile_ui2endpoint.properties.hostName
     }
   }
 
@@ -1285,3 +1296,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
 
 // outputs
 ////////////////////////////////////////////////////////////////////////////////
+
+output cartsApiEndpoint string = 'https://${cartsapiaca.properties.configuration.ingress.fqdn}'
+output uiCdnEndpoint string = 'https://${cdnprofile_ui2endpoint.properties.hostName}'
