@@ -114,7 +114,7 @@ jobs:
       - name: display ui endpoint
         uses: azure/CLI@v1
         with:
-          inlineScript: echo $(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)
+          inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv | sed 's/./& /g')
 
   deploy-carts-api:
     runs-on: ubuntu-latest
