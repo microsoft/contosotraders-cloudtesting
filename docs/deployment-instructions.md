@@ -30,73 +30,50 @@ You will need following to get started:
 
 ## Prepare your GitHub Account
 
-First, fork the [contosotraders-cloudtesting repo](https://github.com/microsoft/contosotraders-cloudtesting) in your account.
+* First, fork the [contosotraders-cloudtesting repo](https://github.com/microsoft/contosotraders-cloudtesting) in your account.
 
-Then, set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets` > `Actions` and create these necessary repository secrets:
+* Then, set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets` > `Actions` and create these necessary repository secrets:
 
-| Secret Name        | Secret Value                                                                   |
-| ------------------ | ------------------------------------------------------------------------------ |
-| `ENVIRONMENT`      | A unique environment name (max 6 characters, alphanumeric only). E.g. 'test51' |
-| `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs                              |
-| `SERVICEPRINCIPAL` | See details below                                                              |
+  | Secret Name        | Secret Value                                                                   |
+  | ------------------ | ------------------------------------------------------------------------------ |
+  | `ENVIRONMENT`      | A unique environment name (max 6 characters, alphanumeric only). E.g. 'test51' |
+  | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs                              |
+  | `SERVICEPRINCIPAL` | See details below                                                              |
 
-The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
+  The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
 
-```json
-{
-  "clientId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
-  "clientSecret": "your-client-secret",
-  "tenantId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
-  "subscriptionId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"
-}
-```
+  ```json
+  {
+    "clientId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+    "clientSecret": "your-client-secret",
+    "tenantId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+    "subscriptionId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"
+  }
+  ```
 
-The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
+  The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
 
 ## Deploy the Application
 
-Go to your forked repo's `Actions` tab, selecting the `contoso-traders-provisioning-deployment` workflow, and click on the `Run workflow` button.
+* Go to your forked repo's `Actions` tab, selecting the `contoso-traders-provisioning-deployment` workflow, and click on the `Run workflow` button.
 
-This github workflow will provision the necessary infrastructure to your Azure subscription as well as deploy the applications (APIs, UI) to the infrastructure.
+* This github workflow will provision the necessary infrastructure to your Azure subscription as well as deploy the applications (APIs, UI) to the infrastructure. Note that the workflow might take about 15 mins to complete.
 
-![Contoso Traders Architecture](../docs/architecture/contoso-traders-enhancements.drawio.png)
-
-> Note: The workflow might take about 15 mins to complete.
+  ![Contoso Traders Architecture](../docs/architecture/contoso-traders-enhancements.drawio.png)
 
 ## Verify the Deployment
 
-Once the workflow completes, the UI's accessible CDN endpoint will be displayed in the workflow logs (in the `display ui cdn endpoint` step in the `provision-infrastructure` job).
+* Once the workflow completes, the UI's accessible CDN endpoint will be displayed in the workflow logs (in the `display ui cdn endpoint` step in the `provision-infrastructure` job).
 
-![Endpoints in workflow logs](./images/ui-endpoint-github-workflow.png)
+  ![Endpoints in workflow logs](./images/ui-endpoint-github-workflow.png)
 
-The UI's endpoint will be partially masked in the logs. Replace the `***` token with the value of the `ENVIRONMENT` github repository secret.
+  The UI's endpoint will be partially masked in the logs. Replace the `***` token with the value of the `ENVIRONMENT` github repository secret.
 
-You can load the UI endpoint in your browser to verify that the application is indeed up and running.
+* You can load the UI endpoint in your browser to verify that the application is indeed up and running.
 
 ### Troubleshooting Deployment Errors
 
-This includes some of the common problems you may during deployment and approach to resolve them.
-
-1.	AI Terms and services:  
-
-	 **If you see an error stating that "Responsible AI terms are not accepted for this subscription", deploy an Azure Cognitive Service resource manually in your subscription temporarily and re-run the jobs.** 
-	 
-3.	Lack of permissions
-	
-       **Check the role of the service prinipal is owner. If its not shown please provide the owner role to the service principal.**
-	
-5.	Environment name having not allowed characters
-	
-	**When you are creating secret for Environment please add combination of alphanumeric characters without any symbols. Maximum characters allowed is 6 and minimum characters allowed is 3. Keep small case letters**
-	
-
-10.	Can not find resources (Key Vault, CDN, Storage Account, etc. )
-
-	**Please note that the workflow provisions all resources through bicep templates, scripts etc. We’ve observed that in many cases, Azure subscription resource cache does not get updated fast enough before the next dependent step starts executing.
-	If you find workflow failure error due to missing Azure resources (Key vault, CDN, container apps etc, please re-run the failed jobs.**
-
-11. **Note : Please note that the workflow provisions all resources through bicep templates, scripts etc. We’ve observed that in many cases, Azure subscription resource cache does not get updated fast enough before the next dependent step starts executing.
-If you find workflow failure error due to missing Azure resources (Key vault, CDN, container apps etc, please re-run the failed jobs.** 
+@TODO
 
 ## Explore Demo Scenarios
 
