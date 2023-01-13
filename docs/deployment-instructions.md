@@ -79,12 +79,10 @@ You will need following to get started:
 
 For further learning, you can run through some of the demo scripts listed below:
 
-| Scenario                                                                          |
-| --------------------------------------------------------------------------------- |
-| [Developer Workflow](../demo-scripts/dev-workflow/walkthrough.md)                 |
-| [Azure Load Testing](../demo-scripts/azure-load-testing/walkthrough.md)           |
-| [Azure Chaos Studio](../demo-scripts/azure-chaos-studio/walkthrough.md)           |
-| [Testing with Playwright](../demo-scripts/testing-with-playwright/walkthrough.md) |
+* [Developer Workflow](../demo-scripts/dev-workflow/walkthrough.md)
+* [Azure Load Testing](../demo-scripts/azure-load-testing/walkthrough.md)
+* [Azure Chaos Studio](../demo-scripts/azure-chaos-studio/walkthrough.md)
+* [Testing with Playwright](../demo-scripts/testing-with-playwright/walkthrough.md)
 
 ## Cleanup
 
