@@ -1,8 +1,6 @@
 # Contoso Traders - Cloud Testing Tools
 
-## Overview
-
-You can use the source code, deployment templates, and demo scripts in this repository to try out Microsoft Playwright, Azure Chaos Studio, and Azure Load Testing.
+Source code, deployment templates, and demo scripts to explore Microsoft Playwright, Azure Chaos Studio, and Azure Load Testing.
 
 ![Logo](https://github.com/microsoft/ContosoTraders/blob/main/docs/images/logo-1280x640.png)
 
@@ -42,5 +40,7 @@ This project may contain trademarks or logos for projects, products, or services
 trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+----------
 
 ![Landing Page](./docs/images/landing-page.png)
