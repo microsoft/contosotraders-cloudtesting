@@ -51,7 +51,7 @@ The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
 }
 ```
 
-> All the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command above.
+The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
 
 ## Deploy the Application
 
