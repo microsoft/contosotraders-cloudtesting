@@ -1,6 +1,6 @@
 # ContosoTraders - Deployment Instructions
 
-This document will help you deploy the Contoso Traders application in your Azure environment. You'll be using both GitHub actions and Azure CLI for this.
+This document will help you deploy the ContosoTraders application in your Azure environment. You'll be using both GitHub actions and Azure CLI for this.
 
 Once deployed, you'll be able to walk through various demo scenarios for Microsoft Playwright, Azure Load Testing, and Azure Chaos Studio.
 
@@ -34,11 +34,11 @@ You will need following to get started:
 
 * Then, set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets` > `Actions` and create these necessary repository secrets:
 
-  | Secret Name        | Secret Value                                                                   |
-  | ------------------ | ------------------------------------------------------------------------------ |
-  | `ENVIRONMENT`      | A unique environment name (max 6 characters, alphanumeric only). E.g. 'test51' |
-  | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs                              |
-  | `SERVICEPRINCIPAL` | See details below                                                              |
+  | Secret Name        | Secret Value                                                                               |
+  | ------------------ | ------------------------------------------------------------------------------------------ |
+  | `ENVIRONMENT`      | A unique environment name (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
+  | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs                                          |
+  | `SERVICEPRINCIPAL` | See details below                                                                          |
 
   The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
 
@@ -73,7 +73,11 @@ You will need following to get started:
 
 ### Troubleshooting Deployment Errors
 
-@TODO
+Here are some common problems that you may encounter during deployment:
+
+1. AI Terms and services: If you see an error stating that "Responsible AI terms are not accepted for this subscription", you can manually create an Azure Cognitive Service resource in your subscription temporarily and then re-run the workflow job.
+
+2. Other intermittent errors: Should you encounter any of [these intermittent errors](https://github.com/microsoft/ContosoTraders/issues?q=is%3Aissue+is%3Aopen+label%3Adevops) in the github workflow, please re-run the failed jobs (it'll will pass on retry). We're working to fix these soon.
 
 ## Explore Demo Scenarios
 
