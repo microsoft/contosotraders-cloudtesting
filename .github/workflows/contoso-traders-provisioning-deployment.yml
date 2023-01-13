@@ -111,6 +111,10 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.PRODUCTS_CDN_ENDPOINT_NAME }}${{ secrets.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ secrets.ENVIRONMENT }}'
+      - name: display ui endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: echo $(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)
 
   deploy-carts-api:
     runs-on: ubuntu-latest
