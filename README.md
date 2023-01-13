@@ -13,6 +13,7 @@ You can use the source code, deployment templates, and demo scripts in this repo
   * [Carts API](https://contoso-traders-cartsctprod.politebay-207fb230.eastus.azurecontainerapps.io/swagger)
   * [Products API](https://contoso-traders-productsctprod.eastus.cloudapp.azure.com/swagger/)
 * [Deployment Guide](./demo-scripts/app-deployment-guide.md)
+  * [How to run locally](./demo-scripts/setup-local-instructions.md)
 * [Contributing](./CONTRIBUTING.md)
 * [Bicep Templates](./iac/)
 * [Github Workflows](./.github/workflows/)
@@ -20,7 +21,7 @@ You can use the source code, deployment templates, and demo scripts in this repo
 
 ## Demo Scripts
 
-* [DevOps](./demo-scripts/devops/walkthrough.md)
+* [Developer Workflow](./demo-scripts/dev-workflow/walkthrough.md)
 * [Azure Load Testing](./demo-scripts/azure-load-testing/walkthrough.md)
 * [Azure Chaos Studio](./demo-scripts/azure-chaos-studio/walkthrough.md)
 * [Testing With Playwright](./demo-scripts/testing-with-playwright/walkthrough.md)

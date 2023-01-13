@@ -111,7 +111,7 @@ It is recommended to create this temporary in a separate resource group, so that
 
 Once the provisioning is completed, you can delete the resource group “Cognitive-Temp-RG” as terms are accepted for your subscription now. 
 
-<h2>Preparing your GitHub Account</h2>
+## Prepare your GitHub Account
 
 In this step, you will form the original ContosoTraders GitHub repository to your GitHub Account and prepare for deployment. 
 Fork the Contoso Traders Repo
@@ -272,12 +272,12 @@ As further learning, you can try running through some of the demo scripts listed
 
 
 
-  | Scenario                                  | Link                                                                                                                                                                                       |
-  | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | DevOps with GitHub Actions |  [Technical Walkthrough](../demo-scripts/devops/walkthrough.md)         |
-  | Azure Load Testing    | [Technical Walkthrough](../demo-scripts/azure-load-testing/walkthrough.md)          |
-  | Azure Chaos Studio    | [Technical Walkthrough](../demo-scripts/azure-chaos-studio/walkthrough.md)     |
-  | Testing with Playwright  | [Technical Walkthrough](../demo-scripts/testing-with-playwright/walkthrough.md) |
+  | Scenario                   | Link                                                                            |
+  | -------------------------- | ------------------------------------------------------------------------------- |
+  | DevOps with GitHub Actions | [Technical Walkthrough](../demo-scripts/devops/walkthrough.md)                  |
+  | Azure Load Testing         | [Technical Walkthrough](../demo-scripts/azure-load-testing/walkthrough.md)      |
+  | Azure Chaos Studio         | [Technical Walkthrough](../demo-scripts/azure-chaos-studio/walkthrough.md)      |
+  | Testing with Playwright    | [Technical Walkthrough](../demo-scripts/testing-with-playwright/walkthrough.md) |
 
 			
 
@@ -306,16 +306,6 @@ This includes some of the common problems you may during deployment and approach
 
 	**Please note that the workflow provisions all resources through bicep templates, scripts etc. We’ve observed that in many cases, Azure subscription resource cache does not get updated fast enough before the next dependent step starts executing.
 	If you find workflow failure error due to missing Azure resources (Key vault, CDN, container apps etc, please re-run the failed jobs.**
-	
-## Known Deployment Issues
-
-When you run the workflow, it shows following warnings.
-
-**Error: WARNING: /home/runner/work/ContosoTraders/ContosoTraders/iac/createResources.bicep(191,50) : Warning no-hardcoded-env-urls: Environment URLs should not be hardcoded. Use the environment() function to ensure compatibility across clouds. Found this disallowed host: "database.windows.net". **
-
-**Warning: WARNING: /home/runner/work/ContosoTraders/ContosoTraders/iac/createResources.bicep(191,50) : Warning no-hardcoded-env-urls: Environment URLs should not be hardcoded. Use the environment() function to ensure compatibility across clouds. Found this disallowed host: "database.windows.net". **
-
-This does not block the deployment and workflow will run successfully. It does not have any other impact. It is being tracked here: microsoft/ContosoTraders/#68.
 
 ## Questions & Support
 
