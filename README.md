@@ -8,16 +8,9 @@ You can use the source code, deployment templates, and demo scripts in this repo
 
 ## Documentation and Resources
 
-* Application Links
-  * [UI](https://cloudtesting.contosotraders.com/)
-  * [Carts API](https://contoso-traders-cartsctprod.politebay-207fb230.eastus.azurecontainerapps.io/swagger)
-  * [Products API](https://contoso-traders-productsctprod.eastus.cloudapp.azure.com/swagger/)
-* [Deployment Instructions](./docs/deployment-instructions.md)
-  * [Running Locally](./docs/running-locally.md)
-* [Contributing](./CONTRIBUTING.md)
-* [Bicep Templates](./iac/)
-* [Github Workflows](./.github/workflows/)
-  * [![contoso-traders-provisioning-deployment](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-provisioning-deployment.yml/badge.svg)](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-provisioning-deployment.yml)
+* Application Links: [UI](https://cloudtesting.contosotraders.com/) | [Carts API](https://contoso-traders-cartsctprod.politebay-207fb230.eastus.azurecontainerapps.io/swagger) | [Products API](https://contoso-traders-productsctprod.eastus.cloudapp.azure.com/swagger/)
+* [Deployment Instructions](./docs/deployment-instructions.md) | [Running Locally](./docs/running-locally.md)
+* Pipeline: [![contoso-traders-provisioning-deployment](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-provisioning-deployment.yml/badge.svg)](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-provisioning-deployment.yml)
 
 ## Demo Scripts
 
