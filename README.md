@@ -1,26 +1,17 @@
 # Contoso Traders - Cloud Testing Tools
 
-## Overview
-
-You can use the source code, deployment templates, and demo scripts in this repository to try out Playwright, Azure Chaos Studio, Azure Load Testing, and GitHub Actions.
+Source code, deployment templates, and demo scripts for exploring Microsoft Playwright, Azure Chaos Studio, and Azure Load Testing.
 
 ![Logo](https://github.com/microsoft/ContosoTraders/blob/main/docs/images/logo-1280x640.png)
 
 ## Documentation and Resources
 
-* Application Links
-  * [UI](https://cloudtesting.contosotraders.com/)
-  * [Carts API](https://contoso-traders-cartsctprod.politebay-207fb230.eastus.azurecontainerapps.io/swagger)
-  * [Products API](https://contoso-traders-productsctprod.eastus.cloudapp.azure.com/swagger/)
-* [Deployment Guide](./demo-scripts/app-deployment-guide.md)
-* [Contributing](./CONTRIBUTING.md)
-* [Bicep Templates](./iac/)
-* [Github Workflows](./.github/workflows/)
-  * [![contoso-traders-provisioning-deployment](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-provisioning-deployment.yml/badge.svg)](https://github.com/microsoft/ContosoTraders-CloudTesting/actions/workflows/contoso-traders-provisioning-deployment.yml)
+* Application Links: [UI](https://cloudtesting.contosotraders.com/) | [Carts API](https://contoso-traders-cartsctprod.politebay-207fb230.eastus.azurecontainerapps.io/swagger) | [Products API](https://contoso-traders-productsctprod.eastus.cloudapp.azure.com/swagger/)
+* [Deployment Instructions](./docs/deployment-instructions.md) | [Running Locally](./docs/running-locally.md)
 
 ## Demo Scripts
 
-* [DevOps](./demo-scripts/devops/walkthrough.md)
+* [Developer Workflow](./demo-scripts/dev-workflow/walkthrough.md)
 * [Azure Load Testing](./demo-scripts/azure-load-testing/walkthrough.md)
 * [Azure Chaos Studio](./demo-scripts/azure-chaos-studio/walkthrough.md)
 * [Testing With Playwright](./demo-scripts/testing-with-playwright/walkthrough.md)
@@ -49,3 +40,7 @@ This project may contain trademarks or logos for projects, products, or services
 trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+----------
+
+![Landing Page](./docs/images/landing-page.png)
