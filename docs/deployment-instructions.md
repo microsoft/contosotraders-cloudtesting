@@ -59,7 +59,7 @@ You will need following to get started:
 
 * This github workflow will provision the necessary infrastructure to your Azure subscription as well as deploy the applications (APIs, UI) to the infrastructure. Note that the workflow might take about 15 mins to complete.
 
-  ![Contoso Traders Architecture](../docs/architecture/contoso-traders-enhancements.drawio.png)
+  ![workflow-logs](./images/github-workflow.png)
 
 ## Verify the Deployment
 
