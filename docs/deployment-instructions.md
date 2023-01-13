@@ -8,9 +8,9 @@ Once deployed, you'll be able to walk through various demo scenarios for Microso
 
 You will need following to get started:
 
-1. A GitHub Account: You can create one for free [here](https://github.com/).
-2. An Azure Subscription: You can create a free account [here](https://azure.microsoft.com/free/).
-3. Azure CLI: Instructions to download and install are available [here](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
+* A GitHub Account: You can create one for free [here](https://github.com/).
+* An Azure Subscription: You can create a free account [here](https://azure.microsoft.com/free/).
+* Azure CLI: Instructions to download and install are available [here](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
 
 ## Prepare your Azure Subscription
 
@@ -40,7 +40,7 @@ Then, set up the repository secrets in your forked repo. On your fork of the git
 | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs                              |
 | `SERVICEPRINCIPAL` | See details below                                                              |
 
-The value of the `SERVICEPRINCIPAL` secret above needs to have the below format. All the properties can be found in the JSON output of the `az ad sp create-for-rbac` command above.
+The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
 
 ```json
 {
@@ -50,6 +50,8 @@ The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
   "subscriptionId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"
 }
 ```
+
+> All the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command above.
 
 ## Deploy the Application
 

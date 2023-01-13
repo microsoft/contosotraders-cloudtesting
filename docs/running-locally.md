@@ -2,7 +2,7 @@
 
 1. Follow the [deployment instructions](./deployment-instructions.md) to provision the infrastructure in your own Azure subscription.
 
-2. Ensure that you have the following installed:
+2. Ensure that you have the following installed on your local machine:
    * [Git](https://git-scm.com/downloads)
    * [Node v16.18.0](https://nodejs.org/download/release/v16.8.0/)
    * [DOTNET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
