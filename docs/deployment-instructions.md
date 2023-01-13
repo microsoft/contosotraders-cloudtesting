@@ -63,11 +63,13 @@ This github workflow will provision the necessary infrastructure to your Azure s
 
 ## Verify the Deployment
 
-Once the workflow completes, the UI and API endpoints will be displayed in the workflow logs (see below).
+Once the workflow completes, the UI's accessible CDN endpoint will be displayed in the workflow logs (in the `display ui cdn endpoint` step in the `provision-infrastructure` job).
 
-![Endpoints in workflow logs](@TODO)
+![Endpoints in workflow logs](./images/ui-endpoint-github-workflow.png)
 
-You can load the UI endpoint in your browser to verify that the application is up and running.
+The UI's endpoint will be partially masked in the logs. Replace the `***` token with the value of the `ENVIRONMENT` github repository secret.
+
+You can load the UI endpoint in your browser to verify that the application is indeed up and running.
 
 ### Troubleshooting Deployment Errors
 
@@ -93,7 +95,6 @@ This includes some of the common problems you may during deployment and approach
 
 11. **Note : Please note that the workflow provisions all resources through bicep templates, scripts etc. We’ve observed that in many cases, Azure subscription resource cache does not get updated fast enough before the next dependent step starts executing.
 If you find workflow failure error due to missing Azure resources (Key vault, CDN, container apps etc, please re-run the failed jobs.** 
-
 
 ## Explore Demo Scenarios
 
