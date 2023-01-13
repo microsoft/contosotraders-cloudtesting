@@ -2,7 +2,7 @@
 
 ## Overview
 
-You can use the source code, deployment templates, and demo scripts in this repository to try out Playwright, Azure Chaos Studio, Azure Load Testing, and GitHub Actions.
+You can use the source code, deployment templates, and demo scripts in this repository to try out Microsoft Playwright, Azure Chaos Studio, and Azure Load Testing.
 
 ![Logo](https://github.com/microsoft/ContosoTraders/blob/main/docs/images/logo-1280x640.png)
 
@@ -12,6 +12,8 @@ You can use the source code, deployment templates, and demo scripts in this repo
 
 * Application Links: [UI](https://cloudtesting.contosotraders.com/) | [Carts API](https://contoso-traders-cartsctprod.politebay-207fb230.eastus.azurecontainerapps.io/swagger) | [Products API](https://contoso-traders-productsctprod.eastus.cloudapp.azure.com/swagger/)
 * [Deployment Instructions](./docs/deployment-instructions.md) | [Running Locally](./docs/running-locally.md)
+
+![Landing Page](./docs/images/landing-page.png)
 
 ## Demo Scripts
 
