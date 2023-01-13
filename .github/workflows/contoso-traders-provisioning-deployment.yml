@@ -180,7 +180,7 @@ jobs:
       - name: setup kubectl
         uses: azure/setup-kubectl@v3
       - name: create kubernetes secret (acr password)
-        uses: Azure/k8s-create-secret@v3.0
+        uses: Azure/k8s-create-secret@v4
         with:
           secret-name: ${{ env.AKS_SECRET_NAME_ACR_PASSWORD }}
           container-registry-url: ${{ env.ACR_NAME }}${{ secrets.ENVIRONMENT }}.azurecr.io
@@ -212,7 +212,7 @@ jobs:
         env:
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
       - name: lint deployment manifest
-        uses: azure/k8s-lint@v1
+        uses: azure/k8s-lint@v2.0
         with:
           manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
       - name: apply deployment manifest
@@ -373,7 +373,7 @@ jobs:
         with:
           inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} -n cartsApiEndpoint --query "value" -o tsv)" >> $GITHUB_OUTPUT
       - name: load test (carts API)
-        uses: Azure/load-testing@v1.1.7
+        uses: Azure/load-testing@v1.1.9
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./tests/loadtests/contoso-traders-carts.yaml
@@ -424,7 +424,7 @@ jobs:
         with:
           inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ secrets.ENVIRONMENT }} -n productsApiEndpoint --query "value" -o tsv)" >> $GITHUB_OUTPUT
       - name: load test (products API)
-        uses: Azure/load-testing@v1.1.7
+        uses: Azure/load-testing@v1.1.9
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./tests/loadtests/contoso-traders-products.yaml
