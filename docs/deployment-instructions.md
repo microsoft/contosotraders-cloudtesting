@@ -1,4 +1,4 @@
-# Contoso Traders - Deployment Instructions
+# ContosoTraders - Deployment Instructions
 
 This document will help you deploy the Contoso Traders application in your Azure environment. You'll be using both GitHub actions and Azure CLI for this.
 
