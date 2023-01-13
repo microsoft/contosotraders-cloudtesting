@@ -1,4 +1,4 @@
-# Instructions to run Contoso Traders locally
+# Instructions for running Contoso Traders locally
 
 ## Setting up ContosoTraders Infrastructure
 
@@ -20,18 +20,25 @@
 4. Run the Products API locally:
    * Open a cmd window and navigate to the `src/ContosoTraders.Api.Products` folder.
    * Run `dotnet user-secrets set "KeyVaultEndpoint" "https://contosotraderskv<ENVIRONMENT>.vault.azure.net/"`. Replace `<ENVIRONMENT>` with the [value used above](./github-secrets.md).
-   * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62300/swagger`.
+   * Run `dotnet build && dotnet run`. This will start the web API at `https://localhost:62300/swagger`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
-5. Run the Carts API locally
+5. Run the Carts API locally:
    * Open a cmd window and navigate to the `src/ContosoTraders.Api.Carts` folder.
    * Run `dotnet user-secrets set "KeyVaultEndpoint" "https://contosotraderskv<ENVIRONMENT>.vault.azure.net/"`. Replace `<ENVIRONMENT>` with the [value used above](./github-secrets.md).
-   * Run `dotnet build && dotnet run`. This will start the web API on `https://localhost:62400/swagger`.
+   * Run `dotnet build && dotnet run`. This will start the web API at `https://localhost:62400/swagger`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
 6. Run the UI locally:
-   * You'll have to manually update this source code file to point to the locally running APIs above: `src\ContosoTraders.Ui.Website\.env`
-     * line #01: `const APIUrl = 'https://localhost:62300/v1';`
-     * line #02: `const APIUrlShoppingCart = 'https://localhost:62400/v1';`
+   * You'll have to manually update this source code file to point to the locally running APIs above: `src/ContosoTraders.Ui.Website/.env`
+     * line #01: `const REACT_APP_APIURL = 'https://localhost:62300/v1';`
+     * line #02: `const REACT_APP_APIURLSHOPPINGCART = 'https://localhost:62400/v1';`
+     * line #03: `const REACT_APP_BASEURLFORPLAYWRIGHTTESTING = 'http://localhost:3000';`
    * Open a cmd window and navigate to the `src/ContosoTraders.Ui.Website` folder.
    * Run `npm install`.
    * Run `npm run start`. This will start the UI on `http://localhost:3000`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
+7. Run the Playwright UI tests locally:
+   * Ensure that you have executed step #6 above and launched the UI locally.
+   * Open a cmd window and navigate to the `src/ContosoTraders.Ui.Website` folder.
+   * Run `npx playwright install --with-deps`.
+   * Run `npx playwright test`.
+   * The Playwright UI tests will run for a few minutes and a HTML report will be displayed at the end.
