@@ -1,0 +1,8 @@
+testName: contoso-traders-carts-internal
+testPlan: contoso-traders-carts.jmx
+description:
+engineInstances: 1
+subnetId: {{LOAD_TEST_SUBNET_ID}}
+failureCriteria:
+  - avg(response_time_ms) > 5000
+  - percentage(error) > 20
