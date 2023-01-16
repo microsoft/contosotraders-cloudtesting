@@ -35,7 +35,7 @@ test.describe('APIs', () => {
 
     //filter products by category - Controller and then assert category
     test('should be able to filter products by category - Controllers and then assert category', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products/?type=controllers`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=controllers`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
@@ -56,7 +56,7 @@ test.describe('APIs', () => {
 
     //filter products by category - Desktops and then assert category
     test('should be able to filter products by category - Desktops and then assert category', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products/?type=desktops`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=desktops`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
@@ -77,7 +77,7 @@ test.describe('APIs', () => {
 
     //filter products by category - Laptops and then assert category
     test('should be able to filter products by category - Laptops and then assert category', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products/?type=laptops`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=laptops`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
@@ -98,7 +98,7 @@ test.describe('APIs', () => {
 
     //filter products by category - Mobiles and then assert category
     test('should be able to filter products by category - Mobiles and then assert category', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products/?type=mobiles`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=mobiles`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
@@ -119,7 +119,7 @@ test.describe('APIs', () => {
 
     //filter products by category - Monitors and then assert category
     test('should be able to filter products by category - Monitors and then assert category', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products/?type=monitors`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=monitors`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
@@ -147,7 +147,7 @@ test.describe('APIs', () => {
 
     //get all products, verify status and get and assert count of each product
     test('should be able to get all products, verify status and get and assert count of each product', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
@@ -175,7 +175,7 @@ test.describe('APIs', () => {
 
     //filter products by category - controllers and then assert count
     test('should be able to filter products by category - controllers and then assert count', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products/?type=controllers`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=controllers`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
@@ -190,7 +190,7 @@ test.describe('APIs', () => {
 
     //filter products by category - desktops and then assert count
     test('should be able to filter products by category - desktops and then assert count', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products/?type=desktops`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=desktops`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
@@ -205,7 +205,7 @@ test.describe('APIs', () => {
 
     //filter products by category - laptops and then assert count
     test('should be able to filter products by category - laptops and then assert count', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products/?type=laptops`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=laptops`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
@@ -220,7 +220,7 @@ test.describe('APIs', () => {
 
     //filter products by category - mobiles and then assert count
     test('should be able to filter products by category - mobiles and then assert count', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products/?type=mobiles`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=mobiles`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
@@ -235,7 +235,7 @@ test.describe('APIs', () => {
 
     //filter products by category - monitors and then assert count
     test('should be able to filter products by category - monitors and then assert count', async ({ request }) => {
-        const response = await request.get(`${process.env.REACT_APP_APIUrl}/products/?type=monitors`);
+        const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=monitors`);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
 
