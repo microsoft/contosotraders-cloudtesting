@@ -155,7 +155,7 @@ var vnetLoadTestSubnetAddressPrefix = '10.0.4.0/23'
 var jumpboxPublicIpName = '${prefixHyphenated}-jumpbox${env}'
 var jumpboxNsgName = '${prefixHyphenated}-jumpbox${env}'
 var jumpboxNicName = '${prefixHyphenated}-jumpbox${env}'
-var jumpboxVmName = '${prefixHyphenated}-jumpbox${env}'
+var jumpboxVmName = 'jumpboxvm'
 var jumpboxVmAdminLogin = 'localadmin'
 var jumpboxVmAdminPassword = sqlPassword
 
