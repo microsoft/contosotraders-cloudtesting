@@ -179,3 +179,9 @@ There are some prerequisites for this demo mentioned in the [application deploym
 ## Summary
 
 In this demo, you got an overview of Azure's Load Testing service; including how to create a load test, run it, and review the results. You also saw how to incorporate server-side metrics from Azure Services, and how to export the JMX file and results. Finally, you saw how to create a new load test from the JMX file, and how to use a GitHub workflow to execute load tests on the application's APIs.
+
+## More Information
+
+- [Azure Load Testing](https://learn.microsoft.com/en-us/azure/load-testing/)
+- [Blogs on Azure Load Testing](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/bg-p/AppsonAzureBlog/label-name/Azure%20Load%20Testing)
+- [Pricing](https://azure.microsoft.com/en-us/pricing/details/load-testing/)

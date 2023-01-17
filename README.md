@@ -13,6 +13,7 @@ Source code, deployment templates, and demo scripts for exploring Microsoft Play
 
 * [Developer Workflow](./demo-scripts/dev-workflow/walkthrough.md)
 * [Azure Load Testing](./demo-scripts/azure-load-testing/walkthrough.md)
+  * [Load Testing Private Endpoints](./demo-scripts/azure-load-testing/private-endpoints.md)
 * [Azure Chaos Studio](./demo-scripts/azure-chaos-studio/walkthrough.md)
 * [Testing With Playwright](./demo-scripts/testing-with-playwright/walkthrough.md)
 

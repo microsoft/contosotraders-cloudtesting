@@ -39,12 +39,14 @@ var kvSecretNameProductsDbConnStr = 'productsDbConnectionString'
 var kvSecretNameProfilesDbConnStr = 'profilesDbConnectionString'
 var kvSecretNameStocksDbConnStr = 'stocksDbConnectionString'
 var kvSecretNameCartsApiEndpoint = 'cartsApiEndpoint'
+var kvSecretNameCartsInternalApiEndpoint = 'cartsInternalApiEndpoint'
 var kvSecretNameCartsDbConnStr = 'cartsDbConnectionString'
 var kvSecretNameImagesEndpoint = 'imagesEndpoint'
 var kvSecretNameCognitiveServicesEndpoint = 'cognitiveServicesEndpoint'
 var kvSecretNameCognitiveServicesAccountKey = 'cognitiveServicesAccountKey'
 var kvSecretNameAppInsightsConnStr = 'appInsightsConnectionString'
 var kvSecretNameUiCdnEndpoint = 'uiCdnEndpoint'
+var kvSecretNameVnetAcaSubnetId = 'vnetAcaSubnetId'
 
 // user-assigned managed identity (for key vault access)
 var userAssignedMIForKVAccessName = '${prefixHyphenated}-mi-kv-access${env}'
@@ -84,6 +86,14 @@ var cartsApiAcaSecretAcrPassword = 'acr-password'
 var cartsApiAcaContainerDetailsName = '${prefixHyphenated}-carts${env}'
 var cartsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
 var cartsApiSettingNameManagedIdentityClientId = 'ManagedIdentityClientId'
+
+// azure container app (carts api - internal only)
+var cartsInternalApiAcaName = '${prefixHyphenated}-intcarts${env}'
+var cartsInternalApiAcaEnvName = '${prefix}intacaenv${env}'
+var cartsInternalApiAcaSecretAcrPassword = 'acr-password'
+var cartsInternalApiAcaContainerDetailsName = '${prefixHyphenated}-intcarts${env}'
+var cartsInternalApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
+var cartsInternalApiSettingNameManagedIdentityClientId = 'ManagedIdentityClientId'
 
 // storage account (product images)
 var productImagesStgAccName = '${prefix}img${env}'
@@ -130,6 +140,27 @@ var portalDashboardName = '${prefixHyphenated}-dashboard${env}'
 var aksClusterName = '${prefixHyphenated}-aks${env}'
 var aksClusterDnsPrefix = '${prefixHyphenated}-aks${env}'
 var aksClusterNodeResourceGroup = '${prefixHyphenated}-aks-nodes-rg'
+
+// virtual network
+var vnetName = '${prefixHyphenated}-vnet${env}'
+var vnetAddressSpace = '10.0.0.0/16'
+var vnetAcaSubnetName = 'subnet-aca'
+var vnetAcaSubnetAddressPrefix = '10.0.0.0/23'
+var vnetVmSubnetName = 'subnet-vm'
+var vnetVmSubnetAddressPrefix = '10.0.2.0/23'
+var vnetLoadTestSubnetName = 'subnet-loadtest'
+var vnetLoadTestSubnetAddressPrefix = '10.0.4.0/23'
+
+// jumpbox vm
+var jumpboxPublicIpName = '${prefixHyphenated}-jumpbox${env}'
+var jumpboxNsgName = '${prefixHyphenated}-jumpbox${env}'
+var jumpboxNicName = '${prefixHyphenated}-jumpbox${env}'
+var jumpboxVmName = 'jumpboxvm'
+var jumpboxVmAdminLogin = 'localadmin'
+var jumpboxVmAdminPassword = sqlPassword
+
+// private dns zone
+var privateDnsZoneVnetLinkName = '${prefixHyphenated}-privatednszone-vnet-link${env}'
 
 // tags
 var resourceTags = {
@@ -226,6 +257,16 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 
   // secret
+  resource kv_secretCartsInternalApiEndpoint 'secrets' = {
+    name: kvSecretNameCartsInternalApiEndpoint
+    tags: resourceTags
+    properties: {
+      contentType: 'endpoint url (fqdn) of the (internal) carts api'
+      value: cartsinternalapiaca.properties.configuration.ingress.fqdn
+    }
+  }
+
+  // secret
   resource kv_secretCartsDbConnStr 'secrets' = {
     name: kvSecretNameCartsDbConnStr
     tags: resourceTags
@@ -282,6 +323,16 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     properties: {
       contentType: 'endpoint url (cdn endpoint) of the ui'
       value: cdnprofile_ui2endpoint.properties.hostName
+    }
+  }
+
+  // secret
+  resource kv_secretVnetAcaSubnetId 'secrets' = {
+    name: kvSecretNameVnetAcaSubnetId
+    tags: resourceTags
+    properties: {
+      contentType: 'subnet id of the aca subnet'
+      value: vnet.properties.subnets[0].id
     }
   }
 
@@ -1292,6 +1343,266 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
           logAnalyticsWorkspaceResourceID: loganalyticsworkspace.id
         }
       }
+    }
+  }
+}
+
+//
+// virtual network
+//
+
+resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
+  name: vnetName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        vnetAddressSpace
+      ]
+    }
+    subnets: [
+      {
+        name: vnetAcaSubnetName
+        properties: {
+          addressPrefix: vnetAcaSubnetAddressPrefix
+        }
+      }
+      {
+        name: vnetVmSubnetName
+        properties: {
+          addressPrefix: vnetVmSubnetAddressPrefix
+        }
+      }
+      {
+        name: vnetLoadTestSubnetName
+        properties: {
+          addressPrefix: vnetLoadTestSubnetAddressPrefix
+        }
+      }
+    ]
+  }
+}
+
+//
+// jumpbox vm
+// 
+
+// public ip address
+resource jumpboxpublicip 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
+  name: jumpboxPublicIpName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'Standard'
+    tier: 'Regional'
+  }
+  properties: {
+    deleteOption: 'Delete'
+    publicIPAllocationMethod: 'Static'
+  }
+}
+
+// network security group
+resource jumpboxnsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
+  name: jumpboxNsgName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    securityRules: [
+      {
+        name: 'allow-rdp-port-3389'
+        properties: {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '3389'
+          direction: 'Inbound'
+          priority: 300
+          protocol: '*'
+          sourceAddressPrefix: '*'
+          sourcePortRange: '*'
+        }
+      }
+    ]
+  }
+}
+
+// network interface controller
+resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = {
+  name: jumpboxNicName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'nic-ip-config'
+        properties: {
+          primary: true
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: vnet.properties.subnets[1].id // vm subnet
+          }
+          publicIPAddress: {
+            id: jumpboxpublicip.id
+          }
+        }
+      }
+    ]
+    networkSecurityGroup: {
+      id: jumpboxnsg.id
+    }
+    nicType: 'Standard'
+  }
+}
+
+// virtual machine
+resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = {
+  name: jumpboxVmName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    hardwareProfile: {
+      vmSize: 'Standard_D2s_v3'
+    }
+    storageProfile: {
+      imageReference: {
+        offer: 'WindowsServer'
+        publisher: 'MicrosoftWindowsServer'
+        sku: '2019-datacenter-gensecond'
+        version: 'latest'
+      }
+    }
+    networkProfile: {
+      networkInterfaces: [
+        {
+          id: jumpboxnic.id
+          properties: {
+            deleteOption: 'Delete'
+          }
+        }
+      ]
+    }
+    osProfile: {
+      adminPassword: jumpboxVmAdminPassword
+      #disable-next-line adminusername-should-not-be-literal // @TODO: This is a temporary hack, until we can generate the password
+      adminUsername: jumpboxVmAdminLogin
+      computerName: jumpboxVmName
+    }
+  }
+}
+
+//
+// private dns zone
+//
+
+module privateDnsZone './createPrivateDnsZone.bicep' = {
+  name: 'foo'
+  params: {
+    privateDnsZoneName: join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.')
+    privateDnsZoneVnetId: vnet.id
+    privateDnsZoneVnetLinkName: privateDnsZoneVnetLinkName
+    privateDnsZoneARecordName: join(take(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.')
+    privateDnsZoneARecordIp: cartsinternalapiacaenv.properties.staticIp
+    resourceTags: resourceTags
+  }
+}
+
+// aca environment (internal)
+resource cartsinternalapiacaenv 'Microsoft.App/managedEnvironments@2022-06-01-preview' = {
+  name: cartsInternalApiAcaEnvName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'Consumption'
+  }
+  properties: {
+    zoneRedundant: false
+    vnetConfiguration: {
+      infrastructureSubnetId: vnet.properties.subnets[0].id
+      internal: true
+    }
+  }
+}
+
+// aca (internal)
+resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
+  name: cartsInternalApiAcaName
+  location: resourceLocation
+  tags: resourceTags
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${userassignedmiforkvaccess.id}': {
+      }
+    }
+  }
+  properties: {
+    configuration: {
+      activeRevisionsMode: 'Single'
+      ingress: {
+        external: true
+        allowInsecure: false
+        targetPort: 80
+        traffic: [
+          {
+            latestRevision: true
+            weight: 100
+          }
+        ]
+      }
+      registries: [
+        {
+          passwordSecretRef: cartsInternalApiAcaSecretAcrPassword
+          server: acr.properties.loginServer
+          username: acr.name
+        }
+      ]
+      secrets: [
+        {
+          name: cartsInternalApiAcaSecretAcrPassword
+          value: acr.listCredentials().passwords[0].value
+        }
+      ]
+    }
+    environmentId: cartsinternalapiacaenv.id
+    template: {
+      scale: {
+        minReplicas: 1
+        maxReplicas: 10
+        rules: [
+          {
+            name: 'http-scaling-rule'
+            http: {
+              metadata: {
+                concurrentRequests: '3'
+              }
+            }
+          }
+        ]
+      }
+      containers: [
+        {
+          env: [
+            {
+              name: cartsInternalApiSettingNameKeyVaultEndpoint
+              value: kv.properties.vaultUri
+            }
+            {
+              name: cartsInternalApiSettingNameManagedIdentityClientId
+              value: userassignedmiforkvaccess.properties.clientId
+            }
+          ]
+          // using a public image initially because no images have been pushed to our private ACR yet
+          // at this point. At a later point, our github workflow will update the ACA app to use the 
+          // images from our private ACR.
+          image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+          name: cartsInternalApiAcaContainerDetailsName
+          resources: {
+            cpu: json('0.5')
+            memory: '1.0Gi'
+          }
+        }
+      ]
     }
   }
 }
