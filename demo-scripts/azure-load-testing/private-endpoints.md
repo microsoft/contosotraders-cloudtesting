@@ -42,13 +42,11 @@ Specifically, here's what happens behind the scenes:
 
 5. The specific API that we'll be using for is the `Carts API`'s `GET <ACA url>/v1/ShoppingCart/loadtest` endpoint. Please note down this endpoint for later use.
 
-   ![ACA](@TODO)
+   ![ACA](./media/private-endpoint-5.png)
 
 ## Walkthrough: Modify the previously created Load Test
 
 ## Walkthrough: Run the Load Test
-
-* Azure Portal (the test should already be set up if the workflow ran to completion)
 
 ## Walkthrough: GitHub workflow for load testing private endpoints
 
