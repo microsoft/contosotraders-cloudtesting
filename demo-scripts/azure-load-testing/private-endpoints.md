@@ -36,25 +36,15 @@ Specifically, here's what happens behind the scenes:
 
    ![ACA](./media/private-endpoint-3.png)
 
-4. To access the API's endpoints, you'll need to access the API from within the VNET. You can RDP into the `@TODO` VM. This is a jumpbox VM located in the same resource group `contoso-traders-rg`. From this RDP session, you can access the API's endpoints.
+4. To access the API's endpoints, you'll need to access the API from within the VNET. You can RDP into the `jumpboxvm` VM. This is a jumpbox VM located in the same resource group `contoso-traders-rg`. From this RDP session, you can access the API's swagger page: `<ACA url>/swagger/index.html`
 
-   ![ACA](@TODO)
+   ![ACA](./media/private-endpoint-4.png)
 
 5. The specific API that we'll be using for is the `Carts API`'s `GET <ACA url>/v1/ShoppingCart/loadtest` endpoint. Please note down this endpoint for later use.
 
    ![ACA](@TODO)
 
 ## Walkthrough: Modify the previously created Load Test
-
-1. A Load Test for this scenario has already been provisioned. In the Azure portal, you can navigate to the Azure Load Testing service in the `contoso-traders-rg` resource group.
-
-   ![load testing](./media/load-test-browse.png)
-
-2. Click on the `tests` section, and you'll be able to see the `contoso-traders-carts-internal` test. Click on this test.
-
-3. Click on `Configure` -> `Test` as shown below.
-
-4. Click on the `Load` tab. You'll see that this load test is configure to generate its load from within the `contoso-traders-vnetctprod` VNET's `subnet-aca` subnet. Internally, this is done by injecting the load test resources into said subnet.
 
 ## Walkthrough: Run the Load Test
 
