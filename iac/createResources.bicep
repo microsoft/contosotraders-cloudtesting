@@ -151,6 +151,14 @@ var vnetVmSubnetAddressPrefix = '10.0.2.0/23'
 var vnetLoadTestSubnetName = 'subnet-loadtest'
 var vnetLoadTestSubnetAddressPrefix = '10.0.4.0/23'
 
+// jumpbox vm
+var jumpboxPublicIpName = '${prefixHyphenated}-jumpbox${env}'
+var jumpboxNsgName = '${prefixHyphenated}-jumpbox${env}'
+var jumpboxNicName = '${prefixHyphenated}-jumpbox${env}'
+var jumpboxVmName = '${prefixHyphenated}-jumpbox${env}'
+var jumpboxVmAdminLogin = 'localadmin'
+var jumpboxVmAdminPassword = sqlPassword
+
 // private dns zone
 var privateDnsZoneVnetLinkName = '${prefixHyphenated}-privatednszone-vnet-link${env}'
 
@@ -1373,6 +1381,113 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
         }
       }
     ]
+  }
+}
+
+//
+// jumpbox vm
+// 
+
+// public ip address
+resource jumpboxpublicip 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
+  name: jumpboxPublicIpName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'Standard'
+    tier: 'Regional'
+  }
+  properties: {
+    deleteOption: 'Delete'
+    publicIPAllocationMethod: 'Static'
+  }
+}
+
+// network security group
+resource jumpboxnsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
+  name: jumpboxNsgName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    securityRules: [
+      {
+        name: 'allow-rdp-port-3389'
+        properties: {
+          access: 'Allow'
+          destinationAddressPrefix: 'VirtualNetwork'
+          destinationPortRange: '3389'
+          direction: 'Inbound'
+          priority: 300
+          protocol: '*'
+          sourceAddressPrefix: '*'
+          sourcePortRange: '*'
+        }
+      }
+    ]
+  }
+}
+
+// network interface controller
+resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = {
+  name: jumpboxNicName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'nic-ip-config'
+        properties: {
+          primary: true
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: vnet.properties.subnets[1].id // vm subnet
+          }
+          publicIPAddress: {
+            id: jumpboxpublicip.id
+          }
+        }
+      }
+    ]
+    networkSecurityGroup: {
+      id: jumpboxnsg.id
+    }
+    nicType: 'Standard'
+  }
+}
+
+// virtual machine
+resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = {
+  name: jumpboxVmName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    hardwareProfile: {
+      vmSize: 'Standard_D2s_v3'
+    }
+    storageProfile: {
+      imageReference: {
+        offer: 'WindowsServer'
+        publisher: 'MicrosoftWindowsServer'
+        sku: '2019-datacenter-gensecond'
+        version: 'latest'
+      }
+    }
+    networkProfile: {
+      networkInterfaces: [
+        {
+          id: jumpboxnic.id
+          properties: {
+            deleteOption: 'Delete'
+          }
+        }
+      ]
+    }
+    osProfile: {
+      adminPassword: jumpboxVmAdminPassword
+      #disable-next-line adminusername-should-not-be-literal // @TODO: This is a temporary hack, until we can generate the password
+      adminUsername: jumpboxVmAdminLogin
+      computerName: jumpboxVmName
+    }
   }
 }
 
