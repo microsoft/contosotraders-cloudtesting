@@ -31,6 +31,7 @@
      * line #01: `const REACT_APP_APIURL = 'https://localhost:62300/v1';`
      * line #02: `const REACT_APP_APIURLSHOPPINGCART = 'https://localhost:62400/v1';`
      * line #03: `const REACT_APP_BASEURLFORPLAYWRIGHTTESTING = 'http://localhost:3000';`
+       * Note: This endpoint is `http://` and NOT `https://`)
    * Open a cmd window and navigate to the `src/ContosoTraders.Ui.Website` folder.
    * Run `npm install`.
    * Run `npm run start`. This will start the UI on `http://localhost:3000`.

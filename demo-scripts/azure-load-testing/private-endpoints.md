@@ -7,7 +7,7 @@ We'll demonstrate Azure Load Testing service's capability to generate load from 
 
 ## Before You Begin
 
-There are some prerequisites for this demo mentioned in the [application deployment guide](../app-deployment-guide.md). After executing all the steps mentioned in that document, the application's infrastructure will be provisioned on Azure.
+Please execute the steps outlined in the [deployment instructions](../../docs/deployment-instructions.md) to provision the infrastructure in your own Azure subscription.
 
 Specifically, here's what happens behind the scenes:
 
