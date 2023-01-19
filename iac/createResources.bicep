@@ -373,7 +373,7 @@ resource userassignedmiforkvaccess 'Microsoft.ManagedIdentity/userAssignedIdenti
 //
 
 // cosmos db account
-resource stocksdba 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' = {
+resource stocksdba 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' = {
   name: stocksDbAcctName
   location: resourceLocation
   tags: resourceTags
@@ -427,7 +427,7 @@ resource stocksdba 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' = 
 //
 
 // cosmos db account
-resource cartsdba 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' = {
+resource cartsdba 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' = {
   name: cartsDbAcctName
   location: resourceLocation
   tags: resourceTags
@@ -715,7 +715,7 @@ resource cartsapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
 //
 
 // storage account (product images)
-resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: productImagesStgAccName
   location: resourceLocation
   tags: resourceTags
@@ -752,7 +752,7 @@ resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
 //
 
 // storage account (main website)
-resource uistgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+resource uistgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: uiStgAccName
   location: resourceLocation
   tags: resourceTags
@@ -904,7 +904,7 @@ resource deploymentScript2 'Microsoft.Resources/deploymentScripts@2020-10-01' = 
 //
 
 // storage account (main website)
-resource imageclassifierstgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+resource imageclassifierstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: imageClassifierStgAccName
   location: resourceLocation
   tags: resourceTags
@@ -948,7 +948,7 @@ resource cognitiveservice 'Microsoft.CognitiveServices/accounts@2022-10-01' = {
 // cdn
 //
 
-resource cdnprofile 'Microsoft.Cdn/profiles@2022-05-01-preview' = {
+resource cdnprofile 'Microsoft.Cdn/profiles@2022-11-01-preview' = {
   name: cdnProfileName
   location: 'global'
   tags: resourceTags
@@ -958,7 +958,7 @@ resource cdnprofile 'Microsoft.Cdn/profiles@2022-05-01-preview' = {
 }
 
 // endpoint (product images)
-resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-preview' = {
+resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-11-01-preview' = {
   name: cdnImagesEndpointName
   location: 'global'
   tags: resourceTags
@@ -1001,7 +1001,7 @@ resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-
 }
 
 // endpoint (ui / old website)
-resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-preview' = {
+resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-11-01-preview' = {
   name: cdnUiEndpointName
   location: 'global'
   tags: resourceTags
@@ -1084,7 +1084,7 @@ resource cdnprofile_uiendpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-prev
 }
 
 // endpoint (ui / new website)
-resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-05-01-preview' = {
+resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-11-01-preview' = {
   name: cdnUi2EndpointName
   location: 'global'
   tags: resourceTags
@@ -1306,7 +1306,7 @@ resource dashboard 'Microsoft.Portal/dashboards@2020-09-01-preview' = {
 // aks cluster
 //
 
-resource aks 'Microsoft.ContainerService/managedClusters@2022-09-02-preview' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2022-10-02-preview' = {
   name: aksClusterName
   location: resourceLocation
   tags: resourceTags
