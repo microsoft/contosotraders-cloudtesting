@@ -1,5 +1,5 @@
 //Tests some features like third-party API , Dark mode, Geolocation, Iframe testing etc
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 
 test.beforeEach(async({page})=>{
   await page.goto('/');
