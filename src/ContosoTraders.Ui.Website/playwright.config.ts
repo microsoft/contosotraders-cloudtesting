@@ -43,7 +43,6 @@ const config: PlaywrightTestConfig = {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',
     permissions: ['geolocation'],
-    geolocation: { latitude: 50.8551729, longitude: 4.340312 },
     screenshot: 'only-on-failure',
     video: 'on',
   },
@@ -54,12 +53,14 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        geolocation: { latitude: 50.8551729, longitude: 4.340312 },
       },
     },
     {
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
+        geolocation: { latitude: 47.642232, longitude: -122.136791 },
       },
     }
   ],
