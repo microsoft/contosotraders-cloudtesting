@@ -23,7 +23,7 @@ var rgTags = {
 // resource groups
 ////////////////////////////////////////////////////////////////////////////////
 
-resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: rgName
   location: rgLocation
   tags: rgTags
