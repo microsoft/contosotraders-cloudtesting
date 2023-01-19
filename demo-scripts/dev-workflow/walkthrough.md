@@ -33,7 +33,7 @@ Let us take a look at the GitHub Actions used by Contoso Traders for CI/CD.
     
 3. Here is a quick overview of the workflow. If you are interested, you can review the workflow code to get into more details.  
 
-    a. **Contoso-traders-provisioning-deployment:**  This workflow provisions Azure resources used for hosting the application and deploys the application and initial data to the provisioned resources. It also runs load testing & playwright tests as part of CI/CD cycle ensure the app is production ready with each change. 
+    a. **contoso-traders-cloud-testing:**  This workflow provisions Azure resources used for hosting the application and deploys the application and initial data to the provisioned resources. It also runs load testing & playwright tests as part of CI/CD cycle ensure the app is production ready with each change. 
 
      It includes everything needed to get the application up and running in an Azure Environment.  
 
@@ -54,7 +54,7 @@ Let us take a look at the workflows status for Contoso Traders in this public re
 
     ![image](media/actions.png)
     
-2. Select the workflow **contoso-traders-provisioning-deployment**. This will the history of workflows execution.  
+2. Select the workflow **contoso-traders-cloud-testing**. This will the history of workflows execution.  
 
     ![image](media/actions1.png)
 

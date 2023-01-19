@@ -1,17 +1,11 @@
-name: contoso-traders-provisioning-deployment
+name: contoso-traders-cloud-testing
 
 on:
   workflow_dispatch:
   push:
     branches: ["main"]
-    paths:
-      [
-        "src/ContosoTraders.Api.Carts/**",
-        "src/ContosoTraders.Api.Core/**",
-        "src/ContosoTraders.Api.Images/**",
-        "src/ContosoTraders.Api.Products/**",
-        "src/ContosoTraders.Ui.Website/**",
-      ]
+  pull_request:
+    branches: ["main"]
 
 env:
   # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
