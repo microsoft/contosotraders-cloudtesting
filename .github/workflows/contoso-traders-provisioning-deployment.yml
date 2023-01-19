@@ -177,6 +177,8 @@ jobs:
       - name: install helm
         uses: Azure/setup-helm@v3
         id: install-helm
+        with:
+          version: v3.9.0
       - name: extract acr password
         uses: azure/CLI@v1
         id: extract-acr-password
@@ -296,6 +298,7 @@ jobs:
       - name: apply certificate manifest
         uses: Azure/k8s-deploy@v4
         with:
+          pull-images: false
           manifests: ./src/ContosoTraders.Api.Products/Manifests/Certificate.yaml
           force: true
       - name: substitute tokens in ingress manifest
