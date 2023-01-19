@@ -177,6 +177,8 @@ jobs:
       - name: install helm
         uses: Azure/setup-helm@v3
         id: install-helm
+        with:
+          version: v3.9.0
       - name: extract acr password
         uses: azure/CLI@v1
         id: extract-acr-password
