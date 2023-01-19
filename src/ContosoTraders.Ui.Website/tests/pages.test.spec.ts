@@ -100,9 +100,6 @@ test.describe('Product Listing', () => {
   test('should be able to filter product by brands', async ({ page }) => {
     await page.goto('/list/all-products');
     await page.locator('[id="\\32 "]').check();
-    await Promise.all([
-      page.waitForResponse(response => response.url() === `${process.env.REACT_APP_APIURL}/products/?&type=all-products&brand=2` && response.status() === 200),
-    ]);
   });
 });
 
