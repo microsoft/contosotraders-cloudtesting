@@ -296,6 +296,7 @@ jobs:
       - name: apply certificate manifest
         uses: Azure/k8s-deploy@v4
         with:
+          pull-images: false
           manifests: ./src/ContosoTraders.Api.Products/Manifests/Certificate.yaml
           force: true
       - name: substitute tokens in ingress manifest
