@@ -247,6 +247,7 @@ jobs:
       - name: apply service manifest
         uses: Azure/k8s-deploy@v4
         with:
+          pull-images: false
           manifests: ./src/ContosoTraders.Api.Products/Manifests/Service.yaml
           force: true
       # create the ingress controller
@@ -276,6 +277,7 @@ jobs:
       - name: apply namespace manifest
         uses: Azure/k8s-deploy@v4
         with:
+          pull-images: false
           manifests: ./src/ContosoTraders.Api.Products/Manifests/Namespace.yaml
           force: true
       - name: install cert-manager
@@ -285,6 +287,7 @@ jobs:
       - name: apply clusterIssuer manifest
         uses: Azure/k8s-deploy@v4
         with:
+          pull-images: false
           manifests: ./src/ContosoTraders.Api.Products/Manifests/ClusterIssuer.yaml
           force: true
       - name: substitute tokens in certificate manifest
@@ -312,11 +315,13 @@ jobs:
       - name: apply ingress manifest
         uses: Azure/k8s-deploy@v4
         with:
+          pull-images: false
           manifests: ./src/ContosoTraders.Api.Products/Manifests/Ingress.yaml
           force: true
       - name: apply clusterRole manifest
         uses: Azure/k8s-deploy@v4
         with:
+          pull-images: false
           manifests: ./src/ContosoTraders.Api.Products/Manifests/ClusterRole.yaml
           force: true
       - name: set productsApiEndpoint in kv
