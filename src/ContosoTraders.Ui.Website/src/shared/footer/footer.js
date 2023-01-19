@@ -104,6 +104,9 @@ const Footer = () => {
                 {lat && <input id="latitude" value={lat} type="hidden"/>}
                 {lng && <input id="longitude" value={lng} type="hidden"/>}
                 {location && <address id="current-location">{location}</address>}
+                {lat && lng ?
+                    <div id="mapviewer" className='w-100'><iframe title='geolocation' id="map" scrolling="no" width="400" height="200" frameBorder="0" src={`https://www.bing.com/maps/embed/?h=200&w=400&cp=${lat}~${lng}&lvl=10`}></iframe></div>
+                : null}
             </ul>
         </Grid>
     </Grid>
