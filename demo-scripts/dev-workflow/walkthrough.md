@@ -116,7 +116,7 @@ Let us make the changes and experience magic of GitHub Actions.
      ![image](media/commit1.png)
      
       
-7. Now, let's update playwright tests to include testing for dark mode functionality. Edit **tests.spec.js** located in **src/ContosoTraders.Ui.Website/tests** and uncomment line 9 through 14. Please commit the changes to save the test cases. 
+7. Now, let's update playwright tests to include testing for dark mode functionality. Edit **tests.spec.ts** located in **src/ContosoTraders.Ui.Website/tests** and uncomment line 9 through 14. Please commit the changes to save the test cases. 
 
     ![image](media/uncommentcode3.png)
      
