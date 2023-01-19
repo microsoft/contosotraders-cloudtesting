@@ -1,19 +1,12 @@
-// @ts-check
-const { devices } = require('@playwright/test');
+import { devices, PlaywrightTestConfig } from '@playwright/test';
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
-import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-dotenv.config()
+require('dotenv').config()
 
-/**
- * @see https://playwright.dev/docs/test-configuration
- * @type {import('@playwright/test').PlaywrightTestConfig}
- */
-const config = {
+const config: PlaywrightTestConfig = {
   testDir: './tests',
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
@@ -33,8 +26,11 @@ const config = {
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  // reporter: 'html',
-  reporter: [['html', { outputFolder: 'playwright-report/playwright-report' }]],
+  reporter: [
+    ['list'],
+    ['html', { outputFile: 'playwright-report/playwright-report' }]
+  ],
+  
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* https://github.com/microsoft/playwright/issues/14440 - TODO - Investigate later */
@@ -42,14 +38,13 @@ const config = {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.REACT_APP_BASEURLFORPLAYWRIGHTTESTING,
-
+    baseURL: process.env.REACT_APP_BASEURLFORPLAYWRIGHTTESTING || 'https://cloudtesting.contosotraders.com',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'on',
     permissions: ['geolocation'],
     geolocation: { latitude: 50.8551729, longitude: 4.340312 },
     screenshot: 'only-on-failure',
-    video: 'on-first-retry',
+    video: 'on',
   },
 
   /* Configure projects for major browsers */
@@ -60,48 +55,12 @@ const config = {
         ...devices['Desktop Chrome'],
       },
     },
-
     {
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
       },
-    },
-
-    // {
-    //   name: 'webkit',
-    //   use: {
-    //     ...devices['Desktop Safari'],
-    //   },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: {
-    //     ...devices['Pixel 5'],
-    //   },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: {
-    //     ...devices['iPhone 12'],
-    //   },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: {
-    //     channel: 'msedge',
-    //   },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: {
-    //     channel: 'chrome',
-    //   },
-    // },
+    }
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
