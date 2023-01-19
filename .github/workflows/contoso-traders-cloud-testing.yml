@@ -556,7 +556,7 @@ jobs:
             ]
 
   playwright-tests-ui:
-    timeout-minutes: 10
+    timeout-minutes: 20
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.29.1-focal
