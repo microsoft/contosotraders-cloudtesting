@@ -55,7 +55,7 @@ You will need following to get started:
 
 ## Deploy the Application
 
-* Go to your forked repo's `Actions` tab, selecting the `contoso-traders-provisioning-deployment` workflow, and click on the `Run workflow` button.
+* Go to your forked repo's `Actions` tab, selecting the `contoso-traders-cloud-testing` workflow, and click on the `Run workflow` button.
 
 * This github workflow will provision the necessary infrastructure to your Azure subscription as well as deploy the applications (APIs, UI) to the infrastructure. Note that the workflow might take about 15 mins to complete.
 
