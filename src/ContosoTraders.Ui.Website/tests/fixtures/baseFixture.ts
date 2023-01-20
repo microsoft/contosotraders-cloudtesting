@@ -1,14 +1,12 @@
-import { test as baseTest, page } from '@playwright/test';
-
-
-let test = baseTest;
-let homePage = page;
+import { test, Page } from '@playwright/test';
 
 /* const test = baseTest.extend<{ homePage: page }>({ 
     homePage: async ({ browser }, use) => {
         await use(browser.newPage());
     }
 }); */
+
+let homePage: Page;
 
 test.beforeAll(async ({ browser })=>{
     homePage = await browser.newPage();
