@@ -29,9 +29,9 @@ const config: PlaywrightTestConfig = {
   reporter: [
     ['list'],
     ['html'],
-    ['junit', { outputFile: './test-results/junit.xml' }],    
+    ['junit', { outputFile: './test-results/junit.xml' }],
   ],
-  
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* https://github.com/microsoft/playwright/issues/14440 - TODO - Investigate later */
