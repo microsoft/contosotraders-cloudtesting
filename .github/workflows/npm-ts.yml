@@ -2,6 +2,8 @@ name: npm-ts
 
 on:
   workflow_dispatch:
+  push:
+    branches: ["mithun/ts-fix"]
 
 env:
   # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
