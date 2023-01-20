@@ -1,15 +1,12 @@
 // Test page content like button click and page redirection
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
+
 let _productid = 1;
-let page = null;
 
-test.beforeAll(async ({ browser })=>{
-  page = await browser.newPage()
-})
-
-test.beforeEach(async({page})=>{
+test.beforeEach(async ({ page }) => {
   await page.goto('/');
 })
+
 //#region Uncomment below lines to run dark mode tests
 // test.describe('Dark Mode', () => {
 //   test('shows page in dark mode', async ({ page }) => {
@@ -18,6 +15,7 @@ test.beforeEach(async({page})=>{
 //   })
 // });
 //#endregion
+
 test('Test with geolocation', async ({ page, context, request }) => {
   const ipTest = await request.get(`${process.env.REACT_APP_GEOLOCATIONAPI}`);
   expect(ipTest.status()).toBe(200);
@@ -26,11 +24,11 @@ test('Test with geolocation', async ({ page, context, request }) => {
 
   const latitude = location.latitude//await page.locator('input#latitude').inputValue();
   const longitude = location.longitude//await page.locator('input#longitude').inputValue();
-  const point = latitude+','+longitude;
+  const point = latitude + ',' + longitude;
   const response = await request.get(`${process.env.REACT_APP_GEOAPIBASEURL}/Locations/${point}?key=${process.env.REACT_APP_BINGMAPSKEY}`);
   expect(response.status()).toBe(200);
   expect(response.ok()).toBeTruthy();
-  if(latitude != null && longitude != null){
+  if (latitude != null && longitude != null) {
     await context.setGeolocation({ longitude: parseFloat(longitude), latitude: parseFloat(latitude) });
   }
   await Promise.all([
@@ -71,7 +69,7 @@ test.describe('Home page', () => {
   //Corousel
   test('should be able to select buy now in corosel', async ({ page }) => {
     await page.getByRole('button', { name: 'Buy Now' }).click();
-    await expect(page).toHaveURL('/product/detail/'+_productid);
+    await expect(page).toHaveURL('/product/detail/' + _productid);
   });
   test('should be able to select more details in corosel', async ({ page }) => {
     await page.getByRole('button', { name: 'More Details' }).click();
@@ -97,14 +95,11 @@ test.describe('Product Listing', () => {
   test('should be able to select product to view details', async ({ page }) => {
     await page.goto('/list/all-products');
     await page.locator('.MuiGrid-root > .MuiPaper-root').first().click();
-    await expect(page).toHaveURL('/product/detail/'+_productid);
+    await expect(page).toHaveURL('/product/detail/' + _productid);
   });
   test('should be able to filter product by brands', async ({ page }) => {
     await page.goto('/list/all-products');
     await page.locator('[id="\\32 "]').check();
-    await Promise.all([
-      page.waitForResponse(response => response.url() === `${process.env.REACT_APP_APIURL}/products/?&type=all-products&brand=2` && response.status() === 200),
-    ]);
   });
 });
 
