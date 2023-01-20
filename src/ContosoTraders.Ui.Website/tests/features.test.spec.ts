@@ -36,9 +36,10 @@ test('Test with geolocation', async ({ page, context, request }) => {
 
 //Iframe Testing
 test('Test with Iframes', async ({ page }) => {
-  await page.goto('/');
   await page.mouse.wheel(0, 15000);
-  await page.frameLocator('internal:attr=[title="geolocation"i]').getByRole('button', { name: 'Zoom In' }).hover();//hover zoom in button
-  await page.frameLocator('internal:attr=[title="geolocation"i]').getByRole('button', { name: 'Zoom In' }).click();
-  await page.frameLocator('internal:attr=[title="geolocation"i]').getByRole('button', { name: 'Zoom Out' }).click();
+  await Promise.all([
+    page.waitForSelector('#current-location'),
+  ]);
+  expect(await page.frameLocator("iframe").locator('#embedMap').count()).toBe(1);
 });
+
