@@ -66,6 +66,7 @@
   ],
   "devDependencies": {
     "@playwright/test": "^1.28.1",
+    "@types/node": "^18.11.18",
     "babel-plugin-macros": "^2.8.0"
   }
 }
