@@ -32,13 +32,12 @@ You will need following to get started:
 
 * First, fork the [contosotraders-cloudtesting repo](https://github.com/microsoft/contosotraders-cloudtesting) in your account.
 
-* Then, set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets` > `Actions` and create these necessary repository secrets:
+* Then, set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Secrets` tab and create these necessary repository secrets:
 
-  | Secret Name        | Secret Value                                                                               |
-  | ------------------ | ------------------------------------------------------------------------------------------ |
-  | `ENVIRONMENT`      | A unique environment name (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
-  | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs                                          |
-  | `SERVICEPRINCIPAL` | See details below                                                                          |
+  | Secret Name        | Secret Value                                      |
+  | ------------------ | ------------------------------------------------- |
+  | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs |
+  | `SERVICEPRINCIPAL` | See details below                                 |
 
   The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
 
@@ -53,6 +52,12 @@ You will need following to get started:
 
   The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
 
+* Then, set up a repository variable. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab and create this repository variable:
+
+  | Variable Name | Variable Value                                                                             |
+  | ------------- | ------------------------------------------------------------------------------------------ |
+  | `ENVIRONMENT` | A unique environment name (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
+
 ## Deploy the Application
 
 * Go to your forked repo's `Actions` tab, selecting the `contoso-traders-cloud-testing` workflow, and click on the `Run workflow` button.
@@ -66,8 +71,6 @@ You will need following to get started:
 * Once the workflow completes, the UI's accessible CDN endpoint will be displayed in the workflow logs (in the `display ui cdn endpoint` step in the `provision-infrastructure` job).
 
   ![Endpoints in workflow logs](./images/ui-endpoint-github-workflow.png)
-
-  The UI's endpoint will be partially masked in the logs. Replace the `***` token with the value of the `ENVIRONMENT` github repository secret.
 
 * You can load the UI endpoint in your browser to verify that the application is indeed up and running.
 
