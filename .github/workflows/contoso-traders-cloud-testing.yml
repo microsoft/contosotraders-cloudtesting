@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: ["main"] 
-    paths-ignore: 'docs/**'
+    paths-ignore: ["docs/**"]
   pull_request:
     branches: ["main"]
 
@@ -209,13 +209,13 @@ jobs:
         with:
           inlineScript: echo "managedIdentityClientId"="$(az identity show -g ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ vars.ENVIRONMENT }} --query "clientId" -o tsv)" >> $GITHUB_OUTPUT
       - name: create kubernetes secret (kv endpoint)
-        uses: Azure/k8s-create-secret@v3.0
+        uses: Azure/k8s-create-secret@v4
         with:
           secret-type: "generic"
           secret-name: ${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}
           string-data: '{ "${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}" : "https://${{ env.KV_NAME }}${{ vars.ENVIRONMENT }}.vault.azure.net/" }'
       - name: create kubernetes secret (managed identity client id)
-        uses: Azure/k8s-create-secret@v3.0
+        uses: Azure/k8s-create-secret@v4
         with:
           secret-type: "generic"
           secret-name: ${{ env.AKS_SECRET_NAME_MI_CLIENTID }}

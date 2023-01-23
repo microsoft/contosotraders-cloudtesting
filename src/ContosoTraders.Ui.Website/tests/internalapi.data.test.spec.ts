@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-test.beforeEach(async({page})=>{
-  await page.goto('/');
+test.beforeEach(async ({ page }) => {
+    await page.goto('/');
 })
 //Test all the APIs in the application
-test.describe('API data Assertions', () => { 
+test.describe('API data Assertions', () => {
 
     //filter products by category - Controller and then assert category
     test('should be able to filter products by category - Controllers and then assert category', async ({ request }) => {
@@ -17,12 +17,12 @@ test.describe('API data Assertions', () => {
         });
 
         //assert if each product falls under the category - Controllers and not any other
-        productsFromResponse.forEach(async product => {
-            await expect(product.type.name == "Controllers").toBeTruthy();
-            await expect(product.type.name == "Desktops").toBeFalsy();
-            await expect(product.type.name == "Laptops").toBeFalsy();
-            await expect(product.type.name == "Mobiles").toBeFalsy();
-            await expect(product.type.name == "Monitors").toBeFalsy();
+        productsFromResponse.forEach(product => {
+            expect(product.type.name === "Controllers").toBeTruthy();
+            expect(product.type.name === "Desktops").toBeFalsy();
+            expect(product.type.name === "Laptops").toBeFalsy();
+            expect(product.type.name === "Mobiles").toBeFalsy();
+            expect(product.type.name === "Monitors").toBeFalsy();
         });
     });
 
@@ -38,12 +38,12 @@ test.describe('API data Assertions', () => {
         });
 
         //assert if each product falls under the category - Desktops and not any other
-        productsFromResponse.forEach(async product => {
-            await expect(product.type.name == "Controllers").toBeFalsy();
-            await expect(product.type.name == "Desktops").toBeTruthy();
-            await expect(product.type.name == "Laptops").toBeFalsy();
-            await expect(product.type.name == "Mobiles").toBeFalsy();
-            await expect(product.type.name == "Monitors").toBeFalsy();
+        productsFromResponse.forEach(product => {
+            expect(product.type.name === "Controllers").toBeFalsy();
+            expect(product.type.name === "Desktops").toBeTruthy();
+            expect(product.type.name === "Laptops").toBeFalsy();
+            expect(product.type.name === "Mobiles").toBeFalsy();
+            expect(product.type.name === "Monitors").toBeFalsy();
         });
     });
 
@@ -59,12 +59,12 @@ test.describe('API data Assertions', () => {
         });
 
         //assert if each product falls under the category - Laptops and not any other
-        productsFromResponse.forEach(async product => {
-            await expect(product.type.name == "Controllers").toBeFalsy();
-            await expect(product.type.name == "Desktops").toBeFalsy();
-            await expect(product.type.name == "Laptops").toBeTruthy();
-            await expect(product.type.name == "Mobiles").toBeFalsy();
-            await expect(product.type.name == "Monitors").toBeFalsy();
+        productsFromResponse.forEach(product => {
+            expect(product.type.name === "Controllers").toBeFalsy();
+            expect(product.type.name === "Desktops").toBeFalsy();
+            expect(product.type.name === "Laptops").toBeTruthy();
+            expect(product.type.name === "Mobiles").toBeFalsy();
+            expect(product.type.name === "Monitors").toBeFalsy();
         });
     });
 
@@ -80,12 +80,12 @@ test.describe('API data Assertions', () => {
         });
 
         //assert if each product falls under the category - Mobiles and not any other
-        productsFromResponse.forEach(async product => {
-            await expect(product.type.name == "Controllers").toBeFalsy();
-            await expect(product.type.name == "Desktops").toBeFalsy();
-            await expect(product.type.name == "Laptops").toBeFalsy();
-            await expect(product.type.name == "Mobiles").toBeTruthy();
-            await expect(product.type.name == "Monitors").toBeFalsy();
+        productsFromResponse.forEach(product => {
+            expect(product.type.name === "Controllers").toBeFalsy();
+            expect(product.type.name === "Desktops").toBeFalsy();
+            expect(product.type.name === "Laptops").toBeFalsy();
+            expect(product.type.name === "Mobiles").toBeTruthy();
+            expect(product.type.name === "Monitors").toBeFalsy();
         });
     });
 
@@ -101,12 +101,12 @@ test.describe('API data Assertions', () => {
         });
 
         //assert if each product falls under the category - Monitors and not any other
-        productsFromResponse.forEach(async product => {
-            await expect(product.type.name == "Controllers").toBeFalsy();
-            await expect(product.type.name == "Desktops").toBeFalsy();
-            await expect(product.type.name == "Laptops").toBeFalsy();
-            await expect(product.type.name == "Mobiles").toBeFalsy();
-            await expect(product.type.name == "Monitors").toBeTruthy();
+        productsFromResponse.forEach(product => {
+            expect(product.type.name === "Controllers").toBeFalsy();
+            expect(product.type.name === "Desktops").toBeFalsy();
+            expect(product.type.name === "Laptops").toBeFalsy();
+            expect(product.type.name === "Mobiles").toBeFalsy();
+            expect(product.type.name === "Monitors").toBeTruthy();
         });
     });
 
@@ -130,11 +130,11 @@ test.describe('API data Assertions', () => {
 
         //get count of each products
         productsFromResponse.forEach(product => {
-            if (product.type.name == "Controllers") ++total_no_of_controllers;
-            if (product.type.name == "Desktops") ++total_no_of_desktops;
-            if (product.type.name == "Laptops") ++total_no_of_laptops;
-            if (product.type.name == "Mobiles") ++total_no_of_mobiles;
-            if (product.type.name == "Monitors") ++total_no_of_monitors;
+            if (product.type.name === "Controllers") ++total_no_of_controllers;
+            if (product.type.name === "Desktops") ++total_no_of_desktops;
+            if (product.type.name === "Laptops") ++total_no_of_laptops;
+            if (product.type.name === "Mobiles") ++total_no_of_mobiles;
+            if (product.type.name === "Monitors") ++total_no_of_monitors;
         });
 
         //assert total numbers of each product
@@ -219,4 +219,4 @@ test.describe('API data Assertions', () => {
         //assert count of category - monitors
         expect(productsFromResponse.length).toBe(total_no_of_monitors)
     });
-  });
+});
