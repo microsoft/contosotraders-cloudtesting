@@ -2,12 +2,12 @@ import { test, expect } from '@playwright/test';
 let page = null;
 
 // Hook to run one time before all following tests
-test.beforeAll(async ({ browser })=>{
+test.beforeAll(async ({ browser }) => {
   page = await browser.newPage()
 })
 
 //Hook to run before each test
-test.beforeEach(async({page})=>{
+test.beforeEach(async ({ page }) => {
   await page.goto('/');
 })
 

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: ["main"] 
-    paths-ignore: 'docs/**'
+    paths-ignore: ["docs/**"]
   pull_request:
     branches: ["main"]
 
@@ -190,7 +190,7 @@ jobs:
       - name: docker push (to acr)
         run: docker push --all-tags ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}
       - name: set aks context
-        uses: azure/aks-set-context@v3
+        uses: azure/aks-set-context@v4
         with:
           resource-group: ${{ env.RESOURCE_GROUP_NAME }}
           cluster-name: ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
