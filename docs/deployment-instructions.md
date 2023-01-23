@@ -78,7 +78,11 @@ You will need following to get started:
 
 Here are some common problems that you may encounter during deployment:
 
-1. AI Terms and services: If you see an error stating that "Responsible AI terms are not accepted for this subscription", you can manually create an Azure Cognitive Service resource in your subscription temporarily and then re-run the workflow job.
+1. AI Terms and services: If you see an error stating that "Responsible AI terms are not accepted for this subscription", you'll have to manually create an Azure Cognitive Service resource in your subscription temporarily, and accept the Responsible AI terms. Once created, you can then re-run the workflow job.
+
+   * The Responsible AI terms are shown only once per subscription (during first Cognitive Service resource creation in subscription), and once accepted, they are not shown again.
+   * Currently, there exists no mechanism to accept the Responsible AI terms programmatically. It can only be done manually through the Azure portal.
+   * You can read more about Responsible AI [here](https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai).
 
 2. Other intermittent errors: Should you encounter any of [these intermittent errors](https://github.com/microsoft/ContosoTraders/issues?q=is%3Aissue+is%3Aopen+label%3Adevops) in the github workflow, please re-run the failed jobs (it'll will pass on retry). We're working to fix these soon.
 
