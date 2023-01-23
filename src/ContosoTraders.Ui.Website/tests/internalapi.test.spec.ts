@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 let _productid = 1;
 test.beforeEach(async({page})=>{
   await page.goto('/');

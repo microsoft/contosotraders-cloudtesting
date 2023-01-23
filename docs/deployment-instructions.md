@@ -32,13 +32,12 @@ You will need following to get started:
 
 * First, fork the [contosotraders-cloudtesting repo](https://github.com/microsoft/contosotraders-cloudtesting) in your account.
 
-* Then, set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets` > `Actions` and create these necessary repository secrets:
+* Then, set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Secrets` tab and create these necessary repository secrets:
 
-  | Secret Name        | Secret Value                                                                               |
-  | ------------------ | ------------------------------------------------------------------------------------------ |
-  | `ENVIRONMENT`      | A unique environment name (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
-  | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs                                          |
-  | `SERVICEPRINCIPAL` | See details below                                                                          |
+  | Secret Name        | Secret Value                                      |
+  | ------------------ | ------------------------------------------------- |
+  | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs |
+  | `SERVICEPRINCIPAL` | See details below                                 |
 
   The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
 
@@ -53,6 +52,12 @@ You will need following to get started:
 
   The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
 
+* Then, set up a repository variable. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab and create this repository variable:
+
+  | Variable Name | Variable Value                                                                             |
+  | ------------- | ------------------------------------------------------------------------------------------ |
+  | `ENVIRONMENT` | A unique environment name (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
+
 ## Deploy the Application
 
 * Go to your forked repo's `Actions` tab, selecting the `contoso-traders-cloud-testing` workflow, and click on the `Run workflow` button.
@@ -66,8 +71,6 @@ You will need following to get started:
 * Once the workflow completes, the UI's accessible CDN endpoint will be displayed in the workflow logs (in the `display ui cdn endpoint` step in the `provision-infrastructure` job).
 
   ![Endpoints in workflow logs](./images/ui-endpoint-github-workflow.png)
-
-  The UI's endpoint will be partially masked in the logs. Replace the `***` token with the value of the `ENVIRONMENT` github repository secret.
 
 * You can load the UI endpoint in your browser to verify that the application is indeed up and running.
 
@@ -88,8 +91,19 @@ For further learning, you can run through some of the demo scripts listed below:
 * [Azure Chaos Studio](../demo-scripts/azure-chaos-studio/walkthrough.md)
 * [Testing with Playwright](../demo-scripts/testing-with-playwright/walkthrough.md)
 
-## Cleanup
+## Cloud Costs and Cleanup
 
 Once you are done deploying, testing, exploring, you should delete the provisioned resources to prevent incurring additional costs.
 
 Once done, you can safely delete the `contoso-traders-rg` resource group. The `contoso-traders-aks-nodes-rg` will be automatically deleted as part of the AKS cluster deletion.
+
+> A quick note on costs considerations when you deploy the application to your Azure subscription:
+>
+> 1. Azure Load Testing ([pricing details](https://azure.microsoft.com/en-us/pricing/details/load-testing/)): The number of virtual users and duration of the test are the key factors that determine the cost of the test. In this demo, the load tests are configured to use 5 virtual users and the test is set to run for 3 mins.
+> 2. Azure Kubernetes Service ([pricing details](https://azure.microsoft.com/en-us/pricing/details/kubernetes-service/)): The number of nodes and the number of hours that the cluster is running are the key factors that determine the cost of the cluster. In this demo, the cluster is configured to use 3 nodes (powered by vm scale sets) and the cluster is set to run 24x7.
+> 3. Azure Container Apps ([pricing details](https://azure.microsoft.com/en-us/pricing/details/container-apps/)): Each instance has 0.5 vCPU and 1.0 GiB of memory. In this demo, the container app is configured to use 1 instance, but can autoscale out to max 10 instances under load.
+> 4. Azure Virtual Machines ([pricing details](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/windows/)): The jumpbox VM uses the `Standard_D2s_v3` VM size, which has 2 vCPU and 8 GiB of memory. The jumpbox VMs are set to run 24x7.
+> 5. Github Actions / storage quota ([pricing details](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#included-storage-and-minutes)): We've set the playwright test to enable recordings only on failures/retries. This brings the playwright report to ~55 MB when tests fail.
+>
+> The above costs are based on the default configuration of the demo. You can modify the configuration to reduce the costs. For example, you can reduce the number of nodes in the AKS cluster, reduce the number of instances in the container app, reduce the number of virtual users in the load test, etc.
+>
