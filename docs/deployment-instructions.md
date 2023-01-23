@@ -23,6 +23,7 @@ You will need following to get started:
 * Register some required resource providers in your Azure subscription:
   * `az provider register -n Microsoft.OperationsManagement -c`
   * `az provider register -n Microsoft.Cdn -c`
+  * `az provider register -n Microsoft.Chaos -c`
 
 * Create an Azure Service Principal and add it the `Owner` role in your Azure subscription:
   * `az ad sp create-for-rbac -n contosotraders-sp --role Owner --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.
