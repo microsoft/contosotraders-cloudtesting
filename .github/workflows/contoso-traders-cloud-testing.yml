@@ -344,7 +344,7 @@ jobs:
         uses: azure/CLI@v1
         id: get-productsApiEndpoint
         with:
-          inlineScript: echo "productsApiEndpoint"="(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
 
   deploy-ui:
     runs-on: ubuntu-latest
