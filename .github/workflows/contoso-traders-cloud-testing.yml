@@ -349,17 +349,17 @@ jobs:
         uses: azure/CLI@v1
         id: get-cartsApiEndpoint
         with:
-          inlineScript: echo "REACT_APP_APIURLSHOPPINGCART"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_ENV
+          inlineScript: echo "REACT_APP_APIURLSHOPPINGCART"="https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name cartsApiEndpoint --query value -o tsv)/v1" >> $GITHUB_ENV
       - name: get products api endpoint
         uses: azure/CLI@v1
         id: get-productsApiEndpoint
         with:
-          inlineScript: echo "REACT_APP_APIURL"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_ENV
+          inlineScript: echo "REACT_APP_APIURL"="https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)/v1" >> $GITHUB_ENV
       - name: get ui cdn endpoint
         uses: azure/CLI@v1
         id: get-uiCdnEndpoint
         with:
-          inlineScript: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_ENV
+          inlineScript: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_ENV
       - name: npm install
         run: npm install
         working-directory: src/ContosoTraders.Ui.Website
