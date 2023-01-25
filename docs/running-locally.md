@@ -27,18 +27,17 @@
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
 
 7. Run the UI locally:
-   * You'll have to manually update this source code file to point to the locally running APIs above: `src/ContosoTraders.Ui.Website/.env`
-     * line #01: `const REACT_APP_APIURL = 'https://localhost:62300/v1';`
-     * line #02: `const REACT_APP_APIURLSHOPPINGCART = 'https://localhost:62400/v1';`
-     * line #03: `const REACT_APP_BASEURLFORPLAYWRIGHTTESTING = 'http://localhost:3000';`
-       * Note: This endpoint is `http://` and NOT `https://`)
    * Open a cmd window and navigate to the `src/ContosoTraders.Ui.Website` folder.
    * Run `npm install`.
+   * Set the following environment variables:
+     * `set REACT_APP_APIURL=https://localhost:62300/v1`
+     * `set REACT_APP_APIURLSHOPPINGCART=https://localhost:62400/v1`
+     * `set REACT_APP_BASEURLFORPLAYWRIGHTTESTING=http://localhost:3000` (note: This endpoint is `http://` and NOT `https://`)
    * Run `npm run start`. This will start the UI on `http://localhost:3000`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
 
 8. Run the Playwright UI tests locally:
-   * Ensure that you have executed step #6 above and launched the UI locally.
+   * Ensure that you have executed step #7 above and launched the UI locally.
    * Open a cmd window and navigate to the `src/ContosoTraders.Ui.Website` folder.
    * Run `npx playwright install --with-deps`.
    * Run `npx playwright test`.
