@@ -118,6 +118,8 @@ jobs:
   deploy-carts-api:
     runs-on: ubuntu-latest
     needs: provision-infrastructure
+    outputs:
+      cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
     concurrency:
       group: deploy-carts-api
       cancel-in-progress: true
@@ -155,10 +157,17 @@ jobs:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
             az containerapp update -n ${{ env.CARTS_INTERNAL_ACA_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }} --image ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: get carts api endpoint
+        uses: azure/CLI@v1
+        id: get-cartsApiEndpoint
+        with:
+          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
 
   deploy-products-api:
     runs-on: ubuntu-latest
     needs: provision-infrastructure
+    outputs:
+      productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
     concurrency:
       group: deploy-products-api
       cancel-in-progress: true
@@ -245,14 +254,14 @@ jobs:
           pull-images: false
           manifests: ./src/ContosoTraders.Api.Products/Manifests/Service.yaml
           force: true
-      # setup chaos mesh
-      - name: setup chaos mesh
-        run: |
-          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
-          ${{ steps.install-helm.outputs.helm-path }} repo add chaos-mesh https://charts.chaos-mesh.org
-          ${{ steps.install-helm.outputs.helm-path }} repo update
-          kubectl create ns chaos-testing
-          ${{ steps.install-helm.outputs.helm-path }} install chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-testing --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
+      # # setup chaos mesh
+      # - name: setup chaos mesh
+      #   run: |
+      #     az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
+      #     ${{ steps.install-helm.outputs.helm-path }} repo add chaos-mesh https://charts.chaos-mesh.org
+      #     ${{ steps.install-helm.outputs.helm-path }} repo update
+      #     kubectl create ns chaos-testing
+      #     ${{ steps.install-helm.outputs.helm-path }} install chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-testing --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
       # create the ingress controller
       - name: create ingress controller
         run: |
@@ -331,10 +340,17 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az keyvault secret set --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name productsApiEndpoint --value ${{ steps.get-aks-fqdn.outputs.aksFqdn }} --description "endpoint url (fqdn) of the products api"
+      - name: get products api endpoint
+        uses: azure/CLI@v1
+        id: get-productsApiEndpoint
+        with:
+          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
 
   deploy-ui:
     runs-on: ubuntu-latest
     needs: [deploy-carts-api, deploy-products-api]
+    outputs:
+      uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
     concurrency:
       group: deploy-ui
       cancel-in-progress: true
@@ -345,31 +361,10 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
-      - name: get carts api endpoint
-        uses: azure/CLI@v1
-        id: get-cartsApiEndpoint
-        with:
-          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-      - name: get products api endpoint
-        uses: azure/CLI@v1
-        id: get-productsApiEndpoint
-        with:
-          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-      - name: get ui cdn endpoint
-        uses: azure/CLI@v1
-        id: get-uiCdnEndpoint
-        with:
-          inlineScript: echo "uiCdnEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-      - name: substitute tokens in ui configuration
-        uses: cschleiden/replace-tokens@v1.2
-        with:
-          tokenPrefix: "{{"
-          tokenSuffix: "}}"
-          files: ./src/ContosoTraders.Ui.Website/.env
-        env:
-          CARTS_API_ENDPOINT: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
-          PRODUCTS_API_ENDPOINT: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
-          UI_CDN_ENDPOINT: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+      - name: set carts api endpoint
+        run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.deploy-carts-api.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
+      - name: set products api endpoint
+        run: echo "REACT_APP_APIURL"="https://${{ needs.deploy-products-api.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: npm install
         run: npm install
         working-directory: src/ContosoTraders.Ui.Website
@@ -384,11 +379,11 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.UI_CDN_ENDPOINT_NAME }}${{ vars.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ vars.ENVIRONMENT }}'
-      - name: upload .env file to run artifacts
-        uses: actions/upload-artifact@v3
+      - name: get ui cdn endpoint
+        uses: azure/CLI@v1
+        id: get-uiCdnEndpoint
         with:
-          name: .env
-          path: ./src/ContosoTraders.Ui.Website/.env
+          inlineScript: echo "uiCdnEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
 
   load-tests-carts-api:
     runs-on: ubuntu-latest
@@ -569,18 +564,19 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.29.1-focal
-    needs: [deploy-ui]
+    needs: [deploy-ui, deploy-carts-api, deploy-products-api]
     concurrency:
       group: playwright-tests-ui
       cancel-in-progress: true
     steps:
       - name: checkout code
         uses: actions/checkout@v3
-      - name: download .env file from run artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: .env
-          path: ./src/ContosoTraders.Ui.Website/
+      - name: set carts api endpoint
+        run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.deploy-carts-api.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
+      - name: set products api endpoint
+        run: echo "REACT_APP_APIURL"="https://${{ needs.deploy-products-api.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
+      - name: set ui cdn endpoint
+        run: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.deploy-ui.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
       - name: install dependencies
         run: npm ci
         working-directory: src/ContosoTraders.Ui.Website
