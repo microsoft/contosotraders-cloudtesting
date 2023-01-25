@@ -362,13 +362,9 @@ jobs:
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
       - name: set carts api endpoint
-        uses: azure/CLI@v1
-        with:
-          inlineScript: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.deploy-carts-api.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
+        run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.deploy-carts-api.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set products api endpoint
-        uses: azure/CLI@v1
-        with:
-          inlineScript: echo "REACT_APP_APIURL"="https://${{ needs.deploy-products-api.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
+        run: echo "REACT_APP_APIURL"="https://${{ needs.deploy-products-api.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: npm install
         run: npm install
         working-directory: src/ContosoTraders.Ui.Website
@@ -576,18 +572,11 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v3
       - name: set carts api endpoint
-        uses: azure/CLI@v1
-        with:
-          inlineScript: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.deploy-carts-api.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
+        run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.deploy-carts-api.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set products api endpoint
-        uses: azure/CLI@v1
-        with:
-          inlineScript: echo "REACT_APP_APIURL"="https://${{ needs.deploy-products-api.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
+        run: echo "REACT_APP_APIURL"="https://${{ needs.deploy-products-api.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set ui cdn endpoint
-        uses: azure/CLI@v1
-        id: get-uiCdnEndpoint
-        with:
-          inlineScript: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.deploy-ui.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
+        run: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.deploy-ui.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
       - name: install dependencies
         run: npm ci
         working-directory: src/ContosoTraders.Ui.Website
