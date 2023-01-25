@@ -3,7 +3,7 @@ name: contoso-traders-cloud-testing
 on:
   workflow_dispatch:
   push:
-    branches: ["main"] 
+    branches: ["main"]
     paths-ignore: ["docs/**"]
   pull_request:
     branches: ["main"]
@@ -245,6 +245,14 @@ jobs:
           pull-images: false
           manifests: ./src/ContosoTraders.Api.Products/Manifests/Service.yaml
           force: true
+      # setup chaos mesh
+      - name: setup chaos mesh
+        run: |
+          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
+          ${{ steps.install-helm.outputs.helm-path }} repo add chaos-mesh https://charts.chaos-mesh.org
+          ${{ steps.install-helm.outputs.helm-path }} repo update
+          kubectl create ns chaos-testing
+          ${{ steps.install-helm.outputs.helm-path }} install chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-testing --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
       # create the ingress controller
       - name: create ingress controller
         run: |
