@@ -63,6 +63,7 @@ jobs:
           scope: subscription
           region: ${{ env.SUB_DEPLOYMENT_REGION }}
           template: ./iac/createResourceGroup.bicep
+          parameters: env=${{ vars.ENVIRONMENT }}
       # Next step is to deploy the Azure resources to the resource group `contoso-traders-rg` created above. The deployed resources
       # include storage accounts, function apps, app services cosmos db, and service bus etc.
       # The below step can also be manually executed as follows:
@@ -76,7 +77,7 @@ jobs:
         with:
           scope: resourcegroup
           region: ${{ env.SUB_DEPLOYMENT_REGION }}
-          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}
           template: ./iac/createResources.bicep
           parameters: ./iac/createResources.parameters.json env=${{ vars.ENVIRONMENT }} sqlPassword=${{ secrets.SQL_PASSWORD }}
       # Add the logged-in service principal to the key vault access policy
@@ -90,8 +91,8 @@ jobs:
         with:
           inlineScript: |
             az vmss identity assign \
-              --identities $(az identity show -g ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ vars.ENVIRONMENT }} --query "id" -o tsv) \
-              --ids $(az vmss list -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }} --query "[0].id" -o tsv) \
+              --identities $(az identity show -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ vars.ENVIRONMENT }} --query "id" -o tsv) \
+              --ids $(az vmss list -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --query "[0].id" -o tsv) \
       # Seed the DBs and storage accounts
       - name: seed products db
         uses: azure/sql-action@v2
@@ -109,7 +110,7 @@ jobs:
       - name: purge ui cdn endpoint
         uses: azure/CLI@v1
         with:
-          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.PRODUCTS_CDN_ENDPOINT_NAME }}${{ vars.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ vars.ENVIRONMENT }}'
+          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.PRODUCTS_CDN_ENDPOINT_NAME }}${{ vars.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ vars.ENVIRONMENT }}'
       - name: display ui cdn endpoint
         uses: azure/CLI@v1
         with:
@@ -134,7 +135,7 @@ jobs:
         uses: azure/CLI@v1
         id: extract-acr-password
         with:
-          inlineScript: echo "acrPassword"="$(az acr credential show -n ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }} --query "passwords[0].value" --output tsv)" >> $GITHUB_OUTPUT
+          inlineScript: echo "acrPassword"="$(az acr credential show -n ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --query "passwords[0].value" --output tsv)" >> $GITHUB_OUTPUT
       - name: azure container registry login
         uses: azure/docker-login@v1
         with:
@@ -150,13 +151,13 @@ jobs:
         with:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
-            az containerapp update -n ${{ env.CARTS_ACA_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }} --image ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+            az containerapp update -n ${{ env.CARTS_ACA_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --image ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
       - name: deploy to aca (internal)
         uses: azure/CLI@v1
         with:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
-            az containerapp update -n ${{ env.CARTS_INTERNAL_ACA_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }} --image ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+            az containerapp update -n ${{ env.CARTS_INTERNAL_ACA_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --image ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
       - name: get carts api endpoint
         uses: azure/CLI@v1
         id: get-cartsApiEndpoint
@@ -187,7 +188,7 @@ jobs:
         uses: azure/CLI@v1
         id: extract-acr-password
         with:
-          inlineScript: echo "acrPassword"="$(az acr credential show -n ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }} --query "passwords[0].value" --output tsv)" >> $GITHUB_OUTPUT
+          inlineScript: echo "acrPassword"="$(az acr credential show -n ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --query "passwords[0].value" --output tsv)" >> $GITHUB_OUTPUT
       - name: azure container registry login
         uses: azure/docker-login@v1
         with:
@@ -201,7 +202,7 @@ jobs:
       - name: set aks context
         uses: azure/aks-set-context@v3
         with:
-          resource-group: ${{ env.RESOURCE_GROUP_NAME }}
+          resource-group: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}
           cluster-name: ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
       - name: setup kubectl
         uses: azure/setup-kubectl@v3
@@ -216,7 +217,7 @@ jobs:
         uses: azure/CLI@v1
         id: get-managedIdentityClientId
         with:
-          inlineScript: echo "managedIdentityClientId"="$(az identity show -g ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ vars.ENVIRONMENT }} --query "clientId" -o tsv)" >> $GITHUB_OUTPUT
+          inlineScript: echo "managedIdentityClientId"="$(az identity show -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ vars.ENVIRONMENT }} --query "clientId" -o tsv)" >> $GITHUB_OUTPUT
       - name: create kubernetes secret (kv endpoint)
         uses: Azure/k8s-create-secret@v4
         with:
@@ -257,7 +258,7 @@ jobs:
       # # setup chaos mesh
       # - name: setup chaos mesh
       #   run: |
-      #     az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
+      #     az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
       #     ${{ steps.install-helm.outputs.helm-path }} repo add chaos-mesh https://charts.chaos-mesh.org
       #     ${{ steps.install-helm.outputs.helm-path }} repo update
       #     kubectl create ns chaos-testing
@@ -265,7 +266,7 @@ jobs:
       # create the ingress controller
       - name: create ingress controller
         run: |
-          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
+          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
           ${{ steps.install-helm.outputs.helm-path }} repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           ${{ steps.install-helm.outputs.helm-path }} repo update
           ${{ steps.install-helm.outputs.helm-path }} upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
@@ -277,14 +278,14 @@ jobs:
       - name: set dns label on public ip
         uses: azure/CLI@v1
         with:
-          inlineScript: az network public-ip update --dns-name ${{ env.AKS_DNS_LABEL }}${{ vars.ENVIRONMENT }} -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }} -n $(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].name" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }})
+          inlineScript: az network public-ip update --dns-name ${{ env.AKS_DNS_LABEL }}${{ vars.ENVIRONMENT }} -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} -n $(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].name" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }})
       # hack: extract the full fqdn / dns label of the aks app's public IP address
       - name: get aks-fqdn
         uses: azure/CLI@v1
         id: get-aks-fqdn
         with:
           # note: There should be a whitespace between ')' and ']'. More details: https://stackoverflow.com/a/59154958
-          inlineScript: echo "aksFqdn"="$(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].dnsSettings.fqdn" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }})" >> $GITHUB_OUTPUT
+          inlineScript: echo "aksFqdn"="$(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].dnsSettings.fqdn" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }})" >> $GITHUB_OUTPUT
       # install cert-manager
       - name: apply namespace manifest
         uses: Azure/k8s-deploy@v4
@@ -294,7 +295,7 @@ jobs:
           force: true
       - name: install cert-manager
         run: |
-          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
+          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
           kubectl apply --validate=false -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.yaml
       - name: apply clusterIssuer manifest
         uses: Azure/k8s-deploy@v4
@@ -378,7 +379,7 @@ jobs:
       - name: purge cdn endpoint
         uses: azure/CLI@v1
         with:
-          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.UI_CDN_ENDPOINT_NAME }}${{ vars.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ vars.ENVIRONMENT }}'
+          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.UI_CDN_ENDPOINT_NAME }}${{ vars.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ vars.ENVIRONMENT }}'
       - name: get ui cdn endpoint
         uses: azure/CLI@v1
         id: get-uiCdnEndpoint
@@ -410,7 +411,7 @@ jobs:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./tests/loadtests/contoso-traders-carts.yaml
           loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.ENVIRONMENT }}
-          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}
           env: |
             [
               {
@@ -476,7 +477,7 @@ jobs:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./tests/loadtests/contoso-traders-carts-internal.yaml
           loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.ENVIRONMENT }}
-          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}
           env: |
             [
               {
@@ -530,7 +531,7 @@ jobs:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./tests/loadtests/contoso-traders-products.yaml
           loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.ENVIRONMENT }}
-          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}
           env: |
             [
               {

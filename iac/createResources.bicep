@@ -139,7 +139,7 @@ var portalDashboardName = '${prefixHyphenated}-dashboard${env}'
 // aks cluster
 var aksClusterName = '${prefixHyphenated}-aks${env}'
 var aksClusterDnsPrefix = '${prefixHyphenated}-aks${env}'
-var aksClusterNodeResourceGroup = '${prefixHyphenated}-aks-nodes-rg'
+var aksClusterNodeResourceGroup = '${prefixHyphenated}-aks-nodes-rg${env}'
 
 // virtual network
 var vnetName = '${prefixHyphenated}-vnet${env}'
