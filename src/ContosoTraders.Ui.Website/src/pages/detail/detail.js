@@ -86,7 +86,7 @@ class Detail extends Component {
                   <div className="detail__buttons">
                     <button
                       className={`btn btn--primary btn--cart`}
-                      onClick={this.addToCart}
+                      onClick={()=>this.addToCart}
                     >
                       {t("detail.addToCart")}
                     </button>

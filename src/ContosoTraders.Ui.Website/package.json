@@ -16,8 +16,9 @@
     "@fluentui/react": "^7.170.0",
     "@microsoft/applicationinsights-react-js": "^2.5.4",
     "@microsoft/applicationinsights-web": "^2.6.2",
+    "@mui/core": "^5.0.0-alpha.54",
     "@mui/lab": "^5.0.0-alpha.117",
-    "@mui/material": "^5.11.6",
+    "@mui/material": "^5.2.7",
     "@mui/styles": "^5.11.2",
     "axios": "^0.21.4",
     "date-fns": "^2.0.0-beta.5",
@@ -28,6 +29,7 @@
     "izitoast": "^1.4.0",
     "material-ui-dropzone": "^3.5.0",
     "msal": "^1.4.10",
+    "mui-file-dropzone": "^4.0.2",
     "office-ui-fabric-react": "^7.170.0",
     "prop-types": "^15.8.1",
     "qs": "^6.10.1",
@@ -50,8 +52,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts --max_old_space_size=8000 start",
-    "build": "export NODE_OPTIONS=--openssl-legacy-provider && react-scripts --max_old_space_size=8000 build",
+    "start": "react-scripts --max_old_space_size=8000 start",
+    "build": "react-scripts --max_old_space_size=8000 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

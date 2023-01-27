@@ -4,7 +4,7 @@ import {
   CardContent,
   Grid,
   CardActionArea,
-} from "@material-ui/core";
+} from "@mui/material";
 import laptopgirl from "../../../../assets/images/original/Contoso_Assets/Grid_Products_Collection/banner_1.jpg";
 import laptoppic from "../../../../assets/images/original/Contoso_Assets/Grid_Products_Collection/product_image.png";
 import { useHistory } from "react-router-dom";

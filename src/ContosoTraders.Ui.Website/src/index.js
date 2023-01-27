@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { Provider } from 'react-redux';
 import "./index.css";
 import App from "./App";
@@ -12,9 +12,8 @@ import { createBrowserHistory } from "history";
 const history = createBrowserHistory({ basename: "" });
 (async () => {
     await ConfigService.loadSettings();
-
-    ReactDOM.render(
-        <Provider store={store}><Router history={history}><App /></Router></Provider>,
-        document.getElementById('root')
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(
+        <Provider store={store}><Router history={history}><App /></Router></Provider>
     );
 })();

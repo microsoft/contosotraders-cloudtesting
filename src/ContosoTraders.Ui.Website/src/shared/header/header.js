@@ -144,7 +144,7 @@ class Header extends Component {
                                     {t('shared.header.logout')}
                                 </button>
                             </div>
-                            <button className="u-empty btn-close" onClick={this.toggleClass}>
+                            <button className="u-empty btn-close" onClick={()=>this.toggleClass}>
                                 <Close />
                             </button>
                         </nav>

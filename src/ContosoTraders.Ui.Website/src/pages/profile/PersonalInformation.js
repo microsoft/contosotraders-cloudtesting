@@ -9,19 +9,21 @@ import {
   FormLabel,
   InputAdornment,
   FormControl,
-  makeStyles,
   TextField,
-} from "@material-ui/core";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Visibility from "@material-ui/icons/Visibility";
+} from "@mui/material";
+import { makeStyles } from '@mui/styles';
+import { createTheme } from "@mui/system";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
 import delete_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/delete_icon.svg";
-import ExpandMore from "@material-ui/icons/ExpandMore";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
 // const phoneRegExp =
 //   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const theme = createTheme()
 
  const SUPPORTED_FORMATS = ['png','jpg','bmp','tiff','gif']
 const validationSchema = yup.object({
@@ -68,7 +70,7 @@ const validationSchema = yup.object({
     .positive("Invalid Number")
     .required("Mobile is required"),
 });
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     "& > *": {
@@ -347,7 +349,7 @@ const removeImage = () => {
                             <InputAdornment position="start">
                               <IconButton
                                 aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
+                                onClick={()=>handleClickShowPassword}
                                 // edge="end"
                               
                               >
@@ -430,7 +432,7 @@ const removeImage = () => {
                           <InputAdornment position="start">
                             <IconButton
                               aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
+                              onClick={()=>handleClickShowPassword}
                               edge="end"
                             >
                               {values.showPassword ? (

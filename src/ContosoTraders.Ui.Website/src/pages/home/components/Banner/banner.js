@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { useHistory } from "react-router-dom";
 function Banner(props) {
   const history = useHistory()

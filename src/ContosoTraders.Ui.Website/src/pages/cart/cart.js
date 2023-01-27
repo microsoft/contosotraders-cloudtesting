@@ -1,4 +1,4 @@
-import { Grid, TextField, InputAdornment, Button, Chip } from "@material-ui/core";
+import { Grid, TextField, InputAdornment, Button, Chip } from "@mui/material";
 import React from "react";
 import productdetailimg from "../../assets/images/original/Contoso_Assets/product_page_assets/product_image_main.jpg";
 import QuantityPicker from "../detail/productcounter";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Button,TextField,InputAdornment } from "@material-ui/core";
+import { Grid, Button,TextField,InputAdornment } from "@mui/material";
 import CustomizedAccordions from "./accordion";
 // import ImageSlider from "./imageslider";
 import QuantityPicker from "./productcounter";

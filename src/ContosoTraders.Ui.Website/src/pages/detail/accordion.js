@@ -1,10 +1,10 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import MuiAccordion from "@material-ui/core/Accordion";
-import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
-import { Grid } from "@material-ui/core";
+import { withStyles } from "@mui/styles";
+import MuiAccordion from "@mui/material/Accordion";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import { Grid } from "@mui/material";
 import description_off from "../../assets/images/original/Contoso_Assets/product_page_assets/description_off_icon.svg";
 import description_on from "../../assets/images/original/Contoso_Assets/product_page_assets/description_on_icon.svg";
 import discount_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/discount.png";

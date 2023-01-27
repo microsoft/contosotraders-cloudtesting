@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import React from "react";
 import Breadcrump from "../../components/breadcrumb";
 import { ListGrid } from "../list/components";

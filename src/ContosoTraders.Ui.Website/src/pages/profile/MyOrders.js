@@ -9,16 +9,18 @@ import {
   FormLabel,
   InputAdornment,
   FormControl,
-  makeStyles,
   TextField,
-} from "@material-ui/core";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Visibility from "@material-ui/icons/Visibility";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+} from "@mui/material";
+import { makeStyles } from '@mui/styles';
+import { createTheme } from '@mui/system';
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
+const theme = createTheme()
 
 const validationSchema = yup.object({
   email: yup
@@ -55,7 +57,7 @@ const validationSchema = yup.object({
     .positive("Invalid Number")
     .required("Mobile is required"),
 });
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     "& > *": {

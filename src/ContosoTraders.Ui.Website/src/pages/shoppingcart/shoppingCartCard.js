@@ -21,9 +21,9 @@ class ShoppingCartCard extends Component {
                     <p className="shopping-card__description">{this.props.name}</p>
                 </Link>
                 <div className="manager">
-                    <button className="manager__btn" onClick={this.decrementQty}>-</button>
+                    <button className="manager__btn" onClick={()=>this.decrementQty}>-</button>
                     <p className="manager__number" >{this.props.qty}</p>
-                    <button className="manager__btn" onClick={this.incrementQty}>+</button>
+                    <button className="manager__btn" onClick={()=>this.incrementQty}>+</button>
                 </div>
             </article>
         );

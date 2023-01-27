@@ -1,14 +1,16 @@
 
 import React, { useRef, createRef } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import MuiAccordion from "@material-ui/core/Accordion";
-import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
-import { Grid } from "@material-ui/core";
+import { withStyles } from "@mui/styles";
+import { createTheme } from '@mui/system';
+import MuiAccordion from "@mui/material/Accordion";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
+import { Grid, Typography } from "@mui/material";
 import description_off from '../../../../../assets/images/original/Contoso_Assets/Icons/plus.png'
 import description_on from '../../../../../assets/images/original/Contoso_Assets/Icons/minus.png'
 import { useParams } from "react-router-dom";
+const theme = createTheme()
+
 const Accordion = withStyles({
   root: {
     // border: "1px solid rgba(0, 0, 0, .125)",
@@ -45,7 +47,7 @@ const AccordionSummary = withStyles({
   expanded: {},
 })(MuiAccordionSummary);
 
-const AccordionDetails = withStyles((theme) => ({
+const AccordionDetails = withStyles(() => ({
   root: {
     padding: theme.spacing(3),
   },

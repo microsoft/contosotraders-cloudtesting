@@ -1,6 +1,6 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel'
-import { Button, Grid } from '@material-ui/core'
+import { Button, Grid } from '@mui/material'
 import LocalMallIcon from '../../../../assets/images/original/Contoso_Assets/Icons/cart-icon-copy.svg'
 import heroBg from '../../../../assets/images/original/Contoso_Assets/Slider_section/hero_banner.jpg'
 import { useHistory } from 'react-router-dom';
@@ -100,7 +100,7 @@ function Item(props)
                             aria-controls="customized-menu"
                             aria-haspopup="true"
                             variant="contained"
-                            color="default"
+                            color="inherit"
                             className="box-shadow-0 text-transform-capitalize fw-regular BannerButton2"
                             size="large"
                             onClick={()=>moreDetails()}

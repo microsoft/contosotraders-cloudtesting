@@ -5,8 +5,8 @@ import {
   Button,
   Grid,
   Avatar,
-} from "@material-ui/core";
-import NavigateNext from "@material-ui/icons/NavigateNext";
+} from "@mui/material";
+import NavigateNext from "@mui/icons-material/NavigateNext";
 import PersonalInformation from "./PersonalInformation";
 import MyWishlist from "./MyWishlist";
 import MyOrders from "./MyOrders";
@@ -41,7 +41,7 @@ const FormProfile = (props) => {
           className="logout-btn"
           variant="outlined"
           color="primary"
-          onClick={onClickLogout}
+          onClick={()=>onClickLogout}
           startIcon={<Avatar src={logout_icon} className="deleteIconsvg"/>}
         >
           Logout

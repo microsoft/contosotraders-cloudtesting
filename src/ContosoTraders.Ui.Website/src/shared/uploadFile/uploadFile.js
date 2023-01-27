@@ -5,7 +5,7 @@ import Alert from "react-s-alert";
 import { ProductService } from '../../services';
 
 import SearchIconNew from '../../assets/images/original/Contoso_Assets/product_page_assets/upload_icon.svg'
-import { DropzoneArea } from 'material-ui-dropzone'
+import { DropzoneArea } from 'mui-file-dropzone'
 
 class UploadFile extends Component {
     constructor(props) {

@@ -5,7 +5,7 @@ import productdetailimg3 from "../../assets/images/original/Contoso_Assets/produ
 import productdetailimg4 from "../../assets/images/original/Contoso_Assets/product_page_assets/image_4.jpg";
 import chevron_up from "../../assets/images/original/Contoso_Assets/product_page_assets/chevron_up.svg";
 import chevron_down from "../../assets/images/original/Contoso_Assets/product_page_assets/chevron_down.svg";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 function ImageSlider(props) {
   const [min, setMin] = React.useState(0)
   const [max, setMax] = React.useState(4)
