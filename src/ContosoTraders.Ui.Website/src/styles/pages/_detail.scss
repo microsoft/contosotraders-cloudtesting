@@ -89,6 +89,10 @@
       }
     }
     .MuiAccordion-root{
+      padding: 0 10px;
+      #panel1d-content{
+        margin-top: 10px;
+      }
       .panelSummary {
         flex-direction: row-reverse;
         padding-left: 0;
@@ -99,6 +103,9 @@
           font-family: 'Heebo';
           font-size: 16px;
           margin: 23.5px 0;
+          p{
+            margin-left: 10px;
+          }
         }
         .MuiIconButton-root{
           padding-left: 0;

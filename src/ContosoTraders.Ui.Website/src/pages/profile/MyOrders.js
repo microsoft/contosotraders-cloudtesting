@@ -12,7 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import { makeStyles } from '@mui/styles';
-import { createTheme } from '@mui/system';
+import { createTheme } from '@mui/material';
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
@@ -285,13 +285,13 @@ const MyOrders = () => {
                       <TextField
                         id="dob"
                         type="date"
-                        inputFormat="DD/MM/YYYY"
+                        inputformat="DD/MM/YYYY"
                         className="formtextfields"
                         value={formik.values.dob}
                         onChange={formik.handleChange}
                         error={formik.touched.dob && Boolean(formik.errors.dob)}
                         helperText={formik.touched.dob && formik.errors.dob}
-                        endAdornment={
+                        endadornment={
                           <InputAdornment position="end">
                             <ExpandMoreIcon />
                           </InputAdornment>
@@ -365,7 +365,7 @@ const MyOrders = () => {
                         formik.touched.newpassword && formik.errors.newpassword
                       }
                       InputProps={{
-                        endAdornment: (
+                        endadornment: (
                           <InputAdornment position="start">
                             <IconButton
                               aria-label="toggle password visibility"

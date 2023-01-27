@@ -48,7 +48,12 @@ class DetailContainer extends Component {
         // const profile = await UserService.getProfileData(this.props.userInfo.token);
         // const { profile: { email } } = profile;
         const email = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null
-        this.state.detailProduct.email = email;
+        this.setState(prevState => ({
+            detailProduct: {                   // object that we want to update
+                ...prevState.detailProduct,    // keep all other key-value pairs
+                email: email       // update the value of specific key
+            }
+        }))
 
         const productToCart = await CartService.addProduct(this.props.userInfo.token, this.state.detailProduct)
 

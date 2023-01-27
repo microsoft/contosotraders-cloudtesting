@@ -365,7 +365,7 @@ function TopAppBar(props) {
                 onFocus={()=>setSearchUpload(true)}
                 inputRef={searchRef}
                 InputProps={{
-                    endAdornment: (
+                  endadornment: (
                     <InputAdornment position='end'>
                         <IconButton onClick={()=>searchRef.current.value.length === 0 ? setSearchUpload(!searchUpload) : null} className="searchBtn">
                           <img src={SearchIconNew} alt="iconimage"/>
@@ -397,7 +397,7 @@ function TopAppBar(props) {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={()=>handleProfileMenuOpen}
+              onClick={handleProfileMenuOpen}
               color="inherit"
             >
               <img src={ProfileIcon} alt="iconimage" />

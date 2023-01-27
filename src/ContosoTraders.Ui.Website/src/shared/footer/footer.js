@@ -34,7 +34,6 @@ const Footer = () => {
         fetch(geoApiUrlForAddress)
         .then(res => res.json())
         .then(dat => {
-            console.log(dat)
             setStatus(null);
             let address = dat.resourceSets[0].resources[0].address.locality+', '+dat.resourceSets[0].resources[0].address.countryRegion;
             setLocation(address)

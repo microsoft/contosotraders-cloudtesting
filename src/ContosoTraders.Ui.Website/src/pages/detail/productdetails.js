@@ -50,7 +50,7 @@ function ProductDetails(props) {
                 variant="outlined"
                 InputProps={{
                     style: { maxHeight: 49 },
-                    endAdornment: (
+                    endadornment: (
                     <InputAdornment position='end'>
                         <Button className="pinsearchbtn">CHECK</Button>
                     </InputAdornment>

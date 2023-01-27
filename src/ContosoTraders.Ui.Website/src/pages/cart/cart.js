@@ -151,7 +151,7 @@ function Cart() {
                                 variant="outlined"
                                 inputRef={textInput}
                                 InputProps={{
-                                    endAdornment: (
+                                  endadornment: (
                                         <InputAdornment position='end'>
                                             <Button className={`${coupon.length >= 1 ? "pinsearchbtn" : "pinsearchbtn"}`} onClick={()=>checkDiscount()}>CHECK</Button>
                                         </InputAdornment>
