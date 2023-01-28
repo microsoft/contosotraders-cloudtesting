@@ -9,11 +9,15 @@ on:
     branches: ["main"]
 
 jobs:
-  deploy:
-    strategy:
-      matrix:
-        environmentName: [staging, production]
+  deploy-to-staging:
     uses: ./.github/workflows/contoso-traders-cloud-testing-template.yml
     secrets: inherit
     with:
-      environmentName: ${{ matrix.environmentName }}
+      environmentName: staging
+
+  deploy-to-production:
+    needs: deploy-to-staging
+    uses: ./.github/workflows/contoso-traders-cloud-testing-template.yml
+    secrets: inherit
+    with:
+      environmentName: production
