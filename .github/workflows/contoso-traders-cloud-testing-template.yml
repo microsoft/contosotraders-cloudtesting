@@ -392,6 +392,7 @@ jobs:
   load-tests-carts-api:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
     needs: [deploy-carts-api]
     concurrency:
       group: load-tests-carts-api
@@ -447,6 +448,7 @@ jobs:
   load-tests-carts-internal-api:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
     needs: [deploy-carts-api]
     concurrency:
       group: load-tests-carts-internal-api
@@ -514,6 +516,7 @@ jobs:
   load-tests-products-api:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
     needs: [deploy-products-api]
     concurrency:
       group: load-tests-products-api
@@ -570,6 +573,7 @@ jobs:
     timeout-minutes: 20
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
     container:
       image: mcr.microsoft.com/playwright:v1.29.1-focal
     needs: [deploy-ui, deploy-carts-api, deploy-products-api]
