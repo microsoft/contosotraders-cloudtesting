@@ -204,7 +204,6 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
     softDeleteRetentionInDays: 7
     tenantId: tenantId
-    createMode: 'recover'
   }
 
   // secret
@@ -942,7 +941,6 @@ resource cognitiveservice 'Microsoft.CognitiveServices/accounts@2022-10-01' = {
   kind: 'CognitiveServices'
   properties: {
     publicNetworkAccess: 'Enabled'
-    restore: true
   }
 }
 
