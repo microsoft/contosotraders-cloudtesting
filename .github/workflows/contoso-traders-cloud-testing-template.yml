@@ -42,10 +42,17 @@ jobs:
   provision-infrastructure:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
+    outputs:
+      cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
+      productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
+      uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
     concurrency:
       group: provision-infrastructure
       cancel-in-progress: true
     steps:
+      #
+      # section #1: provisioning the resources on Azure using bicep templates
+      #
       - name: checkout code
         uses: actions/checkout@v3
       - name: azure login
@@ -115,17 +122,9 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)
-
-  deploy-carts-api:
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environmentName }}
-    needs: provision-infrastructure
-    outputs:
-      cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
-    concurrency:
-      group: deploy-carts-api
-      cancel-in-progress: true
-    steps:
+      #
+      # section #2: deploy the carts api
+      #
       - name: checkout code
         uses: actions/checkout@v3
       - name: azure login
@@ -164,17 +163,9 @@ jobs:
         id: get-cartsApiEndpoint
         with:
           inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-
-  deploy-products-api:
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environmentName }}
-    needs: provision-infrastructure
-    outputs:
-      productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
-    concurrency:
-      group: deploy-products-api
-      cancel-in-progress: true
-    steps:
+      #
+      # section #3: deploy the products api
+      #
       - name: checkout code
         uses: actions/checkout@v3
       - name: azure login
@@ -348,17 +339,9 @@ jobs:
         id: get-productsApiEndpoint
         with:
           inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-
-  deploy-ui:
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environmentName }}
-    needs: [deploy-carts-api, deploy-products-api]
-    outputs:
-      uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
-    concurrency:
-      group: deploy-ui
-      cancel-in-progress: true
-    steps:
+      #
+      # section #4: deploy the ui
+      #
       - name: checkout code
         uses: actions/checkout@v3
       - name: azure login
@@ -393,7 +376,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
-    needs: [deploy-carts-api]
+    needs: [provision-infrastructure]
     concurrency:
       group: load-tests-carts-api
       cancel-in-progress: true
@@ -449,7 +432,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
-    needs: [deploy-carts-api]
+    needs: [provision-infrastructure]
     concurrency:
       group: load-tests-carts-internal-api
       cancel-in-progress: true
@@ -517,7 +500,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
-    needs: [deploy-products-api]
+    needs: [provision-infrastructure]
     concurrency:
       group: load-tests-products-api
       cancel-in-progress: true
@@ -576,7 +559,7 @@ jobs:
     if: ${{ inputs.environmentName == 'staging' }}
     container:
       image: mcr.microsoft.com/playwright:v1.29.1-focal
-    needs: [deploy-ui, deploy-carts-api, deploy-products-api]
+    needs: [provision-infrastructure]
     concurrency:
       group: playwright-tests-ui
       cancel-in-progress: true
