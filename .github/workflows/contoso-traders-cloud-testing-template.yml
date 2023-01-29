@@ -122,6 +122,11 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)
+      - name: extract acr password
+        uses: azure/CLI@v1
+        id: extract-acr-password
+        with:
+          inlineScript: echo "acrPassword"="$(az acr credential show -n ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --query "passwords[0].value" --output tsv)" >> $GITHUB_OUTPUT
       #
       # section #2: deploy the carts api
       #
@@ -131,11 +136,6 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
-      - name: extract acr password
-        uses: azure/CLI@v1
-        id: extract-acr-password
-        with:
-          inlineScript: echo "acrPassword"="$(az acr credential show -n ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --query "passwords[0].value" --output tsv)" >> $GITHUB_OUTPUT
       - name: azure container registry login
         uses: azure/docker-login@v1
         with:
@@ -177,11 +177,6 @@ jobs:
         id: install-helm
         with:
           version: v3.9.0
-      - name: extract acr password
-        uses: azure/CLI@v1
-        id: extract-acr-password
-        with:
-          inlineScript: echo "acrPassword"="$(az acr credential show -n ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --query "passwords[0].value" --output tsv)" >> $GITHUB_OUTPUT
       - name: azure container registry login
         uses: azure/docker-login@v1
         with:
