@@ -375,7 +375,7 @@ resource kv_roledefinitionforchaosexp 'Microsoft.Authorization/roleDefinitions@2
 
 resource kv_roleassignmentforchaosexp 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: kv
-  name: guid(resourceGroup().id, chaoskvexperiment.id, kv_roledefinitionforchaosexp.id)
+  name: guid(kv.id, chaoskvexperiment.id, kv_roledefinitionforchaosexp.id)
   properties: {
     roleDefinitionId: kv_roledefinitionforchaosexp.id
     principalId: chaoskvexperiment.identity.principalId
