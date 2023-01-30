@@ -163,6 +163,7 @@ var jumpboxVmAdminPassword = sqlPassword
 var privateDnsZoneVnetLinkName = '${prefixHyphenated}-privatednszone-vnet-link${suffix}'
 
 // chaos studio
+var chaosKvExperimentName = '${prefixHyphenated}-chaos-kv-experiment${suffix}'
 var chaosKvSelectorId = guid('${prefixHyphenated}-chaos-kv-selector-id${suffix}')
 
 // tags
@@ -1628,7 +1629,7 @@ resource chaoskvtarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
 }
 
 resource chaoskvexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
-  name: 'string'
+  name: chaosKvExperimentName
   location: resourceLocation
   tags: resourceTags
   identity: {
