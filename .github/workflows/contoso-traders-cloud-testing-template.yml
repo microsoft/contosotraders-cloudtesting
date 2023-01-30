@@ -40,7 +40,7 @@ env:
 
 jobs:
   provision-infrastructure:
-    if: ${{ vars.ENVIRONMENT == 'ctstg' || vars.ENVIRONMENT == 'ctprd' }}
+    if: vars.ENVIRONMENT != null
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     outputs:
