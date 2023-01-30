@@ -40,7 +40,7 @@ env:
 
 jobs:
   provision-infrastructure:
-    if: ${{ vars.ENVIRONMENT != '' }}
+    if: ${{ vars.ENVIRONMENT == 'staging' || vars.ENVIRONMENT == 'production' }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     outputs:
