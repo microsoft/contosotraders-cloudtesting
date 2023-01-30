@@ -39,8 +39,7 @@ env:
   USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
 
 jobs:
-  provision-infrastructure:
-    if: vars.ENVIRONMENT != null
+  provision:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     outputs:
@@ -48,7 +47,7 @@ jobs:
       productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
       uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
     concurrency:
-      group: provision-infrastructure
+      group: provision
       cancel-in-progress: true
     steps:
       #
@@ -348,7 +347,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
-    needs: [provision-infrastructure]
+    needs: [provision]
     concurrency:
       group: load-tests-carts-api
       cancel-in-progress: true
@@ -370,7 +369,7 @@ jobs:
             [
               {
                 "name": "domain",
-                "value": "${{ needs.provision-infrastructure.outputs.cartsApiEndpoint }}"
+                "value": "${{ needs.provision.outputs.cartsApiEndpoint }}"
               },
               {
                 "name": "protocol",
@@ -398,7 +397,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
-    needs: [provision-infrastructure]
+    needs: [provision]
     concurrency:
       group: load-tests-carts-internal-api
       cancel-in-progress: true
@@ -466,7 +465,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
-    needs: [provision-infrastructure]
+    needs: [provision]
     concurrency:
       group: load-tests-products-api
       cancel-in-progress: true
@@ -488,7 +487,7 @@ jobs:
             [
               {
                 "name": "domain",
-                "value": "${{ needs.provision-infrastructure.outputs.productsApiEndpoint }}"
+                "value": "${{ needs.provision.outputs.productsApiEndpoint }}"
               },
               {
                 "name": "protocol",
@@ -519,7 +518,7 @@ jobs:
     if: ${{ inputs.environmentName == 'staging' }}
     container:
       image: mcr.microsoft.com/playwright:v1.29.1-focal
-    needs: [provision-infrastructure]
+    needs: [provision]
     concurrency:
       group: playwright-tests-ui
       cancel-in-progress: true
@@ -527,11 +526,11 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v3
       - name: set carts api endpoint
-        run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision-infrastructure.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
+        run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set products api endpoint
-        run: echo "REACT_APP_APIURL"="https://${{ needs.provision-infrastructure.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
+        run: echo "REACT_APP_APIURL"="https://${{ needs.provision.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set ui cdn endpoint
-        run: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision-infrastructure.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
+        run: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
       - name: install dependencies
         run: npm ci
         working-directory: src/ContosoTraders.Ui.Website
