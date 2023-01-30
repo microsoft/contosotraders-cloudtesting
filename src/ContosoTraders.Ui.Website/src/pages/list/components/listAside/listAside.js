@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NamespacesConsumer } from "react-i18next";
+import { Translation } from "react-i18next";
 import SidebarAccordion from "./components/sidebaraccordion";
 class ListAside extends Component {
     constructor() {
@@ -55,7 +55,7 @@ class ListAside extends Component {
 
     render() {
         return (
-            <NamespacesConsumer>
+            <Translation>
                 {t => (
                     <aside className="list__aside">
                         <SidebarAccordion 
@@ -87,7 +87,7 @@ class ListAside extends Component {
                         )} */}
                     </aside>
                 )}
-            </NamespacesConsumer>
+            </Translation>
         );
     }
 }
