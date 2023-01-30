@@ -7,8 +7,8 @@ targetScope = 'subscription'
 // common
 @minLength(3)
 @maxLength(6)
-@description('A unique environment name (max 6 characters, alphanumeric only).')
-param env string
+@description('A unique environment suffix (max 6 characters, alphanumeric only).')
+param suffix string
 
 param rgLocation string = 'eastus'
 
@@ -18,7 +18,7 @@ param prefixHyphenated string = 'contoso-traders'
 ////////////////////////////////////////////////////////////////////////////////
 
 // rg for storage account, service bus, cosmos db & function app
-var rgName = '${prefixHyphenated}-rg${env}'
+var rgName = '${prefixHyphenated}-rg${suffix}'
 
 // tags
 var rgTags = {
