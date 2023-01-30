@@ -1,0 +1,553 @@
+name: contoso-traders-cloud-testing-template
+
+on:
+  workflow_call:
+    inputs:
+      environmentName:
+        required: true
+        type: string
+
+env:
+  # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
+  # metadata will be stored, and not where the resource groups will be deployed.
+  ACR_NAME: contosotradersacr
+  AKS_CLUSTER_NAME: contoso-traders-aks
+  AKS_DNS_LABEL: contoso-traders-products
+  AKS_NODES_RESOURCE_GROUP_NAME: contoso-traders-aks-nodes-rg
+  AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
+  AKS_SECRET_NAME_KV_ENDPOINT: contoso-traders-kv-endpoint
+  AKS_SECRET_NAME_MI_CLIENTID: contoso-traders-mi-clientid
+  CARTS_ACA_NAME: contoso-traders-carts
+  CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
+  CARTS_INTERNAL_ACA_NAME: contoso-traders-intcarts
+  CDN_PROFILE_NAME: contoso-traders-cdn
+  KV_NAME: contosotraderskv
+  LOAD_TEST_SERVICE_NAME: contoso-traders-loadtest
+  PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
+  PRODUCTS_DB_NAME: productsdb
+  PRODUCTS_DB_SERVER_NAME: contoso-traders-products
+  PRODUCTS_DB_USER_NAME: localadmin
+  PRODUCT_DETAILS_CONTAINER_NAME: product-details
+  PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME: contosotradersimg
+  PRODUCT_LIST_CONTAINER_NAME: product-list
+  PRODUCTS_CDN_ENDPOINT_NAME: contoso-traders-images
+  RESOURCE_GROUP_NAME: contoso-traders-rg
+  STORAGE_ACCOUNT_NAME: contosotradersimg
+  SUB_DEPLOYMENT_REGION: eastus2
+  UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
+  UI_STORAGE_ACCOUNT_NAME: contosotradersui2
+  USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
+
+jobs:
+  provision-infrastructure:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environmentName }}
+    outputs:
+      cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
+      productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
+      uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+    concurrency:
+      group: provision-infrastructure
+      cancel-in-progress: true
+    steps:
+      #
+      # section #1: provisioning the resources on Azure using bicep templates
+      #
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      # The first step is to create the resource group: `contoso-traders-rg`.
+      # The below step can also be manually executed as follows:
+      # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
+      # Note: You can specify any location for `{LOCATION}`. It's the region where the deployment metadata will be stored, and not
+      # where the resource groups will be deployed.
+      - name: create resource group
+        uses: Azure/arm-deploy@v1
+        with:
+          scope: subscription
+          region: ${{ env.SUB_DEPLOYMENT_REGION }}
+          template: ./iac/createResourceGroup.bicep
+          parameters: env=${{ vars.ENVIRONMENT }}
+      # Next step is to deploy the Azure resources to the resource group `contoso-traders-rg` created above. The deployed resources
+      # include storage accounts, function apps, app services cosmos db, and service bus etc.
+      # The below step can also be manually executed as follows:
+      # az deployment group create -g contoso-traders-rg --template-file .\createResources.bicep --parameters .\createResources.parameters.json
+      # Note: The `createResources.parameters.json` file contains the parameters for the deployment; specifically the environment name.
+      # You can modify the parameters to customize the deployment.
+      # Note: The bicep template outputs are not shown in the logs. You can extract the outputs as shown here:
+      # https://github.com/Azure/arm-deploy#another-example-on-how-to-use-this-action-to-get-the-output-of-arm-template
+      - name: create resources
+        uses: Azure/arm-deploy@v1
+        with:
+          scope: resourcegroup
+          region: ${{ env.SUB_DEPLOYMENT_REGION }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}
+          template: ./iac/createResources.bicep
+          parameters: ./iac/createResources.parameters.json env=${{ vars.ENVIRONMENT }} sqlPassword=${{ secrets.SQL_PASSWORD }}
+      # Add the logged-in service principal to the key vault access policy
+      - name: add service principal to kv access policy
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az keyvault set-policy -n ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --secret-permissions get list set --object-id $(az ad sp show --id $(az account show --query "user.name" -o tsv) --query "id" -o tsv)
+      # The AKS agent pool needs to be assigned the user-assigned managed identity created (which has kv access)
+      - name: assign user-assigned managed-identity to aks agentpool
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az vmss identity assign \
+              --identities $(az identity show -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ vars.ENVIRONMENT }} --query "id" -o tsv) \
+              --ids $(az vmss list -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --query "[0].id" -o tsv) \
+      # Seed the DBs and storage accounts
+      - name: seed products db
+        uses: azure/sql-action@v2
+        with:
+          connection-string: Server=tcp:${{ env.PRODUCTS_DB_SERVER_NAME }}${{ vars.ENVIRONMENT }}.database.windows.net,1433;Initial Catalog=${{ env.PRODUCTS_DB_NAME }};Persist Security Info=False;User ID=${{ env.PRODUCTS_DB_USER_NAME }};Password=${{ secrets.SQL_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+          path: ./src/ContosoTraders.Api.Products/Migration/productsdb.sql
+      - name: seed product image (product details)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az storage blob sync --account-name '${{ env.PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME }}${{ vars.ENVIRONMENT }}' -c '${{ env.PRODUCT_DETAILS_CONTAINER_NAME }}' -s 'src/ContosoTraders.Api.Images/product-details'
+      - name: seed product image (product list)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az storage blob sync --account-name '${{ env.PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME }}${{ vars.ENVIRONMENT }}' -c '${{ env.PRODUCT_LIST_CONTAINER_NAME }}' -s 'src/ContosoTraders.Api.Images/product-list'
+      - name: purge product images cdn endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.PRODUCTS_CDN_ENDPOINT_NAME }}${{ vars.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ vars.ENVIRONMENT }}'
+      - name: extract acr password
+        uses: azure/CLI@v1
+        id: extract-acr-password
+        with:
+          inlineScript: echo "acrPassword"="$(az acr credential show -n ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --query "passwords[0].value" --output tsv)" >> $GITHUB_OUTPUT
+      - name: azure container registry login
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io
+          username: ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}
+          password: ${{ steps.extract-acr-password.outputs.acrPassword }}
+      - name: set aks context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}
+          cluster-name: ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
+      #
+      # section #2: deploy the carts api
+      #
+      - name: docker build
+        run: docker build src -f ./src/ContosoTraders.Api.Carts/Dockerfile -t ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: docker push (to acr)
+        run: docker push --all-tags ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}
+      - name: deploy to aca
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            az containerapp update -n ${{ env.CARTS_ACA_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --image ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: deploy to aca (internal)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az config set extension.use_dynamic_install=yes_without_prompt
+            az containerapp update -n ${{ env.CARTS_INTERNAL_ACA_NAME }}${{ vars.ENVIRONMENT }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --image ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: get carts api endpoint
+        uses: azure/CLI@v1
+        id: get-cartsApiEndpoint
+        with:
+          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      #
+      # section #3: deploy the products api
+      #
+      - name: install helm
+        uses: Azure/setup-helm@v3
+        id: install-helm
+        with:
+          version: v3.9.0
+      - name: docker build
+        run: docker build src -f ./src/ContosoTraders.Api.Products/Dockerfile -t ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: docker push (to acr)
+        run: docker push --all-tags ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}
+      - name: setup kubectl
+        uses: azure/setup-kubectl@v3
+      - name: create kubernetes secret (acr password)
+        uses: Azure/k8s-create-secret@v4
+        with:
+          secret-name: ${{ env.AKS_SECRET_NAME_ACR_PASSWORD }}
+          container-registry-url: ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io
+          container-registry-username: ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}
+          container-registry-password: ${{ steps.extract-acr-password.outputs.acrPassword }}
+      - name: get managedIdentityClientId
+        uses: azure/CLI@v1
+        id: get-managedIdentityClientId
+        with:
+          inlineScript: echo "managedIdentityClientId"="$(az identity show -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ vars.ENVIRONMENT }} --query "clientId" -o tsv)" >> $GITHUB_OUTPUT
+      - name: create kubernetes secret (kv endpoint)
+        uses: Azure/k8s-create-secret@v4
+        with:
+          secret-type: "generic"
+          secret-name: ${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}
+          string-data: '{ "${{ env.AKS_SECRET_NAME_KV_ENDPOINT }}" : "https://${{ env.KV_NAME }}${{ vars.ENVIRONMENT }}.vault.azure.net/" }'
+      - name: create kubernetes secret (managed identity client id)
+        uses: Azure/k8s-create-secret@v4
+        with:
+          secret-type: "generic"
+          secret-name: ${{ env.AKS_SECRET_NAME_MI_CLIENTID }}
+          string-data: '{ "${{ env.AKS_SECRET_NAME_MI_CLIENTID }}" : "${{ steps.get-managedIdentityClientId.outputs.managedIdentityClientId }}" }'
+      - name: substitute tokens in deployment manifest
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: "{"
+          tokenSuffix: "}"
+          files: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+        env:
+          ENVIRONMENT: ${{ vars.ENVIRONMENT }}
+      - name: lint deployment manifest
+        uses: azure/k8s-lint@v2.0
+        with:
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+      - name: apply deployment manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+          images: ${{ env.ACR_NAME }}${{ vars.ENVIRONMENT }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+          imagepullsecrets: ${{ env.AKS_SECRET_NAME_ACR_PASSWORD }}
+          force: true
+      - name: apply service manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          pull-images: false
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Service.yaml
+          force: true
+      # # setup chaos mesh
+      # - name: setup chaos mesh
+      #   run: |
+      #     az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
+      #     ${{ steps.install-helm.outputs.helm-path }} repo add chaos-mesh https://charts.chaos-mesh.org
+      #     ${{ steps.install-helm.outputs.helm-path }} repo update
+      #     kubectl create ns chaos-testing
+      #     ${{ steps.install-helm.outputs.helm-path }} install chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-testing --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
+      # create the ingress controller
+      - name: create ingress controller
+        run: |
+          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
+          ${{ steps.install-helm.outputs.helm-path }} repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+          ${{ steps.install-helm.outputs.helm-path }} repo update
+          ${{ steps.install-helm.outputs.helm-path }} upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
+            --set controller.replicaCount=1 \
+            --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+            --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
+            --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux \
+            --set controller.service.externalTrafficPolicy=Local
+      - name: set dns label on public ip
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az network public-ip update --dns-name ${{ env.AKS_DNS_LABEL }}${{ vars.ENVIRONMENT }} -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} -n $(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].name" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }})
+      # hack: extract the full fqdn / dns label of the aks app's public IP address
+      - name: get aks-fqdn
+        uses: azure/CLI@v1
+        id: get-aks-fqdn
+        with:
+          # note: There should be a whitespace between ')' and ']'. More details: https://stackoverflow.com/a/59154958
+          inlineScript: echo "aksFqdn"="$(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].dnsSettings.fqdn" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }})" >> $GITHUB_OUTPUT
+      # install cert-manager
+      - name: apply namespace manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          pull-images: false
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Namespace.yaml
+          force: true
+      - name: install cert-manager
+        run: |
+          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.ENVIRONMENT }}
+          kubectl apply --validate=false -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.yaml
+      - name: apply clusterIssuer manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          pull-images: false
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/ClusterIssuer.yaml
+          force: true
+      - name: substitute tokens in certificate manifest
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: "{"
+          tokenSuffix: "}"
+          files: ./src/ContosoTraders.Api.Products/Manifests/Certificate.yaml
+        env:
+          AKS_FQDN: ${{ steps.get-aks-fqdn.outputs.aksFqdn }}
+      - name: apply certificate manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          pull-images: false
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Certificate.yaml
+          force: true
+      - name: substitute tokens in ingress manifest
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: "{"
+          tokenSuffix: "}"
+          files: ./src/ContosoTraders.Api.Products/Manifests/Ingress.yaml
+        env:
+          AKS_FQDN: ${{ steps.get-aks-fqdn.outputs.aksFqdn }}
+      - name: apply ingress manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          pull-images: false
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Ingress.yaml
+          force: true
+      - name: apply clusterRole manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          pull-images: false
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/ClusterRole.yaml
+          force: true
+      - name: set productsApiEndpoint in kv
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az keyvault secret set --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name productsApiEndpoint --value ${{ steps.get-aks-fqdn.outputs.aksFqdn }} --description "endpoint url (fqdn) of the products api"
+      - name: get products api endpoint
+        uses: azure/CLI@v1
+        id: get-productsApiEndpoint
+        with:
+          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      #
+      # section #4: deploy the ui
+      #
+      - name: set REACT_APP_APIURLSHOPPINGCART
+        run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
+      - name: set REACT_APP_APIURL
+        run: echo "REACT_APP_APIURL"="https://${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
+      - name: npm install
+        run: npm install
+        working-directory: src/ContosoTraders.Ui.Website
+      - name: npm run build
+        run: npm run build
+        working-directory: src/ContosoTraders.Ui.Website
+      - name: deploy ui to storage
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az storage blob sync --account-name '${{ env.UI_STORAGE_ACCOUNT_NAME }}${{ vars.ENVIRONMENT }}' -c '$web' -s 'src/ContosoTraders.Ui.Website/build'
+      - name: purge ui cdn endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.UI_CDN_ENDPOINT_NAME }}${{ vars.ENVIRONMENT }}' -g '${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ vars.ENVIRONMENT }}'
+      - name: get ui cdn endpoint
+        uses: azure/CLI@v1
+        id: get-uiCdnEndpoint
+        with:
+          inlineScript: echo "uiCdnEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: display ui cdn endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)
+
+  load-tests-carts-api:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
+    needs: [provision-infrastructure]
+    concurrency:
+      group: load-tests-carts-api
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: load test (carts API)
+        uses: Azure/load-testing@v1.1.11
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./tests/loadtests/contoso-traders-carts.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.ENVIRONMENT }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ needs.provision-infrastructure.outputs.cartsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/ShoppingCart/loadtest"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
+
+  load-tests-carts-internal-api:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
+    needs: [provision-infrastructure]
+    concurrency:
+      group: load-tests-carts-internal-api
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: get carts api endpoint (internal)
+        uses: azure/CLI@v1
+        id: get-cartsInternalApiEndpoint
+        with:
+          inlineScript: echo "cartsInternalApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name cartsInternalApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: get vnetAcaSubnetId
+        uses: azure/CLI@v1
+        id: get-vnetAcaSubnetId
+        with:
+          inlineScript: echo "vnetAcaSubnetId"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} -n vnetAcaSubnetId --query "value" -o tsv)" >> $GITHUB_OUTPUT
+      - name: substitute tokens in load test config file
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: "{{"
+          tokenSuffix: "}}"
+          files: ./tests/loadtests/contoso-traders-carts-internal.yaml
+        env:
+          LOAD_TEST_SUBNET_ID: ${{ steps.get-vnetAcaSubnetId.outputs.vnetAcaSubnetId }}
+      - name: load test (carts internal API)
+        uses: Azure/load-testing@v1.1.11
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./tests/loadtests/contoso-traders-carts-internal.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.ENVIRONMENT }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ steps.get-cartsInternalApiEndpoint.outputs.cartsInternalApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/ShoppingCart/loadtest"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
+
+  load-tests-products-api:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
+    needs: [provision-infrastructure]
+    concurrency:
+      group: load-tests-products-api
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: load test (products API)
+        uses: Azure/load-testing@v1.1.11
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./tests/loadtests/contoso-traders-products.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.ENVIRONMENT }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.ENVIRONMENT }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ needs.provision-infrastructure.outputs.productsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/Products/1"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
+
+  playwright-tests-ui:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
+    container:
+      image: mcr.microsoft.com/playwright:v1.29.1-focal
+    needs: [provision-infrastructure]
+    concurrency:
+      group: playwright-tests-ui
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: set carts api endpoint
+        run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision-infrastructure.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
+      - name: set products api endpoint
+        run: echo "REACT_APP_APIURL"="https://${{ needs.provision-infrastructure.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
+      - name: set ui cdn endpoint
+        run: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision-infrastructure.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
+      - name: install dependencies
+        run: npm ci
+        working-directory: src/ContosoTraders.Ui.Website
+      # Note: The 'HOME=/root' prefix is required to workaround below mentioned issue:
+      # https://github.com/microsoft/playwright/issues/6500
+      - name: run playwright tests
+        run: HOME=/root npx playwright test
+        working-directory: src/ContosoTraders.Ui.Website
+      - name: Create test summary
+        uses: test-summary/action@dist
+        if: always()
+        with:
+          paths: src/ContosoTraders.Ui.Website/test-results/junit.xml
+      - name: upload playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: src/ContosoTraders.Ui.Website/playwright-report/
+          retention-days: 30
