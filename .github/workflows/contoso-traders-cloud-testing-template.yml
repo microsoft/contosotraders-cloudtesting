@@ -44,10 +44,8 @@ jobs:
     environment: ${{ inputs.environmentName }}
     outputs:
       cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
-      cartsInternalApiEndpoint: $ {{ steps.get-cartsInternalApiEndpoint.outputs.cartsInternalApiEndpoint }}
       productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
       uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
-      vnetAcaSubnetId : ${{ steps.get-vnetAcaSubnetId.outputs.vnetAcaSubnetId }}
     concurrency:
       group: provision-infrastructure
       cancel-in-progress: true
@@ -160,16 +158,6 @@ jobs:
         id: get-cartsApiEndpoint
         with:
           inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-      - name: get carts api endpoint (internal)
-        uses: azure/CLI@v1
-        id: get-cartsInternalApiEndpoint
-        with:
-          inlineScript: echo "cartsInternalApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name cartsInternalApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-      - name: get vnetAcaSubnetId
-        uses: azure/CLI@v1
-        id: get-vnetAcaSubnetId
-        with:
-          inlineScript: echo "vnetAcaSubnetId"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} -n vnetAcaSubnetId --query "value" -o tsv)" >> $GITHUB_OUTPUT
       #
       # section #3: deploy the products api
       #
@@ -355,7 +343,6 @@ jobs:
         with:
           inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name uiCdnEndpoint --query value -o tsv)
 
-
   load-tests-carts-api:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
@@ -421,6 +408,16 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: get carts api endpoint (internal)
+        uses: azure/CLI@v1
+        id: get-cartsInternalApiEndpoint
+        with:
+          inlineScript: echo "cartsInternalApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} --name cartsInternalApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: get vnetAcaSubnetId
+        uses: azure/CLI@v1
+        id: get-vnetAcaSubnetId
+        with:
+          inlineScript: echo "vnetAcaSubnetId"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.ENVIRONMENT }} -n vnetAcaSubnetId --query "value" -o tsv)" >> $GITHUB_OUTPUT
       - name: substitute tokens in load test config file
         uses: cschleiden/replace-tokens@v1.2
         with:
@@ -428,7 +425,7 @@ jobs:
           tokenSuffix: "}}"
           files: ./tests/loadtests/contoso-traders-carts-internal.yaml
         env:
-          LOAD_TEST_SUBNET_ID: ${{ needs.provision-infrastructure.outputs.vnetAcaSubnetId }}
+          LOAD_TEST_SUBNET_ID: ${{ steps.get-vnetAcaSubnetId.outputs.vnetAcaSubnetId }}
       - name: load test (carts internal API)
         uses: Azure/load-testing@v1.1.11
         with:
@@ -440,7 +437,7 @@ jobs:
             [
               {
                 "name": "domain",
-                "value": "${{ needs.provision-infrastructure.outputs.cartsInternalApiEndpoint }}"
+                "value": "${{ steps.get-cartsInternalApiEndpoint.outputs.cartsInternalApiEndpoint }}"
               },
               {
                 "name": "protocol",
