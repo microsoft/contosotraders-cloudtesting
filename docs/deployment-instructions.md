@@ -54,8 +54,8 @@ You will need following to get started:
   The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
 
 * Then, create two [environments for deployment](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment). On your fork of the github repository, go to the `Settings` tab > `Environments` > Click on `New Environment` button and create the following two environments:
-  * `production`
   * `staging`
+  * `production` (optional)
 
 * Then, for each of these above environments, create this environment variable:
 
