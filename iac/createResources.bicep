@@ -162,6 +162,10 @@ var jumpboxVmAdminPassword = sqlPassword
 // private dns zone
 var privateDnsZoneVnetLinkName = '${prefixHyphenated}-privatednszone-vnet-link${suffix}'
 
+// chaos studio
+var chaosKvExperimentName = '${prefixHyphenated}-chaos-kv-experiment${suffix}'
+var chaosKvSelectorId = guid('${prefixHyphenated}-chaos-kv-selector-id${suffix}')
+
 // tags
 var resourceTags = {
   Product: prefixHyphenated
@@ -359,6 +363,23 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
         }
       ]
     }
+  }
+}
+
+resource kv_roledefinitionforchaosexp 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  scope: kv
+  // This is the Key Vault Contributor role
+  // See https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#key-vault-contributor
+  name: 'f25e0fa2-a7c8-4377-a976-54943a77a395'
+}
+
+resource kv_roleassignmentforchaosexp 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: kv
+  name: guid(kv.id, chaoskvexperiment.id, kv_roledefinitionforchaosexp.id)
+  properties: {
+    roleDefinitionId: kv_roledefinitionforchaosexp.id
+    principalId: chaoskvexperiment.identity.principalId
+    principalType: 'ServicePrincipal'
   }
 }
 
@@ -1604,6 +1625,67 @@ resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = 
         }
       ]
     }
+  }
+}
+
+//
+// chaos studio
+//
+
+// target: kv
+resource chaoskvtarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
+  name: 'Microsoft-KeyVault'
+  location: resourceLocation
+  scope: kv
+  properties: {}
+
+  // capability: kv (deny access)
+  // resource chaoskvcapability 'capabilities' = {
+  //   name: 'DenyAccess-1.0'
+  //   scope: kv
+  // }
+}
+
+resource chaoskvexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
+  name: chaosKvExperimentName
+  location: resourceLocation
+  tags: resourceTags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    selectors: [
+      {
+        type: 'List'
+        id: chaosKvSelectorId
+        targets: [
+          {
+            id: chaoskvtarget.id
+            type: 'ChaosTarget'
+          }
+        ]
+      }
+    ]
+    startOnCreation: false
+    steps: [
+      {
+        name: 'step1'
+        branches: [
+          {
+            name: 'branch1'
+            actions: [
+              {
+                name: 'urn:csci:microsoft:keyVault:denyAccess/1.0'
+                type: 'continuous'
+                selectorId: chaosKvSelectorId
+                duration: 'PT5M'
+                parameters: []
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }
 

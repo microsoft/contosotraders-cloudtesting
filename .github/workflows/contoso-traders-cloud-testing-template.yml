@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.environmentName }}
-      url: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+      url: https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
     outputs:
       cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
       productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
