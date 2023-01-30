@@ -162,6 +162,9 @@ var jumpboxVmAdminPassword = sqlPassword
 // private dns zone
 var privateDnsZoneVnetLinkName = '${prefixHyphenated}-privatednszone-vnet-link${suffix}'
 
+// chaos studio
+var chaosKvSelectorId = guid('${prefixHyphenated}-chaos-kv-selector-id${suffix}')
+
 // tags
 var resourceTags = {
   Product: prefixHyphenated
@@ -1604,6 +1607,66 @@ resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = 
         }
       ]
     }
+  }
+}
+
+//
+// chaos studio
+//
+
+// target: kv
+resource chaoskvtarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
+  name: 'Microsoft-KeyVault'
+  location: resourceLocation
+  scope: kv
+  properties: {}
+
+  // capability: kv
+  // resource chaoskvcapability 'capabilities' = {
+  //   name: 'DenyAccess-1.0'
+  // }
+}
+
+resource chaoskvexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
+  name: 'string'
+  location: resourceLocation
+  tags: resourceTags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    selectors: [
+      {
+        type: 'List'
+        id: chaosKvSelectorId
+        targets: [
+          {
+            id: chaoskvtarget.id
+            type: 'ChaosTarget'
+          }
+        ]
+      }
+    ]
+    startOnCreation: false
+    steps: [
+      {
+        name: 'step1'
+        branches: [
+          {
+            name: 'branch1'
+            actions: [
+              {
+                name: 'urn:csci:microsoft:keyVault:denyAccess/1.0'
+                type: 'continuous'
+                selectorId: chaosKvSelectorId
+                duration: 'PT5M'
+                parameters: []
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }
 
