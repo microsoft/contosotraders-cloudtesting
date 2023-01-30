@@ -5,24 +5,23 @@ targetScope = 'subscription'
 ////////////////////////////////////////////////////////////////////////////////
 
 // common
+@description('Rg for storage account, service bus, cosmos db & function app. Value is passed from GHA variable.')
+param rgName string
+
 @minLength(3)
 @maxLength(6)
 @description('A unique environment suffix (max 6 characters, alphanumeric only).')
 param suffix string
 
+@description('Set default rg location to East US.')
 param rgLocation string = 'eastus'
-
-param prefixHyphenated string = 'contoso-traders'
 
 // variables
 ////////////////////////////////////////////////////////////////////////////////
 
-// rg for storage account, service bus, cosmos db & function app
-var rgName = '${prefixHyphenated}-rg${suffix}'
-
 // tags
 var rgTags = {
-  Product: prefixHyphenated
+  Product: '${rgName}${suffix}'
   Environment: 'testing'
 }
 
@@ -30,7 +29,7 @@ var rgTags = {
 ////////////////////////////////////////////////////////////////////////////////
 
 resource rg 'Microsoft.Resources/resourceGroups@2022-09-01' = {
-  name: rgName
+  name: '${rgName}${suffix}'
   location: rgLocation
   tags: rgTags
 }
