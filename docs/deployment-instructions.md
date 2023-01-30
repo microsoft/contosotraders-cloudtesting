@@ -59,9 +59,9 @@ You will need following to get started:
 
 * Then, for each of these above environments, create this environment variable:
 
-  | Variable Name | Variable Value                                                                             |
-  | ------------- | ------------------------------------------------------------------------------------------ |
-  | `ENVIRONMENT` | A unique environment name (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
+  | Variable Name | Variable Value                                                                               |
+  | ------------- | -------------------------------------------------------------------------------------------- |
+  | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
 
 ## Deploy the Application
 

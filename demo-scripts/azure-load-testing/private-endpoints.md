@@ -26,7 +26,7 @@ Specifically, here's what happens behind the scenes:
 
 ## Walkthrough: Identify the Load Test Target
 
-1. In the Azure portal, you can navigate to the `contoso-traders-intcarts{ENVIRONMENT}` Azure Container App in the `contoso-traders-rg` resource group. This is the application that hosts the `Carts API`. Note that this application is only accessible from within the VNET.
+1. In the Azure portal, you can navigate to the `contoso-traders-intcarts{SUFFIX}` Azure Container App in the `contoso-traders-rg` resource group. This is the application that hosts the `Carts API`. Note that this application is only accessible from within the VNET.
 
    ![ACA](./media/private-endpoint-1.png)
 
