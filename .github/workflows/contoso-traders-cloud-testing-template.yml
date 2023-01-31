@@ -21,6 +21,7 @@ env:
   CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
   CARTS_INTERNAL_ACA_NAME: contoso-traders-intcarts
   CDN_PROFILE_NAME: contoso-traders-cdn
+  CHAOS_AKS_EXPERIMENT_NAME: contoso-traders-chaos-aks-experiment
   KV_NAME: contosotraderskv
   LOAD_TEST_SERVICE_NAME: contoso-traders-loadtest
   PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
@@ -270,6 +271,9 @@ jobs:
         run: |
           az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.SUFFIX }}
           kubectl apply --validate=false -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.yaml
+      - name: Sleep for 30 seconds
+        run: sleep 30s
+        shell: bash
       - name: apply clusterIssuer manifest
         uses: Azure/k8s-deploy@v4
         with:
@@ -483,6 +487,68 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: load test (products API)
+        uses: Azure/load-testing@v1.1.11
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./tests/loadtests/contoso-traders-products.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ needs.provision.outputs.productsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/Products/1"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
+
+  chaos-experiment-products-api:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
+    needs: [provision, load-tests-products-api]
+    concurrency:
+      group: load-tests-products-api
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: get chaos experiment resource id
+        uses: azure/CLI@v1
+        id: get-chaosAksExperimentResourceId
+        with:
+          inlineScript: echo "chaosAksExperimentResourceId"="$(az resource show --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --namespace Microsoft.Chaos --resource-type Experiments --name ${{ env.CHAOS_AKS_EXPERIMENT_NAME }}${{ vars.SUFFIX }} --query "id" -o tsv)" >> $GITHUB_OUTPUT
+      - name: start chaos experiment (pod failure)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az rest --method post --uri https://management.azure.com${{ steps.get-chaosAksExperimentResourceId.outputs.chaosAksExperimentResourceId }}/start?api-version=2021-09-15-preview
+      - name: Sleep for 30 seconds
+        run: sleep 30s
+        shell: bash
       - name: load test (products API)
         uses: Azure/load-testing@v1.1.11
         with:
