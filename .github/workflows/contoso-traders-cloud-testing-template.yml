@@ -526,7 +526,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
-    needs: [provision, load-tests-products-api]
+    needs: [load-tests-products-api]
     concurrency:
       group: load-tests-products-api
       cancel-in-progress: true
