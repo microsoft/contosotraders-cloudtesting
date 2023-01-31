@@ -1715,12 +1715,12 @@ resource chaosakstarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
   location: resourceLocation
   scope: aks
   properties: {}
+}
 
-  // capability: aks (pod failures)
-  // resource chaosakscapability 'capabilities' = {
-  //   name: 'PodChaos-2.1'
-  //   scope: aks
-  // }
+// capability: aks (pod failures)
+resource chaosakscapability 'Microsoft.Chaos/targets/capabilities@2022-10-01-preview' = {
+  name: 'Microsoft-AzureKubernetesServiceChaosMesh/PodChaos-2.1'
+  scope: aks
 }
 
 // chaos experiment: aks (chaos mesh)
