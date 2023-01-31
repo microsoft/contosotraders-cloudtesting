@@ -165,11 +165,13 @@ var privateDnsZoneVnetLinkName = '${prefixHyphenated}-privatednszone-vnet-link${
 // chaos studio
 var chaosKvExperimentName = '${prefixHyphenated}-chaos-kv-experiment${suffix}'
 var chaosKvSelectorId = guid('${prefixHyphenated}-chaos-kv-selector-id${suffix}')
+var chaosAksExperimentName = '${prefixHyphenated}-chaos-aks-experiment${suffix}'
+var chaosAksSelectorId = guid('${prefixHyphenated}-chaos-aks-selector-id${suffix}')
 
 // tags
 var resourceTags = {
   Product: prefixHyphenated
-  Environment: 'testing'
+  Environment: suffix
 }
 
 // resources
@@ -1368,6 +1370,23 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-10-02-preview' = {
   }
 }
 
+resource aks_roledefinitionforchaosexp 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  scope: aks
+  // This is the Azure Kubernetes Service Cluster Admin Role
+  // See https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#azure-kubernetes-service-cluster-admin-role
+  name: '0ab0b1a8-8aac-4efd-b8c2-3ee1fb270be8'
+}
+
+resource aks_roleassignmentforchaosexp 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: aks
+  name: guid(aks.id, chaosaksexperiment.id, aks_roledefinitionforchaosexp.id)
+  properties: {
+    roleDefinitionId: aks_roledefinitionforchaosexp.id
+    principalId: chaosaksexperiment.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
 //
 // virtual network
 //
@@ -1646,6 +1665,7 @@ resource chaoskvtarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
   // }
 }
 
+// chaos experiment: kv
 resource chaoskvexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
   name: chaosKvExperimentName
   location: resourceLocation
@@ -1688,6 +1708,81 @@ resource chaoskvexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
     ]
   }
 }
+
+// target: aks
+resource chaosakstarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
+  name: 'Microsoft-AzureKubernetesServiceChaosMesh'
+  location: resourceLocation
+  scope: aks
+  properties: {}
+
+  // capability: aks (pod failures)
+  // resource chaosakscapability 'capabilities' = {
+  //   name: 'PodChaos-2.1'
+  //   scope: aks
+  // }
+}
+
+// chaos experiment: aks (chaos mesh)
+// resource chaosaksexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
+//   name: chaosAksExperimentName
+//   location: resourceLocation
+//   tags: resourceTags
+//   identity: {
+//     type: 'SystemAssigned'
+//   }
+//   properties: {
+//     selectors: [
+//       {
+//         type: 'List'
+//         id: chaosAksSelectorId
+//         targets: [
+//           {
+//             id: chaosakstarget.id
+//             type: 'ChaosTarget'
+//           }
+//         ]
+//       }
+//     ]
+//     startOnCreation: false
+//     steps: [
+//       {
+//         name: 'step1'
+//         branches: [
+//           {
+//             name: 'branch1'
+//             actions: [
+//               {
+//                 name: 'urn:csci:microsoft:azureKubernetesServiceChaosMesh:podChaos/2.1'
+//                 type: 'continuous'
+//                 selectorId: chaosAksSelectorId
+//                 duration: 'PT5M'
+//                 parameters: [
+//                   {
+//                     name: 'action'
+//                     value: 'pod-failure'
+//                   }
+//                   {
+//                     name: 'mode'
+//                     value: 'one'
+//                   }
+//                   {
+//                     name: 'value'
+//                     value: '1'
+//                   }
+//                   {
+//                     name: 'containerNames'
+//                     value: 'carts'
+//                   }
+//                 ]
+//               }
+//             ]
+//           }
+//         ]
+//       }
+//     ]
+//   }
+// }
 
 // outputs
 ////////////////////////////////////////////////////////////////////////////////

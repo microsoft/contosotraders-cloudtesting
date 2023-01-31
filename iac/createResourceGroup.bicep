@@ -22,7 +22,7 @@ param rgLocation string = 'eastus'
 // tags
 var rgTags = {
   Product: '${rgName}${suffix}'
-  Environment: 'testing'
+  Environment: suffix
 }
 
 // resource groups
