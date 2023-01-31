@@ -1657,12 +1657,12 @@ resource chaoskvtarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
   location: resourceLocation
   scope: kv
   properties: {}
+}
 
-  // capability: kv (deny access)
-  // resource chaoskvcapability 'capabilities' = {
-  //   name: 'DenyAccess-1.0'
-  //   scope: kv
-  // }
+// capability: kv (deny access)
+resource chaoskvcapability 'Microsoft.Chaos/targets/capabilities@2022-10-01-preview' = {
+  name: 'Microsoft-KeyVault/DenyAccess-1.0'
+  scope: kv
 }
 
 // chaos experiment: kv
@@ -1715,74 +1715,62 @@ resource chaosakstarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
   location: resourceLocation
   scope: aks
   properties: {}
+}
 
-  // capability: aks (pod failures)
-  // resource chaosakscapability 'capabilities' = {
-  //   name: 'PodChaos-2.1'
-  //   scope: aks
-  // }
+// capability: aks (pod failures)
+resource chaosakscapability 'Microsoft.Chaos/targets/capabilities@2022-10-01-preview' = {
+  name: 'Microsoft-AzureKubernetesServiceChaosMesh/PodChaos-2.1'
+  scope: aks
 }
 
 // chaos experiment: aks (chaos mesh)
-// resource chaosaksexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
-//   name: chaosAksExperimentName
-//   location: resourceLocation
-//   tags: resourceTags
-//   identity: {
-//     type: 'SystemAssigned'
-//   }
-//   properties: {
-//     selectors: [
-//       {
-//         type: 'List'
-//         id: chaosAksSelectorId
-//         targets: [
-//           {
-//             id: chaosakstarget.id
-//             type: 'ChaosTarget'
-//           }
-//         ]
-//       }
-//     ]
-//     startOnCreation: false
-//     steps: [
-//       {
-//         name: 'step1'
-//         branches: [
-//           {
-//             name: 'branch1'
-//             actions: [
-//               {
-//                 name: 'urn:csci:microsoft:azureKubernetesServiceChaosMesh:podChaos/2.1'
-//                 type: 'continuous'
-//                 selectorId: chaosAksSelectorId
-//                 duration: 'PT5M'
-//                 parameters: [
-//                   {
-//                     name: 'action'
-//                     value: 'pod-failure'
-//                   }
-//                   {
-//                     name: 'mode'
-//                     value: 'one'
-//                   }
-//                   {
-//                     name: 'value'
-//                     value: '1'
-//                   }
-//                   {
-//                     name: 'containerNames'
-//                     value: 'carts'
-//                   }
-//                 ]
-//               }
-//             ]
-//           }
-//         ]
-//       }
-//     ]
-//   }
-// }
+resource chaosaksexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
+  name: chaosAksExperimentName
+  location: resourceLocation
+  tags: resourceTags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    selectors: [
+      {
+        type: 'List'
+        id: chaosAksSelectorId
+        targets: [
+          {
+            id: chaosakstarget.id
+            type: 'ChaosTarget'
+          }
+        ]
+      }
+    ]
+    startOnCreation: false
+    steps: [
+      {
+        name: 'step1'
+        branches: [
+          {
+            name: 'branch1'
+            actions: [
+              {
+                name: 'urn:csci:microsoft:azureKubernetesServiceChaosMesh:podChaos/2.1'
+                type: 'continuous'
+                selectorId: chaosAksSelectorId
+                duration: 'PT5M'
+                parameters: [
+                  {
+                    key: 'jsonSpec'
+                    value: '{\'action\':\'pod-failure\',\'mode\':\'all\',\'duration\':\'300s\',\'selector\':{\'namespaces\':[\'default\'],\'labelSelectors\':{\'app\':\'contoso-traders-products\'}}}'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
 
 // outputs
 ////////////////////////////////////////////////////////////////////////////////
