@@ -1657,12 +1657,12 @@ resource chaoskvtarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
   location: resourceLocation
   scope: kv
   properties: {}
+}
 
-  // capability: kv (deny access)
-  // resource chaoskvcapability 'capabilities' = {
-  //   name: 'DenyAccess-1.0'
-  //   scope: kv
-  // }
+// capability: kv (deny access)
+resource chaoskvcapability 'Microsoft.Chaos/targets/capabilities@2022-10-01-preview' = {
+  name: 'Microsoft-KeyVault/DenyAccess-1.0'
+  scope: kv
 }
 
 // chaos experiment: kv
