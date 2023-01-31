@@ -599,9 +599,6 @@ jobs:
         project: [chromium, firefox, webkit]
         shardIndex: [1, 2, 3, 4]
         shardTotal: [4]
-    concurrency:
-      group: playwright-tests-ui
-      cancel-in-progress: true
     defaults:
       run:
         working-directory: src/ContosoTraders.Ui.Website      
