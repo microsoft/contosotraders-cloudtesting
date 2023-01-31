@@ -51,7 +51,7 @@ jobs:
         uses: azure/CLI@v1
         id: get-chaosAksExperimentResourceId
         with:
-          inlineScript: echo "chaosAksExperimentResourceId"="$(az resource show --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --resource-type Microsoft.Chaos/ChaosExperiments --name ${{ env.CHAOS_AKS_EXPERIMENT_NAME }}${{ vars.SUFFIX }} --query "id" -o tsv)" >> $GITHUB_OUTPUT
+          inlineScript: echo "chaosAksExperimentResourceId"="$(az resource show --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --namespace Microsoft.Chaos --resource-type Experiments --name ${{ env.CHAOS_AKS_EXPERIMENT_NAME }}${{ vars.SUFFIX }} --query "id" -o tsv)" >> $GITHUB_OUTPUT
       - name: start chaos experiment (pod failure)
         uses: azure/CLI@v1
         with:
