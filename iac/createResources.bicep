@@ -1724,65 +1724,65 @@ resource chaosakstarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
 }
 
 // chaos experiment: aks (chaos mesh)
-// resource chaosaksexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
-//   name: chaosAksExperimentName
-//   location: resourceLocation
-//   tags: resourceTags
-//   identity: {
-//     type: 'SystemAssigned'
-//   }
-//   properties: {
-//     selectors: [
-//       {
-//         type: 'List'
-//         id: chaosAksSelectorId
-//         targets: [
-//           {
-//             id: chaosakstarget.id
-//             type: 'ChaosTarget'
-//           }
-//         ]
-//       }
-//     ]
-//     startOnCreation: false
-//     steps: [
-//       {
-//         name: 'step1'
-//         branches: [
-//           {
-//             name: 'branch1'
-//             actions: [
-//               {
-//                 name: 'urn:csci:microsoft:azureKubernetesServiceChaosMesh:podChaos/2.1'
-//                 type: 'continuous'
-//                 selectorId: chaosAksSelectorId
-//                 duration: 'PT5M'
-//                 parameters: [
-//                   {
-//                     name: 'action'
-//                     value: 'pod-failure'
-//                   }
-//                   {
-//                     name: 'mode'
-//                     value: 'one'
-//                   }
-//                   {
-//                     name: 'value'
-//                     value: '1'
-//                   }
-//                   {
-//                     name: 'containerNames'
-//                     value: 'carts'
-//                   }
-//                 ]
-//               }
-//             ]
-//           }
-//         ]
-//       }
-//     ]
-//   }
-// }
+resource chaosaksexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
+  name: chaosAksExperimentName
+  location: resourceLocation
+  tags: resourceTags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    selectors: [
+      {
+        type: 'List'
+        id: chaosAksSelectorId
+        targets: [
+          {
+            id: chaosakstarget.id
+            type: 'ChaosTarget'
+          }
+        ]
+      }
+    ]
+    startOnCreation: false
+    steps: [
+      {
+        name: 'step1'
+        branches: [
+          {
+            name: 'branch1'
+            actions: [
+              {
+                name: 'urn:csci:microsoft:azureKubernetesServiceChaosMesh:podChaos/2.1'
+                type: 'continuous'
+                selectorId: chaosAksSelectorId
+                duration: 'PT5M'
+                parameters: [
+                  // {
+                  //   name: 'action'
+                  //   value: 'pod-failure'
+                  // }
+                  // {
+                  //   name: 'mode'
+                  //   value: 'one'
+                  // }
+                  // {
+                  //   name: 'value'
+                  //   value: '1'
+                  // }
+                  // {
+                  //   name: 'containerNames'
+                  //   value: 'carts'
+                  // }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
 
 // outputs
 ////////////////////////////////////////////////////////////////////////////////
