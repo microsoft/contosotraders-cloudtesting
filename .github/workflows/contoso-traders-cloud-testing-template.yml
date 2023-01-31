@@ -223,14 +223,19 @@ jobs:
           pull-images: false
           manifests: ./src/ContosoTraders.Api.Products/Manifests/Service.yaml
           force: true
-      # # setup chaos mesh
-      # - name: setup chaos mesh
-      #   run: |
-      #     az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.SUFFIX }}
-      #     ${{ steps.install-helm.outputs.helm-path }} repo add chaos-mesh https://charts.chaos-mesh.org
-      #     ${{ steps.install-helm.outputs.helm-path }} repo update
-      #     kubectl create ns chaos-testing
-      #     ${{ steps.install-helm.outputs.helm-path }} install chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-testing --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
+      # setup chaos mesh
+      - name: apply namespace manifest (chaos-testing)
+        uses: Azure/k8s-deploy@v4
+        with:
+          pull-images: false
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/NamespaceChaosTesting.yaml
+          force: true
+      - name: setup chaos mesh
+        run: |
+          az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.SUFFIX }}
+          ${{ steps.install-helm.outputs.helm-path }} repo add chaos-mesh https://charts.chaos-mesh.org
+          ${{ steps.install-helm.outputs.helm-path }} repo update
+          ${{ steps.install-helm.outputs.helm-path }} install chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-testing --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
       # create the ingress controller
       - name: create ingress controller
         run: |
@@ -255,11 +260,11 @@ jobs:
           # note: There should be a whitespace between ')' and ']'. More details: https://stackoverflow.com/a/59154958
           inlineScript: echo "aksFqdn"="$(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].dnsSettings.fqdn" -o tsv -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }})" >> $GITHUB_OUTPUT
       # install cert-manager
-      - name: apply namespace manifest
+      - name: apply namespace manifest (cert-manager)
         uses: Azure/k8s-deploy@v4
         with:
           pull-images: false
-          manifests: ./src/ContosoTraders.Api.Products/Manifests/Namespace.yaml
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/NamespaceCertManager.yaml
           force: true
       - name: install cert-manager
         run: |
