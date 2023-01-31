@@ -1758,22 +1758,10 @@ resource chaosaksexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
                 selectorId: chaosAksSelectorId
                 duration: 'PT5M'
                 parameters: [
-                  // {
-                  //   name: 'action'
-                  //   value: 'pod-failure'
-                  // }
-                  // {
-                  //   name: 'mode'
-                  //   value: 'one'
-                  // }
-                  // {
-                  //   name: 'value'
-                  //   value: '1'
-                  // }
-                  // {
-                  //   name: 'containerNames'
-                  //   value: 'carts'
-                  // }
+                  {
+                    key: 'jsonSpec'
+                    value: '{\'action\':\'pod-failure\',\'mode\':\'all\',\'duration\':\'300s\',\'selector\':{\'namespaces\':[\'default\']}}'
+                  }
                 ]
               }
             ]
