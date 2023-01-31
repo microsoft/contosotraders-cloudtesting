@@ -39,6 +39,7 @@ env:
 
 jobs:
   testjob:
+    environment: staging
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
