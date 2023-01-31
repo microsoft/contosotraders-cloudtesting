@@ -585,7 +585,7 @@ jobs:
             ]
 
   playwright-tests-ui:
-    name: "Run Playwright test for project: ${{ matrix.project }} (${{ matrix.shardIndex }}/${{ matrix.shardTotal }})"
+    name: "playwright-tests: ${{ matrix.project }} (${{ matrix.shardIndex }}/${{ matrix.shardTotal }})"
     needs: [provision]
     timeout-minutes: 20
     runs-on: ubuntu-latest
