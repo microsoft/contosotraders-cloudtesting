@@ -271,7 +271,7 @@ jobs:
         run: |
           az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.SUFFIX }}
           kubectl apply --validate=false -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.yaml
-      - name: Sleep for 30 seconds
+      - name: sleep for 30 seconds
         run: sleep 30s
         shell: bash
       - name: apply clusterIssuer manifest
@@ -546,7 +546,7 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az rest --method post --uri https://management.azure.com${{ steps.get-chaosAksExperimentResourceId.outputs.chaosAksExperimentResourceId }}/start?api-version=2021-09-15-preview
-      - name: Sleep for 30 seconds
+      - name: sleep for 30 seconds
         run: sleep 30s
         shell: bash
       - name: load test (products API)
