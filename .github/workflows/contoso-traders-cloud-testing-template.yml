@@ -586,6 +586,7 @@ jobs:
 
   playwright-tests-ui:
     name: "Run Playwright test for project: ${{ matrix.project }} (${{ matrix.shardIndex }}/${{ matrix.shardTotal }})"
+    needs: [provision]
     timeout-minutes: 20
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
@@ -598,16 +599,20 @@ jobs:
         project: [chromium, firefox, webkit]
         shardIndex: [1, 2, 3, 4]
         shardTotal: [4]
-    needs: [provision]
     concurrency:
       group: playwright-tests-ui
       cancel-in-progress: true
+    defaults:
+      run:
+        working-directory: src/ContosoTraders.Ui.Website      
     steps:
       - uses: actions/checkout@v3
+        # Cache deps
       - uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: npm
+        # Set env variables for testing endpoints
       - name: set carts api endpoint
         run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set products api endpoint
@@ -616,10 +621,8 @@ jobs:
         run: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
       - name: install dependencies
         run: npm ci
-        working-directory: src/ContosoTraders.Ui.Website
       - name: run playwright tests
         run: HOME=/root npx playwright test --project=${{ matrix.project }} --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-        working-directory: src/ContosoTraders.Ui.Website
       - name: upload playwright report
         uses: actions/upload-artifact@v3
         if: always()
