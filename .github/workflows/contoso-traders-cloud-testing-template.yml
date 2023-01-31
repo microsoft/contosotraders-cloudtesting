@@ -585,19 +585,29 @@ jobs:
             ]
 
   playwright-tests-ui:
+    name: "Run Playwright test for project: ${{ matrix.project }} (${{ matrix.shardIndex }}/${{ matrix.shardTotal }})"
     timeout-minutes: 20
     runs-on: ubuntu-latest
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
     container:
       image: mcr.microsoft.com/playwright:v1.29.1-focal
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, firefox, webkit]
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
     needs: [provision]
     concurrency:
       group: playwright-tests-ui
       cancel-in-progress: true
     steps:
-      - name: checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
       - name: set carts api endpoint
         run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set products api endpoint
@@ -607,10 +617,8 @@ jobs:
       - name: install dependencies
         run: npm ci
         working-directory: src/ContosoTraders.Ui.Website
-      # Note: The 'HOME=/root' prefix is required to workaround below mentioned issue:
-      # https://github.com/microsoft/playwright/issues/6500
       - name: run playwright tests
-        run: HOME=/root npx playwright test
+        run: HOME=/root npx playwright test --project=${{ matrix.project }} --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
         working-directory: src/ContosoTraders.Ui.Website
       - name: Create test summary
         uses: test-summary/action@dist
@@ -621,6 +629,6 @@ jobs:
         uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}-${{ matrix.shardIndex }}
           path: src/ContosoTraders.Ui.Website/playwright-report/
           retention-days: 30
