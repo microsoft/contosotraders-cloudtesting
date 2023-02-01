@@ -111,7 +111,7 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
    ![chaos studio](./media/chaos23.png)
 
-3. The github workflow `contoso-traders-cloud-testing.yml` trigger the AKS chaos experiment (pod failures), while simultaneously running a load test against the same AKS cluster.
+3. The github workflow `contoso-traders-cloud-testing.yml` triggers the AKS chaos experiment (pod failures), while simultaneously running a load test against the same AKS cluster.
 
    ![chaos studio](./media/chaos24.png)
 
