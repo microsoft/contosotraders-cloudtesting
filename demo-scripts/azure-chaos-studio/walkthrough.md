@@ -52,9 +52,41 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
 ## Walkthrough: Run the Chaos Experiment
 
-TBD
+1. Before starting the experiment, you can verify that the application is working as expected by navigating to the application's URL and clicking on any product category (e.g. `laptops`). The application should load the product category page successfully by fetching data from the API.
+
+   ![chaos studio](./media/chaos10.png)
+
+2. Next, navigate to the Chaos Studio and click on the `Experiment` tab. Click on the `contoso-traders-chaos-kv-experiment{SUFFIX}` experiment and click on the `Start` button.
+
+   ![chaos studio](./media/chaos11.png)
+
+   ![chaos studio](./media/chaos12.png)
+
+3. The experiment is now underway and during the course of the experiment, the key vault will not be accessible.
+
+   ![chaos studio](./media/chaos13.png)
+
+   ![chaos studio](./media/chaos14.png)
 
 ## Walkthrough: Exposing resiliency issues in application
+
+1. The application's Products API follows the externalized configuration pattern, wherein upon startup, the API fetches DB connection strings, passwords etc from Azure key vault. The API then uses the connection string to connect to its product catalog db. If the key vault is not accessible, the API will fail to fetch the connection string and will fail to start.
+
+   ![chaos studio](./media/kv-config-provider.png)
+
+2. Let us force the API to restart (note: upon restarting, it'll attempt to connect to the key vault to fetch the connection string). We can do by simply deleting the API's pod. The AKS deployment will then recreate the pod and the API will restart.
+
+   ![chaos studio](./media/chaos15.png)
+
+   ![chaos studio](./media/chaos16.png)
+
+3. As soon as the new pod is created, the API will attempt to connect to the key vault to fetch the connection string. Since the key vault is not accessible, the API will fail to start.
+
+   ![chaos studio](./media/chaos17.png)
+
+4. You can verify that the application is not working as expected by navigating to the application's URL and clicking on any product category (e.g. `laptops`). The application should fail to load the product category page.
+
+   ![chaos studio](./media/chaos18.png)
 
 ## Summary
 
