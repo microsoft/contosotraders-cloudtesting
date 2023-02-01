@@ -330,8 +330,13 @@ jobs:
         run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set REACT_APP_APIURL
         run: echo "REACT_APP_APIURL"="https://${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
-      - name: npm install
-        run: npm install
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+          cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json        
+      - name: npm ci
+        run: npm ci
         working-directory: src/ContosoTraders.Ui.Website
       - name: npm run build
         run: npm run build
