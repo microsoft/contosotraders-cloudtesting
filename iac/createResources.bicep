@@ -1661,6 +1661,7 @@ resource chaoskvtarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
 
 // capability: kv (deny access)
 resource chaoskvcapability 'Microsoft.Chaos/targets/capabilities@2022-10-01-preview' = {
+  #disable-next-line use-parent-property // @TODO: This looks like a schema bug in chaos studio resource definition
   name: 'Microsoft-KeyVault/DenyAccess-1.0'
   scope: kv
 }
@@ -1719,6 +1720,7 @@ resource chaosakstarget 'Microsoft.Chaos/targets@2022-10-01-preview' = {
 
 // capability: aks (pod failures)
 resource chaosakscapability 'Microsoft.Chaos/targets/capabilities@2022-10-01-preview' = {
+  #disable-next-line use-parent-property // @TODO: This looks like a schema bug in chaos studio resource definition
   name: 'Microsoft-AzureKubernetesServiceChaosMesh/PodChaos-2.1'
   scope: aks
 }
