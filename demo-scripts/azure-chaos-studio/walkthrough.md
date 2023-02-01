@@ -30,7 +30,29 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
    ![chaos studio](./media/chaos4.png)
 
-## Walkthrough: Running the Chaos Experiment
+## Walkthrough: Review the Chaos Experiment
+
+1. In the Chaos Studio, click on the `Experiment` tab and click on the `contoso-traders-chaos-kv-experiment{SUFFIX}` experiment.
+
+   ![chaos studio](./media/chaos5.png)
+
+2. Click on the experiment's `Edit` button to review the experiment's configuration.
+
+   ![chaos studio](./media/chaos6.png)
+
+3. Click on the action's `Edit` button to review the action's configuration.
+
+   ![chaos studio](./media/chaos7.png)
+
+4. You'll notice that the experiment is configured to run on the the `contosotraderskv${SUFFIX}` key vault resource for 5 minutes. For the duration of the experiment, the `Key Vault Deny Access` fault will be injected into the key vault (i.e. the key vault will not be accessible even to principals mentioned in its access policies).
+
+   ![chaos studio](./media/chaos8.png)
+
+   ![chaos studio](./media/chaos9.png)
+
+## Walkthrough: Run the Chaos Experiment
+
+TBD
 
 ## Walkthrough: Exposing resiliency issues in application
 
