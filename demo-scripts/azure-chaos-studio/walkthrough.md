@@ -99,9 +99,21 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
    ![chaos studio](./media/chaos20.png)
 
-   ![chaos studio](./media/chaos10.png)
+   ![chaos studio](./media/chaos21.png)
 
 ## Walkthrough: Running Chaos Experiments via GitHub Workflows
+
+1. We have a Chaos Experiment `contoso-traders-chaos-aks-experiment{SUFFIX}` that injects faults (pod failures) into the AKS cluster: `contoso-traders-aks{SUFFIX}` for a duration of 5 mins.
+
+   ![chaos studio](./media/chaos22.png)
+
+2. Internally, this experiment leverages [Chaos Mesh](https://chaos-mesh.org/), a CNCF project that orchestrates fault injection on Kubernetes environments (e.g. network latency, pod failures, and even node failures).
+
+   ![chaos studio](./media/chaos23.png)
+
+3. This Chaos Experiment is run as part of our github workflow: `contoso-traders-cloud-testing.yml`.
+
+   ![chaos studio](./media/chaos24.png)
 
 ## More Information
 
