@@ -601,7 +601,7 @@ jobs:
         shardTotal: [4]
     defaults:
       run:
-        working-directory: src/ContosoTraders.Ui.Website      
+        working-directory: src/ContosoTraders.Ui.Website
     steps:
       - uses: actions/checkout@v3
         # Cache deps
