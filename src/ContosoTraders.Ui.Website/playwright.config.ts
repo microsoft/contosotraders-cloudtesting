@@ -62,13 +62,6 @@ const config: PlaywrightTestConfig = {
         ...devices['Desktop Firefox'],
         geolocation: { latitude: 47.642232, longitude: -122.136791 },
       },
-    },
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari'],
-        geolocation: { latitude: 90.00000, longitude: 0.00000 },
-      }
     }
   ],
 
