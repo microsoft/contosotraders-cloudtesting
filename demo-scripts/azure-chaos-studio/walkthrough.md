@@ -6,7 +6,8 @@ Azure Chaos Studio is an Azure service that allows you to create & run chaos exp
 
 In this demo, you'll get an overview of Azure's Chaos Studio service; a managed service that can be used to simulate faults on your application's infrastructure.
 
-- TBD
+- Running Chaos Experiments to introduce faults in Azure Key Vault (deny access) and seeing its impact on the application.
+- Running Chaos Experiments via GitHub Workflows.
 
 ## Before You Begin
 
@@ -88,9 +89,19 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
    ![chaos studio](./media/chaos18.png)
 
-## Summary
+## Walkthrough: After the Chaos Experiment ends
 
-TBD
+1. After the 5 minutes are up, the experiment will end and the key vault will be accessible again.
+
+   ![chaos studio](./media/chaos19.png)
+
+2. AKS's deployment ensures that the API will automatically restarted on crashes (with exponential back-off applied). Once the chaos experiment ends, the key vault will be accessible again. When AKS restarts the pod after this, the API will be able to connect to the key vault and will start successfully.
+
+   ![chaos studio](./media/chaos20.png)
+
+   ![chaos studio](./media/chaos10.png)
+
+## Walkthrough: Running Chaos Experiments via GitHub Workflows
 
 ## More Information
 
