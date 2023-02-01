@@ -1,21 +1,19 @@
-//Tests some features like third-party API , Dark mode, Geolocation, Iframe testing etc
 import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-//#region Uncomment below lines to run dark mode tests
-// test.describe('Dark Mode', () => {
-//   test('shows page in dark mode', async ({ page }) => {
-//     await page.locator('input.MuiSwitch-input').check()
-//     await expect(page.locator('.App')).toHaveAttribute('class', 'App dark')
-//   })
-// });
-//#endregion
+/* Uncomment below lines to run dark mode tests
+test.describe('Dark Mode', () => {
+  test('shows page in dark mode', async ({ page }) => {
+    await page.locator('input.MuiSwitch-input').check()
+    await expect(page.locator('.App')).toHaveAttribute('class', 'App dark')
+  })
+}); */
 
-//Geolocation Testing
-test('Test with geolocation', async ({ page, context, request }) => {
+// Geolocation Testing
+test('test with geolocation', async ({ page, context, request }) => {
   const ipTest = await request.get(`${process.env.REACT_APP_GEOLOCATIONAPI}`);
   expect(ipTest.status()).toBe(200);
   expect(ipTest.ok()).toBeTruthy();
@@ -34,8 +32,8 @@ test('Test with geolocation', async ({ page, context, request }) => {
   ]);
 });
 
-//Iframe Testing
-test('Test with Iframes', async ({ page }) => {
+// Iframe Testing
+test('test with Iframes', async ({ page }) => {
   await page.mouse.wheel(0, 15000);
   await Promise.all([
     page.waitForSelector('#current-location'),
