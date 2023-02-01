@@ -596,9 +596,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [chromium, firefox, webkit]
-        shardIndex: [1, 2, 3, 4]
-        shardTotal: [4]
+        project: [chromium, firefox]
+        shardIndex: [1, 2, 3]
+        shardTotal: [3]
     defaults:
       run:
         working-directory: src/ContosoTraders.Ui.Website
