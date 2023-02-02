@@ -1,7 +1,6 @@
-
+import { test } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
-import { test } from '@playwright/test';
 import { parse } from 'csv-parse/sync';
 
 // Use the already logged in storage state for all tests
@@ -13,7 +12,7 @@ test.describe('My profile', () => {
         const data = parse(fs.readFileSync(path.join(__dirname, 'test-data.csv')), {
             columns: true,
             skip_empty_lines: true
-        });    
+        });
         await page.goto('/profile/personal');
         await page.locator('#firstName').fill(data.firstName);
         await page.locator('#lastName').fill(data.lastName);
