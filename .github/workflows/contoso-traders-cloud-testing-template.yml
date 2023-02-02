@@ -332,7 +332,7 @@ jobs:
         run: echo "REACT_APP_APIURL"="https://${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 19
           cache: npm
           cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json        
       - name: npm ci
@@ -615,7 +615,7 @@ jobs:
         # Cache deps
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 19
           cache: npm
           cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json
         # Set env variables for testing endpoints
