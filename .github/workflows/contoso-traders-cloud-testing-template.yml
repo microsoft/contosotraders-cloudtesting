@@ -597,7 +597,7 @@ jobs:
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
     container:
-      image: mcr.microsoft.com/playwright:v1.29.1-focal
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     strategy:
       fail-fast: false
       matrix:

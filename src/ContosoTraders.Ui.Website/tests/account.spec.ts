@@ -1,7 +1,7 @@
 import { test } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
-import { parse } from 'csv-parse/sync';
+import { parse } from 'csv-parse';
 
 // Use the already logged in storage state for all tests
 test.use({ storageState: 'storageState.json' });
