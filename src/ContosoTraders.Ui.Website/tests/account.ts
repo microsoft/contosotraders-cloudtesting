@@ -2,7 +2,6 @@ import { test, Page, expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 import { parse } from 'csv-parse/sync';
-import exp from 'constants';
 
 let page: Page;
 
