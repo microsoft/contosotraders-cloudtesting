@@ -8,8 +8,6 @@ import { devices, PlaywrightTestConfig } from '@playwright/test';
 require('dotenv').config()
 
 const config: PlaywrightTestConfig = {
-  // register global setup for login
-  globalSetup: require.resolve('./global-setup'),
   testDir: './tests',
   /* Maximum time one test can run for. */
   timeout: 60 * 1000,

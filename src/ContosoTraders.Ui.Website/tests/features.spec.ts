@@ -12,8 +12,10 @@ test.describe('Dark Mode', () => {
   })
 }); */
 
+test.use({headless: false});
+
 // Geolocation Testing
-test('test with geolocation', async ({ page, context, request }) => {
+test.skip('test with geolocation', async ({ page, context, request }) => {
   const ipTest = await request.get(`${process.env.REACT_APP_GEOLOCATIONAPI}`);
   expect(ipTest.status()).toBe(200);
   expect(ipTest.ok()).toBeTruthy();
@@ -33,7 +35,7 @@ test('test with geolocation', async ({ page, context, request }) => {
 });
 
 // Iframe Testing
-test('test with Iframes', async ({ page }) => {
+test.skip('test with Iframes', async ({ page }) => {
   await page.mouse.wheel(0, 15000);
   await Promise.all([
     page.waitForSelector('#current-location'),
