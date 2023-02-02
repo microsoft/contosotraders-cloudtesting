@@ -1,8 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-// Use the already logged in storage state for all tests
-test.use({ storageState: 'storageState.json' });
-
 let _productid = 1;
 
 test.beforeEach(async ({ page }) => {
