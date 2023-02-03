@@ -17,6 +17,7 @@ env:
   AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
   AKS_SECRET_NAME_KV_ENDPOINT: contoso-traders-kv-endpoint
   AKS_SECRET_NAME_MI_CLIENTID: contoso-traders-mi-clientid
+  AZURE_AD_APP_NAME: contoso-traders-cloud-testing-app
   CARTS_ACA_NAME: contoso-traders-carts
   CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
   CARTS_INTERNAL_ACA_NAME: contoso-traders-intcarts
@@ -67,7 +68,7 @@ jobs:
         with:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
-            echo app name = $(az ad app list --query "[?displayName=='footempdeletemelater'].displayName" -o tsv)
+            echo app name = $(az ad app list --query "[?displayName=='${{ env.AZURE_AD_APP_NAME }}'].displayName" -o tsv)
       # # The first step is to create the resource group: `contoso-traders-rg`.
       # # The below step can also be manually executed as follows:
       # # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
