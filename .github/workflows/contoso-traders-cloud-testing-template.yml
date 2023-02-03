@@ -68,8 +68,8 @@ jobs:
         with:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
-            $app = az ad app list --query "[?displayName=='${{ env.AZURE_AD_APP_NAME }}'].displayName" -o tsv
-            echo $app
+            az ad app list --query "[?displayName=='${{ env.AZURE_AD_APP_NAME }}'].displayName" -o tsv
+            az ad --help
       # # The first step is to create the resource group: `contoso-traders-rg`.
       # # The below step can also be manually executed as follows:
       # # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
