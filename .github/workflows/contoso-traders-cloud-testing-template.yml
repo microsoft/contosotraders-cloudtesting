@@ -67,13 +67,11 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az config set extension.use_dynamic_install=yes_without_prompt
-            appExists=$(az ad app list --query "[?displayName=='${{ env.AZURE_AD_APP_NAME }}'].displayName" -o tsv)
-            if [ -z "$appExists" ]; then
-              echo "Creating Azure AD app '${{ env.AZURE_AD_APP_NAME }}'"
-            else
-              echo "Azure AD app '${{ env.AZURE_AD_APP_NAME }}' already exists"
-            fi
+            az ad app create \
+              --display-name ${{ env.AZURE_AD_APP_NAME }} \
+              --sign-in-audience AzureADandPersonalMicrosoftAccount \
+              --enable-access-token-issuance true \
+              --enable-id-token-issuance true
       # # The first step is to create the resource group: `contoso-traders-rg`.
       # # The below step can also be manually executed as follows:
       # # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
