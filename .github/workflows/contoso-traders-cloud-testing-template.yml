@@ -63,7 +63,9 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
-      - name: active directory app settings
+      # The first step is to create the Azure AD application (and update it if it already exists).
+      # Note: This is an idempotent operation.
+      - name: create/update azure active directory app
         uses: azure/CLI@v1
         with:
           inlineScript: |
@@ -71,7 +73,8 @@ jobs:
               --display-name ${{ env.AZURE_AD_APP_NAME }} \
               --sign-in-audience AzureADandPersonalMicrosoftAccount \
               --enable-access-token-issuance true \
-              --enable-id-token-issuance true
+              --enable-id-token-issuance true \
+              --web-redirect-uris "http://localhost:3000/authcallback" "https://localhost:3000/authcallback"
       # # The first step is to create the resource group: `contoso-traders-rg`.
       # # The below step can also be manually executed as follows:
       # # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
