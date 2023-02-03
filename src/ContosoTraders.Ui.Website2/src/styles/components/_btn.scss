@@ -1,0 +1,104 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the button component of the site/application.
+// -----------------------------------------------------------------------------
+.btn {
+    align-items: center;
+    border: none;
+    border-radius: $padding-m * 2;
+    display: flex;
+    font-weight: $font-weight-medium;
+    justify-content: center;
+    max-height: 4rem;
+    max-width: 18.5rem;
+    padding: $padding-m;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color $animation-speed-fast $animation-type-regular, color $animation-speed-fast $animation-type-regular;
+    white-space: nowrap;
+
+    @include text-s();
+
+    &--primary {
+        background-color: $color-background-accent-tertiary;
+        color: $color-text-light;
+        text-transform: uppercase;
+
+        &:hover {
+            background-color: $color-background-accent-tertiary-hover;
+        }
+    }
+
+    &--secondary {
+        background-color: $color-background-light;
+        box-shadow: $box-shadow-s;
+        color: $color-text-primary;
+
+        &:hover {
+            color: $color-text-tertiary;
+        }
+
+        &:hover svg {
+            fill: $color-svg-tertiary;
+        }
+
+        &:active {
+            box-shadow: $box-shadow-xs;
+            color: $color-text-secondary;
+        }
+
+        > svg {
+            margin-right: $margin-s;
+            fill: $color-svg-primary;
+        }
+    }
+
+    &--getapp {
+        display: block;
+        background-color: $color-background-light;
+        box-shadow: $box-shadow-s;
+        color: $color-text-primary;
+        padding: 0.5rem;
+        width: 150px;
+        line-height: 100%;
+
+        @media (min-width: $mq-m) {
+            width: 170px;
+        }
+
+        @media (min-width: $mq-l) {
+            width: 192px;
+        }
+
+        &--left {
+            float: left;
+        }
+
+        &--right {
+            float: right;
+        }
+    }
+
+    &--microsoft {
+        background-color: $color-background-microsoft;
+        color: $color-text-light;
+
+        &:hover {
+            background-color: darken($color-background-microsoft, 10%);
+        }
+    }
+
+    &--float {
+        bottom: $space-l;
+        left: 50%;
+        position: fixed;
+        transform: translateX(-50%) translateZ(0);
+        will-change: transform;
+        z-index: $z-index-s;
+    }
+
+    &.is-disabled {
+        background-color: $color-background-medium;
+        box-shadow: initial;
+        color: $color-grey-dark;
+    }
+}
