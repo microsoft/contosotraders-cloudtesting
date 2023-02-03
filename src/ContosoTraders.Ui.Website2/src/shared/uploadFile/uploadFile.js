@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from 'react-redux';
 // import { withRouter } from "react-router-dom";
 // import Alert from "react-s-alert";
@@ -50,9 +50,9 @@ import { useNavigate } from "react-router-dom";
             }
         }
     
-        const resetFileValue = (e) => {
-            e.target.value = null;
-        }
+        // const resetFileValue = (e) => {
+        //     e.target.value = null;
+        // }
         const { title, subtitle } = props;
         return (
             <form className="upload">

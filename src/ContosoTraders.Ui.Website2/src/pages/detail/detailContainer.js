@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import { connect } from 'react-redux';
 
 // import { animateScroll as scroll } from "react-scroll";
@@ -12,26 +12,13 @@ import Breadcrump from "../../components/breadcrumb";
 import { useParams } from "react-router-dom";
 // import Slider from "../home/components/slider/slider";
 
-// class DetailContainer extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         popularProducts: [],
-    //         // detailProduct: {},
-    //         loading: true,
-    //         loadingRelated: null,
-    //         relatedDetailProducts: [],
-    //     };
-    //     this.addProductToCart = this.addProductToCart.bind(this);
-    // }
-
     
     function DetailContainer(props) {
         const { productId } = useParams();
         const [detailProduct,setDetailProduct] = React.useState({})
         const [loadingRelated,setLoadingRelated] = React.useState(null)
         const [loading,setLoading] = React.useState(true)
-        const [relatedDetailProducts,setRelatedDetailProducts] = React.useState([])
+        const relatedDetailProducts = []
         // useEffect(() => {
         //     await getDetailPageData(productId);
         // }, []);

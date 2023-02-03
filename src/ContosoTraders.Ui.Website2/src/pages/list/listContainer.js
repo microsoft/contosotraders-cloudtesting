@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 // import { withRouter } from 'react-router-dom';
 import { LoadingSpinner } from '../../shared/index';
 
@@ -32,28 +32,24 @@ import { useParams } from 'react-router-dom';
     const [typesList, setTypesList] = React.useState([]);
     const [brandsList, setBrandsList] = React.useState([]);
     const [productsList, setProductsList] = React.useState([]);
-    const [queryString, setQueryString] = React.useState([
+    const queryString = [
       {
         brand: [],
         type: [],
       },
-    ]);
+    ];
     const [loading, setLoading] = React.useState(true);
-    const type = []
+    // const type = []
     const { code } = useParams(); 
-    React.useEffect(() => {
-      const filter = code || '';
-      getProductData(filter);
-      // setPageState(filteredProductsPageData);
-    }, []);
+    // React.useEffect(() => {
+    //   const filter = code || '';
+    //   getProductData(code);
+    //   // setPageState(filteredProductsPageData);
+    // }, []);
   
     React.useEffect(() => {
-      // const code = this.props.match.params.code;
-      // if (code !== prevProps.match.params.code) {
         getProductData(code);
-        // setPageState(filteredProductsPageData);
-      // }
-    }, [code]);
+    }, [code]);// eslint-disable-line react-hooks/exhaustive-deps
 
   
     const getProductData = async(type) => {

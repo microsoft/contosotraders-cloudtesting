@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
 import { connect } from "react-redux";
 // import { CartService } from "./services";
@@ -24,74 +24,16 @@ import {
 // import "./i18n";
 import "./main.scss";
 import warningIcon from './assets/images/original/Contoso_Assets/Icons/information_icon.svg'
-import { useLocation, useNavigate } from "react-router-dom";
-// class App extends Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       // shoppingCart: [],
-//       quantity: null,
-//     };
-//   }
+import { useLocation } from "react-router-dom";
 
-  // async componentDidMount() {
-  //   if (this.props.userInfo.token) {
-  //     const shoppingCart = await CartService.getShoppingCart(
-  //       this.props.userInfo.token
-  //     );
-  //     if (shoppingCart) {
-  //       this.setState({ shoppingCart });
-  //     }
-  //   }
-
-  //   if (this.state.shoppingCart != null) {
-  //     const quantity = this.state.shoppingCart.reduce(
-  //       (oldQty, { qty }) => oldQty + qty,
-  //       0
-  //     );
-  //     this.setState({ quantity });
-  //   }
-  // }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if(this.props.location.pathname !== prevProps.location.pathname){
-  //     window.scrollTo(0, 0);
-  //   }
-  // }
-
-  // ShoppingCart = (quantity) => {
-  //   this.setState({ quantity });
-  // };
-
-  // sumProductInState = () => {
-  //   this.setState((prevState) => {
-  //     return { quantity: prevState.quantity + 1 };
-  //   });
-  // };
 
   function App(props) {
     const location = useLocation()
-    const navigate = useNavigate()
     const quantity = null;
 
     React.useEffect(() => {
-      // if(location.pathname !== prevProps.location.pathname){
         window.scrollTo(0, 0);
-      // }
     }, [location.pathname]);
-
-    const PrivateRoute = ({ component: Component, ...rest }) => (
-      <Route
-        {...rest}
-        render={(props) =>
-          props.userInfo.loggedIn === true ? (
-            <Component {...props} {...rest} />
-          ) : (
-            navigate('/')
-          )
-        }
-      />
-    );
 
     return (
       <div className={`App ${props.theme ? 'dark' : 'light' }`}>
