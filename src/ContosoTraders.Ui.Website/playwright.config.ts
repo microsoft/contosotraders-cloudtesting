@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { devices, PlaywrightTestConfig } from '@playwright/test';
 
 /**

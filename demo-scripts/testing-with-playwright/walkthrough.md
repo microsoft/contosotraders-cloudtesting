@@ -42,7 +42,22 @@ You can install the Playwright extension for VSCode from the marketplace ([LINK]
 
    ![Playwright](./media/playwright-7.png)
 
-## Summary
+## Testing with Azure AD
+
+In order to test authentication, we can configure AAD, then run tests to log in to a Contoso Traders account.
+
+>Tests written with Playwright execute in isolated clean-slate environments called browser contexts. This isolation model improves reproducibility and prevents cascading test failures. New browser contexts can load existing authentication state. This eliminates the need to login in every context and speeds up test execution.
+
+1. Add the AAD identity provider to your web app.
+1. Create a test account (MFA disabled).
+1. Add the credentials to 2 GitHub secrets: AADUSERNAME and AADPASSWORD.
+1. Rename [account.ts](.\src\ContosoTraders.Ui.Website\tests\account.ts) to account.**spec**.ts. The test runner will pick up any files with **spec** in the name.
+
+This test has a beforeAll hook that will log in to the app, then the test case uses the logged in state to fill out the personal info form.
+
+Run the test locally or trigger a new GitHub Action run!
+
+- [Playwright Authentication Documentation](https://playwright.dev/docs/auth)
 
 ## More Information
 
