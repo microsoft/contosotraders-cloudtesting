@@ -336,7 +336,7 @@ jobs:
           cache: npm
           cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json        
       - name: npm ci
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         working-directory: src/ContosoTraders.Ui.Website
       - name: npm run build
         run: npm run build
@@ -597,7 +597,7 @@ jobs:
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
     container:
-      image: mcr.microsoft.com/playwright:v1.29.1-focal
+      image: mcr.microsoft.com/playwright:v1.30.0-focal
     strategy:
       fail-fast: false
       matrix:
@@ -607,6 +607,9 @@ jobs:
     defaults:
       run:
         working-directory: src/ContosoTraders.Ui.Website
+    env:
+      AADUSERNAME: ${{secrets.AADUSERNAME}}
+      AADPASSWORD: ${{secrets.AADPASSWORD}}
     steps:
       - uses: actions/checkout@v3
         # Cache deps
@@ -623,7 +626,7 @@ jobs:
       - name: set ui cdn endpoint
         run: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
       - name: install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: run playwright tests
         run: HOME=/root npx playwright test --project=${{ matrix.project }} --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       - name: upload playwright report

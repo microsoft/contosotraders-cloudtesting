@@ -1,22 +1,22 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Mocks', () => {
-    //mock home page
-    test('should be able to load mock home page', async ({ page, request }) => {
+    // Mock home page
+    test('should be able to load mock home page', async ({ page }) => {
         await page.route(`${process.env.REACT_APP_BASEURLFORPLAYWRIGHTTESTING}`, async route => {
             await route.fulfill({ status: 200, body: "<html>Test Content</html>" });
         });
 
-        //load home page
+        // Load home page
         await page.goto(`${process.env.REACT_APP_BASEURLFORPLAYWRIGHTTESTING}`);
         
-        //assert content of mock page
+        // Assert content of mock page
         await expect(await page.locator('html').first().innerText()).toContain("Test Content");
     });
 
 
-    //Mock API - load product details
-    test('should be able to load product details', async ({ page, request }) => {
+    // Mock API - load product details
+    test('should be able to load product details', async ({ page }) => {
       await page.route(`${process.env.REACT_APP_APIURL}/Products/1`, async route => {
           const jsonResponse = 
           {

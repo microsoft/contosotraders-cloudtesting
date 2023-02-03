@@ -1,7 +1,7 @@
 import test, { expect } from './fixtures/baseFixture';
 
 test.describe('Header - HomePage loaded via fixture', () => {
-  test('Hover over header menus', async ({ page }) => {
+  test('should be able to hover over header menus', async ({ page }) => {
     await page.getByRole('navigation').getByRole('link', { name: 'All Products' }).hover();
     await page.getByRole('navigation').getByRole('link', { name: 'Laptops' }).hover();
     await page.getByRole('navigation').getByRole('link', { name: 'Controllers' }).hover();
