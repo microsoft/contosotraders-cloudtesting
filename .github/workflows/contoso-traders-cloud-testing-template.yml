@@ -17,7 +17,7 @@ env:
   AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
   AKS_SECRET_NAME_KV_ENDPOINT: contoso-traders-kv-endpoint
   AKS_SECRET_NAME_MI_CLIENTID: contoso-traders-mi-clientid
-  AZURE_AD_APP_NAME: contoso-traders-cloud-testing-app
+  AZURE_AD_APP_NAME: contoso-traders-cloud-testing-app-foo2
   CARTS_ACA_NAME: contoso-traders-carts
   CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
   CARTS_INTERNAL_ACA_NAME: contoso-traders-intcarts
@@ -68,7 +68,27 @@ jobs:
         with:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
-            echo app name = $(az ad app list --query "[?displayName=='${{ env.AZURE_AD_APP_NAME }}'].displayName" -o tsv)
+            $app = az ad app list --query "[?displayName=='${{ env.AZURE_AD_APP_NAME }}'].displayName" -o tsv
+            if ($app -eq $null) {
+              $app = az ad app create --display-name ${{ env.AZURE_AD_APP_NAME }} --identifier-uris "https://${{ env.AZURE_AD_APP_NAME }}" --reply-urls "https://${{ env.AZURE_AD_APP_NAME }}" --required-resource-accesses @- << EOF
+              [
+                {
+                  "resourceAppId": "00000002-0000-0000-c000-000000000000",
+                  "resourceAccess": [
+                    {
+                      "id": "311a71cc-e848-46a1-bdf8-97ff7156d8e6",
+                      "type": "Scope"
+                    },
+                    {
+                      "id": "37f7f235-527c-4136-accd-4a02d197296e",
+                      "type": "Scope"
+                    }
+                  ]
+                }
+              ]
+              EOF
+              az ad app permission admin-consent --id $app
+            }
       # # The first step is to create the resource group: `contoso-traders-rg`.
       # # The below step can also be manually executed as follows:
       # # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
