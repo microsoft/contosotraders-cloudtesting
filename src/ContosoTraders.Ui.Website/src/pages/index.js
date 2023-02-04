@@ -1,10 +1,10 @@
 import Home from './home/homeContainer';
-import MyCoupons from './mycoupons/myCouponsContainer';
+// import MyCoupons from './mycoupons/myCouponsContainer';
 import Detail from '../pages/detail/detailContainer';
 import List from './list/listContainer';
 import SuggestedProductsList from './suggestedproductslist/suggestedProductsList';
 import Profile from './profile/ProfileForm';
-import ShoppingCart from './shoppingcart/shoppingCart'
+// import ShoppingCart from './shoppingcart/shoppingCart'
 import Arrivals from './arrivals/arrivals';
 import RefundPolicy from './legals/refundPolicy';
 import TermsOfService from './legals/termsOfService';
@@ -14,12 +14,12 @@ import Cart from './cart/cart';
 export {
     Home,
     Arrivals,
-    MyCoupons,
+    // MyCoupons,
     Detail,
     List,
     SuggestedProductsList,
     Profile,
-    ShoppingCart,
+    // ShoppingCart,
     RefundPolicy,
     TermsOfService,
     AboutUs,

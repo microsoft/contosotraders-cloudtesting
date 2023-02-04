@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { NamespacesConsumer } from "react-i18next";
+// import { NamespacesConsumer } from "react-i18next";
 
 import Corousel from "./Corousel";
 class Hero extends Component {
@@ -11,13 +11,13 @@ class Hero extends Component {
 
     render() {
         return (
-            <NamespacesConsumer>
-                {t => (
+            // <NamespacesConsumer>
+            //     {t => (
                     <div className="hero">
                         <Corousel />
                     </div>
-                )}
-            </NamespacesConsumer>
+            //     )}
+            // </NamespacesConsumer>
         );
     }
 }

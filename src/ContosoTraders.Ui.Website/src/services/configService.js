@@ -1,6 +1,6 @@
 import axios from "axios";
 
-require("dotenv").config();
+// require("dotenv").config();
 const settingsUrl = "/api/settings";
 
 // Note: The '{PRODUCTS_API_ENDPOINT}', '{CARTS_API_ENDPOINT}' tokens will be substituted by github workflow.

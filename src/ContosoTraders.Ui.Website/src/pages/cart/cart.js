@@ -1,16 +1,16 @@
-import { Grid, TextField, InputAdornment, Button, Chip } from "@material-ui/core";
+import { Grid, TextField, InputAdornment, Button, Chip } from "@mui/material";
 import React from "react";
 import productdetailimg from "../../assets/images/original/Contoso_Assets/product_page_assets/product_image_main.jpg";
 import QuantityPicker from "../detail/productcounter";
 import Breadcrumb from "../../components/breadcrumb";
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function Cart() {
   const textInput = React.useRef(null);
   const [coupon, setCoupon] = React.useState('DISCOUNT10');
 
-  const history = useHistory();
-  const currentCategory = history.location.pathname.split("/").pop().replaceAll('-',' ');
+  const location = useLocation();
+  const currentCategory = location.pathname.split("/").pop().replaceAll('-',' ');
   const checkDiscount = () => {
     setCoupon(textInput.current.value);
     textInput.current.value = ''

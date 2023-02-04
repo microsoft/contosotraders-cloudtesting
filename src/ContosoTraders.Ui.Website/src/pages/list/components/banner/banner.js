@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { withNamespaces } from "react-i18next";
+// import { withNamespaces } from "react-i18next";
 
 import { UploadFile } from "../../../../shared";
 import { ReactComponent as CouponsImg } from "../../../../assets/images/icon-coupons.svg";
@@ -19,4 +19,4 @@ const Banner = ({ t, loggedIn }) => {
     );
 };
 
-export default withNamespaces()(Banner);
+export default (Banner);

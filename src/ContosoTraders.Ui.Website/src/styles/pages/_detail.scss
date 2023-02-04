@@ -34,6 +34,7 @@
     .MuiGrid-container{
       align-items: center;
       justify-content: center;
+      padding: 20px;
     .productdetailsimagediv{
       // width: 518px;
       // height: 518px;
@@ -91,7 +92,7 @@
     .MuiAccordion-root{
       .panelSummary {
         flex-direction: row-reverse;
-        padding-left: 0;
+        // padding-left: 10px;
         border: 1px solid rgba(112, 112, 112, 0.1);
         border-right: none;
         border-left: none;
@@ -99,6 +100,7 @@
           font-family: 'Heebo';
           font-size: 16px;
           margin: 23.5px 0;
+          margin-left: 10px;
         }
         .MuiIconButton-root{
           padding-left: 0;

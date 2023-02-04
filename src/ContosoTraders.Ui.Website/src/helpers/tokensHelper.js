@@ -1,4 +1,4 @@
-﻿import { getItemValue, setItemValue } from "./localStorage";
+import { getItemValue, setItemValue } from "./localStorage";
 
 export const getRefreshToken = () => getItemValue('refreshToken');
 export const getAccessToken = () => getItemValue('token');

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import toast from './toast'
+// import toast from './toast'
 import { handleUnathenticatedRequest } from './refreshJWTHelper'
 
 
@@ -10,9 +10,9 @@ function errorResponseHandler(error) {
     }
 
     // otherwise, if has response show the error
-    if (error.response) {
-        toast.error(error.response.data || error.response.statusText);
-    }
+    // if (error.response) {
+    //     toast.error(error.response.data || error.response.statusText);
+    // }
 
     // check for errorHandle config
     if (error.config.hasOwnProperty('errorHandle') && error.config.errorHandle === false) {

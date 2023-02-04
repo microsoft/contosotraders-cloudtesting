@@ -9,21 +9,19 @@ import {
   FormLabel,
   InputAdornment,
   FormControl,
-  makeStyles,
   TextField,
-} from "@material-ui/core";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Visibility from "@material-ui/icons/Visibility";
-
+} from "@mui/material";
+import { makeStyles } from '@mui/styles';
+import { createTheme } from "@mui/material";
+import DeleteOutline from "@mui/icons-material/DeleteOutline";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import delete_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/delete_icon.svg";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 
-// const phoneRegExp =
-//   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const theme = createTheme()
 
- const SUPPORTED_FORMATS = ['png','jpg','bmp','tiff','gif']
 const validationSchema = yup.object({
   email: yup
     .string("Enter your email")
@@ -40,8 +38,7 @@ const validationSchema = yup.object({
   confirmpassword: yup
     .string("Enter your password")
     .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required")
-    .oneOf([yup.ref('newpassword')], 'Passwords does not match'),
+    .required("Password is required"),
   firstName: yup
     .string("Enter your first Name")
     .min(2, "Too Short!")
@@ -55,20 +52,12 @@ const validationSchema = yup.object({
   dob: yup
     .string("Enter your date of birth")
     .required("Date of Birth is required"),
-  avatarimage: yup
-  .mixed()
-  // .test("FILE_SIZE", "Uploaded file is too big.", 
-  // value => !value || (value && value.size <= FILE_SIZE))
-  .test("FILE_FORMAT", "Uploaded file has unsupported format.", 
-  value => !value || (value && SUPPORTED_FORMATS.includes(value.split('.').pop()))),
-
   mobile: yup
-    .number()
-    .typeError("That doesn't look like a phone number")
+    .number("Enter your mobile number")
     .positive("Invalid Number")
     .required("Mobile is required"),
 });
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     "& > *": {
@@ -84,9 +73,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PersonalInformation = () => {
+const MyOrders = () => {
   const classes = useStyles();
-  const validFieldsRef = React.useRef();
   const [values, setValues] = React.useState({
     password: "",
     showPassword: false,
@@ -100,11 +88,8 @@ const PersonalInformation = () => {
     });
   };
 
-
-  // const [image, setImage] = React.useState("");
   const [mydata, setData] = React.useState("");
   const onImageChange = (event) => {
-    formik.handleChange(event)
     if (event.target.files && event.target.files[0]) {
       let reader = new FileReader();
       let file = event.target.files[0];
@@ -128,26 +113,14 @@ const PersonalInformation = () => {
       currentpassword: "",
       confirmpassword: "",
       dob: "",
-      mobilecode:"+91",
       mobile: "",
-      avatarimage:"",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-    values.mobile=values.mobilecode+values.mobile;
       alert(JSON.stringify(values, null, 2));
     },
   });
-const removeImage = () => {
-  setData('');
-  Object.keys(formik.errors).map(name => {
-    if(name === 'avatarimage'){
-      formik.values.avatarimage = ''
-      delete formik.errors.avatarimage;
-    }
-    return true;
-  });
-}
+
   return (
     <div className="PersonalSection">
       <form onSubmit={formik.handleSubmit} className="formsection">
@@ -162,31 +135,21 @@ const removeImage = () => {
             <div className="img-section">
               <div className="img-div">
                 <Avatar
-                id="avatar"
-                  alt=""
+                  alt="Remy Sharp"
                   src={mydata.imagePreview}
                   className={classes.large}
                 />
               </div>
               <div className="img-btn-div">
-                <TextField
-                  // accept="image/*"
+                <input
+                  accept="image/*"
                   className={classes.input}
-                  id="avatarimage"
+                  id="contained-button-file"
                   multiple
                   type="file"
                   onChange={onImageChange}
-                  inputRef={validFieldsRef}
-                  value={formik.values.avatarimage}
-                  error={
-                    formik.touched.avatarimage &&
-                    Boolean(formik.errors.avatarimage)
-                  }
-                  helperText={
-                    formik.touched.avatarimage && formik.errors.avatarimage
-                  }
                 />
-                <label htmlFor="avatarimage">
+                <label htmlFor="contained-button-file">
                   <Button
                     variant="contained"
                     className="btn-upload"
@@ -196,16 +159,15 @@ const removeImage = () => {
                     Upload
                   </Button>
                 </label>
+
                 <Button
                   className="btn-delete"
                   variant="outlined"
-                  //   startIcon={delete_icon}
-                  startIcon={<Avatar src={delete_icon} className="deleteIconsvg"/>}
-                  onClick={() => removeImage() }
-                  >
+                  startIcon={<DeleteOutline />}
+                  onClick={() => setData("")}
+                >
                   Delete
                 </Button>
-                {formik.touched.avatarimage && formik.errors.avatarimage ? <p class="MuiFormHelperText-root Mui-error" id="avatarimage-helper-text">{formik.errors.avatarimage}</p> : null}
               </div>
             </div>
             <Grid item xs={6} container>
@@ -253,7 +215,7 @@ const removeImage = () => {
                         }
                         style={{
                           margin: "7px 0px 16px 0px",
-                          width: "280px",
+                          width: "286px",
                         }}
                       />
                     </Grid>
@@ -287,30 +249,17 @@ const removeImage = () => {
                     <Grid item>
                       <TextField
                         id="mobilecode"
-                        disabled
-                        className="formtextfields text-center"
-                        value={formik.values.mobilecode}
-                        onChange={formik.handleChange}
-                        error={
-                          formik.touched.mobilecode && Boolean(formik.errors.mobilecode)
-                        }
-                        helperText={formik.touched.mobilecode && formik.errors.mobilecode}
+                        className="formtextfields"
                         style={{
                           marginRight: "8px",
                           width: "80px",
                         }}
-                        inputProps={
-                          {
-                            className:"text-center"
-                          }
-                        }
                       />
                     </Grid>
                     <Grid item>
                       <TextField
                         id="mobile"
                         className="formtextfields"
-                        
                         value={formik.values.mobile}
                         onChange={formik.handleChange}
                         error={
@@ -342,23 +291,13 @@ const removeImage = () => {
                         onChange={formik.handleChange}
                         error={formik.touched.dob && Boolean(formik.errors.dob)}
                         helperText={formik.touched.dob && formik.errors.dob}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="start">
-                              <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                // edge="end"
-                              
-                              >
-                                <ExpandMore/>
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <ExpandMoreIcon />
+                          </InputAdornment>
+                        }
                         style={{
                           height: "55px",
-                          // width:"590px",
                         }}
                       ></TextField>
                     </Grid>
@@ -497,4 +436,4 @@ const removeImage = () => {
   );
 };
 
-export default PersonalInformation;
+export default MyOrders;

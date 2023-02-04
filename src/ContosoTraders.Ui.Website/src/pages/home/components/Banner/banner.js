@@ -1,10 +1,10 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 function Banner(props) {
-  const history = useHistory()
+  const history = useNavigate()
   const startShopping = () => {
-    history.push('/list/controllers')
+    history('/list/controllers')
   }
   return (
     <section>
