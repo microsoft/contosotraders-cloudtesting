@@ -333,8 +333,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: npm
-          cache-dependency-path: src/ContosoTraders.Ui.Website2/package-lock.json
+          # cache: npm
+          # cache-dependency-path: src/ContosoTraders.Ui.Website2/package-lock.json
       - name: npm ci
         run: npm ci --legacy-peer-deps
         working-directory: src/ContosoTraders.Ui.Website2
@@ -620,8 +620,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: npm
-          cache-dependency-path: src/ContosoTraders.Ui.Website2/package-lock.json
+          # cache: npm
+          # cache-dependency-path: src/ContosoTraders.Ui.Website2/package-lock.json
         # Set env variables for testing endpoints
       - name: set carts api endpoint
         run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
