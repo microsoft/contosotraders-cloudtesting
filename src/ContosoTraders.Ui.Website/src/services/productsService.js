@@ -25,12 +25,9 @@ const ProductService = {
 
         const params = {
             'params': filters,
-            'paramsSerializer': function (params) {
-                return qs.stringify(params, { arrayFormat: 'repeat' })
-            }
+            'paramsSerializer': qs.stringify(filters, { arrayFormat: 'repeat' })
         }
-
-        const response = await axios.get(`${ConfigService._apiUrl}/products/?`, params, ConfigService.HeadersConfig(), { errorHandle: false });
+        const response = await axios.get(`${ConfigService._apiUrl}/products/?`+params.paramsSerializer, ConfigService.HeadersConfig(), { errorHandle: false });
         return response;
     },
 

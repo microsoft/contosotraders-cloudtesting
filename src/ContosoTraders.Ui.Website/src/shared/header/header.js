@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { NamespacesConsumer } from 'react-i18next';
+// import { NamespacesConsumer } from 'react-i18next';
 
 import { ConfigService } from '../../services';
 import AuthB2CService from '../../services/authB2CService';
-import { withRouter } from "react-router-dom";
+// import { withRouter } from "react-router-dom";
 
 // import LoginContainer from './components/loginContainer';
 // import LoginComponent from './components/loginComponent';
@@ -110,8 +110,8 @@ class Header extends Component {
         // const { profile } = this.state;
         // const { loggedIn } = this.props.userInfo;
         return (
-            <NamespacesConsumer>
-                {t => (
+            // <NamespacesConsumer>
+            //     {t => (
                     <header className="header">
                         <Categories />
                         <nav className={this.state.isopened ? 'main-nav is-opened' : 'main-nav'}>
@@ -138,10 +138,10 @@ class Header extends Component {
                             </Link>
                             <div className="main-nav__actions">
                                 <Link className="main-nav__item" to="/profile">
-                                    {t('shared.header.profile')}
+                                    Profile
                                 </Link>
                                 <button className="u-empty main-nav__item">
-                                    {t('shared.header.logout')}
+                                    Logout
                                 </button>
                             </div>
                             <button className="u-empty btn-close" onClick={this.toggleClass}>
@@ -166,12 +166,12 @@ class Header extends Component {
                             <Login UseB2C={this.state.UseB2C} toggleModalClass={this.state.ismodalopened} onClickClose={this.onClickClose} />
                             : null} */}
                     </header>
-                )}
-            </NamespacesConsumer>
+            //     )}
+            // </NamespacesConsumer>
         );
     }
 }
 
 const mapStateToProps = state => state.login;
 
-export default withRouter(connect(mapStateToProps, { clickAction, submitAction })(Header));
+export default (connect(mapStateToProps, { clickAction, submitAction })(Header));

@@ -1,6 +1,6 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel'
-import { Grid } from '@material-ui/core'
+import { Grid } from '@mui/material'
 import Product from '../product/product';
 import productImg1 from '../../../../assets/images/original/Contoso_Assets/Caurosal/product_1.jpg'
 import productImg2 from '../../../../assets/images/original/Contoso_Assets/Caurosal/product_2.jpg'

@@ -1,13 +1,13 @@
 import React from 'react'
 
-import { Grid } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import { useHistory } from 'react-router-dom';
+import { Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 const Finalsection = () => {
-  const history = useHistory()
+  const history = useNavigate()
   const startShopping = () => {
-    history.push('/list/controllers')
+    history('/list/controllers')
   }
   return (
     <div className='final-section-container'>

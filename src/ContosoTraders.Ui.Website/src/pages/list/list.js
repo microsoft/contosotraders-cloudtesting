@@ -1,12 +1,12 @@
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import React from "react";
 import { OfferBanner, ListGrid, ListAside } from "./components";
 import Breadcrump  from "../../components/breadcrumb";
-import { withRouter, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const List = ({ typesList, brandsList, onFilterChecked, productsList, loggedIn }) => {
-    const history = useHistory();
-    const currentCategory = history.location.pathname.split("/").pop().replaceAll('-',' ');
+    const location = useLocation();
+    const currentCategory = location.pathname.split("/").pop().replaceAll('-',' ');
 
     return (
         <div className="list">
@@ -35,4 +35,4 @@ const List = ({ typesList, brandsList, onFilterChecked, productsList, loggedIn }
     );
 };
 
-export default withRouter(List);
+export default (List);
