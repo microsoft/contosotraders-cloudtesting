@@ -1,21 +1,23 @@
 import React ,{ useRef } from 'react';
-import { withRouter, Link, useHistory } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+import { Link, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { alpha, makeStyles } from '@material-ui/core/styles';
-import {AppBar, InputAdornment, TextField, Button } from '@material-ui/core';
+import { alpha } from '@mui/material/styles';
+import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
+import { createTheme } from '@mui/material';
+import {AppBar, InputAdornment, TextField, Button } from '@mui/material';
 //#region Uncomment below lines to run dark mode tests
-// import {FormGroup, FormControlLabel, Switch } from '@material-ui/core';
+// import {FormGroup, FormControlLabel, Switch } from '@mui/material';
 //#endregion
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Badge from '@mui/material/Badge';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import MailIcon from '@mui/icons-material/Mail';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import MoreIcon from '@mui/icons-material/MoreVert';
 import Logo from '../../assets/images/logo-horizontal.svg';
 import SearchIconNew from '../../assets/images/original/Contoso_Assets/Icons/image_search_icon.svg'
 import WishlistIcon from '../../assets/images/original/Contoso_Assets/Icons/wishlist_icon.svg'
@@ -24,9 +26,9 @@ import BagIcon from '../../assets/images/original/Contoso_Assets/Icons/cart_icon
 import UploadFile from '../uploadFile/uploadFile';
 import { clickAction, submitAction, handleThemeChange } from '../../actions/actions';
 import AuthB2CService from '../../services/authB2CService';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Alert from "react-s-alert";
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+// import Alert from "react-s-alert";
 
 import logout_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/logout_icon.svg";
 // import delete_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/delete_icon.svg";
@@ -35,7 +37,9 @@ import my_wishlist_icon from "../../assets/images/original/Contoso_Assets/profil
 import my_address_book_icons from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_address_book_icons.svg";
 import my_orders_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_orders_icon.svg";
 import { ProductService } from '../../services';
-const useStyles = makeStyles((theme) => ({
+
+const theme = createTheme()
+const useStyles = makeStyles(() => ({
   grow: {
     flexGrow: 1,
   },
@@ -110,7 +114,7 @@ const StyledMenu = withStyles({
 })((props) => (
   <Menu
     elevation={0}
-    getContentAnchorEl={null}
+    getcontentanchorel={null}
     anchorOrigin={{
       vertical: 'bottom',
       horizontal: 'center',
@@ -138,7 +142,7 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 function TopAppBar(props) {
   const classes = useStyles();
-  const history = useHistory();
+  const history = useNavigate();
   const searchRef = useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -158,12 +162,12 @@ function TopAppBar(props) {
     }
   }, [searchUpload]);
 
-  React.useEffect(() => {
-    setSearchUpload(false)
-  }, [history.location.pathname]);
+  // React.useEffect(() => {
+  //   setSearchUpload(false)
+  // }, [history.location.pathname]);
 
   const redirectUrl = (url) => {
-    history.push(url);
+    history(url);
   }
 
   const handleProfileMenuOpen = (event) => {
@@ -203,7 +207,7 @@ function TopAppBar(props) {
       authService.logout();
     }
     props.clickAction();
-    props.history.push('/');
+    history('/');
   }
   const setTextSearch = () => {
     if(searchRef.current.value.length > 0){
@@ -212,29 +216,25 @@ function TopAppBar(props) {
       .then((relatedProducts) => {
         searchRef.current.value = '';
         if (relatedProducts.length > 1) {
-          props.history.push({
-            pathname: "/suggested-products-list",
+          history("/suggested-products-list",{
             state: { relatedProducts },
           });
         } else if(relatedProducts.length === 1){
-          props.history.push({
-            pathname: `/product/detail/${relatedProducts[0].id}`,
-          });
+          history(`/product/detail/${relatedProducts[0].id}`);
         }else{
-          props.history.push({
-            pathname: "/suggested-products-list",
+          props.history.push("/suggested-products-list",{
             state: { relatedProducts },
           });
         }
       })
       .catch(() => {
           searchRef.current.value = '';
-          Alert.error("There was an error, please try again", {
-              position: "top",
-              effect: "scale",
-              beep: true,
-              timeout: 6000,
-          });
+          // Alert.error("There was an error, please try again", {
+          //     position: "top",
+          //     effect: "scale",
+          //     beep: true,
+          //     timeout: 6000,
+          // });
       });//search function
     }
   }
@@ -444,4 +444,4 @@ const mapDispatchToProps = (dispatch) => ({
   submitAction: (user) => dispatch(submitAction(user)),
   clickAction: () => dispatch(clickAction()), 
 })
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopAppBar));
+export default (connect(mapStateToProps, mapDispatchToProps)(TopAppBar));

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 
 import phoneLogo from '../../assets/images/original/Contoso_Assets/Icons/telephone_icon.svg'
 import emailLogo from '../../assets/images/original/Contoso_Assets/Icons/email_icon.svg'

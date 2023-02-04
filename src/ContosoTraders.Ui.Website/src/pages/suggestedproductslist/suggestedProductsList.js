@@ -1,16 +1,16 @@
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import React from "react";
 import Breadcrump from "../../components/breadcrumb";
 import { ListGrid } from "../list/components";
-import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 const SuggestedProductsList = (props) => {
     const [suggestedProductsList, setSuggestedProductsList] = React.useState(null);
-    const history = useHistory();
-    const currentCategory = history.location.pathname.split("/").pop().replaceAll('-',' ');
+    const location = useLocation();
+    const currentCategory = location.pathname.split("/").pop().replaceAll('-',' ');
     React.useEffect(() => {
-        const suggestedProducts = props.location.state;
+        const suggestedProducts = location.state;
         setSuggestedProductsList(suggestedProducts.relatedProducts);
-    }, [props.location.state]);
+    }, [location.state]);
     return (
         <div className="list">
             <Breadcrump currentPath={currentCategory}/>

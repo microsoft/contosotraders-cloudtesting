@@ -1,9 +1,9 @@
 import React from 'react';
 import Breadcrump from '../../components/breadcrumb.js'
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 const RefundPolicy = (props) => {
-    const history = useHistory();
-    const currentCategory = history.location.pathname.split("/").pop().replaceAll('-',' ');
+    const location = useLocation();
+    const currentCategory = location.pathname.split("/").pop().replaceAll('-',' ');
     return (
         <>
             <div className='refund-policy-section'>

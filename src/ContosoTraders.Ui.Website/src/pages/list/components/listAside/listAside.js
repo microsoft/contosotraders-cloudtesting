@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NamespacesConsumer } from "react-i18next";
+// import { NamespacesConsumer } from "react-i18next";
 import SidebarAccordion from "./components/sidebaraccordion";
 class ListAside extends Component {
     constructor() {
@@ -55,8 +55,8 @@ class ListAside extends Component {
 
     render() {
         return (
-            <NamespacesConsumer>
-                {t => (
+            // <NamespacesConsumer>
+            //     {t => (
                     <aside className="list__aside">
                         <SidebarAccordion 
                             onFilterChecked={this.props.onFilterChecked}
@@ -86,8 +86,8 @@ class ListAside extends Component {
                             </div>
                         )} */}
                     </aside>
-                )}
-            </NamespacesConsumer>
+            //     )}
+            // </NamespacesConsumer>
         );
     }
 }

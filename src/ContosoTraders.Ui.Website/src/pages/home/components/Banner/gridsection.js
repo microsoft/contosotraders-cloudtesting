@@ -4,14 +4,14 @@ import {
   CardContent,
   Grid,
   CardActionArea,
-} from "@material-ui/core";
+} from "@mui/material";
 import laptopgirl from "../../../../assets/images/original/Contoso_Assets/Grid_Products_Collection/banner_1.jpg";
 import laptoppic from "../../../../assets/images/original/Contoso_Assets/Grid_Products_Collection/product_image.png";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function Gridsection() {
-  const history = useHistory()
+  const history = useNavigate()
   const startShopping = () => {
-    history.push('/list/laptops')
+    history('/list/laptops')
   }
   return (
     <div className="LaptopSection">
