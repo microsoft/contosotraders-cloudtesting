@@ -53,15 +53,15 @@ jobs:
       group: provision
       cancel-in-progress: true
     steps:
-      # #
-      # # section #1: provisioning the resources on Azure using bicep templates
-      # #
-      # - name: checkout code
-      #   uses: actions/checkout@v3
-      # - name: azure login
-      #   uses: azure/login@v1
-      #   with:
-      #     creds: ${{ secrets.SERVICEPRINCIPAL }}
+      #
+      # section #1: provisioning the resources on Azure using bicep templates
+      #
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
       # # The first step is to create the resource group: `contoso-traders-rg`.
       # # The below step can also be manually executed as follows:
       # # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
@@ -336,7 +336,7 @@ jobs:
           # cache: npm
           # cache-dependency-path: src/ContosoTraders.Ui.Website2/package-lock.json
       - name: npm ci
-        run: npm ci --legacy-peer-deps
+        run: npm ci
         working-directory: src/ContosoTraders.Ui.Website2
       - name: npm run build
         run: npm run build
@@ -630,7 +630,7 @@ jobs:
       - name: set ui cdn endpoint
         run: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
       - name: install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci
       - name: run playwright tests
         run: HOME=/root npx playwright test --project=${{ matrix.project }} --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       - name: upload playwright report
