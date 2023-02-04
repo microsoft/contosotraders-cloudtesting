@@ -334,17 +334,17 @@ jobs:
         with:
           node-version: 16
           cache: npm
-          cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json        
+          cache-dependency-path: src/ContosoTraders.Ui.Website2/package-lock.json
       - name: npm ci
         run: npm ci --legacy-peer-deps
-        working-directory: src/ContosoTraders.Ui.Website
+        working-directory: src/ContosoTraders.Ui.Website2
       - name: npm run build
         run: npm run build
-        working-directory: src/ContosoTraders.Ui.Website
+        working-directory: src/ContosoTraders.Ui.Website2
       - name: deploy ui to storage
         uses: azure/CLI@v1
         with:
-          inlineScript: az storage blob sync --account-name '${{ env.UI_STORAGE_ACCOUNT_NAME }}${{ vars.SUFFIX }}' -c '$web' -s 'src/ContosoTraders.Ui.Website/build'
+          inlineScript: az storage blob sync --account-name '${{ env.UI_STORAGE_ACCOUNT_NAME }}${{ vars.SUFFIX }}' -c '$web' -s 'src/ContosoTraders.Ui.Website2/build'
       - name: purge ui cdn endpoint
         uses: azure/CLI@v1
         with:
@@ -610,7 +610,7 @@ jobs:
         shardTotal: [3]
     defaults:
       run:
-        working-directory: src/ContosoTraders.Ui.Website
+        working-directory: src/ContosoTraders.Ui.Website2
     env:
       AADUSERNAME: ${{secrets.AADUSERNAME}}
       AADPASSWORD: ${{secrets.AADPASSWORD}}
@@ -621,7 +621,7 @@ jobs:
         with:
           node-version: 16
           cache: npm
-          cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json
+          cache-dependency-path: src/ContosoTraders.Ui.Website2/package-lock.json
         # Set env variables for testing endpoints
       - name: set carts api endpoint
         run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
@@ -638,5 +638,5 @@ jobs:
         if: always()
         with:
           name: playwright-report-${{ matrix.project }}-${{ matrix.shardIndex }}
-          path: src/ContosoTraders.Ui.Website/playwright-report/
+          path: src/ContosoTraders.Ui.Website2/playwright-report/
           retention-days: 30
