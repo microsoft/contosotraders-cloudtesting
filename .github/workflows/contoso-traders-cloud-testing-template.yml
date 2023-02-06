@@ -67,7 +67,6 @@ jobs:
       # note: This is an idempotent operation.
       - name: create/update azure active directory app
         uses: azure/CLI@v1
-        id: get-azureAdAppId
         with:
           inlineScript: az ad app create --display-name ${{ env.AZURE_AD_APP_NAME}}${{ vars.SUFFIX }} --sign-in-audience AzureADandPersonalMicrosoftAccount
       - name: get azure ad app id
