@@ -4,15 +4,23 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-/* Uncomment below lines to run dark mode tests
-test.describe('Dark Mode', () => {
-  test('shows page in dark mode', async ({ page }) => {
-    await page.locator('input.MuiSwitch-input').check()
+// Uncomment to add dark mode tests
+/* test.describe('Dark Mode', () => {
+  test('should be able to toggle dark mode', async ({ page }) => {
+    await page.getByLabel('Dark Mode').check();
     await expect(page.locator('.App')).toHaveAttribute('class', 'App dark')
+    await page.getByLabel('Dark Mode').uncheck();
+    await expect(page.locator('.App')).toHaveAttribute('class', 'App light')
+  })
+  test('verify dark mode is pixel perfect - on', async ({ page }) => {
+    await page.getByLabel('Dark Mode').check();
+    await expect(page).toHaveScreenshot();
+
+  })
+  test('verify dark mode is pixel perfect - off', async ({ page }) => {
+    await expect(page).toHaveScreenshot();
   })
 }); */
-
-test.use({headless: false});
 
 // Geolocation Testing
 test.skip('test with geolocation', async ({ page, context, request }) => {
