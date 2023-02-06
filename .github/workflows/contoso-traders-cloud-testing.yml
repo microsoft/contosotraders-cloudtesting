@@ -15,9 +15,9 @@ jobs:
     with:
       environmentName: staging
 
-  # production:
-  #   needs: staging
-  #   uses: ./.github/workflows/contoso-traders-cloud-testing-template.yml
-  #   secrets: inherit
-  #   with:
-  #     environmentName: production
+  production:
+    needs: staging
+    uses: ./.github/workflows/contoso-traders-cloud-testing-template.yml
+    secrets: inherit
+    with:
+      environmentName: production
