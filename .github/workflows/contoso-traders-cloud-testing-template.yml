@@ -86,11 +86,19 @@ jobs:
       - name: enable issuance of id, access tokens
         uses: azure/CLI@v1
         with:
-          inlineScript: az ad app update --id ${{ steps.get-azureAdAppId.outputs.azureAdAppId }} --enable-access-token-issuance true --enable-id-token-issuance true 
+          inlineScript: az ad app update --id ${{ steps.get-azureAdAppId.outputs.azureAdAppId }} --enable-access-token-issuance true --enable-id-token-issuance true
       - name: enable email claim in access token
         uses: azure/CLI@v1
         with:
           inlineScript: az ad app update --id ${{ steps.get-azureAdAppId.outputs.azureAdAppId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
+      - name: request permissions for Microsoft Graph
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az ad app permission add \
+              --id ${{ steps.get-azureAdAppId.outputs.azureAdAppId }} \
+              --api 00000003-0000-0000-c000-000000000000 \
+              --api-permissions e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope 64a6cdd6-aab1-4aaf-94b8-3cc8405e90d0=Scope
       #
       # section #1: provisioning the resources on Azure using bicep templates
       #
