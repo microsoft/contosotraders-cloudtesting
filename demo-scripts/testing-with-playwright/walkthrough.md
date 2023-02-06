@@ -50,12 +50,10 @@ In order to test authentication, we can configure AAD, then run tests to log in 
 
 1. Add the AAD identity provider to your web app.
 1. Create a test account (MFA disabled).
-1. Add the credentials to 2 GitHub secrets: AADUSERNAME and AADPASSWORD.
-1. Rename [account.ts](.\src\ContosoTraders.Ui.Website\tests\account.ts) to account.**spec**.ts. The test runner will pick up any files with **spec** in the name.
+1. To run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) locally, set the credentials as 2 environment variables: AADUSERNAME and AADPASSWORD
+1. To run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) in GitHub Actions, add the credentials to 2 GitHub secrets: AADUSERNAME and AADPASSWORD
 
 This test has a beforeAll hook that will log in to the app, then the test case uses the logged in state to fill out the personal info form.
-
-Run the test locally or trigger a new GitHub Action run!
 
 - [Playwright Authentication Documentation](https://playwright.dev/docs/auth)
 

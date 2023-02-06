@@ -1,13 +1,13 @@
-import { test, Page, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 import { parse } from 'csv-parse/sync';
 
-let page: Page;
-
 // Log in once before underlying test cases run
 // NOTE: This can also be setup as a fixture or as part of global setup
 test.beforeAll(async ({ browser }) => {
+    // Skip if AADUSERNAME and AADPASSWORD environment variables are not set
+    test.skip(process.env.AADUSERNAME === undefined || process.env.AADPASSWORD === undefined, 'AADUSERNAME and AADPASSWORD environment variables must be set');
     // Only run if storageState.json file does not exist on disk
     if (!fs.existsSync('storageState.json')) {
         const page = await browser.newPage();
@@ -30,6 +30,8 @@ test.beforeAll(async ({ browser }) => {
 
 test.describe('My profile', () => {
     test('should be able to fill out personal info', async ({ browser }) => {
+        // Skip if AADUSERNAME and AADPASSWORD environment variables are not set
+        test.skip(process.env.AADUSERNAME === undefined || process.env.AADPASSWORD === undefined, 'AADUSERNAME and AADPASSWORD environment variables must be set');
         // Fill out the form using data from CSV
         const records = parse(fs.readFileSync(path.join(__dirname, 'test-data.csv')), {
             columns: true,
@@ -39,7 +41,7 @@ test.describe('My profile', () => {
         for (const record of records) {
             // Use the saved signed-in state to set context
             const loggedInContext = await browser.newContext({ storageState: 'storageState.json' });
-            const loggedInPage = await loggedInContext.newPage();        
+            const loggedInPage = await loggedInContext.newPage();
             // Fill out the form
             await loggedInPage.goto('/profile/personal');
             await loggedInPage.locator('#firstName').fill(`${record.firstName}`);
