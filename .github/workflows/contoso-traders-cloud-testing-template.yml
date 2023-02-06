@@ -17,7 +17,7 @@ env:
   AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
   AKS_SECRET_NAME_KV_ENDPOINT: contoso-traders-kv-endpoint
   AKS_SECRET_NAME_MI_CLIENTID: contoso-traders-mi-clientid
-  AZURE_AD_APP_NAME: contoso-traders-cloud-testing-app-foo2
+  AZURE_AD_APP_NAME: contoso-traders-cloud-testing-app
   CARTS_ACA_NAME: contoso-traders-carts
   CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
   CARTS_INTERNAL_ACA_NAME: contoso-traders-intcarts
@@ -55,26 +55,38 @@ jobs:
     #   cancel-in-progress: true
     steps:
       #
-      # section #1: provisioning the resources on Azure using bicep templates
+      # section #0: setup the Azure AD app
       #
-      # - name: checkout code
-      #   uses: actions/checkout@v3
+      - name: checkout code
+        uses: actions/checkout@v3
       - name: azure login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
-      # The first step is to create the Azure AD application (and update it if it already exists).
-      # Note: This is an idempotent operation.
+      # create the Azure AD application (and update it if it already exists).
+      # note: This is an idempotent operation.
       - name: create/update azure active directory app
+        uses: azure/CLI@v1
+        id: get-azureAdAppId
+        with:
+          inlineScript: az ad app create --display-name ${{ env.AZURE_AD_APP_NAME}}${{ vars.SUFFIX }} --sign-in-audience AzureADandPersonalMicrosoftAccount
+      - name: get azure ad app id
+        uses: azure/CLI@v1
+        id: get-azureAdAppId
+        with:
+          inlineScript: echo "azureAdAppId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].id -o tsv)" >> $GITHUB_OUTPUT
+      - name: register app as a spa
         uses: azure/CLI@v1
         with:
           inlineScript: |
-            az ad app create \
-              --display-name ${{ env.AZURE_AD_APP_NAME }} \
-              --sign-in-audience AzureADandPersonalMicrosoftAccount \
-              --enable-access-token-issuance true \
-              --enable-id-token-issuance true \
-              --web-redirect-uris "http://localhost:3000/authcallback" "https://localhost:3000/authcallback"
+            az rest \
+              --method PATCH \
+              --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppId.outputs.azureAdAppId }} \
+              --headers 'Content-Type=application/json' \
+              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback"]}}'
+      #
+      # section #1: provisioning the resources on Azure using bicep templates
+      #
       # # The first step is to create the resource group: `contoso-traders-rg`.
       # # The below step can also be manually executed as follows:
       # # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
@@ -347,7 +359,7 @@ jobs:
       #   with:
       #     node-version: 16
       #     cache: npm
-      #     cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json        
+      #     cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json
       # - name: npm ci
       #   run: npm ci --legacy-peer-deps
       #   working-directory: src/ContosoTraders.Ui.Website
