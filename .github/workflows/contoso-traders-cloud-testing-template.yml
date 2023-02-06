@@ -83,6 +83,14 @@ jobs:
               --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppId.outputs.azureAdAppId }} \
               --headers 'Content-Type=application/json' \
               --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback"]}}'
+      - name: enable issuance of id, access tokens
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az ad app update --id ${{ steps.get-azureAdAppId.outputs.azureAdAppId }} --enable-access-token-issuance true --enable-id-token-issuance true 
+      - name: enable email claim in access token
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az ad app update --id ${{ steps.get-azureAdAppId.outputs.azureAdAppId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
       #
       # section #1: provisioning the resources on Azure using bicep templates
       #
