@@ -406,6 +406,15 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)
+      - name: register auth callback (UI CDN)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az rest \
+              --method PATCH \
+              --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+              --headers 'Content-Type=application/json' \
+              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
 
   load-tests-carts-api:
     runs-on: ubuntu-latest
