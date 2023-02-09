@@ -113,6 +113,11 @@ jobs:
       # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
       # Note: You can specify any location for `{LOCATION}`. It's the region where the deployment metadata will be stored, and not
       # where the resource groups will be deployed.
+      - name: install latest Bicep CLI
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az bicep upgrade    
       - name: create resource group
         uses: Azure/arm-deploy@v1
         with:
