@@ -23,13 +23,9 @@ test.beforeEach(async ({ page }) => {
 }); */
 
 // Geolocation Testing
-test.skip('test with geolocation', async ({ page, context, request }) => {
-  const ipTest = await request.get(`${process.env.REACT_APP_GEOLOCATIONAPI}`);
-  expect(ipTest.status()).toBe(200);
-  expect(ipTest.ok()).toBeTruthy();
-  const location = JSON.parse(await ipTest.text())
-  const latitude = location.latitude
-  const longitude = location.longitude
+test('test with geolocation', async ({ page, context, request }) => {
+  const latitude = await page.locator('input#latitude').inputValue();//location.latitude
+  const longitude = await page.locator('input#longitude').inputValue();//location.longitude
   const point = latitude + ',' + longitude;
   const response = await request.get(`${process.env.REACT_APP_GEOAPIBASEURL}/Locations/${point}?key=${process.env.REACT_APP_BINGMAPSKEY}`);
   expect(response.status()).toBe(200);
