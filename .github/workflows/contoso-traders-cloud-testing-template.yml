@@ -134,7 +134,7 @@ jobs:
         run: >
           az deployment group create \
             --name 'contosodeploy-${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}' \
-            --resource-group '${{ env.RESOURCE_GROUP_NAME }}'' \
+            --resource-group '${{ env.RESOURCE_GROUP_NAME }}' \
             --location '${{ env.SUB_DEPLOYMENT_REGION }}' \
             --template-file iac/createResources.bicep \
             --parameters suffix='${{ vars.SUFFIX }}' \
