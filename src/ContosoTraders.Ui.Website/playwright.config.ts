@@ -53,15 +53,13 @@ const config: PlaywrightTestConfig = {
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
-        geolocation: { latitude: 50.8551729, longitude: 4.340312 },
+        ...devices['Desktop Chrome']
       },
     },
     {
       name: 'firefox',
       use: {
-        ...devices['Desktop Firefox'],
-        geolocation: { latitude: 47.642232, longitude: -122.136791 },
+        ...devices['Desktop Firefox']
       },
     }
   ],
