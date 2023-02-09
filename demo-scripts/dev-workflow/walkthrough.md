@@ -106,9 +106,7 @@ Let us make the changes and experience magic of GitHub Actions.
 
      ![image](media/commit1.png)
 
-7. Now, let's update playwright tests to include testing for dark mode functionality. Edit **features.spec.ts** located in **src/ContosoTraders.Ui.Website/tests** and uncomment line 8 through 14. Please commit the changes to save the test cases.  
-
-    ![image](media/uncommentcode3.png)
+7. Now, let's update playwright tests to include testing for dark mode functionality. Edit **darkmode.spec.ts** located in **src/ContosoTraders.Ui.Website/tests** and remove the `skip` annotation from line 7. 
 
 8. Now, let us raise a pull request to merge this change to **main branch**. Click on **Pull Requests** and notice that changes are detected already. Click on **Review and raise Pull Request**.
 
