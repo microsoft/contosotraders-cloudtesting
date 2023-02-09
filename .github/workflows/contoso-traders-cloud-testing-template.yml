@@ -50,6 +50,7 @@ jobs:
       cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
       productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
       uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+      azureAdAppClientId: ${{ steps.get-azureAdAppClientId.outputs.azureAdAppClientId }}
     concurrency:
       group: provision
       cancel-in-progress: true
@@ -69,34 +70,39 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az ad app create --display-name ${{ env.AZURE_AD_APP_NAME}}${{ vars.SUFFIX }} --sign-in-audience AzureADandPersonalMicrosoftAccount
-      - name: get azure ad app id
+      - name: get azure ad app's object id
         uses: azure/CLI@v1
-        id: get-azureAdAppId
+        id: get-azureAdAppObjId
         with:
-          inlineScript: echo "azureAdAppId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].id -o tsv)" >> $GITHUB_OUTPUT
+          inlineScript: echo "azureAdAppObjId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].id -o tsv)" >> $GITHUB_OUTPUT
+      - name: get azure ad app's client id
+        uses: azure/CLI@v1
+        id: get-azureAdAppClientId
+        with:
+          inlineScript: echo "azureAdAppClientId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].appId -o tsv)" >> $GITHUB_OUTPUT
       - name: register app as a spa
         uses: azure/CLI@v1
         with:
           inlineScript: |
             az rest \
               --method PATCH \
-              --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppId.outputs.azureAdAppId }} \
+              --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
               --headers 'Content-Type=application/json' \
               --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback"]}}'
       - name: enable issuance of id, access tokens
         uses: azure/CLI@v1
         with:
-          inlineScript: az ad app update --id ${{ steps.get-azureAdAppId.outputs.azureAdAppId }} --enable-access-token-issuance true --enable-id-token-issuance true
+          inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --enable-access-token-issuance true --enable-id-token-issuance true
       - name: enable email claim in access token
         uses: azure/CLI@v1
         with:
-          inlineScript: az ad app update --id ${{ steps.get-azureAdAppId.outputs.azureAdAppId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
+          inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
       - name: request permissions for Microsoft Graph
         uses: azure/CLI@v1
         with:
           inlineScript: |
             az ad app permission add \
-              --id ${{ steps.get-azureAdAppId.outputs.azureAdAppId }} \
+              --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
               --api 00000003-0000-0000-c000-000000000000 \
               --api-permissions e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope 64a6cdd6-aab1-4aaf-94b8-3cc8405e90d0=Scope
       #
@@ -370,6 +376,8 @@ jobs:
         run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set REACT_APP_APIURL
         run: echo "REACT_APP_APIURL"="https://${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
+      - name: set REACT_APP_B2CCLIENTID
+        run: echo "REACT_APP_B2CCLIENTID"="${{ steps.get-azureAdAppClientId.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -398,6 +406,15 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)
+      - name: register auth callback (UI CDN)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az rest \
+              --method PATCH \
+              --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+              --headers 'Content-Type=application/json' \
+              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
 
   load-tests-carts-api:
     runs-on: ubuntu-latest
@@ -669,6 +686,8 @@ jobs:
         run: echo "REACT_APP_APIURL"="https://${{ needs.provision.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set ui cdn endpoint
         run: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
+      - name: set REACT_APP_B2CCLIENTID
+        run: echo "REACT_APP_B2CCLIENTID"="${{ needs.provision.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
       - name: install dependencies
         run: npm ci
       - name: run playwright tests
