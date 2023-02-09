@@ -11,17 +11,21 @@ test.use({
   timezoneId: 'Europe/Rome'
 });
 
-test('verify bing map iframe is displayed and can zoom in and out', async ({ page }) => {
-  await page.goto('/');
-  // validate inputs
-  await expect(page.locator('#latitude')).toBeTruthy();
-  await expect(page.locator('#longitude')).toBeTruthy();
-  await expect(page.locator('#current-location')).toBeTruthy();
-  // scroll to bottomo of the page
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-  // zoom in
-  await page.frameLocator('iframe[title="geolocation"]').getByRole('button', { name: 'Zoom avanti' }).click();
-  // zoom out
-  await page.frameLocator('iframe[title="geolocation"]').getByRole('button', { name: 'Zoom indietro' }).click();
+test.describe('Map', () => {
+  test.skip(({ browserName }) => browserName !== 'chromium', 'Chromium only!');
+  test('verify bing map iframe is displayed and can zoom in and out', async ({ page }) => {
+      await page.goto('/');
+      // validate inputs
+      await expect(page.locator('#latitude')).toBeTruthy();
+      await expect(page.locator('#longitude')).toBeTruthy();
+      await expect(page.locator('#current-location')).toBeTruthy();
+      // scroll to bottomo of the page
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      // validate map is displayed
+      await expect(page.frameLocator('iframe[title="geolocation"]').locator('div[aria-label="Mappa"]')).toBeTruthy();      
+      // zoom in
+      await page.frameLocator('iframe[title="geolocation"]').getByRole('button', { name: 'Zoom avanti' }).click();
+      // zoom out
+      await page.frameLocator('iframe[title="geolocation"]').getByRole('button', { name: 'Zoom indietro' }).click();
+  });
 });
-
