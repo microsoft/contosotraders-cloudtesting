@@ -33,6 +33,7 @@
      * `set REACT_APP_APIURL=https://localhost:62300/v1`
      * `set REACT_APP_APIURLSHOPPINGCART=https://localhost:62400/v1`
      * `set REACT_APP_BASEURLFORPLAYWRIGHTTESTING=http://localhost:3000` (note: This endpoint is `http://` and NOT `https://`)
+     * `set REACT_APP_B2CCLIENTID=<B2C-CLIENT-ID>` (note: Replace `<B2C-CLIENT-ID>` with the output of the command: `az ad app list --display-name contoso-traders-cloud-testing-app<SUFFIX> --query "[].appId" -o tsv`)
    * Run `npm run start`. This will start the UI on `http://localhost:3000`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
 
