@@ -14,7 +14,6 @@ test.describe('Mocks', () => {
         await expect(await page.locator('html').first().innerText()).toContain("Test Content");
     });
 
-
     // Mock API - load product details
     test('should be able to load product details', async ({ page }) => {
       await page.route(`${process.env.REACT_APP_APIURL}/Products/1`, async route => {

@@ -435,7 +435,7 @@ jobs:
         uses: Azure/load-testing@v1.1.11
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
-          loadtestConfigFile: ./tests/loadtests/contoso-traders-carts.yaml
+          loadtestConfigFile: ./loadtests/contoso-traders-carts.yaml
           loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
           resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
           env: |
@@ -496,14 +496,14 @@ jobs:
         with:
           tokenPrefix: "{{"
           tokenSuffix: "}}"
-          files: ./tests/loadtests/contoso-traders-carts-internal.yaml
+          files: ./loadtests/contoso-traders-carts-internal.yaml
         env:
           LOAD_TEST_SUBNET_ID: ${{ steps.get-vnetAcaSubnetId.outputs.vnetAcaSubnetId }}
       - name: load test (carts internal API)
         uses: Azure/load-testing@v1.1.11
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
-          loadtestConfigFile: ./tests/loadtests/contoso-traders-carts-internal.yaml
+          loadtestConfigFile: ./loadtests/contoso-traders-carts-internal.yaml
           loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
           resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
           env: |
@@ -553,7 +553,7 @@ jobs:
         uses: Azure/load-testing@v1.1.11
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
-          loadtestConfigFile: ./tests/loadtests/contoso-traders-products.yaml
+          loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
           loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
           resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
           env: |
@@ -619,7 +619,7 @@ jobs:
   #       uses: Azure/load-testing@v1.1.11
   #       with:
   #         # Path of the YAML file. Should be fully qualified path or relative to the default working directory
-  #         loadtestConfigFile: ./tests/loadtests/contoso-traders-products.yaml
+  #         loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
   #         loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
   #         resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
   #         env: |
@@ -673,21 +673,17 @@ jobs:
       AADPASSWORD: ${{secrets.AADPASSWORD}}
     steps:
       - uses: actions/checkout@v3
-        # Cache deps
       - uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: npm
           cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json
-        # Set env variables for testing endpoints
-      - name: set carts api endpoint
-        run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
-      - name: set products api endpoint
-        run: echo "REACT_APP_APIURL"="https://${{ needs.provision.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
-      - name: set ui cdn endpoint
-        run: echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
-      - name: set REACT_APP_B2CCLIENTID
-        run: echo "REACT_APP_B2CCLIENTID"="${{ needs.provision.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
+      - name: Set env variables for testing endpoints
+        run: |
+          echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
+          echo "REACT_APP_APIURL"="https://${{ needs.provision.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
+          echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
+          echo "REACT_APP_B2CCLIENTID"="${{ needs.provision.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
       - name: install dependencies
         run: npm ci
       - name: run playwright tests

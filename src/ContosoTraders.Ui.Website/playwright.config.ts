@@ -42,10 +42,9 @@ const config: PlaywrightTestConfig = {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.REACT_APP_BASEURLFORPLAYWRIGHTTESTING || 'https://production.contosotraders.com/',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on',
-    permissions: ['geolocation'],
+    trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: 'on',
+    video: 'on-first-retry',
   },
 
   /* Configure projects for major browsers */
