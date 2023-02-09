@@ -38,32 +38,7 @@ const Footer = () => {
                 setLocation(address)
             })
     }
-    //   const getLocation = () => {
-    //     if (!navigator.geolocation) {
-    //       setStatus('Geolocation is not supported by your browser');
-    //     } else {
-    //       setStatus('Locating...');
-    //     fetch(process.env.REACT_APP_GEOLOCATIONAPI)
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         setStatus(null);
-    //         setLat(data.latitude);
-    //         setLng(data.longitude);
 
-    //         //Microsoft API
-    //         let point = data.latitude+','+data.longitude
-    //         const geoApiUrlForAddress = `${process.env.REACT_APP_GEOAPIBASEURL}/Locations/${point}?key=${process.env.REACT_APP_BINGMAPSKEY}`;
-    //         fetch(geoApiUrlForAddress)
-    //         .then(res => res.json())
-    //         .then(dat => {
-    //             console.log(dat)
-    //             setStatus(null);
-    //             let address = dat.resourceSets[0].resources[0].address.locality+', '+dat.resourceSets[0].resources[0].address.countryRegion;
-    //             setLocation(address)
-    //         })
-    //     })
-    //     }
-    //   }
 
     return (
         <div className='footer-container'>
@@ -80,7 +55,6 @@ const Footer = () => {
                 <Grid item xs={2} className='section-2'>
                     <ul>
                         <li className='main-element'>Catalog</li>
-                        {/* <li className='list-element'>My Account</li> */}
                         <li className='list-element'><Link to='/list/all-products'>All Products</Link></li>
                         <li className='list-element'><Link to='/list/controllers'>Controllers</Link></li>
                         <li className='list-element'><Link to='/list/laptops'>Laptops</Link></li>
