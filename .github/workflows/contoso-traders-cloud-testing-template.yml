@@ -113,18 +113,15 @@ jobs:
       # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
       # Note: You can specify any location for `{LOCATION}`. It's the region where the deployment metadata will be stored, and not
       # where the resource groups will be deployed.
-      - name: install latest Bicep CLI
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az bicep upgrade    
       - name: create resource group
-        uses: Azure/arm-deploy@v1
-        with:
-          scope: subscription
-          region: ${{ env.SUB_DEPLOYMENT_REGION }}
-          template: ./iac/createResourceGroup.bicep
-          parameters: rgName=${{ env.RESOURCE_GROUP_NAME }} suffix=${{ vars.SUFFIX }}
+        run: >
+          az deployment sub create \
+            --name 'contosorgdeploy-${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}' \
+            --location '${{ env.SUB_DEPLOYMENT_REGION }}' \
+            --template-file iac/createResourceGroup.bicep \
+            --parameters rgName='${{ env.RESOURCE_GROUP_NAME }}' \
+                         suffix='${{ vars.SUFFIX }}'
+
       # Next step is to deploy the Azure resources to the resource group `contoso-traders-rg` created above. The deployed resources
       # include storage accounts, function apps, app services cosmos db, and service bus etc.
       # The below step can also be manually executed as follows:
@@ -134,13 +131,13 @@ jobs:
       # Note: The bicep template outputs are not shown in the logs. You can extract the outputs as shown here:
       # https://github.com/Azure/arm-deploy#another-example-on-how-to-use-this-action-to-get-the-output-of-arm-template
       - name: create resources
-        uses: Azure/arm-deploy@v1
-        with:
-          scope: resourcegroup
-          region: ${{ env.SUB_DEPLOYMENT_REGION }}
-          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
-          template: ./iac/createResources.bicep
-          parameters: ./iac/createResources.parameters.json suffix=${{ vars.SUFFIX }} sqlPassword=${{ secrets.SQL_PASSWORD }}
+        run: >
+          az deployment group create \
+            --name 'contosodeploy-${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}' \
+            --location '${{ env.SUB_DEPLOYMENT_REGION }}' \
+            --template-file iac/createResources.bicep \
+            --parameters suffix='${{ vars.SUFFIX }}' \
+                         sqlPassword='${{ secrets.SQL_PASSWORD }}'
       # Add the logged-in service principal to the key vault access policy
       - name: add service principal to kv access policy
         uses: azure/CLI@v1
