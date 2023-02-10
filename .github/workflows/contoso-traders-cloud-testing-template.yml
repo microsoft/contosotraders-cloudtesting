@@ -88,7 +88,7 @@ jobs:
               --method PATCH \
               --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
               --headers 'Content-Type=application/json' \
-              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback"]}}'
+              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback"]}}'
       - name: enable issuance of id, access tokens
         uses: azure/CLI@v1
         with:
@@ -97,7 +97,16 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
-      - name: request permissions for Microsoft Graph
+      # note: requesting MS Graph permissions in Azure AD app unfortunately isn't idempotent. 
+      # Even, if you have already requested the permissions, it'll keep adding to the list of requested permissions until you hit limit on max permissions requested. 
+      - name: delete any requested Microsoft Graph permissions
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az ad app permission delete \
+              --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+              --api 00000003-0000-0000-c000-000000000000
+      - name: request Microsoft Graph permissions
         uses: azure/CLI@v1
         with:
           inlineScript: |
@@ -414,7 +423,7 @@ jobs:
               --method PATCH \
               --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
               --headers 'Content-Type=application/json' \
-              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
+              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
 
   load-tests-carts-api:
     runs-on: ubuntu-latest
