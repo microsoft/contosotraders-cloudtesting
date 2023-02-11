@@ -25,6 +25,9 @@ env:
   CHAOS_AKS_EXPERIMENT_NAME: contoso-traders-chaos-aks-experiment
   KV_NAME: contosotraderskv
   LOAD_TEST_SERVICE_NAME: contoso-traders-loadtest
+  MSGRAPH_API_ID: 00000003-0000-0000-c000-000000000000
+  MSGRAPH_API_PERMISSION_EMAIL: 64a6cdd6-aab1-4aaf-94b8-3cc8405e90d0=Scope
+  MSGRAPH_API_PERMISSION_USER_READ: e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope
   PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
   PRODUCTS_DB_NAME: productsdb
   PRODUCTS_DB_SERVER_NAME: contoso-traders-products
@@ -97,23 +100,23 @@ jobs:
         uses: azure/CLI@v1
         with:
           inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
-      # note: requesting MS Graph permissions in Azure AD app unfortunately isn't idempotent. 
-      # Even, if you have already requested the permissions, it'll keep adding to the list of requested permissions until you hit limit on max permissions requested. 
+      # note: requesting MS Graph permissions in Azure AD app unfortunately isn't idempotent.
+      # Even, if you have already requested the permissions, it'll keep adding to the list of requested permissions until you hit limit on max permissions requested.
       - name: delete any requested Microsoft Graph permissions
         uses: azure/CLI@v1
         with:
           inlineScript: |
             az ad app permission delete \
               --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
-              --api 00000003-0000-0000-c000-000000000000
+              --api ${{ env.MSGRAPH_API_ID }}
       - name: request Microsoft Graph permissions
         uses: azure/CLI@v1
         with:
           inlineScript: |
             az ad app permission add \
               --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
-              --api 00000003-0000-0000-c000-000000000000 \
-              --api-permissions e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope 64a6cdd6-aab1-4aaf-94b8-3cc8405e90d0=Scope
+              --api ${{ env.MSGRAPH_API_ID }} \
+              --api-permissions ${{ env.MSGRAPH_API_PERMISSION_USER_READ }} ${{ env.MSGRAPH_API_PERMISSION_EMAIL }}
       #
       # section #2: provisioning the resources on Azure using bicep templates
       #
