@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test.describe.skip('Dark Mode', () => {
+test.describe('Dark Mode', () => {
   test('should be able to toggle dark mode', async ({ page }) => {
     await page.getByLabel('Dark Mode').check();
     await expect(page.locator('.App')).toHaveAttribute('class', 'App dark')
