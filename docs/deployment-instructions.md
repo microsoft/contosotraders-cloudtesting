@@ -30,8 +30,18 @@ You will need following to get started:
   * Please make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.
 
 * Add the above Service Principal into the the [Application Administrator](https://learn.microsoft.com/en-us/azure/active-directory/roles/permissions-reference#application-administrator) active directory role.
-  * @TODO
-  * Note: The user needs to be a global administrator in the tenant to be able to add the service principal to the Application Administrator role.
+  * Go to the Azure portal, and navigate to the Azure Active Directory blade. Then click on the `Roles and Administrators` tab on the left.
+  * Select the `Application Administrator` role, and click on the `Add assignments` button.
+  * Select the service principal that you created in the previous step. Click on the `Add` button.
+
+  ![Application Administrator](./images/ad-application-administrator.png)
+
+>
+> Notes:
+>
+> * Unfortunately, there is no AZ CLI, AZ PowerShell or Bicep template support to add a service principal to the `Application Administrator` role. You'll have to do this manually through the Azure portal.
+> * Note: In order for you to add the service principal to the `Application Administrator` role, you must yourself be a member of the `Global Administrator` role in Azure Active Directory.
+>
 
 ## Prepare your GitHub Account
 
