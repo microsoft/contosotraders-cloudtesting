@@ -30,8 +30,18 @@ You will need following to get started:
   * Please make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.
 
 * Add the above Service Principal into the the [Application Administrator](https://learn.microsoft.com/en-us/azure/active-directory/roles/permissions-reference#application-administrator) active directory role.
-  * @TODO
-  * Note: The user needs to be a global administrator in the tenant to be able to add the service principal to the Application Administrator role.
+  * Go to the Azure portal, and navigate to the Azure Active Directory blade. Then click on the `Roles and Administrators` tab on the left.
+  * Select the `Application Administrator` role, and click on the `Add assignments` button.
+  * Select the service principal that you created in the previous step. Click on the `Add` button.
+
+  ![Application Administrator](./images/ad-application-administrator.png)
+
+>
+> Notes:
+>
+> * Unfortunately, there is no AZ CLI, AZ PowerShell or Bicep template support to add a service principal to the `Application Administrator` role. You'll have to do this manually through the Azure portal.
+> * Note: In order for you to add the service principal to the `Application Administrator` role, you must yourself be a member of the `Global Administrator` role in Azure Active Directory.
+>
 
 ## Prepare your GitHub Account
 
@@ -77,11 +87,11 @@ You will need following to get started:
 
 ## Verify the Deployment
 
-* Once the workflow completes, the UI's accessible CDN endpoint will be displayed in the workflow logs (in the `display ui cdn endpoint` step in the `provision-infrastructure` job).
+* Once the workflow completes, the UI's accessible CDN endpoint URL will be displayed in the github workflow run.
 
   ![Endpoints in workflow logs](./images/ui-endpoint-github-workflow.png)
 
-* You can load the UI endpoint in your browser to verify that the application is indeed up and running.
+* Clicking on the URL above, will load the application in a new browser tab. You can then verify that the application is indeed up and running.
 
 ### Troubleshooting Deployment Errors
 

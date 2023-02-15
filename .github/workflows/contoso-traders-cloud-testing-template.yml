@@ -102,6 +102,7 @@ jobs:
           inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
       # note: requesting MS Graph permissions in Azure AD app unfortunately isn't idempotent.
       # Even, if you have already requested the permissions, it'll keep adding to the list of requested permissions until you hit limit on max permissions requested.
+      # Details: https://github.com/Azure/azure-cli/issues/24512
       - name: delete any requested Microsoft Graph permissions
         uses: azure/CLI@v1
         with:
