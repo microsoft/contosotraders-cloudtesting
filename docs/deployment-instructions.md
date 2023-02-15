@@ -87,11 +87,11 @@ You will need following to get started:
 
 ## Verify the Deployment
 
-* Once the workflow completes, the UI's accessible CDN endpoint will be displayed in the workflow logs (in the `display ui cdn endpoint` step in the `provision-infrastructure` job).
+* Once the workflow completes, the UI's accessible CDN endpoint URL will be displayed in the github workflow run.
 
   ![Endpoints in workflow logs](./images/ui-endpoint-github-workflow.png)
 
-* You can load the UI endpoint in your browser to verify that the application is indeed up and running.
+* Clicking on the URL above, will load the application in a new browser tab. You can then verify that the application is indeed up and running.
 
 ### Troubleshooting Deployment Errors
 
