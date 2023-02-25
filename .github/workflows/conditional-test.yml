@@ -1,0 +1,20 @@
+name: conditional-test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["mithun/azure-ad-conditional"]
+
+
+jobs:
+  configure-job:
+    env:
+      AADUSERNAME: ${{ secrets.AADUSERNAME }}
+    runs-on: ubuntu-latest
+    steps:
+      #
+      # section #1: setup the Azure AD app
+      #
+      - name: checkout code
+        if: env.AADUSERNAME != null
+        uses: actions/checkout@v3
