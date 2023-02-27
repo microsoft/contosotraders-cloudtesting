@@ -10,6 +10,7 @@ import { CartService, ProductService } from '../../services';
 import ProductDetails from "./productdetails";
 import Breadcrump from "../../components/breadcrumb";
 import { useParams } from "react-router-dom";
+import { Alert, Snackbar } from "@mui/material";
 // import Slider from "../home/components/slider/slider";
 
     
@@ -18,6 +19,7 @@ import { useParams } from "react-router-dom";
         const [detailProduct,setDetailProduct] = React.useState({})
         const [loadingRelated,setLoadingRelated] = React.useState(null)
         const [loading,setLoading] = React.useState(true)
+        const [alert,setAlert] = React.useState({open:false,type:'',message:''})
         const relatedDetailProducts = []
         // useEffect(() => {
         //     await getDetailPageData(productId);
@@ -39,9 +41,14 @@ import { useParams } from "react-router-dom";
             // const { profile: { email } } = profile;
             const email = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null
 
-            setDetailProduct({ ...detailProduct,email: email})
+            var tempProps = JSON.parse(JSON.stringify(detailProduct));
+            tempProps.email = email;
+            Object.preventExtensions(tempProps);
+      
+            setDetailProduct(tempProps)
+            // setDetailProduct({ ...detailProduct,email: email})
     
-            const productToCart = await CartService.addProduct(props.userInfo.token, detailProduct)
+            const productToCart = await CartService.addProduct(props.userInfo.token, tempProps)
     
             if (productToCart.errMessage) {
                 return showErrorMessage(productToCart)
@@ -66,6 +73,7 @@ import { useParams } from "react-router-dom";
         }
     
         const showSuccesMessage = (data) => {
+            setAlert({open:true,type:'success',message:data})
             // Alert.success(data.message, {
             //     position: "top",
             //     effect: "scale",
@@ -75,6 +83,7 @@ import { useParams } from "react-router-dom";
         }
     
         const showErrorMessage = (data) => {
+            setAlert({open:true,type:'error',message:data.errMessage})
             // Alert.error(data.errMessage, {
             //     position: "top",
             //     effect: "scale",
@@ -82,12 +91,19 @@ import { useParams } from "react-router-dom";
             //     timeout: 3000,
             // });
         }
+        const handleClose = () => {
+            setAlert({open:false,type:'',message:''})
+        }
         const { loggedIn } = props.userInfo
         return (
             <Fragment>
                 <div className="ProductContainerSection">
-                    {/* <Alert stack={{ limit: 1 }} /> */}
                     <Breadcrump parentPath='Products' parentUrl="/list/all-products" currentPath={detailProduct.name} />
+                    <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleClose}>
+                        <Alert onClose={handleClose} severity={alert.type} sx={{ width: '100%' }}>
+                            {alert.message}
+                        </Alert>
+                    </Snackbar>
                     {loading ? <LoadingSpinner /> :
                         <ProductDetails
                         loggedIn={loggedIn}

@@ -7,7 +7,6 @@ import add_to_bag_icon from "../../assets/images/original/Contoso_Assets/product
 import add_to_wishlist_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/add_to_wishlist_icon.svg";
 
 function ProductDetails(props) {
-  console.log('asdasd',props.detailProductData)
   const { name, price, imageUrl } = props.detailProductData;
   // const type = Object.assign({}, props.detailProductData.type);
   const { features } = props.detailProductData;

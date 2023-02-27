@@ -198,6 +198,7 @@ function TopAppBar(props) {
       user['token'] = sessionStorage.getItem('msal.idtoken');
       localStorage.setItem('state',JSON.stringify(user))
       props.submitAction(user);
+      window.location.reload()
     }
   }
   const onClickLogout = () => {
@@ -259,7 +260,7 @@ function TopAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <StyledMenuItem onClick={() => redirectUrl('/profile/personal')}>
+      {/* <StyledMenuItem onClick={() => redirectUrl('/profile/personal')}>
         <ListItemIcon>
           <img src={personal_information_icon} alt=""/>
         </ListItemIcon>
@@ -273,8 +274,8 @@ function TopAppBar(props) {
         <ListItemText primary="My Orders" />
         <ListItemIcon className='justify-content-end'>
         </ListItemIcon>
-      </StyledMenuItem>
-      <StyledMenuItem onClick={() => redirectUrl('/profile/wishlist')}>
+      </StyledMenuItem> */}
+      {/* <StyledMenuItem onClick={() => redirectUrl('/profile/wishlist')}>
         <ListItemIcon>
           <img src={my_wishlist_icon} alt=""/>
         </ListItemIcon>
@@ -289,7 +290,7 @@ function TopAppBar(props) {
         <ListItemText primary="My Address Book" />
         <ListItemIcon className='justify-content-end'>
         </ListItemIcon>
-      </StyledMenuItem>
+      </StyledMenuItem> */}
       <StyledMenuItem onClick={onClickLogout}>
         <ListItemIcon>
           <img src={logout_icon} alt=""/>
@@ -383,11 +384,11 @@ function TopAppBar(props) {
           </div>
           <div className={classes.grow} />
           {loggedIn && loggedIn ? <div className={classes.sectionDesktop}>
-            <IconButton className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={()=>redirectUrl('/profile/wishlist')}>
+            {/* <IconButton className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={()=>redirectUrl('/wishlist')}>
               <Badge badgeContent={0} color="secondary" overlap="rectangular">
                 <img src={WishlistIcon} alt="iconimage" />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton
               className='iconButton'
               // edge="end"
@@ -406,7 +407,7 @@ function TopAppBar(props) {
             </IconButton>
           </div> :
           // null
-            <Button className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={() => onClickLogIn()} >
+            process.env.REACT_APP_B2CCLIENTID && <Button className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={() => onClickLogIn()} >
               Login
             </Button>
           }
