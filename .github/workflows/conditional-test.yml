@@ -5,16 +5,23 @@ on:
   push:
     branches: ["mithun/azure-ad-conditional"]
 
-
 jobs:
-  configure-job:
+  conditional-job-1:
+    runs-on: ubuntu-latest
+    if: secrets.AADUSERNAME != null
+    steps:
+      - run: echo HELLO FROM CONDITIONAL JOB 1
+
+  conditional-job-2:
+    runs-on: ubuntu-latest
     env:
       AADUSERNAME: ${{ secrets.AADUSERNAME }}
+    if: env.AADUSERNAME != null
+    steps:
+      - run: echo HELLO FROM CONDITIONAL JOB 2
+
+  regular-job:
     runs-on: ubuntu-latest
     steps:
-      #
-      # section #1: setup the Azure AD app
-      #
-      - name: checkout code
+      - run: echo HELLO FROM CONDITIONAL STEP
         if: env.AADUSERNAME != null
-        uses: actions/checkout@v3
