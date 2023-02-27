@@ -34,6 +34,8 @@ jobs:
 
   regular-job-with-conditional-step:
     runs-on: ubuntu-latest
+    env:
+      AADUSERNAME: ${{ secrets.AADUSERNAME }}
     steps:
       - run: echo HELLO FROM CONDITIONAL STEP
         if: env.AADUSERNAME != null
