@@ -20,7 +20,7 @@ jobs:
     steps:
       - run: echo HELLO FROM CONDITIONAL JOB 2
 
-  regular-job:
+  regular-job-with-conditional-step:
     runs-on: ubuntu-latest
     steps:
       - run: echo HELLO FROM CONDITIONAL STEP
