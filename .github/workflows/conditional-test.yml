@@ -28,7 +28,7 @@ jobs:
   conditional-job-3:
     runs-on: ubuntu-latest
     # uncommenting below line will cause the workflow to fail with the error: "Unrecognized named-value: 'env'. Located at position 1 within expression: env.AADUSERNAME != null"  
-    if: env.MY_AADUSERNAME != null
+    # if: env.MY_AADUSERNAME != null
     steps:
       - run: echo HELLO FROM CONDITIONAL JOB 3
 
