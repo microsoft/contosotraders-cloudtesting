@@ -58,9 +58,6 @@ jobs:
       group: load-tests-carts-api
       cancel-in-progress: true
     steps:
-      #
-      # section #1: setup the Azure AD app
-      #
       - name: checkout code
         uses: actions/checkout@v3
       - name: azure login
@@ -245,7 +242,7 @@ jobs:
         with:
           inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
       #
-      # section #4: deploy the products api
+      # section #3: deploy the products api
       #
       - name: install helm
         uses: Azure/setup-helm@v3
@@ -407,7 +404,7 @@ jobs:
         with:
           inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
       #
-      # section #5: deploy the ui
+      # section #4: deploy the ui
       #
       - name: set REACT_APP_APIURLSHOPPINGCART
         run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
