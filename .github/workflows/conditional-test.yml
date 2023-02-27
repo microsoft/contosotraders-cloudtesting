@@ -8,7 +8,8 @@ on:
 jobs:
   conditional-job-1:
     runs-on: ubuntu-latest
-    if: secrets.AADUSERNAME != null
+    # uncommenting below line will cause the workflow to fail with the error: "Unrecognized named-value: 'secrets'. Located at position 1 within expression: secrets.AADUSERNAME != null"
+    # if: secrets.AADUSERNAME != null
     steps:
       - run: echo HELLO FROM CONDITIONAL JOB 1
 
