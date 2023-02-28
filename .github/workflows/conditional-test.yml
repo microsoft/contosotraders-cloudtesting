@@ -34,6 +34,7 @@ jobs:
 
   conditional-job-4:
     runs-on: ubuntu-latest
+    environment: staging
     if: vars.ENABLE_LOGIN == 'true'
     steps:
       - run: echo HELLO FROM CONDITIONAL JOB 4
