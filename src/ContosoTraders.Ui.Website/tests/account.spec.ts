@@ -61,4 +61,19 @@ test.skip('My profile', () => {
     });
 });
 
+test.describe('My cart', () => {
+    test('should be able to view cart page and select', async ({ browser }) => {
+        test.skip(process.env.AADUSERNAME === undefined || process.env.AADPASSWORD === undefined, 'AADUSERNAME and AADPASSWORD environment variables must be set');
+
+        // Use the saved signed-in state to set context
+        const loggedInContext = await browser.newContext({ storageState: 'storageState.json' });
+        const loggedInPage = await loggedInContext.newPage();
+        // Fill out the form
+        // await loggedInPage.goto('/cart');
+        await loggedInPage.getByRole('button', { name: 'show 17 new notifications' }).click();
+        await expect(loggedInPage).toHaveURL('/cart');
+        //await page.locator('div').filter({ hasText: 'My CartGrand Total:$112.00Place Order' }).getByRole('button', { name: 'Place Order' }).click();
+    });
+});
+
 
