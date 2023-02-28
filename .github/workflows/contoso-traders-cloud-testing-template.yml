@@ -53,7 +53,8 @@ jobs:
     outputs:
       azureAdAppClientId: ${{ steps.get-azureAdAppClientId.outputs.azureAdAppClientId }}
       azureAdAppObjId: ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }}
-    if: ${{ vars.ENABLE_LOGIN == true }}
+    # temporarily commented out
+    # if: ${{ vars.ENABLE_LOGIN == true }} 
     concurrency:
       group: load-tests-carts-api
       cancel-in-progress: true
