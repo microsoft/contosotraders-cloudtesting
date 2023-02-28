@@ -44,8 +44,8 @@ const CartService = {
         };
 
         const cartItems = {
-            "cartItemId": '2',
-            "email": detailProduct.email,
+            "cartItemId": '7',
+            "email": detailProduct.email.toLowerCase(),
             "productId": detailProduct.id,
             "name": detailProduct.name,
             "price": detailProduct.price,
@@ -77,26 +77,39 @@ const CartService = {
         return response.data[0];
     },
 
-    async updateQuantity(id, qty, token) {
+    async updateQuantity(detailProduct, qty, token) {
         await ConfigService.loadSettings();
 
         const product = {
-            id: id,
-            qty: qty
-        }
+            "cartItemId": detailProduct.cartItemId,
+            "email": detailProduct.email,
+            "productId": detailProduct.productId,
+            "name": detailProduct.name,
+            "price": detailProduct.price,
+            "imageUrl": detailProduct.imageUrl,
+            "quantity": qty,
+        };
 
-        const response = await axios.post(`${ConfigService._apiUrlShoppingCart}/shoppingcart/product`, product, ConfigService.HeadersConfig(token));
+        const response = await axios.put(`${ConfigService._apiUrlShoppingCart}/shoppingcart/product`, product, ConfigService.HeadersConfig(token));
         return response;
     },
 
-    async deleteProduct(id, token) {
+    async deleteProduct(detailProduct, token) {
         await ConfigService.loadSettings();
 
         let config = ConfigService.HeadersConfig(token);
         config.data = {
-            id: id,
+            // id: id,
+            "cartItemId": detailProduct.cartItemId,
+            "email": detailProduct.email,
+            "productId": detailProduct.productId,
+            "name": detailProduct.name,
+            "price": detailProduct.price,
+            "imageUrl": detailProduct.imageUrl,
+            "quantity": detailProduct.qty,
         }
-
+        // const product = {
+        // };
         const response = await axios.delete(`${ConfigService._apiUrlShoppingCart}/shoppingcart/product`, config);
         return response;
     }
