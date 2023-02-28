@@ -12,7 +12,7 @@ export default class QuantityPicker extends Component {
 //cartItemId
 
 componentDidUpdate(prevProps, prevState){
-  if(prevState.value != this.state.value){
+  if(prevState.value !== this.state.value){
     this.updateProductQty()
   }
 }

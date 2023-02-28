@@ -1,6 +1,5 @@
 import { Grid, TextField, InputAdornment, Button, Chip } from "@mui/material";
-import React, { useEffect } from "react";
-import productdetailimg from "../../assets/images/original/Contoso_Assets/product_page_assets/product_image_main.jpg";
+import React, { useCallback, useEffect } from "react";
 import QuantityPicker from "../detail/productcounter";
 import Breadcrumb from "../../components/breadcrumb";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -13,9 +12,21 @@ function Cart(props) {
   const [total, setTotal] = React.useState(0);
   const navigate = useNavigate();
 
+  const getCartItems = useCallback(async () => {
+    let items = await CartService.getShoppingCart(props.userInfo.token)
+    let sum = 0;
+    if(items.length > 0){
+      items.map((item) => {return (
+        sum += item.price * item.quantity
+      )})
+      setTotal(sum);
+    }
+    setCartItems(items)
+  },[props.userInfo.token])
+
   useEffect(() => {
     getCartItems()
-  }, []);
+  }, [getCartItems]);
 
   const location = useLocation();
   const currentCategory = location.pathname.split("/").pop().replaceAll('-', ' ');
@@ -24,17 +35,6 @@ function Cart(props) {
     textInput.current.value = ''
   }
 
-  const getCartItems = async () => {
-    let items = await CartService.getShoppingCart(props.userInfo.token)
-    let sum = 0;
-    if(items.length > 0){
-      items.map((item) => {
-        sum += item.price * item.quantity
-      })
-      setTotal(sum);
-    }
-    setCartItems(items)
-  }
 
   const removeFromCart = async(item) => {
     await CartService.deleteProduct(item, props.userInfo.token)
@@ -55,7 +55,7 @@ function Cart(props) {
       <hr />
 
       <div className="innerCart">
-        {cartItems.length == 0 &&
+        {cartItems.length === 0 &&
           <Grid container>
           <Grid item xs={12} container className="CartHeadings justify-content-center flex-column align-items-center">
             <h1 className="text-dark">Your Cart is empty</h1>
