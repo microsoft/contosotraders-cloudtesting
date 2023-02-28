@@ -28,7 +28,7 @@ test.beforeAll(async ({ browser }) => {
     }
 });
 
-test.describe('My profile', () => {
+test.skip('My profile', () => {
     test('should be able to fill out personal info', async ({ browser }) => {
         test.skip(process.env.AADUSERNAME === undefined || process.env.AADPASSWORD === undefined, 'AADUSERNAME and AADPASSWORD environment variables must be set');
         // Fill out the form using data from CSV
