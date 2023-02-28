@@ -42,7 +42,6 @@ env:
   UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
   UI_STORAGE_ACCOUNT_NAME: contosotradersui2
   USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
-  ENABLE_LOGIN: 'true'
 
 jobs:
   configure-azure-ad-app:
@@ -54,7 +53,7 @@ jobs:
     outputs:
       azureAdAppClientId: ${{ steps.get-azureAdAppClientId.outputs.azureAdAppClientId }}
       azureAdAppObjId: ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }}
-    if: ${{ env.ENABLE_LOGIN == 'true' }} 
+    if: ${{ vars.ENABLE_LOGIN == 'true' }}
     concurrency:
       group: load-tests-carts-api
       cancel-in-progress: true
@@ -413,7 +412,7 @@ jobs:
       - name: set REACT_APP_APIURL
         run: echo "REACT_APP_APIURL"="https://${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set REACT_APP_B2CCLIENTID
-        if: ${{ env.ENABLE_LOGIN == 'true' }}
+        if: ${{ vars.ENABLE_LOGIN == 'true' }}
         run: echo "REACT_APP_B2CCLIENTID"="${{ needs.configure-azure-ad-app.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
       - uses: actions/setup-node@v3
         with:
@@ -444,7 +443,7 @@ jobs:
         with:
           inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)
       - name: register auth callback (UI CDN)
-        if: ${{ env.ENABLE_LOGIN == 'true' }}
+        if: ${{ vars.ENABLE_LOGIN == 'true' }}
         uses: azure/CLI@v1
         with:
           inlineScript: |
