@@ -29,7 +29,7 @@ You will need following to get started:
   * `az ad sp create-for-rbac -n contosotraders-sp --role Owner --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.
   * Please make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.
 
-* Add the above Service Principal into the the [Application Administrator](https://learn.microsoft.com/en-us/azure/active-directory/roles/permissions-reference#application-administrator) active directory role.
+* [OPTIONAL] Add the above Service Principal into the the [Application Administrator](https://learn.microsoft.com/en-us/azure/active-directory/roles/permissions-reference#application-administrator) active directory role.
   * Go to the Azure portal, and navigate to the Azure Active Directory blade. Then click on the `Roles and Administrators` tab on the left.
   * Select the `Application Administrator` role, and click on the `Add assignments` button.
   * Select the service principal that you created in the previous step. Click on the `Add` button.
@@ -39,6 +39,7 @@ You will need following to get started:
 >
 > Notes:
 >
+> * The optional step above is only needed if you wish to enable login to the application. Else you can skip this step.
 > * Unfortunately, there is no AZ CLI, AZ PowerShell or Bicep template support to add a service principal to the `Application Administrator` role. You'll have to do this manually through the Azure portal.
 > * Note: In order for you to add the service principal to the `Application Administrator` role, you must yourself be a member of the `Global Administrator` role in Azure Active Directory.
 >
@@ -73,9 +74,10 @@ You will need following to get started:
 
 * Then, for each of these above environments, create this environment variable:
 
-  | Variable Name | Variable Value                                                                               |
-  | ------------- | -------------------------------------------------------------------------------------------- |
-  | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
+  | Variable Name  | Variable Value                                                                               | Mandatory Variable?                   |
+  | -------------- | -------------------------------------------------------------------------------------------- | ------------------------------------- |
+  | `SUFFIX`       | A unique environment suffix (max 6 characters, alphanumeric, lower case only). E.g. 'test51' | Yes                                   |
+  | `ENABLE_LOGIN` | `true` or `false`.                                                                           | No, only if you wish to enable login. |
 
 ## Deploy the Application
 
