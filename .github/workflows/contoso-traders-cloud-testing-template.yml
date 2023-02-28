@@ -44,23 +44,20 @@ env:
   USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
 
 jobs:
-  provision:
+  configure-azure-ad-app:
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ inputs.environmentName }}
-      url: https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+    environment: ${{ inputs.environmentName }}
+    env:
+      AADUSERNAME: ${{secrets.AADUSERNAME}}
+      AADPASSWORD: ${{secrets.AADPASSWORD}}
     outputs:
-      cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
-      productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
-      uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
       azureAdAppClientId: ${{ steps.get-azureAdAppClientId.outputs.azureAdAppClientId }}
+      azureAdAppObjId: ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }}
+    if: ${{ vars.ENABLE_LOGIN == true }}
     concurrency:
-      group: provision
+      group: load-tests-carts-api
       cancel-in-progress: true
     steps:
-      #
-      # section #1: setup the Azure AD app
-      #
       - name: checkout code
         uses: actions/checkout@v3
       - name: azure login
@@ -118,8 +115,32 @@ jobs:
               --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
               --api ${{ env.MSGRAPH_API_ID }} \
               --api-permissions ${{ env.MSGRAPH_API_PERMISSION_USER_READ }} ${{ env.MSGRAPH_API_PERMISSION_EMAIL }}
+
+  provision:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environmentName }}
+      url: https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+    env:
+      AADUSERNAME: ${{secrets.AADUSERNAME}}
+      AADPASSWORD: ${{secrets.AADPASSWORD}}
+    needs: [configure-azure-ad-app]
+    outputs:
+      cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
+      productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
+      uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+    concurrency:
+      group: provision
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
       #
-      # section #2: provisioning the resources on Azure using bicep templates
+      # section #1: provisioning the resources on Azure using bicep templates
       #
       # The first step is to create the resource group: `contoso-traders-rg`.
       # The below step can also be manually executed as follows:
@@ -197,7 +218,7 @@ jobs:
           resource-group: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
           cluster-name: ${{ env.AKS_CLUSTER_NAME }}${{ vars.SUFFIX }}
       #
-      # section #3: deploy the carts api
+      # section #2: deploy the carts api
       #
       - name: docker build
         run: docker build src -f ./src/ContosoTraders.Api.Carts/Dockerfile -t ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
@@ -221,7 +242,7 @@ jobs:
         with:
           inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
       #
-      # section #4: deploy the products api
+      # section #3: deploy the products api
       #
       - name: install helm
         uses: Azure/setup-helm@v3
@@ -383,14 +404,15 @@ jobs:
         with:
           inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
       #
-      # section #5: deploy the ui
+      # section #4: deploy the ui
       #
       - name: set REACT_APP_APIURLSHOPPINGCART
         run: echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set REACT_APP_APIURL
         run: echo "REACT_APP_APIURL"="https://${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
       - name: set REACT_APP_B2CCLIENTID
-        run: echo "REACT_APP_B2CCLIENTID"="${{ steps.get-azureAdAppClientId.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
+        if: ${{ vars.ENABLE_LOGIN == true }}
+        run: echo "REACT_APP_B2CCLIENTID"="${{ needs.configure-azure-ad-app.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -420,12 +442,13 @@ jobs:
         with:
           inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)
       - name: register auth callback (UI CDN)
+        if: ${{ vars.ENABLE_LOGIN == true }}
         uses: azure/CLI@v1
         with:
           inlineScript: |
             az rest \
               --method PATCH \
-              --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+              --uri https://graph.microsoft.com/v1.0/applications/${{ needs.configure-azure-ad-app.outputs.azureAdAppObjId }} \
               --headers 'Content-Type=application/json' \
               --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
 
