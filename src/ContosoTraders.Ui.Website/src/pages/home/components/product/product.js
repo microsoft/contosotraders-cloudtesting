@@ -63,7 +63,7 @@ export default function Product(props) {
         </Typography>
         <div style={{display:'flex',alignItems:'center',paddingTop:'10px'}}>
             <Typography variant="h6" color="initial" component="h6" style={{marginRight:'auto'}} className="productOrgPrice m-0 mr-1">
-                ${price?price.toFixed(2):'39.49'}
+                ${price?price.toFixed(2):'00.00'}
             </Typography>
             <Typography paragraph color="textSecondary" className="productOldPrice m-0 mr-1">
                 $78.46
