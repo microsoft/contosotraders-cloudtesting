@@ -4,10 +4,9 @@ import CustomizedAccordions from "./accordion";
 // import ImageSlider from "./imageslider";
 import QuantityPicker from "./productcounter";
 import add_to_bag_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/add_to_bag_icon.svg";
-import add_to_wishlist_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/add_to_wishlist_icon.svg";
+// import add_to_wishlist_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/add_to_wishlist_icon.svg";
 
 function ProductDetails(props) {
-  console.log('asdasd',props.detailProductData)
   const { name, price, imageUrl } = props.detailProductData;
   // const type = Object.assign({}, props.detailProductData.type);
   const { features } = props.detailProductData;
@@ -77,14 +76,14 @@ function ProductDetails(props) {
               Add To Bag
             </Button>
 
-            <Button
+            {/* <Button
               variant="outlined"
               color="primary"
               startIcon={<img src={add_to_wishlist_icon} alt=""/>}
               className="WishListButton"
             >
               Add to WishList
-            </Button>
+            </Button> */}
           </div>
           <div>
             <div>
