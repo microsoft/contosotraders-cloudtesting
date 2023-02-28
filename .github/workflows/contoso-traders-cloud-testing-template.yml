@@ -42,7 +42,7 @@ env:
   UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
   UI_STORAGE_ACCOUNT_NAME: contosotradersui2
   USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
-  ENABLE_LOGIN: true
+  ENABLE_LOGIN: 'true'
 
 jobs:
   configure-azure-ad-app:
