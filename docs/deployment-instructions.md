@@ -29,7 +29,7 @@ You will need following to get started:
   * `az ad sp create-for-rbac -n contosotraders-sp --role Owner --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.
   * Please make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.
 
-* [OPTIONAL] Add the above Service Principal into the the [Application Administrator](https://learn.microsoft.com/en-us/azure/active-directory/roles/permissions-reference#application-administrator) active directory role.
+* **[OPTIONAL]** Add the above Service Principal into the the [Application Administrator](https://learn.microsoft.com/en-us/azure/active-directory/roles/permissions-reference#application-administrator) active directory role.
   * Go to the Azure portal, and navigate to the Azure Active Directory blade. Then click on the `Roles and Administrators` tab on the left.
   * Select the `Application Administrator` role, and click on the `Add assignments` button.
   * Select the service principal that you created in the previous step. Click on the `Add` button.
@@ -68,16 +68,21 @@ You will need following to get started:
 
   The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
 
+* **[OPTIONAL]** Then create below repository variable. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab. Note that this is purely optional, and is only needed if you wish to enable login functionality in the application.
+
+  | Variable Name  | Variable Value     |
+  | -------------- | ------------------ |
+  | `ENABLE_LOGIN` | `true` or `false`. |
+
 * Then, create two [environments for deployment](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment). On your fork of the github repository, go to the `Settings` tab > `Environments` > Click on `New Environment` button and create the following two environments:
   * `staging`
   * `production` (optional)
 
 * Then, for each of these above environments, create this environment variable:
 
-  | Variable Name  | Variable Value                                                                               | Mandatory Variable?                   |
-  | -------------- | -------------------------------------------------------------------------------------------- | ------------------------------------- |
-  | `SUFFIX`       | A unique environment suffix (max 6 characters, alphanumeric, lower case only). E.g. 'test51' | Yes                                   |
-  | `ENABLE_LOGIN` | `true` or `false`.                                                                           | No, only if you wish to enable login. |
+  | Variable Name | Variable Value                                                                               |
+  | ------------- | -------------------------------------------------------------------------------------------- |
+  | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
 
 ## Deploy the Application
 
