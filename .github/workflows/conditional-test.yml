@@ -32,6 +32,13 @@ jobs:
     steps:
       - run: echo HELLO FROM CONDITIONAL JOB 3
 
+  conditional-job-4:
+    runs-on: ubuntu-latest
+    if: vars.ENABLE_LOGIN == 'true'
+    steps:
+      - run: echo HELLO FROM CONDITIONAL JOB 4
+
+
   regular-job-with-conditional-step:
     runs-on: ubuntu-latest
     env:
