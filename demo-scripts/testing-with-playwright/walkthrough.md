@@ -77,9 +77,9 @@ In order to test authentication, we can configure AAD, then run tests to log in 
 
 7. To run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) in GitHub Actions, add the credentials to 2 GitHub secrets: AADUSERNAME and AADPASSWORD
 
-This test has a beforeAll hook that will log in to the app, then the test case uses the logged in state to fill out the personal info form.
+   This test has a beforeAll hook that will log in to the app, then the test case uses the logged in state to fill out the personal info form.
 
-* [Playwright Authentication Documentation](https://playwright.dev/docs/auth)
+8. Read the [Playwright Authentication Documentation](https://playwright.dev/docs/auth)
 
 > Tests written with Playwright execute in isolated clean-slate environments called browser contexts. This isolation model improves reproducibility and prevents cascading test failures. New browser contexts can load existing authentication state. This eliminates the need to login in every context and speeds up test execution.
 
