@@ -69,17 +69,22 @@ In order to test authentication, we can configure AAD, then run tests to log in 
    | -------------- | -------------- |
    | `ENABLE_LOGIN` | `true`         |
 
-4. Re-run the github workflow `contoso-traders-cloud-testing`. This will configure the Azure AD to enable login functionality in the app.
+4. Create a test account (MFA disabled).
 
-5. Create a test account (MFA disabled).
+5. To run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) in GitHub Actions, add the test account credentials as github environment-level variables.
 
-6. To run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) locally, set the credentials as 2 environment variables: AADUSERNAME and AADPASSWORD
+   | Variable Name | Variable Value               |
+   | ------------- | ---------------------------- |
+   | `AADUSERNAME` | username of the test account |
+   | `AADPASSWORD` | password of the test account |
 
-7. To run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) in GitHub Actions, add the credentials to 2 GitHub secrets: AADUSERNAME and AADPASSWORD
+   > If you wish to run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) locally, set the credentials as 2 environment variables: AADUSERNAME and AADPASSWORD
+
+6. Re-run the github workflow `contoso-traders-cloud-testing`. This will configure the Azure AD to enable login functionality in the app.
 
    This test has a beforeAll hook that will log in to the app, then the test case uses the logged in state to fill out the personal info form.
 
-8. Read the [Playwright Authentication Documentation](https://playwright.dev/docs/auth)
+7. Read the [Playwright Authentication Documentation](https://playwright.dev/docs/auth)
 
 > Tests written with Playwright execute in isolated clean-slate environments called browser contexts. This isolation model improves reproducibility and prevents cascading test failures. New browser contexts can load existing authentication state. This eliminates the need to login in every context and speeds up test execution.
 
