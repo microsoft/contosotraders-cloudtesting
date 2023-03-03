@@ -25,6 +25,7 @@ internal class CartService : ContosoTradersServiceBase, ICartService
     public async Task AddItemToCartAsync(CartDto cartItemDto, CancellationToken cancellationToken = default)
     {
         var cartItemDao = Mapper.Map<CartDao>(cartItemDto);
+        cartItemDao.id = Guid.NewGuid().ToString();
 
         await _cartRepository.AddAsync(cartItemDao.Email, cartItemDao, cancellationToken);
     }
