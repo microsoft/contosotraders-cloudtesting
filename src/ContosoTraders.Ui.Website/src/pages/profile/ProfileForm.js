@@ -8,14 +8,14 @@ import {
 } from "@mui/material";
 import NavigateNext from "@mui/icons-material/NavigateNext";
 import PersonalInformation from "./PersonalInformation";
-import MyWishlist from "./MyWishlist";
-import MyOrders from "./MyOrders";
-import MyAddressBook from "./MyAddressBook";
+// import MyWishlist from "./MyWishlist";
+// import MyOrders from "./MyOrders";
+// import MyAddressBook from "./MyAddressBook";
 import logout_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/logout_icon.svg";
 import personal_information_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/personal_information_icon.svg";
-import my_wishlist_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_wishlist_icon.svg";
-import my_address_book_icons from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_address_book_icons.svg";
-import my_orders_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_orders_icon.svg";
+// import my_wishlist_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_wishlist_icon.svg";
+// import my_address_book_icons from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_address_book_icons.svg";
+// import my_orders_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_orders_icon.svg";
 import Breadcrump from "../../components/breadcrumb";
 import AuthB2CService from "../../services/authB2CService";
 
@@ -71,7 +71,7 @@ const FormProfile = (props) => {
                 </div>
               </div>
 
-              <div
+              {/* <div
                 className={`${
                   activeState === "orders"
                     ? "sidebar-item active"
@@ -88,9 +88,9 @@ const FormProfile = (props) => {
                 <div className="item-arrow">
                   <NavigateNext className="sidebarnavIcons" />
                 </div>
-              </div>
+              </div> */}
 
-              <div
+              {/* <div
                 className={`${
                   activeState === "wishlist"
                     ? "sidebar-item active"
@@ -107,9 +107,9 @@ const FormProfile = (props) => {
                 <div className="item-arrow">
                   <NavigateNext className="sidebarnavIcons" />
                 </div>
-              </div>
+              </div> */}
 
-              <div
+              {/* <div
                 className={`${
                   activeState === "address"
                     ? "sidebar-item active"
@@ -126,14 +126,14 @@ const FormProfile = (props) => {
                 <div className="item-arrow">
                   <NavigateNext className="sidebarnavIcons" />
                 </div>
-              </div>
+              </div> */}
             </div>
           </Grid>
           <Grid item xs={9} container>
             {activeState === "personal" ?  <PersonalInformation/> : null}
-            {activeState === "orders" ?  <MyOrders/> : null}
+            {/* {activeState === "orders" ?  <MyOrders/> : null}
             {activeState === "wishlist" ?  <MyWishlist/> : null}
-            {activeState === "address" ?  <MyAddressBook/> : null}
+            {activeState === "address" ?  <MyAddressBook/> : null} */}
           </Grid>
         </Grid>
       </div>
