@@ -48,6 +48,10 @@ Specifically, here's what happens behind the scenes:
 
 ## Walkthrough: Modify the previously created Load Test
 
+1. In the Azure portal, navigate to the Azure Load Testing instance (in the `contoso-traders-rg` resource group) that we created in the [previous demo](./walkthrough.md).
+
+2. 
+
 ## Walkthrough: Run the Load Test
 
 ## Walkthrough: GitHub workflow for load testing private endpoints
