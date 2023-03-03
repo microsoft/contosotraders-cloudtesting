@@ -36,11 +36,11 @@ test.describe('My Profile', () => {
 
 test.describe('My Cart', () => {
     test('should be able to view cart', async ({ page }) => {
-        await page.goto('');        
+        await page.goto('');
         await page.getByRole('button', { name: 'cart' }).click();
         await expect(page).toHaveURL('/cart');
         await expect(page.getByRole('heading', { name: 'My Cart' })).toBeTruthy();
-    });    
+    });
 });
 
 
