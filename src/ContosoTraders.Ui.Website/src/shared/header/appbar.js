@@ -395,7 +395,7 @@ function TopAppBar(props) {
             >
               <img src={ProfileIcon} alt="iconimage" />
             </IconButton>
-            <IconButton className='iconButton' aria-label="show 17 new notifications" color="inherit" onClick={()=>redirectUrl('/cart')} >
+            <IconButton className='iconButton' aria-label="cart" color="inherit" onClick={()=>redirectUrl('/cart')} >
               <Badge badgeContent={1} color="secondary" overlap="rectangular">
                 <img src={BagIcon} alt="iconimage" />
               </Badge>
