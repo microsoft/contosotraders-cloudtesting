@@ -44,21 +44,52 @@ You can install the Playwright extension for VSCode from the marketplace ([LINK]
 
 ## Testing with Azure AD
 
-In order to test authentication, we can configure AAD, then run tests to log in to a Contoso Traders account.
+In order to test authentication, we can configure AAD, then run tests to log in to a Contoso Traders account. The specific steps are:
 
->Tests written with Playwright execute in isolated clean-slate environments called browser contexts. This isolation model improves reproducibility and prevents cascading test failures. New browser contexts can load existing authentication state. This eliminates the need to login in every context and speeds up test execution.
+1. Identify the Service Principal details created in the [deployment instructions](../../docs/deployment-instructions.md).
 
-1. Add the AAD identity provider to your web app.
-1. Create a test account (MFA disabled).
-1. To run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) locally, set the credentials as 2 environment variables: AADUSERNAME and AADPASSWORD
-1. To run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) in GitHub Actions, add the credentials to 2 GitHub secrets: AADUSERNAME and AADPASSWORD
+2. Add the above Service Principal into the the [Application Administrator](https://learn.microsoft.com/en-us/azure/active-directory/roles/permissions-reference#application-administrator) active directory role.
 
-This test has a beforeAll hook that will log in to the app, then the test case uses the logged in state to fill out the personal info form.
+   1. Go to the Azure portal, and navigate to the Azure Active Directory blade. Then click on the `Roles and Administrators` tab on the left.
+   2. Select the `Application Administrator` role, and click on the `Add assignments` button.
+   3. Select the service principal that you created in the previous step. Click on the `Add` button.
 
-- [Playwright Authentication Documentation](https://playwright.dev/docs/auth)
+   ![Application Administrator](../../docs/images/ad-application-administrator.png)
+
+   >
+   > Notes:
+   >
+   > * Unfortunately, there is no AZ CLI, AZ PowerShell or Bicep template support to add a service principal to the `Application Administrator` role. You'll have to do this manually through the Azure portal.
+   > * Note: In order for you to add the service principal to the `Application Administrator` role, you must yourself be a member of the `Global Administrator` role in Azure Active Directory.
+   >
+
+3. Then, in your github fork, create a repository variable. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab.
+
+   | Variable Name  | Variable Value |
+   | -------------- | -------------- |
+   | `ENABLE_LOGIN` | `true`         |
+
+4. Create a test account (MFA disabled).
+
+5. To run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) in GitHub Actions, add the test account credentials as github environment-level variables.
+
+   | Variable Name | Variable Value               |
+   | ------------- | ---------------------------- |
+   | `AADUSERNAME` | username of the test account |
+   | `AADPASSWORD` | password of the test account |
+
+   > If you wish to run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) locally, set the credentials as 2 environment variables: AADUSERNAME and AADPASSWORD
+
+6. Re-run the github workflow `contoso-traders-cloud-testing`. This will configure the Azure AD to enable login functionality in the app.
+
+   This test has a beforeAll hook that will log in to the app, then the test case uses the logged in state to fill out the personal info form.
+
+7. Read the [Playwright Authentication Documentation](https://playwright.dev/docs/auth)
+
+> Tests written with Playwright execute in isolated clean-slate environments called browser contexts. This isolation model improves reproducibility and prevents cascading test failures. New browser contexts can load existing authentication state. This eliminates the need to login in every context and speeds up test execution.
 
 ## More Information
 
-- [Playwright Documentation](https://playwright.dev/)
-- [Using the Playwright VSCode Extension](https://playwright.dev/docs/getting-started-vscode)
-- [VSCode Debugging](https://code.visualstudio.com/docs/editor/debugging)
+* [Playwright Documentation](https://playwright.dev/)
+* [Using the Playwright VSCode Extension](https://playwright.dev/docs/getting-started-vscode)
+* [VSCode Debugging](https://code.visualstudio.com/docs/editor/debugging)

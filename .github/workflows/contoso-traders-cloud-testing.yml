@@ -14,6 +14,7 @@ jobs:
     secrets: inherit
     with:
       environmentName: staging
+      configureAzureAD: ${{ vars.ENABLE_LOGIN == 'true' }}
 
   production:
     needs: staging
@@ -21,3 +22,4 @@ jobs:
     secrets: inherit
     with:
       environmentName: production
+      configureAzureAD: ${{ vars.ENABLE_LOGIN == 'true' }}
