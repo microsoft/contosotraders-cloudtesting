@@ -28,7 +28,7 @@ import AuthB2CService from '../../services/authB2CService';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 // import Alert from "react-s-alert";
-
+import personal_information_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/personal_information_icon.svg";
 import logout_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/logout_icon.svg";
 // import delete_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/delete_icon.svg";
 import { ProductService } from '../../services';
@@ -255,14 +255,14 @@ function TopAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {/* <StyledMenuItem onClick={() => redirectUrl('/profile/personal')}>
+      <StyledMenuItem onClick={() => redirectUrl('/profile/personal')}>
         <ListItemIcon>
           <img src={personal_information_icon} alt=""/>
         </ListItemIcon>
         <ListItemText primary="Personal Information" />
         <ListItemIcon className='justify-content-end'></ListItemIcon>
       </StyledMenuItem>
-      <StyledMenuItem onClick={() => redirectUrl('/profile/orders')}>
+      {/* <StyledMenuItem onClick={() => redirectUrl('/profile/orders')}>
         <ListItemIcon>
           <img src={my_orders_icon} alt=""/>
         </ListItemIcon>
@@ -395,7 +395,7 @@ function TopAppBar(props) {
             >
               <img src={ProfileIcon} alt="iconimage" />
             </IconButton>
-            <IconButton className='iconButton' aria-label="show 17 new notifications" color="inherit" onClick={()=>redirectUrl('/cart')} >
+            <IconButton className='iconButton' aria-label="cart" color="inherit" onClick={()=>redirectUrl('/cart')} >
               <Badge badgeContent={1} color="secondary" overlap="rectangular">
                 <img src={BagIcon} alt="iconimage" />
               </Badge>

@@ -692,7 +692,7 @@ jobs:
   #           ]
 
   playwright-tests-ui:
-    name: "playwright-tests: ${{ matrix.project }} (${{ matrix.shardIndex }}/${{ matrix.shardTotal }})"
+    name: "playwright-tests"
     needs: [provision]
     timeout-minutes: 20
     runs-on: ubuntu-latest
@@ -700,12 +700,6 @@ jobs:
     if: ${{ inputs.environmentName == 'staging' }}
     container:
       image: mcr.microsoft.com/playwright:v1.30.0-focal
-    strategy:
-      fail-fast: false
-      matrix:
-        project: [chromium, firefox]
-        shardIndex: [1, 2, 3]
-        shardTotal: [3]
     defaults:
       run:
         working-directory: src/ContosoTraders.Ui.Website
@@ -728,11 +722,11 @@ jobs:
       - name: install dependencies
         run: npm ci
       - name: run playwright tests
-        run: HOME=/root npx playwright test --project=${{ matrix.project }} --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        run: HOME=/root npx playwright test
       - name: upload playwright report
         uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report-${{ matrix.project }}-${{ matrix.shardIndex }}
+          name: playwright-report
           path: src/ContosoTraders.Ui.Website/playwright-report/
           retention-days: 30

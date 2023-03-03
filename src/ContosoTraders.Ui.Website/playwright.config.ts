@@ -47,8 +47,21 @@ const config: PlaywrightTestConfig = {
     video: 'on-first-retry',
   },
 
-  /* Configure projects for major browsers */
   projects: [
+    // Setup project
+    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    // Test project that requires authentication
+    {
+      name: 'authenticated',
+      testMatch: /.account\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        // Use prepared auth state.
+        storageState: '.auth/user.json',
+      },
+      dependencies: ['setup'],
+    },
+    // Test projects that don't require authentication
     {
       name: 'chromium',
       use: {
@@ -62,15 +75,6 @@ const config: PlaywrightTestConfig = {
       },
     }
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   // port: 3000,
-  //   url: process.env.BaseUrlForPlaywrightTesting || 'http://localhost:3000/',
-  //   timeout: 120 * 1000,
-  //   reuseExistingServer: !process.env.CI,
-  // },
 };
 
 module.exports = config;
