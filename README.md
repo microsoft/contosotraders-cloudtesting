@@ -6,7 +6,7 @@ Source code, deployment templates, and demo scripts for exploring Microsoft Play
 
 ## Documentation and Resources
 
-* Application Links: [UI](https://cloudtesting.contosotraders.com/) | [Carts API](https://contoso-traders-cartsctprod.politebay-207fb230.eastus.azurecontainerapps.io/swagger) | [Products API](https://contoso-traders-productsctprod.eastus.cloudapp.azure.com/swagger/)
+* Application Links: [UI](https://cloudtesting.contosotraders.com/) | [Carts API](https://contoso-traders-cartsctstg.livelygrass-74d6f26a.eastus.azurecontainerapps.io/swagger/index.html) | [Products API](https://contoso-traders-productsctstg.eastus.cloudapp.azure.com/swagger/index.html)
 * [Deployment Instructions](./docs/deployment-instructions.md) | [Running Locally](./docs/running-locally.md)
 
 ## Demo Scripts
@@ -38,7 +38,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 ## Trademarks
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
-trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
 
