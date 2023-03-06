@@ -48,9 +48,29 @@ Specifically, here's what happens behind the scenes:
 
 ## Walkthrough: Modify the previously created Load Test
 
-## Walkthrough: Run the Load Test
+1. In the Azure portal, navigate to the Azure Load Testing instance (in the `contoso-traders-rg` resource group) that we created in the [previous demo](./walkthrough.md).
 
-## Walkthrough: GitHub workflow for load testing private endpoints
+2. Now click on `Configure` > `Tests`.
+
+   ![Load Test Private Endpoint](./media/load-test-private-endpoint-1.png)
+
+3. Navigate to the `Parameters` tab in the Edit Test blade. Modify the `domain` value to point to the `Carts API`'s private endpoint. You can use the `<ACA url>` you noted down earlier (note: please remove the `https://` prefix).
+
+   ![Load Test Private Endpoint](./media/load-test-private-endpoint-2.png)
+
+4. Navigate to the `Load` tab. Change `Configure test traffic mode` to `private`. Also, specify the VNET and subnet details: `contoso-traders-vnet{SUFFIX}` and `subnet-loadtest` respectively.
+
+   ![Load Test Private Endpoint](./media/load-test-private-endpoint-3.png)
+
+5. Click apply to save the changes.
+
+6. Now, click `Run` to start the load test against the private endpoint.
+
+   ![Load Test Private Endpoint](./media/load-test-private-endpoint-4.png)
+
+7. Behind the scenes, the Azure load testing service will inject the testing infrastructure into the specified VNET. The load test will successfully run to completion after that.
+
+   ![Load Test Private Endpoint](./media/load-test-private-endpoint-5.png)
 
 ## Summary
 
