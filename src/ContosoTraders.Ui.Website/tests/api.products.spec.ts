@@ -1,12 +1,7 @@
 import { test, expect } from '@playwright/test';
 let _productid = 1;
 
-test.beforeEach(async ({ page }) => {
-  await page.goto('/');
-})
-
-// Test all the APIs in the application
-test.describe('APIs', () => {
+test.describe('Products API', () => {
   // Text search API
   test('should be able to load search by text data', async ({ request }) => {
     const response = await request.get(`${process.env.REACT_APP_APIURL}/Products/search/laptops`);
@@ -34,5 +29,4 @@ test.describe('APIs', () => {
     expect(response.status()).toBe(200);
     expect(response.ok()).toBeTruthy();
   });
-
 });
