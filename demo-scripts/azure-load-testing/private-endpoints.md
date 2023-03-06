@@ -62,7 +62,15 @@ Specifically, here's what happens behind the scenes:
 
    ![Load Test Private Endpoint](./media/load-test-private-endpoint-3.png)
 
-## Walkthrough: GitHub workflow for load testing private endpoints
+5. Click apply to save the changes.
+
+6. Now, click `Run` to start the load test against the private endpoint.
+
+   ![Load Test Private Endpoint](./media/load-test-private-endpoint-4.png)
+
+7. Behind the scenes, the Azure load testing service will inject the testing infrastructure into the specified VNET. The load test will successfully run to completion after that.
+
+   ![Load Test Private Endpoint](./media/load-test-private-endpoint-5.png)
 
 ## Summary
 
