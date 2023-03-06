@@ -71,14 +71,14 @@ In order to test authentication, we can configure AAD, then run tests to log in 
 
 4. Create a test account (MFA disabled).
 
-5. To run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) in GitHub Actions, add the test account credentials as github environment-level variables.
+5. To run the [example test](../../src/ContosoTraders.Ui.Website/tests/account.ts) in GitHub Actions, add the test account credentials as github environment-level variables.
 
    | Variable Name | Variable Value               |
    | ------------- | ---------------------------- |
    | `AADUSERNAME` | username of the test account |
    | `AADPASSWORD` | password of the test account |
 
-   > If you wish to run the [example test](..\..\src\ContosoTraders.Ui.Website\tests\account.spec.ts) locally, set the credentials as 2 environment variables: AADUSERNAME and AADPASSWORD
+   > If you wish to run the [example test](../../src/ContosoTraders.Ui.Website/tests/account.ts) locally, set the credentials as 2 environment variables: AADUSERNAME and AADPASSWORD
 
 6. Re-run the github workflow `contoso-traders-cloud-testing`. This will configure the Azure AD to enable login functionality in the app.
 
