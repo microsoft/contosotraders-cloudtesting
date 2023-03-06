@@ -1,11 +1,6 @@
 import { test, expect } from '@playwright/test';
 let _productid = 1;
 
-test.beforeEach(async ({ page }) => {
-  await page.goto('/');
-})
-
-// Test all the APIs in the application
 test.describe('APIs', () => {
   // Text search API
   test('should be able to load search by text data', async ({ request }) => {

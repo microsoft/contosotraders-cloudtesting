@@ -1,12 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-})
-
-// Test all the APIs in the application
 test.describe('API data Assertions - category', () => {
-
     // Filter products by category - Controller and then assert category
     test('should be able to filter products by category - Controllers and then assert category', async ({ request }) => {
         const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=controllers`);
@@ -114,7 +108,6 @@ test.describe('API data Assertions - category', () => {
 });
 
 test.describe('API data Assertions - count', () => {
-
     // Initialize total no of each product
     let total_no_of_controllers = 0;
     let total_no_of_desktops = 0;
