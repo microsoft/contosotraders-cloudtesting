@@ -1,5 +1,4 @@
 import React from 'react';
-import { withStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,11 +13,7 @@ import controllersImg from '../../assets/images/original/Contoso_Assets/Mega_men
 import desktopsImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/desktops_icon.svg';
 import mobilesImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/mobiles_icon.svg';
 import monitorImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/monitor_icon.svg';
-const StyledMenu = withStyles({
-  paper: {
-    border: '1px solid #d3d4d5',
-  },
-})((props) => (
+const StyledMenu = ((props) => (
   <Menu
     elevation={0}
     getcontentanchorel={null}
@@ -34,19 +29,7 @@ const StyledMenu = withStyles({
   />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    '&:focus': {
-      backgroundColor: '#fff',
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: '#000',
-      },
-    },
-    '&:hover' : {
-      backgroundColor: '#f8f8f8'
-    }
-  },
-}))(MenuItem);
+const StyledMenuItem = (MenuItem);
 
 export default function CustomizedMenus() {
   const history  = useNavigate();

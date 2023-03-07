@@ -1,10 +1,6 @@
 import React ,{ useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { alpha } from '@mui/material/styles';
-import withStyles from '@mui/styles/withStyles';
-import { makeStyles } from '@mui/styles';
-import { createTheme } from '@mui/material';
 import {AppBar, InputAdornment, TextField, Button } from '@mui/material';
 //#region Uncomment below lines to run dark mode tests
 // import {FormGroup, FormControlLabel, Switch } from '@mui/material';
@@ -17,7 +13,6 @@ import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import Logo from '../../assets/images/logo-horizontal.svg';
 import SearchIconNew from '../../assets/images/original/Contoso_Assets/Icons/image_search_icon.svg'
 import ProfileIcon from '../../assets/images/original/Contoso_Assets/Icons/profile_icon.svg'
@@ -33,80 +28,8 @@ import logout_icon from "../../assets/images/original/Contoso_Assets/profile_pag
 // import delete_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/delete_icon.svg";
 import { ProductService } from '../../services';
 
-const theme = createTheme()
-const useStyles = makeStyles(() => ({
-  grow: {
-    flexGrow: 1,
-  },
-  appbar : {
-    backgroundColor:'red'
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 50,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: 50,
-      width: '50%',
-      maxWidth: '650px',
-      maxHeight: '48px'
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-}));
-const StyledMenu = withStyles({
-  paper: {
-    border: '1px solid #d3d4d5',
-  },
-})((props) => (
+
+const StyledMenu = ((props) => (
   <Menu
     elevation={0}
     getcontentanchorel={null}
@@ -122,21 +45,8 @@ const StyledMenu = withStyles({
   />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    '&:focus': {
-      backgroundColor: '#fff',
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: '#000',
-      },
-    },
-    '&:hover' : {
-      backgroundColor: '#f8f8f8'
-    }
-  },
-}))(MenuItem);
+const StyledMenuItem = (MenuItem);
 function TopAppBar(props) {
-  const classes = useStyles();
   const history = useNavigate();
   const searchRef = useRef();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -178,9 +88,9 @@ function TopAppBar(props) {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+  // const handleMobileMenuOpen = (event) => {
+  //   setMobileMoreAnchorEl(event.currentTarget);
+  // };
 
   const { loggedIn } = props.userInfo;
 
@@ -339,7 +249,7 @@ function TopAppBar(props) {
   );
 
   return (
-    <div className={classes.grow}>
+    <div style={{flexGrow:1}}>
       <AppBar color='inherit' className='appbar box-shadow-0' position="static">
         <Toolbar className='p-0'>
           <div className='headerLogo'>
@@ -347,7 +257,7 @@ function TopAppBar(props) {
                 <img src={Logo} alt=""/>
             </Link>
           </div>
-          <div className={`${classes.search} searchBar`} id="searchbox">
+          <div className={`searchBar`} id="searchbox">
             <TextField
                 // label="Search by product name or search by image"
                 placeholder='Search by product name or search by image'
@@ -377,8 +287,8 @@ function TopAppBar(props) {
             </div>
             :null}
           </div>
-          <div className={classes.grow} />
-          {loggedIn && loggedIn ? <div className={classes.sectionDesktop}>
+          <div style={{flexGrow:1}} />
+          {loggedIn && loggedIn ? <div className={`sectionDesktop`}>
             {/* <IconButton className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={()=>redirectUrl('/wishlist')}>
               <Badge badgeContent={0} color="secondary" overlap="rectangular">
                 <img src={WishlistIcon} alt="iconimage" />
@@ -411,7 +321,7 @@ function TopAppBar(props) {
             <FormControlLabel labelPlacement="start" control={<Switch aria-label='theme change' id="theme" color="primary" onChange={(e) => props.handleThemeChange(e.target.checked)}/>} label="Dark Mode" />
           </FormGroup> */}
           {/* #endregion */}
-          <div className={classes.sectionMobile}>
+          {/* <div className={`sectionMobile`}>
             <IconButton
               aria-label="show more"
               aria-controls={mobileMenuId}
@@ -421,7 +331,7 @@ function TopAppBar(props) {
             >
               <MoreIcon />
             </IconButton>
-          </div>
+          </div> */}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

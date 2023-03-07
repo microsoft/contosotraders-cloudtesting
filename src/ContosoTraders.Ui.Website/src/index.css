@@ -223,6 +223,20 @@ body {
   padding-right: 70px;
   padding-top: 31px;
 }
+.appbar .searchBar {
+  width: 41%;
+  position: relative;
+  margin-left: 50px;
+  margin-right: 16px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.appbar .sectionDesktop{
+  display: flex;
+}
+.appbar .sectionMobile{
+  display: flex;
+}
 .appbar .searchBar input{
   font-family: 'Roboto' !important;
   font-size: 14px !important;

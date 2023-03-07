@@ -11,8 +11,6 @@ import {
   FormControl,
   TextField,
 } from "@mui/material";
-import { makeStyles } from '@mui/styles';
-import { createTheme } from "@mui/material";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
@@ -20,7 +18,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useFormik } from "formik";
 import * as yup from "yup";
 
-const theme = createTheme()
 
 const validationSchema = yup.object({
   email: yup
@@ -57,24 +54,9 @@ const validationSchema = yup.object({
     .positive("Invalid Number")
     .required("Mobile is required"),
 });
-const useStyles = makeStyles(() => ({
-  root: {
-    display: "flex",
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  large: {
-    height: "80px",
-    width: "80px",
-  },
-  input: {
-    display: "none",
-  },
-}));
+
 
 const MyOrders = () => {
-  const classes = useStyles();
   const [values, setValues] = React.useState({
     password: "",
     showPassword: false,
@@ -137,13 +119,13 @@ const MyOrders = () => {
                 <Avatar
                   alt="Remy Sharp"
                   src={mydata.imagePreview}
-                  className={classes.large}
+                  style={{height:'80px',width:'80px'}}
                 />
               </div>
               <div className="img-btn-div">
                 <input
                   accept="image/*"
-                  className={classes.input}
+                  style={{display:'none'}}
                   id="contained-button-file"
                   multiple
                   type="file"
