@@ -190,7 +190,7 @@ jobs:
               --ids $(az vmss list -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --query "[0].id" -o tsv) \
       # Seed the DBs and storage accounts
       - name: seed products db
-        uses: azure/sql-action@v2
+        uses: azure/sql-action@v2.1
         with:
           connection-string: Server=tcp:${{ env.PRODUCTS_DB_SERVER_NAME }}${{ vars.SUFFIX }}.database.windows.net,1433;Initial Catalog=${{ env.PRODUCTS_DB_NAME }};Persist Security Info=False;User ID=${{ env.PRODUCTS_DB_USER_NAME }};Password=${{ secrets.SQL_PASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
           path: ./src/ContosoTraders.Api.Products/Migration/productsdb.sql
@@ -473,7 +473,7 @@ jobs:
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
       - name: load test (carts API)
-        uses: Azure/load-testing@v1.1.11
+        uses: Azure/load-testing@v1.1.13
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./loadtests/contoso-traders-carts.yaml
@@ -541,7 +541,7 @@ jobs:
         env:
           LOAD_TEST_SUBNET_ID: ${{ steps.get-vnetAcaSubnetId.outputs.vnetAcaSubnetId }}
       - name: load test (carts internal API)
-        uses: Azure/load-testing@v1.1.11
+        uses: Azure/load-testing@v1.1.13
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./loadtests/contoso-traders-carts-internal.yaml
@@ -591,7 +591,7 @@ jobs:
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
       - name: load test (products API)
-        uses: Azure/load-testing@v1.1.11
+        uses: Azure/load-testing@v1.1.13
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
@@ -657,7 +657,7 @@ jobs:
   #       run: sleep 30s
   #       shell: bash
   #     - name: load test (products API)
-  #       uses: Azure/load-testing@v1.1.11
+  #       uses: Azure/load-testing@v1.1.13
   #       with:
   #         # Path of the YAML file. Should be fully qualified path or relative to the default working directory
   #         loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
