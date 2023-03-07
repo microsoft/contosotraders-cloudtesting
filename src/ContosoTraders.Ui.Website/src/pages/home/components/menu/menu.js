@@ -1,17 +1,10 @@
 import React from 'react';
-import { makeStyles } from '@mui/styles';
 import Paper from '@mui/material/Paper';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-});
 
 const Menu = () => {
-  const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -19,7 +12,7 @@ const Menu = () => {
   };
 
   return (
-    <Paper className={classes.root}>
+    <Paper style={{flexGrow:1}}>
       <Tabs
         value={value}
         onChange={handleChange}
