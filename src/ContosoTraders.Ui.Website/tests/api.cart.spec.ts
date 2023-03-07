@@ -56,7 +56,7 @@ test.afterAll(async ({ request }) => {
     await expect(cart.status()).toBe(200);
 
     // Loop through each cart item and delete it
-    const cartBody = JSON.parse(await cart.text());   
+    const cartBody = JSON.parse(await cart.text());
     for (let i = 0; i < cartBody.length; i++) {
         const deleteCart = await request.delete(`${process.env.REACT_APP_APIURLSHOPPINGCART}/ShoppingCart/product`, {
             data: {
