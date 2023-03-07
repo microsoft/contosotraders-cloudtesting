@@ -4,8 +4,7 @@ test.describe('API data Assertions - category', () => {
     // Filter products by category - Controller and then assert category
     test('should be able to filter products by category - Controllers and then assert category', async ({ request }) => {
         const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=controllers`);
-        expect(response.status()).toBe(200);
-        expect(response.ok()).toBeTruthy();
+        await expect(response.ok()).toBeTruthy();
 
         let productsFromResponse = await response.body().then(content => {
             let data = JSON.parse(content.toString());
@@ -25,8 +24,7 @@ test.describe('API data Assertions - category', () => {
     // Filter products by category - Desktops and then assert category
     test('should be able to filter products by category - Desktops and then assert category', async ({ request }) => {
         const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=desktops`);
-        expect(response.status()).toBe(200);
-        expect(response.ok()).toBeTruthy();
+        await expect(response.ok()).toBeTruthy();
 
         let productsFromResponse = await response.body().then(content => {
             let data = JSON.parse(content.toString());
@@ -46,8 +44,7 @@ test.describe('API data Assertions - category', () => {
     // Filter products by category - Laptops and then assert category
     test('should be able to filter products by category - Laptops and then assert category', async ({ request }) => {
         const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=laptops`);
-        expect(response.status()).toBe(200);
-        expect(response.ok()).toBeTruthy();
+        await expect(response.ok()).toBeTruthy();
 
         let productsFromResponse = await response.body().then(content => {
             let data = JSON.parse(content.toString());
@@ -67,8 +64,7 @@ test.describe('API data Assertions - category', () => {
     // Filter products by category - Mobiles and then assert category
     test('should be able to filter products by category - Mobiles and then assert category', async ({ request }) => {
         const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=mobiles`);
-        expect(response.status()).toBe(200);
-        expect(response.ok()).toBeTruthy();
+        await expect(response.ok()).toBeTruthy();
 
         let productsFromResponse = await response.body().then(content => {
             let data = JSON.parse(content.toString());
@@ -88,8 +84,7 @@ test.describe('API data Assertions - category', () => {
     // Filter products by category - Monitors and then assert category
     test('should be able to filter products by category - Monitors and then assert category', async ({ request }) => {
         const response = await request.get(`${process.env.REACT_APP_APIURL}/products/?type=monitors`);
-        expect(response.status()).toBe(200);
-        expect(response.ok()).toBeTruthy();
+        await expect(response.ok()).toBeTruthy();
 
         let productsFromResponse = await response.body().then(content => {
             let data = JSON.parse(content.toString());
@@ -118,8 +113,7 @@ test.describe('API data Assertions - count', () => {
     // Get all products, verify status and get and assert count of each product
     test('should be able to get all products, verify status and get and assert count of each product', async ({ request }) => {
         const response = await request.get(`${process.env.REACT_APP_APIURL}/products`);
-        expect(response.status()).toBe(200);
-        expect(response.ok()).toBeTruthy();
+        await expect(response.ok()).toBeTruthy();
 
         let productsFromResponse = await response.body().then(content => {
             let data = JSON.parse(content.toString());

@@ -30,6 +30,6 @@ test.describe('Mocks', () => {
 
       let data = await page.locator('pre').first().allInnerTexts();
       let product = JSON.parse(data[0]);
-      expect(product.name).toBe("Test Product 01");
+      await expect(product.name).toBe("Test Product 01");
     });
 });
