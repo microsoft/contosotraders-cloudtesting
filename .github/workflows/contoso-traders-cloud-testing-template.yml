@@ -451,6 +451,56 @@ jobs:
               --headers 'Content-Type=application/json' \
               --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
 
+  load-tests-products-api:
+    needs: [provision]
+    runs-on: ubuntu-22.04
+    environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
+    concurrency:
+      group: load-tests-products-api
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: load test (products API)
+        uses: Azure/load-testing@v1.1.13
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ needs.provision.outputs.productsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/Products/1"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
+
   load-tests-carts-api:
     needs: [provision]
     runs-on: ubuntu-22.04
@@ -554,56 +604,6 @@ jobs:
               {
                 "name": "path",
                 "value": "v1/ShoppingCart/loadtest"
-              },
-              {
-                "name": "threads_per_engine",
-                "value": "5"
-              },
-              {
-                "name": "ramp_up_time",
-                "value": "0"
-              },
-              {
-                "name": "duration_in_sec",
-                "value": "120"
-              }
-            ]
-
-  load-tests-products-api:
-    needs: [provision]
-    runs-on: ubuntu-22.04
-    environment: ${{ inputs.environmentName }}
-    if: ${{ inputs.environmentName == 'staging' }}
-    concurrency:
-      group: load-tests-products-api
-      cancel-in-progress: true
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v3
-      - name: azure login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.SERVICEPRINCIPAL }}
-      - name: load test (products API)
-        uses: Azure/load-testing@v1.1.13
-        with:
-          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
-          loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
-          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
-          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
-          env: |
-            [
-              {
-                "name": "domain",
-                "value": "${{ needs.provision.outputs.productsApiEndpoint }}"
-              },
-              {
-                "name": "protocol",
-                "value": "https"
-              },
-              {
-                "name": "path",
-                "value": "v1/Products/1"
               },
               {
                 "name": "threads_per_engine",
