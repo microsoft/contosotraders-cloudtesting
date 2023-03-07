@@ -473,7 +473,7 @@ jobs:
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
       - name: load test (carts API)
-        uses: Azure/load-testing@v1.1.11
+        uses: Azure/load-testing@v1.1.13
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./loadtests/contoso-traders-carts.yaml
@@ -541,7 +541,7 @@ jobs:
         env:
           LOAD_TEST_SUBNET_ID: ${{ steps.get-vnetAcaSubnetId.outputs.vnetAcaSubnetId }}
       - name: load test (carts internal API)
-        uses: Azure/load-testing@v1.1.11
+        uses: Azure/load-testing@v1.1.13
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./loadtests/contoso-traders-carts-internal.yaml
@@ -591,7 +591,7 @@ jobs:
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
       - name: load test (products API)
-        uses: Azure/load-testing@v1.1.11
+        uses: Azure/load-testing@v1.1.13
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
@@ -657,7 +657,7 @@ jobs:
   #       run: sleep 30s
   #       shell: bash
   #     - name: load test (products API)
-  #       uses: Azure/load-testing@v1.1.11
+  #       uses: Azure/load-testing@v1.1.13
   #       with:
   #         # Path of the YAML file. Should be fully qualified path or relative to the default working directory
   #         loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
