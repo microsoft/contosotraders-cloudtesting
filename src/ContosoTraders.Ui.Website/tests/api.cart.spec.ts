@@ -21,7 +21,7 @@ test.beforeAll(async ({ request }) => {
             quantity: PRODUCTQUANTITY
         }
     });
-    expect(newCart.status()).toBe(201);
+    await expect(newCart.status()).toBe(201);
 });
 
 test.describe('Shopping Cart API', () => {
@@ -32,9 +32,9 @@ test.describe('Shopping Cart API', () => {
                 'x-tt-email': USER,
             }
         });
-        expect(cart.status()).toBe(200);
+        await expect(cart.status()).toBe(200);
 
-        expect(await cart.json()).toContainEqual(expect.objectContaining({
+        await expect(await cart.json()).toContainEqual(expect.objectContaining({
             email: USER,
             productId: PRODUCTID,
             name: PRODUCT,
@@ -53,7 +53,7 @@ test.afterAll(async ({ request }) => {
             'x-tt-email': USER,
         }
     });
-    expect(cart.status()).toBe(200);
+    await expect(cart.status()).toBe(200);
 
     // Loop through each cart item and delete it
     const cartBody = JSON.parse(await cart.text());   
@@ -69,6 +69,6 @@ test.afterAll(async ({ request }) => {
                 quantity: cartBody[i].quantity
             }
         });
-        expect(deleteCart.status()).toBe(200);
+        await expect(deleteCart.status()).toBe(200);
     }
 });
