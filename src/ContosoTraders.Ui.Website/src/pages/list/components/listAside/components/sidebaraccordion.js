@@ -1,6 +1,5 @@
 
 import React, { useRef, createRef } from "react";
-import { withStyles } from "@mui/styles";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
@@ -9,50 +8,12 @@ import { Grid } from "@mui/material";
 import description_off from '../../../../../assets/images/original/Contoso_Assets/Icons/plus.png'
 import description_on from '../../../../../assets/images/original/Contoso_Assets/Icons/minus.png'
 import { useParams } from "react-router-dom";
-import { createTheme } from "@mui/material";
 
-const theme = createTheme();
-const Accordion = withStyles({
-  root: {
-    // border: "1px solid rgba(0, 0, 0, .125)",
-    boxShadow: "none",
-    "&:not(:last-child)": {
-      borderBottom: 0,
-    },
-    "&:before": {
-      display: "none",
-    },
-    "&$expanded": {
-      margin: "auto",
-    },
-  },
-  expanded: {},
-})(MuiAccordion);
+const Accordion = (MuiAccordion);
 
-const AccordionSummary = withStyles({
-  root: {
-    backgroundColor: "white",
-    borderTop: "1px solid rgba(0, 0, 0, .125)",
-    
-    marginBottom: -1,
-    minHeight: 56,
-    "&$expanded": {
-      minHeight: 56,
-    },
-  },
-  content: {
-    "&$expanded": {
-      margin: "12px 0",
-    },
-  },
-  expanded: {},
-})(MuiAccordionSummary);
+const AccordionSummary = (MuiAccordionSummary);
 
-const AccordionDetails = withStyles(() => ({
-  root: {
-    padding: theme.spacing(3),
-  },
-}))(MuiAccordionDetails);
+const AccordionDetails = (MuiAccordionDetails);
 
 export default function SidebarAccordion(props) {
   const [expanded, setExpanded] = React.useState("panel1");

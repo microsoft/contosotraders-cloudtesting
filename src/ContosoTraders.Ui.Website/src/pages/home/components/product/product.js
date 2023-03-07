@@ -1,42 +1,14 @@
 import React from 'react';
-import { makeStyles } from '@mui/styles';
-import { createTheme } from "@mui/material";
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 // import WishlistIcon from '../../../../assets/images/original/Contoso_Assets/Icons/wishlist_icon.svg'
 import { useNavigate } from 'react-router-dom';
 
-const theme = createTheme()
-
-const useStyles = makeStyles(() => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-}));
 
 export default function Product(props) {
-  const classes = useStyles();
   const navigate = useNavigate()
   const  { prodImg, imageUrl, name, price, id, type } = props;
   const productDetailPage = (id = 1) => {
@@ -45,7 +17,6 @@ export default function Product(props) {
   return (
     <Card className="productCard" onClick={() => productDetailPage(id)}>
       <CardMedia
-        className={classes.media}
         image={prodImg?prodImg:imageUrl}
         title={name?name:''}
       />

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { devices, PlaywrightTestConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -7,7 +7,7 @@ import { devices, PlaywrightTestConfig } from '@playwright/test';
  */
 require('dotenv').config()
 
-const config: PlaywrightTestConfig = {
+export default defineConfig({
   testDir: './tests',
   /* Maximum time one test can run for. */
   timeout: 60 * 1000,
@@ -73,8 +73,12 @@ const config: PlaywrightTestConfig = {
       use: {
         ...devices['Desktop Firefox']
       },
+    },
+    {
+      name: 'webkit',
+      use: {
+        ...devices['Desktop Safari']
+      },
     }
   ],
-};
-
-module.exports = config;
+});

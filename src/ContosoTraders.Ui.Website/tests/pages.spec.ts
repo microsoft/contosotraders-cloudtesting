@@ -8,7 +8,6 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Header', () => {
   test('should be able to search by text', async ({ page }) => {
-    await page.getByPlaceholder('Search by product name or search by image').click();
     await page.getByPlaceholder('Search by product name or search by image').fill('laptops');
     await page.getByPlaceholder('Search by product name or search by image').press('Enter');
     await expect(page).toHaveURL('/suggested-products-list');
@@ -35,11 +34,11 @@ test.describe('Header', () => {
 test.describe('Home page', () => {
   // Corousel
   test('should be able to select buy now in corosel', async ({ page }) => {
-    await page.getByRole('button', { name: 'Buy Now' }).click();
+    await page.getByRole('button', { name: 'Buy Now' }).first().click();
     await expect(page).toHaveURL('/product/detail/' + _productid);
   });
   test('should be able to select more details in corosel', async ({ page }) => {
-    await page.getByRole('button', { name: 'More Details' }).click();
+    await page.getByRole('button', { name: 'More Details' }).first().click();
     await expect(page).toHaveURL('/list/controllers');
   });
   // Banner

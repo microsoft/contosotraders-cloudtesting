@@ -1,5 +1,4 @@
 import React from "react";
-import { withStyles } from "@mui/styles";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
@@ -10,47 +9,11 @@ import description_on from "../../assets/images/original/Contoso_Assets/product_
 import discount_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/discount.png";
 import { Link } from "react-router-dom";
 
-const Accordion = withStyles({
-  root: {
-    // border: "1px solid rgba(0, 0, 0, .125)",
-    boxShadow: "none",
-    "&:not(:last-child)": {
-      borderBottom: 0,
-    },
-    "&:before": {
-      display: "none",
-    },
-    "&$expanded": {
-      margin: "auto",
-    },
-  },
-  expanded: {},
-})(MuiAccordion);
+const Accordion = (MuiAccordion);
 
-const AccordionSummary = withStyles({
-  root: {
-    backgroundColor: "white",
-    // borderTop: "1px solid rgba(0, 0, 0, .125)",
-    
-    marginBottom: -1,
-    minHeight: 56,
-    "&$expanded": {
-      minHeight: 56,
-    },
-  },
-  content: {
-    "&$expanded": {
-      margin: "12px 0",
-    },
-  },
-  expanded: {},
-})(MuiAccordionSummary);
+const AccordionSummary = (MuiAccordionSummary);
 
-const AccordionDetails = withStyles((theme) => ({
-  root: {
-    padding: '16px 0',
-  },
-}))(MuiAccordionDetails);
+const AccordionDetails = (MuiAccordionDetails);
 
 export default function CustomizedAccordions(props) {
   const [expanded, setExpanded] = React.useState(null);
