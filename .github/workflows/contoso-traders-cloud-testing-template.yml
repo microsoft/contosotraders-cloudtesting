@@ -240,6 +240,7 @@ jobs:
         id: get-cartsApiEndpoint
         with:
           inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+
       #
       # section #3: deploy the products api
       #
@@ -402,6 +403,7 @@ jobs:
         id: get-productsApiEndpoint
         with:
           inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+
       #
       # section #4: deploy the ui
       #
@@ -451,45 +453,6 @@ jobs:
               --headers 'Content-Type=application/json' \
               --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
 
-  playwright-tests-ui:
-    needs: [provision]
-    timeout-minutes: 20
-    runs-on: ubuntu-22.04
-    environment: ${{ inputs.environmentName }}
-    if: ${{ inputs.environmentName == 'staging' }}
-    container:
-      image: mcr.microsoft.com/playwright:v1.31.2-focal
-    defaults:
-      run:
-        working-directory: src/ContosoTraders.Ui.Website
-    env:
-      AADUSERNAME: ${{secrets.AADUSERNAME}}
-      AADPASSWORD: ${{secrets.AADPASSWORD}}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: npm
-          cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json
-      - name: Set env variables for testing endpoints
-        run: |
-          echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
-          echo "REACT_APP_APIURL"="https://${{ needs.provision.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
-          echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
-          echo "REACT_APP_B2CCLIENTID"="${{ needs.provision.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
-      - name: install dependencies
-        run: npm ci
-      - name: run playwright tests
-        run: HOME=/root npx playwright test
-      - name: upload playwright report
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: src/ContosoTraders.Ui.Website/playwright-report/
-          retention-days: 30
-
   load-tests-with-chaos-products-api:
     needs: [provision]
     runs-on: ubuntu-22.04
@@ -537,56 +500,6 @@ jobs:
               {
                 "name": "path",
                 "value": "v1/Products/1"
-              },
-              {
-                "name": "threads_per_engine",
-                "value": "5"
-              },
-              {
-                "name": "ramp_up_time",
-                "value": "0"
-              },
-              {
-                "name": "duration_in_sec",
-                "value": "120"
-              }
-            ]
-
-  load-tests-carts-api:
-    needs: [provision]
-    runs-on: ubuntu-22.04
-    environment: ${{ inputs.environmentName }}
-    if: ${{ inputs.environmentName == 'staging' }}
-    concurrency:
-      group: load-tests-carts-api
-      cancel-in-progress: true
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v3
-      - name: azure login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.SERVICEPRINCIPAL }}
-      - name: load test (carts API)
-        uses: Azure/load-testing@v1.1.13
-        with:
-          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
-          loadtestConfigFile: ./loadtests/contoso-traders-carts.yaml
-          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
-          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
-          env: |
-            [
-              {
-                "name": "domain",
-                "value": "${{ needs.provision.outputs.cartsApiEndpoint }}"
-              },
-              {
-                "name": "protocol",
-                "value": "https"
-              },
-              {
-                "name": "path",
-                "value": "v1/ShoppingCart/loadtest"
               },
               {
                 "name": "threads_per_engine",
@@ -669,3 +582,92 @@ jobs:
                 "value": "120"
               }
             ]
+
+  load-tests-carts-api:
+    needs: [provision]
+    runs-on: ubuntu-22.04
+    environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
+    concurrency:
+      group: load-tests-carts-api
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: load test (carts API)
+        uses: Azure/load-testing@v1.1.13
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./loadtests/contoso-traders-carts.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ needs.provision.outputs.cartsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/ShoppingCart/loadtest"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
+
+  playwright-tests-ui:
+    needs: [provision]
+    timeout-minutes: 20
+    runs-on: ubuntu-22.04
+    environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
+    container:
+      image: mcr.microsoft.com/playwright:v1.31.2-focal
+    defaults:
+      run:
+        working-directory: src/ContosoTraders.Ui.Website
+    env:
+      AADUSERNAME: ${{secrets.AADUSERNAME}}
+      AADPASSWORD: ${{secrets.AADPASSWORD}}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json
+      - name: Set env variables for testing endpoints
+        run: |
+          echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
+          echo "REACT_APP_APIURL"="https://${{ needs.provision.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
+          echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
+          echo "REACT_APP_B2CCLIENTID"="${{ needs.provision.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
+      - name: install dependencies
+        run: npm ci
+      - name: run playwright tests
+        run: HOME=/root npx playwright test
+      - name: upload playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: src/ContosoTraders.Ui.Website/playwright-report/
+          retention-days: 30
