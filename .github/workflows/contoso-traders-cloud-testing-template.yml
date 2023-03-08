@@ -235,11 +235,6 @@ jobs:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
             az containerapp update -n ${{ env.CARTS_INTERNAL_ACA_NAME }}${{ vars.SUFFIX }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --image ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
-      - name: get carts api endpoint
-        uses: azure/CLI@v1
-        id: get-cartsApiEndpoint
-        with:
-          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
       #
       # section #3: deploy the products api
       #
@@ -402,6 +397,11 @@ jobs:
         id: get-productsApiEndpoint
         with:
           inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: get carts api endpoint
+        uses: azure/CLI@v1
+        id: get-cartsApiEndpoint
+        with:
+          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT          
       #
       # section #4: deploy the ui
       #
