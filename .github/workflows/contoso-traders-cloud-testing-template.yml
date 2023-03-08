@@ -490,13 +490,13 @@ jobs:
           path: src/ContosoTraders.Ui.Website/playwright-report/
           retention-days: 30
 
-  load-tests-products-api:
+  load-tests-with-chaos-products-api:
     needs: [provision]
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
     concurrency:
-      group: load-tests-products-api
+      group: load-tests-with-chaos-products-api
       cancel-in-progress: true
     steps:
       - name: checkout code
@@ -505,6 +505,18 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: get chaos experiment resource id
+        uses: azure/CLI@v1
+        id: get-chaosAksExperimentResourceId
+        with:
+          inlineScript: echo "chaosAksExperimentResourceId"="$(az resource show --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --namespace Microsoft.Chaos --resource-type Experiments --name ${{ env.CHAOS_AKS_EXPERIMENT_NAME }}${{ vars.SUFFIX }} --query "id" -o tsv)" >> $GITHUB_OUTPUT
+      - name: start chaos experiment (pod failure)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: az rest --method post --uri https://management.azure.com${{ steps.get-chaosAksExperimentResourceId.outputs.chaosAksExperimentResourceId }}/start?api-version=2021-09-15-preview
+      - name: sleep for 30 seconds
+        run: sleep 30s
+        shell: bash
       - name: load test (products API)
         uses: Azure/load-testing@v1.1.13
         with:
@@ -657,69 +669,3 @@ jobs:
                 "value": "120"
               }
             ]
-
-  #
-  # Job below will be commented out until issue #126 is resolved
-  # https://github.com/microsoft/contosotraders-cloudtesting/issues/126
-  #
-  # chaos-experiment-products-api:
-  #   runs-on: ubuntu-22.04
-  #   environment: ${{ inputs.environmentName }}
-  #   if: ${{ inputs.environmentName == 'staging' }}
-  #   needs: [load-tests-products-api, playwright-tests-ui]
-  #   concurrency:
-  #     group: load-tests-products-api
-  #     cancel-in-progress: true
-  #   steps:
-  #     - name: checkout code
-  #       uses: actions/checkout@v3
-  #     - name: azure login
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.SERVICEPRINCIPAL }}
-  #     - name: get chaos experiment resource id
-  #       uses: azure/CLI@v1
-  #       id: get-chaosAksExperimentResourceId
-  #       with:
-  #         inlineScript: echo "chaosAksExperimentResourceId"="$(az resource show --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --namespace Microsoft.Chaos --resource-type Experiments --name ${{ env.CHAOS_AKS_EXPERIMENT_NAME }}${{ vars.SUFFIX }} --query "id" -o tsv)" >> $GITHUB_OUTPUT
-  #     - name: start chaos experiment (pod failure)
-  #       uses: azure/CLI@v1
-  #       with:
-  #         inlineScript: az rest --method post --uri https://management.azure.com${{ steps.get-chaosAksExperimentResourceId.outputs.chaosAksExperimentResourceId }}/start?api-version=2021-09-15-preview
-  #     - name: sleep for 30 seconds
-  #       run: sleep 30s
-  #       shell: bash
-  #     - name: load test (products API)
-  #       uses: Azure/load-testing@v1.1.13
-  #       with:
-  #         # Path of the YAML file. Should be fully qualified path or relative to the default working directory
-  #         loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
-  #         loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
-  #         resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
-  #         env: |
-  #           [
-  #             {
-  #               "name": "domain",
-  #               "value": "${{ needs.provision.outputs.productsApiEndpoint }}"
-  #             },
-  #             {
-  #               "name": "protocol",
-  #               "value": "https"
-  #             },
-  #             {
-  #               "name": "path",
-  #               "value": "v1/Products/1"
-  #             },
-  #             {
-  #               "name": "threads_per_engine",
-  #               "value": "5"
-  #             },
-  #             {
-  #               "name": "ramp_up_time",
-  #               "value": "0"
-  #             },
-  #             {
-  #               "name": "duration_in_sec",
-  #               "value": "120"
-  #             }
-  #           ]
