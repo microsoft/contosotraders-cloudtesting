@@ -31,14 +31,15 @@ import { useParams } from 'react-router-dom';
   function ListContainer() {
     const [typesList, setTypesList] = React.useState([]);
     const [brandsList, setBrandsList] = React.useState([]);
-    const [productsList, setProductsList] = React.useState([]);
-    const queryString = [
+    const [productsList, setProductsList] = React.useState('');
+    const queryString = 
       {
-        brand: [],
-        type: [],
-      },
-    ];
+        brand: brand,
+        type: '',
+      }
+    ;
     const [loading, setLoading] = React.useState(true);
+    const [getType, setType] = React.useState([]);
     // const type = []
     const { code } = useParams(); 
     // React.useEffect(() => {
@@ -53,6 +54,7 @@ import { useParams } from 'react-router-dom';
 
   
     const getProductData = async(type) => {
+      setType(type)
       const filter = type === '' ? {} : (queryString.type = { type });
       const filteredProductsPageData = await ProductService.getFilteredProducts(filter);
       setPageState(filteredProductsPageData.data)
@@ -87,14 +89,15 @@ import { useParams } from 'react-router-dom';
       if (isChecked) {
         brand.push(dataType);
         queryString.brand = brand;
+        queryString.type = getType ? getType  : '';
         queryString.type = queryString.type.type === undefined ?
               queryString.type : queryString.type.type;
-  
       } else {
         let index = queryString[value].indexOf(dataType);
         if (index !== -1) {
           queryString[value].splice(index, 1);
         }
+        queryString.type = getType ? getType  : '';
       }
     }
     return (
