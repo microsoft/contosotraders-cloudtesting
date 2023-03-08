@@ -659,12 +659,12 @@ jobs:
             ]
 
   chaos-experiment-products-api:
+    needs: [provision]
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
-    needs: [provision]
     concurrency:
-      group: load-tests-products-api
+      group: chaos-experiment-products-api
       cancel-in-progress: true
     steps:
       - name: checkout code
