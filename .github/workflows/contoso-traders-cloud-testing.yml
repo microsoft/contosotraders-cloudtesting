@@ -2,11 +2,9 @@ name: contoso-traders-cloud-testing
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths-ignore: ["docs/**"]
   pull_request:
     branches: ["main"]
+    paths-ignore: ["docs/**"]
 
 jobs:
   staging:
