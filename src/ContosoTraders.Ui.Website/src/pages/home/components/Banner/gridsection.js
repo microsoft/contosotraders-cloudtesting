@@ -34,7 +34,7 @@ function Gridsection() {
                 <Grid container item xs={12} spacing={4}>
                   <Grid item xs={6}>
                     <Card className="cardlap">
-                      <CardActionArea>
+                      <CardActionArea onClick={() => startShopping()}>
                         <img
                           src={laptoppic}
                           className="laptopimage"
@@ -51,7 +51,7 @@ function Gridsection() {
                   </Grid>
                   <Grid item xs={6}>
                     <Card className="cardlap">
-                      <CardActionArea>
+                      <CardActionArea onClick={() => startShopping()}>
                         <img
                           src={laptoppic}
                           className="laptopimage"
@@ -70,7 +70,7 @@ function Gridsection() {
                 <Grid container item xs={12} spacing={4}>
                   <Grid item xs={6}>
                     <Card className="cardlap">
-                      <CardActionArea>
+                      <CardActionArea onClick={() => startShopping()}>
                         <img
                           src={laptoppic}
                           className="laptopimage"
@@ -87,7 +87,7 @@ function Gridsection() {
                   </Grid>
                   <Grid item xs={6}>
                     <Card className="cardlap">
-                      <CardActionArea>
+                      <CardActionArea onClick={() => startShopping()}>
                         <img
                           src={laptoppic}
                           className="laptopimage"
