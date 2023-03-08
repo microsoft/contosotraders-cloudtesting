@@ -30,6 +30,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html'],
+    ['github'],
     ['junit', { outputFile: './test-results/junit.xml' }],
   ],
 
