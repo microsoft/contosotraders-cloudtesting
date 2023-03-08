@@ -663,7 +663,7 @@ jobs:
       - name: install dependencies
         run: npm ci
       - name: run playwright tests
-        run: HOME=/root npx playwright test
+        run: HOME=/root npx playwright test    
       - name: upload playwright report
         uses: actions/upload-artifact@v3
         if: always()
