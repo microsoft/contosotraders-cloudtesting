@@ -235,6 +235,12 @@ jobs:
           inlineScript: |
             az config set extension.use_dynamic_install=yes_without_prompt
             az containerapp update -n ${{ env.CARTS_INTERNAL_ACA_NAME }}${{ vars.SUFFIX }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --image ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: get carts api endpoint
+        uses: azure/CLI@v1
+        id: get-cartsApiEndpoint
+        with:
+          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+          
       #
       # section #3: deploy the products api
       #
@@ -397,11 +403,7 @@ jobs:
         id: get-productsApiEndpoint
         with:
           inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-      - name: get carts api endpoint
-        uses: azure/CLI@v1
-        id: get-cartsApiEndpoint
-        with:
-          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT          
+
       #
       # section #4: deploy the ui
       #
@@ -552,56 +554,6 @@ jobs:
               }
             ]
 
-  load-tests-carts-api:
-    needs: [provision]
-    runs-on: ubuntu-22.04
-    environment: ${{ inputs.environmentName }}
-    if: ${{ inputs.environmentName == 'staging' }}
-    concurrency:
-      group: load-tests-carts-api
-      cancel-in-progress: true
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v3
-      - name: azure login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.SERVICEPRINCIPAL }}
-      - name: load test (carts API)
-        uses: Azure/load-testing@v1.1.13
-        with:
-          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
-          loadtestConfigFile: ./loadtests/contoso-traders-carts.yaml
-          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
-          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
-          env: |
-            [
-              {
-                "name": "domain",
-                "value": "${{ needs.provision.outputs.cartsApiEndpoint }}"
-              },
-              {
-                "name": "protocol",
-                "value": "https"
-              },
-              {
-                "name": "path",
-                "value": "v1/ShoppingCart/loadtest"
-              },
-              {
-                "name": "threads_per_engine",
-                "value": "5"
-              },
-              {
-                "name": "ramp_up_time",
-                "value": "0"
-              },
-              {
-                "name": "duration_in_sec",
-                "value": "120"
-              }
-            ]
-
   load-tests-carts-internal-api:
     needs: [provision]
     runs-on: ubuntu-22.04
@@ -647,6 +599,56 @@ jobs:
               {
                 "name": "domain",
                 "value": "${{ steps.get-cartsInternalApiEndpoint.outputs.cartsInternalApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/ShoppingCart/loadtest"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
+
+  load-tests-carts-api:
+    needs: [provision]
+    runs-on: ubuntu-22.04
+    environment: ${{ inputs.environmentName }}
+    if: ${{ inputs.environmentName == 'staging' }}
+    concurrency:
+      group: load-tests-carts-api
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: load test (carts API)
+        uses: Azure/load-testing@v1.1.13
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./loadtests/contoso-traders-carts.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ needs.provision.outputs.cartsApiEndpoint }}"
               },
               {
                 "name": "protocol",
