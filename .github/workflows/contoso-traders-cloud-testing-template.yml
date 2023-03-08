@@ -659,7 +659,7 @@ jobs:
             ]
 
   chaos-experiment-products-api:
-    needs: [provision]
+    needs: [load-tests-products-api]
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
