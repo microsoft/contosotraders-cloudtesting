@@ -663,12 +663,7 @@ jobs:
       - name: install dependencies
         run: npm ci
       - name: run playwright tests
-        run: HOME=/root npx playwright test
-      - name: Create GHA test summary
-        uses: test-summary/action@dist
-        if: always()
-        with:
-          paths: src/ContosoTraders.Ui.Website/test-results/junit.xml        
+        run: HOME=/root npx playwright test    
       - name: upload playwright report
         uses: actions/upload-artifact@v3
         if: always()
