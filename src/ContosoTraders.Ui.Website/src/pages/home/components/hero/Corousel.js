@@ -2,7 +2,8 @@ import React from 'react';
 import Carousel from 'react-material-ui-carousel'
 import { Button, Grid } from '@mui/material'
 import LocalMallIcon from '../../../../assets/images/original/Contoso_Assets/Icons/cart-icon-copy.svg'
-import heroBg from '../../../../assets/images/original/Contoso_Assets/Slider_section/hero_banner.jpg'
+import heroBg from '../../../../assets/images/original/Contoso_Assets/Slider_section/hero_banner.jpg';
+import heroBg2 from '../../../../assets/images/original/Contoso_Assets/Slider_section/hero_banner-2.jpg'
 import { useNavigate } from 'react-router-dom';
 export default function Corousel(props)
 {
@@ -13,9 +14,9 @@ export default function Corousel(props)
             bg: heroBg
         },
         {
-            name: "The Fastest, Most Powerful Xbox Ever.",
-            description: "Elevate your game with the all-new Xbox Wireless Controller - Lunar Shift Special Edition",
-            bg: heroBg
+            name: "Xbox Wireless Controller - Mineral Camo Special Edition",
+            description: "Textured triggers and bumpers | Hybrid D-pad | Button mapping | Bluetooth® technology",
+            bg: heroBg2
         },
     ]
 
