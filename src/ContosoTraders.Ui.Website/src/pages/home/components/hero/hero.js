@@ -13,7 +13,7 @@ class Hero extends Component {
         return (
             // <NamespacesConsumer>
             //     {t => (
-                    <div className="hero">
+                    <div className="hero" data-testid="carousel">
                         <Corousel />
                     </div>
             //     )}
