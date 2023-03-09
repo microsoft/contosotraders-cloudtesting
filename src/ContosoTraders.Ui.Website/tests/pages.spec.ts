@@ -34,7 +34,6 @@ test.describe('Header', () => {
 test.describe('Carousel', () => {
   test('prev and next buttons change slider', async ({ page }) => {
     const carousel = page.getByTestId('carousel');
-
     await expect(carousel.getByText('The Fastest, Most Powerful Xbox Ever.')).toBeVisible();
     await carousel.getByRole('button', { name: 'Next' }).click();
     await expect(carousel.getByText('Xbox Wireless Controller - Mineral Camo Special Edition')).toBeVisible();
@@ -43,7 +42,6 @@ test.describe('Carousel', () => {
 
   test('carousel buttons change slider', async ({ page }) => {
     const carousel = page.getByTestId('carousel');
-
     await carousel.getByRole('button', { name: 'carousel indicator 2' }).click();
     await expect(carousel.getByText('Xbox Wireless Controller - Mineral Camo Special Edition')).toBeVisible();
     await carousel.getByRole('button', { name: 'carousel indicator 1' }).click();
@@ -52,7 +50,7 @@ test.describe('Carousel', () => {
   })
 
   test('buy now button links to product page', async ({ page }) => {
-    await page.getByTestId('carousel').getByRole('button', { name: 'Buy Now' }).click();
+    await page.getByTestId('carousel').getByRole('button', { name: 'Buy Now' }).first().click();
     await expect(page).toHaveURL('/product/detail/1');
   })
 
@@ -61,14 +59,11 @@ test.describe('Carousel', () => {
     await expect(page).toHaveURL('/list/controllers');
   })
 
-
   test('verify carousel is pixel perfect - slide 1', async ({ page }) => {
     await expect(page.getByTestId('carousel')).toHaveScreenshot();
-
   })
   test('verify carousel is pixel perfect - slide 2', async ({ page }) => {
     const carousel = page.getByTestId('carousel');
-
     await carousel.getByRole('button', { name: 'Next' }).click();
     await expect(carousel).toHaveScreenshot();
   })
