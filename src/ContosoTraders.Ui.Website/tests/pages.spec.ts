@@ -50,7 +50,7 @@ test.describe('Carousel', () => {
   })
 
   test('buy now button links to product page', async ({ page }) => {
-    await page.getByTestId('carousel').getByRole('button', { name: 'Buy Now' }).click();
+    await page.getByTestId('carousel').getByRole('button', { name: 'Buy Now' }).first().click();
     await expect(page).toHaveURL('/product/detail/1');
   })
 
