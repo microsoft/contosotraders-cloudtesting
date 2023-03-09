@@ -75,7 +75,7 @@ function Item(props)
         history('/list/controllers')
     }
     return (
-        <div className="courousel-style" style={{ backgroundImage: 'url('+props.item.bg+')'}}>
+        <div data-testid="carousel" className="courousel-style" style={{ backgroundImage: 'url('+props.item.bg+')'}}>
             <Grid container spacing={3}>
                 <Grid item xs={6} className="BannerGrid">
                     <div className="BannerHeading">
