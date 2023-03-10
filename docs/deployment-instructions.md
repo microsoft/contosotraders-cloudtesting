@@ -1,83 +1,82 @@
-# ContosoTraders - Deployment Instructions
+# Contoso Traders - Deployment instructions
 
-This document will help you deploy the ContosoTraders application in your Azure environment. You'll be using both GitHub actions and Azure CLI for this.
+This document will help you deploy the Contoso Traders application in your Azure environment. You'll be using both GitHub Actions and Azure CLI for this.
 
 Once deployed, you'll be able to walk through various demo scenarios for Microsoft Playwright, Azure Load Testing, and Azure Chaos Studio.
 
 ## Prerequisites
-
 You will need following to get started:
-
-* A GitHub Account: You can create one for free [here](https://github.com/).
-* An Azure Subscription: You can create a free account [here](https://azure.microsoft.com/free/).
-* Azure CLI: Instructions to download and install are available [here](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
+1. **GitHub account**: Create a free account [here](https://github.com/).
+2. **Azure subscription**: Create a free account [here](https://azure.microsoft.com/free/).
+3. **Azure CLI**: Instructions to download and install [here](https://learn.microsoft.com/cli/azure/install-azure-cli).
 
 ## Prepare your Azure Subscription
+1. Log into Azure CLI with your Azure credentials: `az login`\
+<sub>If your organization has MFA enabled, then you'll need to log into the Azure CLI as follows: `az login --tenant <AZURE-TENANT-ID>`. Replace `<AZURE-TENANT-ID>` with your Azure tenant ID.</sub>
 
-* Log into Azure CLI with your Azure credentials: `az login`
-  * If your organization has MFA enabled, then you'll need to log into the Azure CLI as follows: `az login --tenant <AZURE-TENANT-ID>`. Replace `<AZURE-TENANT-ID>` with your Azure tenant ID.
+2. Ensure that the correct Azure subscription is selected: `az account show`\
+<sub>If not, select the correct subscription: `az account set -s <AZURE-SUBSCRIPTION-ID>`.\
+Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub>
 
-* Ensure that the correct Azure subscription is selected: `az account show`
-  * If not, select the correct subscription: `az account set -s <AZURE-SUBSCRIPTION-ID>`. Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.
+3. Register some required resource providers in your Azure subscription: \
+<sub>`az provider register -n Microsoft.OperationsManagement -c`</sub> \
+<sub> `az provider register -n Microsoft.Cdn -c`</sub> \
+<sub> `az provider register -n Microsoft.Chaos -c`</sub>
 
-* Register some required resource providers in your Azure subscription:
-  * `az provider register -n Microsoft.OperationsManagement -c`
-  * `az provider register -n Microsoft.Cdn -c`
-  * `az provider register -n Microsoft.Chaos -c`
-
-* Create an Azure Service Principal and add it the `Owner` role in your Azure subscription:
-  * `az ad sp create-for-rbac -n contosotraders-sp --role Owner --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.
-  * Please make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.
+4. Create an Azure Service Principal and add it to the `Owner` role in your Azure subscription: \
+<sub> `az ad sp create-for-rbac -n contosotraders-sp --role Owner --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. \
+Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub> \
+<sub> Make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.</sub>
 
 ## Prepare your GitHub Account
 
-* First, fork the [contosotraders-cloudtesting repo](https://github.com/microsoft/contosotraders-cloudtesting) in your account.
+1. Fork the [contosotraders-cloudtesting repo](https://github.com/microsoft/contosotraders-cloudtesting) in your account.
 
-* Then, set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Secrets` tab and create these necessary repository secrets:
+2. Set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Secrets` tab and create these necessary repository secrets:
 
-  | Secret Name        | Secret Value                                      |
-  | ------------------ | ------------------------------------------------- |
-  | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs |
-  | `SERVICEPRINCIPAL` | See details below                                 |
+    | Secret Name        | Secret Value                                      |
+     | ------------------ | ------------------------------------------------- |
+    | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs |
+   | `SERVICEPRINCIPAL` | See details below                                 |
 
-  The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
+    The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
 
-  ```json
-  {
-    "clientId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
-    "clientSecret": "your-client-secret",
-    "tenantId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
-    "subscriptionId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"
-  }
-  ```
+   ```json
+   {
+     "clientId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+     "clientSecret": "your-client-secret",
+     "tenantId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+     "subscriptionId": "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"
+   }
+   ```
 
-  The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
+    The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
 
-* Then, create two [environments for deployment](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment). On your fork of the github repository, go to the `Settings` tab > `Environments` > Click on `New Environment` button and create the following two environments:
-  * `staging`
-  * `production` (optional)
+3. Create two [environments for deployment](https://docs.github.com/actions/deployment/targeting-different-environments/using-environments-for-deployment). On your fork of the github repository, go to the `Settings` tab > `Environments` > Click on `New Environment` button and create the following two environments: 
+    * `staging` 
+    * `production` (optional)
 
-* Then, for each of these above environments, create this environment variable:
+    * Then, for each of these above environments, create this environment variable:
 
-  | Variable Name | Variable Value                                                                               |
-  | ------------- | -------------------------------------------------------------------------------------------- |
-  | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
+   | Variable Name | Variable Value                                                                               |
+   | ------------- |  -------------------------------------------------------------------------------------------- |
+   | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
 
 ## Deploy the Application
 
-* Go to your forked repo's `Actions` tab, selecting the `contoso-traders-cloud-testing` workflow, and click on the `Run workflow` button.
+1. Go to your forked repo's `Actions` tab, selecting the `contoso-traders-cloud-testing` workflow, and click on the `Run workflow` button.
 
-* This github workflow will provision the necessary infrastructure to your Azure subscription as well as deploy the applications (APIs, UI) to the infrastructure. Note that the workflow might take about 15 mins to complete.
+2. This github workflow will provision the necessary infrastructure to your Azure subscription as well as deploy the applications (APIs, UI) to the infrastructure. Note that the workflow might take about 15 mins to complete.
 
   ![workflow-logs](./images/github-workflow.png)
 
 ## Verify the Deployment
 
-* Once the workflow completes, the UI's accessible CDN endpoint URL will be displayed in the github workflow run.
+1. Once the workflow completes, the UI's accessible CDN endpoint URL will be displayed in the github workflow run.
 
   ![Endpoints in workflow logs](./images/ui-endpoint-github-workflow.png)
 
-* Clicking on the URL above, will load the application in a new browser tab. You can then verify that the application is indeed up and running.
+2. Clicking on the URL above, will load the application in a new browser tab. You can then verify that the application is indeed up and running.
 
 ### Troubleshooting Deployment Errors
 
@@ -95,18 +94,18 @@ Here are some common problems that you may encounter during deployment:
 
 For further learning, you can run through some of the demo scripts listed below:
 
-* [Developer Workflow](../demo-scripts/dev-workflow/walkthrough.md)
+* [Developer workflow](../demo-scripts/dev-workflow/walkthrough.md)
 * [Azure Load Testing](../demo-scripts/azure-load-testing/walkthrough.md)
 * [Azure Chaos Studio](../demo-scripts/azure-chaos-studio/walkthrough.md)
-* [Testing with Playwright](../demo-scripts/testing-with-playwright/walkthrough.md)
+* [UI Testing with Playwright](../demo-scripts/testing-with-playwright/walkthrough.md)
 
-## Cloud Costs and Cleanup
+## Cloud costs and cleanup
 
 Once you are done deploying, testing, exploring, you should delete the provisioned resources to prevent incurring additional costs.
 
 Once done, you can safely delete the `contoso-traders-rg` resource group. The `contoso-traders-aks-nodes-rg` will be automatically deleted as part of the AKS cluster deletion.
 
-> A quick note on costs considerations when you deploy the application to your Azure subscription:
+>A quick note on costs considerations when you deploy the application to your Azure subscription:
 >
 > 1. Azure Load Testing ([pricing details](https://azure.microsoft.com/pricing/details/load-testing/)): The number of virtual users and duration of the test are the key factors that determine the cost of the test. In this demo, the load tests are configured to use 5 virtual users and the test is set to run for 3 mins.
 > 2. Azure Kubernetes Service ([pricing details](https://azure.microsoft.com/pricing/details/kubernetes-service/)): The number of nodes and the number of hours that the cluster is running are the key factors that determine the cost of the cluster. In this demo, the cluster is configured to use 3 nodes (powered by vm scale sets) and the cluster is set to run 24x7.
