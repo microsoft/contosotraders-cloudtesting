@@ -665,7 +665,7 @@ jobs:
       - name: run playwright tests
         run: HOME=/root npx playwright test
       - name: Generate code coverage report
-        run: npx nyc report --reporter=lcovonly        
+        run: npx nyc report     
       - name: upload playwright report
         uses: actions/upload-artifact@v3
         if: always()
