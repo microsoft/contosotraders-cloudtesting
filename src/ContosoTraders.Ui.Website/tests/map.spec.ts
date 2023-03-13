@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './baseFixtures';
 
 // Emulate geolocation, language and timezone
 test.use({

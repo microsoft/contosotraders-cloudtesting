@@ -1,4 +1,4 @@
-import { test as setup } from '@playwright/test';
+import { test as setup } from './baseFixtures';
 
 const authFile = '.auth/user.json';
 

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './baseFixtures';
 
 // Shopping cart data
 const USER = 'fake@fake.com';

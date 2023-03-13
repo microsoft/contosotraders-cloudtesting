@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './baseFixtures';
 
 test.describe('API data Assertions - category', () => {
     // Filter products by category - Controller and then assert category

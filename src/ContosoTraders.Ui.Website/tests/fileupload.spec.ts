@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './baseFixtures';
 const imgPath = require('path').resolve(__dirname, '..') + '/src/assets/images/original/Contoso_Assets/Grid_Products_Collection/product_image.png';
 
 test.describe('File Upload', () => {

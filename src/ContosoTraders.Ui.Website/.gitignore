@@ -30,3 +30,4 @@ appsettings.Development.json
 /playwright-report/
 /playwright/.cache/
 /.auth/
+/.nyc_output/

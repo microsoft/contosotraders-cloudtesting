@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './baseFixtures';
 let _productid = 1;
 
 test.describe('Products API', () => {
