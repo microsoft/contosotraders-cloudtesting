@@ -534,7 +534,7 @@ resource productsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
     httpsOnly: true
     serverFarmId: productsapiappsvcplan.id
     siteConfig: {
-      linuxFxVersion: 'DOTNETCORE|6.0'
+      linuxFxVersion: 'DOTNETCORE|7.0'
       alwaysOn: true
       appSettings: [
         {
