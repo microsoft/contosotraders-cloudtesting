@@ -4,8 +4,8 @@
 
 2. Ensure that you have the following installed on your local machine:
    * [Git](https://git-scm.com/downloads)
-   * [Node LTS v81.15.0](https://nodejs.org/dist/v18.15.0/)
-   * [DOTNET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+   * [Node LTS v18.15.0](https://nodejs.org/dist/v18.15.0/)
+   * [DOTNET 7 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
    * [AZ CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 
 3. Login to AZ CLI using the details of the [service principal previously created](./deployment-instructions.md):
