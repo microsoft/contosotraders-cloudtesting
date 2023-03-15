@@ -17,6 +17,16 @@ function ProductDetails(props) {
   const addToCart = () => {
     props.addProductToCart();
   };
+
+  const discountOffer = (price) => {
+    let dicsount = price - ((price/100)*15)
+    return(
+      <span className="newprice">
+        ${parseInt(dicsount).toFixed(2)}
+      </span>
+    )
+  }
+
   return (
     <div className="ProductDetailsSection">
       <Grid container>
@@ -36,9 +46,9 @@ function ProductDetails(props) {
             {name ? name : 'Xbox Series S Fortnite & Rocket League Bundle 512 GB (White)'}
           </div>
           <div >
-            <span className="newprice">{'$'+price.toFixed(2)}</span>
+            {discountOffer(price)}
             <span className="oldprice">{'$'+price.toFixed(2)}</span>
-            <span className="newoffer">50%Off</span>
+            <span className="newoffer">15%Off</span>
           </div>
           <div className="pincodebar">
             <span className="prodattributes">Delivery</span>
