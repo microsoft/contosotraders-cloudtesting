@@ -14,6 +14,16 @@ export default function Product(props) {
   const productDetailPage = (id = 1) => {
    navigate('/product/detail/'+id)
   }
+
+  const discountOffer = (price) => {
+    let dicsount = price - ((price/100)*15)
+    return(
+      <Typography variant="h6" color="initial" component="h6" style={{marginRight:'auto'}} className="productOrgPrice m-0 mr-1">
+        ${parseInt(dicsount).toFixed(2)}
+      </Typography>
+    )
+  }
+
   return (
     <Card className="productCard" onClick={() => productDetailPage(id)}>
       <CardMedia
@@ -33,14 +43,12 @@ export default function Product(props) {
           {type?type.name:'Controller'}
         </Typography>
         <div style={{display:'flex',alignItems:'center',paddingTop:'10px'}}>
-            <Typography variant="h6" color="initial" component="h6" style={{marginRight:'auto'}} className="productOrgPrice m-0 mr-1">
-                ${price?price.toFixed(2):'00.00'}
-            </Typography>
+            {discountOffer(price)}
             <Typography paragraph color="textSecondary" className="productOldPrice m-0 mr-1">
-                $78.46
+              ${price?price.toFixed(2):'00.00'} 
             </Typography>
             <Typography paragraph color="error" className="productOffer m-0 mr-1 ">
-                50% OFF
+                15% OFF
             </Typography>
         </div>
       </CardContent>
