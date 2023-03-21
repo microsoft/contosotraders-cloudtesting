@@ -18,7 +18,7 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
 ## Walkthrough: Identify the Load Test Target
 
-1. In the Azure portal, you can navigate to the Azure Container App in the `contoso-traders-rg` resource group. This is the application that hosts the `Carts API`.
+1. In the Azure portal, you can navigate to the Azure Container App in the `contoso-traders-rg{SUFFIX}` resource group. This is the application that hosts the `Carts API`.
 
    ![ACA](./media/aca-2.png)
 
@@ -36,7 +36,7 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
 ## Walkthrough: Creating a Load Test
 
-1. In the Azure portal, you can navigate to the Azure Load Testing service in the `contoso-traders-rg` resource group.
+1. In the Azure portal, you can navigate to the Azure Load Testing service in the `contoso-traders-rg{SUFFIX}` resource group.
 
    ![load testing](./media/load-test-browse.png)
 
@@ -64,7 +64,7 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
 ## Walkthrough: Incorporate Server Side Metrics
 
-1. Click on the `App Components` button. Then from the flyout, select the `contoso-traders-carts` CosmosDB component. This will add relevant metrics from the CosmosDB to the load test dashboard.
+1. Click on the `App Components` button. Then from the flyout, select the `contoso-traders-carts{SUFFIX}` CosmosDB component. This will add relevant metrics from the CosmosDB to the load test dashboard.
 
    ![load testing](./media/load-test-server-side-metrics.png)
 
@@ -76,7 +76,7 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
 ## Walkthrough: Review ACA Metrics & Dashboards
 
-1. In the Azure portal, you can navigate to the Azure Container App in the `contoso-traders-rg` resource group.
+1. In the Azure portal, you can navigate to the Azure Container App in the `contoso-traders-rg{SUFFIX}` resource group.
 
    ![ACA](./media/aca.png)
 
@@ -126,11 +126,11 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
    ![app breakpoint](./media/app-breakpoint-4.png)
 
-5. If you add the server-side metrics for the `contoso-traders-cartsctprod` CosmosDB, you'll notice that the DB's normalized RU consumption eventually starts to peg at 100% under load.
+5. If you add the server-side metrics for the `contoso-traders-cartsct{SUFFIX}` CosmosDB, you'll notice that the DB's normalized RU consumption eventually starts to peg at 100% under load.
 
    ![app breakpoint](./media/app-breakpoint-4-2.png)
 
-6. App Insights can help us narrow down the root cause of the error. Navigate to the `contoso-traders-rg` resource group, and click on the `contoso-traders-aictprod` resource.
+6. App Insights can help us narrow down the root cause of the error. Navigate to the `contoso-traders-rg{SUFFIX}` resource group, and click on the `contoso-traders-aict{SUFFIX}` resource.
 
    ![app breakpoint](./media/app-breakpoint-5.png)
 
