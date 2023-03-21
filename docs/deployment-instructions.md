@@ -104,7 +104,7 @@ For further learning, you can run through some of the demo scripts listed below:
 
 Once you are done deploying, testing, exploring, you should delete the provisioned resources to prevent incurring additional costs.
 
-Once done, you can safely delete the `contoso-traders-rg` resource group. The `contoso-traders-aks-nodes-rg` will be automatically deleted as part of the AKS cluster deletion.
+Once done, you can safely delete the `contoso-traders-rg{SUFFIX}` resource group. The `contoso-traders-aks-nodes-rg{SUFFIX}` will be automatically deleted as part of the AKS cluster deletion.
 
 > A quick note on costs considerations when you deploy the application to your Azure subscription:
 >

@@ -19,6 +19,7 @@
    * Run `dotnet user-secrets set "KeyVaultEndpoint" "https://contosotraderskv<SUFFIX>.vault.azure.net/"`. Replace `<SUFFIX>` with the [value used in the github repository variable](./deployment-instructions.md#prepare-your-github-account).
    * Run `dotnet build && dotnet run`. This will start the web API at `https://localhost:62300/swagger`.
    * Note that your browser may show you a warning about insecure connection which you can safely ignore.
+      ![self signed cert warning](./images/self-signed-cert.png)
 
 6. Run the Carts API locally:
    * Open a cmd window and navigate to the `src/ContosoTraders.Api.Carts` folder.
