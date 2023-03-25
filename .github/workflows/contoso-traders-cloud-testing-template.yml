@@ -640,7 +640,7 @@ jobs:
     environment: ${{ inputs.environmentName }}
     if: ${{ inputs.environmentName == 'staging' }}
     container:
-      image: mcr.microsoft.com/playwright:v1.31.2-focal
+      image: mcr.microsoft.com/playwright:v1.32.0-focal
     defaults:
       run:
         working-directory: src/ContosoTraders.Ui.Website
