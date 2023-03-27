@@ -17,7 +17,7 @@ import Logo from '../../assets/images/logo-horizontal.svg';
 import SearchIconNew from '../../assets/images/original/Contoso_Assets/Icons/image_search_icon.svg'
 import ProfileIcon from '../../assets/images/original/Contoso_Assets/Icons/profile_icon.svg'
 import BagIcon from '../../assets/images/original/Contoso_Assets/Icons/cart_icon.svg'
-import UploadFile from '../uploadFile/uploadFile';
+import UploadFile from './components/uploadFile/uploadFile';
 import { clickAction, submitAction, handleThemeChange } from '../../actions/actions';
 import AuthB2CService from '../../services/authB2CService';
 import ListItemIcon from '@mui/material/ListItemIcon';

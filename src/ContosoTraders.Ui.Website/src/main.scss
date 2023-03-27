@@ -30,7 +30,7 @@
 
 // 5. Components
 @import
-    'styles/components/loading-spinner',
+    'components/loadingSpinner/loadingspinner',
     'styles/components/btn',
     'styles/components/cards',
     'styles/components/banner',
@@ -51,4 +51,5 @@
     'styles/pages/shoppingcart',
     'styles/pages/arrivals',
     'styles/pages/cart',
-    'styles/pages/login-modal';
+    'styles/pages/login-modal',
+    'styles/pages/responsive/responsive';
