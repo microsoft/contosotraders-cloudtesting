@@ -16,7 +16,7 @@ class ListAside extends Component {
     componentDidMount() {
         const setComponentVisibility = this.setComponentVisibility.bind(this);
         setComponentVisibility(document.documentElement.clientWidth);
-        window.addEventListener("resize", function() {
+        window.addEventListener("resize", function () {
             setComponentVisibility(document.documentElement.clientWidth);
         });
     }
@@ -55,39 +55,14 @@ class ListAside extends Component {
 
     render() {
         return (
-            // <NamespacesConsumer>
-            //     {t => (
-                    <aside className="list__aside">
-                        <SidebarAccordion 
-                            onFilterChecked={this.props.onFilterChecked}
-                            data={this.props.brandsList}
-                            title="Brands"
-                            id="brand"
-                        />
-                        {/* {this.state.showComponent && (
-                            <div className={ this.state.isopened ? "list__panel is-opened" : "list__panel" } ref={this.filterPanel}>
-                                <CheckboxContainer
-                                    onFilterChecked={this.props.onFilterChecked}
-                                    data={typesList}
-                                    title="Cordless Power Tools"
-                                    id="type"
-                                />
-
-                                <CheckboxContainer
-                                    onFilterChecked={this.props.onFilterChecked}
-                                    data={brandsList}
-                                    title="Brands"
-                                    id="brand"
-                                />
-
-                                <button className="btn btn--primary" onClick={this.toggleClass}>
-                                    {t("list.aside.close")}
-                                </button>
-                            </div>
-                        )} */}
-                    </aside>
-            //     )}
-            // </NamespacesConsumer>
+            <aside className="list__aside">
+                <SidebarAccordion
+                    onFilterChecked={this.props.onFilterChecked}
+                    data={this.props.brandsList}
+                    title="Brands"
+                    id="brand"
+                />
+            </aside>
         );
     }
 }

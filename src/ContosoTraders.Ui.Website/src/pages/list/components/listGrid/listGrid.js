@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import React from "react";
-import Product from "../../../home/components/product/product";
+import Product from "../../../../components/productCard/product";
 // import MinimalSelect from "../../../../components/minimalselect";
 // import Pagination from '@material-ui/lab/Pagination';
 

@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import React from "react";
-import Breadcrump from "../../components/breadcrumb";
+import Breadcrump from "../../components/breadcrumb/breadcrumb";
 import { ListGrid } from "../list/components";
 import { useLocation } from "react-router-dom";
 const SuggestedProductsList = (props) => {

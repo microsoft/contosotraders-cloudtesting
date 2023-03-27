@@ -165,27 +165,6 @@ body {
 .minimalSelect .MuiSelect-select:focus{
   background-color: transparent !important;
 }
-.productCard{
-  box-shadow:none !important;
-}
-.productCard:hover{
-  cursor: pointer;
-  box-shadow: 0px 3px 6px #00000029 !important;
-  border: 1px solid #E5E5E5;
-  border-radius: 4px;
-}
-.productCard .MuiCardMedia-root{
-  width: auto;
-  height: 306px;
-  margin: auto;
-  background-size: contain;
-}
-.productCard .MuiCardContent-root{
-  padding: 8px 8px 0 8px !important;
-}
-.productCard .wishlist_icon{
-  padding: 0;
-}
 /* mainHeader */
 .mainHeader{
   /* background-color: #fff; */
@@ -193,11 +172,7 @@ body {
   z-index: 100;
   width: 100%;
 }
-.mainHeader .categories-btn{
-  min-width: 198px;
-  background-color: #F8F8F8 !important;
-  border: 1px solid #EFEFEF !important;
-}
+
 /* Header Message */
 .headerMessageDiv{
   height: 55px;
@@ -366,87 +341,12 @@ button[aria-label='Previous'] {
 button[aria-label='Next'] {
   margin-right: 70px;
 }
-.courousel-style{
-  padding: 70px;
-  /* background-image: url('./assets/images/original/Contoso_Assets/Slider_section/hero_banner.jpg') !important; */
-  background-repeat: no-repeat !important;
-  background-size: cover !important;
-  background-position: right !important;
-  min-height: 594px;
-}
-.courousel-style {
-  background: #000000;
-  cursor: pointer;
-  max-height: 594px;
-}
-.courousel-style .BannerGrid{
-  padding: 100px 100px 0px 70px !important;
-}
-.courousel-style .BannerHeading {
-  text-align: left;
-  font-family: var(--fontInter) !important;
-  font-size: 34px !important;
-  font-weight: 600 !important;
-  color: #ffffff;
-  opacity: 1;
-  padding: 0px 0px 0px 0px;
-  text-transform: capitalize;
-  letter-spacing: -1.59px;
-}
-.courousel-style .BannerContent {
-  text-align: left;
-  font-family: var(--fontHeebo) !important;
-  font-size: 16px !important;
-  font-weight: 400 !important;
-  color: #ffffff;
-  opacity: 1;
-  padding: 16px 0px 0px 0px;
-}
-.courousel-style .BannerButtondiv {
-  padding: 50px 0px 0px 0px;
-}
-.courousel-style .BannerButton1 {
-  max-width: 142px;
-  opacity: 1;
-  width: 224px;
-  height: 49px;
-  background: #2874F0 !important;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-  font-family: var(--fontHeebo) !important;
-  font-size: 16px !important;
-  font-weight: 500 !important;
-  color: #ffffff;
-  box-shadow: none;
-  margin-right: 24px;
-}
-.courousel-style .BannerButton2 {
-  max-width: 142px;
-  opacity: 1;
-  width: 224px;
-  height: 49px;
-  background: #666666 !important;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-  font-family: var(--fontHeebo) !important;
-  font-size: 16px !important;
-  font-weight: 500 !important;
-  letter-spacing: -0.36px;
-  color: #ffffff;
-  box-shadow: none;
-  margin-right: 24px;
-}
-
 
 /* product slider */
 .product-slider-corousel > div {
   min-height: 454px;
 }
-.slider-style{
-  padding: 0 70px;
-}
+
 .slider-section button[aria-label='Previous'] {
   margin-left: 86px;
 }
@@ -490,57 +390,6 @@ button[aria-label='Next'] {
   opacity: 1;
   margin-bottom: 0;
 }
-.slider-style .productCard{
-  box-shadow: none !important;
-}
-.slider-style .productCard .MuiCardMedia-root{
-  width: auto !important;
-  height: 270px !important;
-  margin: auto;
-}
-.slider-style .productCard:hover{
-  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.16) !important;
-  border: 1px solid #E5E5E5;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.productName{
-  font-family: var(--fontInter) !important;
-  font-weight: 600 !important;
-  font-size: 16px !important;
-  color: #171520 !important;
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-}
-
-.productType{
-  font-family: var(--fontInter) !important;
-  font-weight: 400 !important;
-  font-size: 14px !important;
-  color: #626262 !important;
-}
-.productOrgPrice{
-  font-family: var(--fontInter) !important;
-  font-weight: 500 !important;
-  font-size: 20px !important;
-  color: #171520 !important;
-}
-.productOldPrice{
-  font-family: var(--fontInter) !important;
-  font-weight: 400 !important;
-  font-size: 14px !important;
-  color: #626262 !important;
-  text-decoration: line-through;
-
-}
-.productOffer{
-  font-family: var(--fontInter) !important;
-  font-weight: 400 !important;
-  font-size: 14px !important;
-  color: #E21D1D !important;
-}
-
 
 /* ********************************* */
 .BannerSection {
@@ -810,35 +659,12 @@ button[aria-label='Next'] {
 }
 
 .refund-policy-section{
-  margin-top: 137px;
-  padding: 0 70px 36px 70px;
+  margin-top: 192px;
   font-family: var(--fontInter);
 }
-.refund-policy-section .breadcrump{
-  padding: 24px 0;
+.refund-policy-section .refund-policy{
+  padding: 0 70px 36px 70px;
 }
-.refund-policy-section .breadcrump p{
-  margin: 0;
-  text-transform: capitalize;
-}
-.refund-policy-section .breadcrump p span{
-  font-family: 'Heebo';
-  font-size: 14px;
-  font-weight: 400;
-}
-.refund-policy-section .breadcrump p b{
-  font-family: 'Heebo';
-  font-size: 14px;
-  font-weight: 500;
-}
-.refund-policy-section .breadcrump p b a{
-  color: #000000;
-}
-.refund-policy-section .breadcrump p b a:hover{
-  color: #2974f0 !important;
-  text-decoration: none;
-}
-
 .refund-policy .mainHeading{
   margin: 24px 0;
   font-size: 24px;
@@ -933,25 +759,4 @@ margin-right: auto;
   padding: 3px 12px;
   margin: 0;
   color: #fff;
-}
-@media screen and (max-width : 1439px){
-  .ProductContainerSection .ProductDetailsSection .CartButton, .ProductContainerSection .ProductDetailsSection .WishListButton{
-    width: 250px !important;
-  }
-}
-@media screen and (max-width : 1350px){
-  .final-section-container{
-    background-size: contain;
-  }
-  .LaptopSection .cardlap {
-    min-height: 256px;
-  }
-}
-@media screen and (max-width : 1250px){
-  .slider-style .LapSectionContent > div {
-    width: calc(100% + 40px) !important;
-  }
-  .slider-style .LapSectionContent > div > div:last-child{
-    display: none;
-  }
 }

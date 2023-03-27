@@ -1,0 +1,70 @@
+/*---------------------------------quantitypicker----------------------------*/
+.quantity-picker {
+    display: inline-flex;
+    width: 89px;
+    height: 40px;
+    align-items: center;
+    justify-content: space-around;
+    vertical-align: middle;
+    border: 1px solid #707070;
+    border-radius: 8px;
+
+}
+
+.quantity-input:focus {
+    background: red;
+}
+
+.quantity-modifier,
+.quantity-display {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: none;
+}
+
+.quantity-modifier {
+    font-size: 1.5rem;
+    background: none !important;
+    border: 0 solid #dbdbdb;
+    text-align: center;
+    cursor: pointer;
+    width: 24px;
+    color: #171520 !important;
+}
+
+.quantity-modifier:hover {
+    background: #dadada;
+    color: #555555;
+}
+
+.quantity-modifier:focus {
+    outline: 0;
+}
+
+.left-modifier {
+    border-radius: 3px 0 0 3px;
+}
+
+.mod-disable {
+    color: #d9d9d9 !important;
+}
+
+.mod-disable:hover {
+    color: #d9d9d9;
+}
+
+.right-modifier {
+    border-radius: 0 3px 3px 0;
+}
+
+.quantity-display {
+    font-family: "Inter";
+    font-weight: 600;
+    font-size: 14px;
+    width: 23px;
+    height: 28px;
+    border: 0;
+    text-align: center;
+}

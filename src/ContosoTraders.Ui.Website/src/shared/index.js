@@ -1,10 +1,10 @@
 import Header from './header/header';
 import Appbar from './header/appbar';
-import Categories from './header/categories';
+// import Categories from '../components/dropdowns/categories';
 // import DebugHeader from './debugHeader/debugHeader';
 import Footer from './footer/footer';
-import LoadingSpinner from './loadingSpinner/loadingSpinner'
-import UploadFile from './uploadFile/uploadFile'
+import LoadingSpinner from '../components/loadingSpinner/loadingSpinner'
+import UploadFile from './header/components/uploadFile/uploadFile'
 // import Card from './card/card'
 import HeaderMessage from './header/headermessage';
 export {
@@ -15,6 +15,6 @@ export {
     LoadingSpinner,
     UploadFile,
     // Card,
-    Categories,
+    // Categories,
     HeaderMessage,
 };

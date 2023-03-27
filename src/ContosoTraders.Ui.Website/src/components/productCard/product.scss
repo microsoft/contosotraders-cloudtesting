@@ -1,0 +1,65 @@
+.productCard {
+    box-shadow: none !important;
+}
+
+.productCard:hover {
+    cursor: pointer;
+    box-shadow: 0px 3px 6px #00000029 !important;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+}
+
+.productCard .MuiCardMedia-root {
+    width: auto;
+    height: 306px;
+    margin: auto;
+    background-size: contain;
+}
+
+.productCard .MuiCardContent-root {
+    padding: 8px 8px 0 8px !important;
+}
+
+.productCard .wishlist_icon {
+    padding: 0;
+}
+
+.productName {
+    font-family: var(--fontInter) !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    color: #171520 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.productType {
+    font-family: var(--fontInter) !important;
+    font-weight: 400 !important;
+    font-size: 14px !important;
+    color: #626262 !important;
+}
+
+.productOrgPrice {
+    font-family: var(--fontInter) !important;
+    font-weight: 500 !important;
+    font-size: 20px !important;
+    color: #171520 !important;
+}
+
+.productOldPrice {
+    font-family: var(--fontInter) !important;
+    font-weight: 400 !important;
+    font-size: 14px !important;
+    color: #626262 !important;
+    text-decoration: line-through;
+
+}
+
+.productOffer {
+    font-family: var(--fontInter) !important;
+    font-weight: 400 !important;
+    font-size: 14px !important;
+    color: #E21D1D !important;
+}
