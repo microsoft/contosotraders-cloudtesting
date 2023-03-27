@@ -2,32 +2,8 @@
 // This file contains styles that are specific to the Detail Products page.
 // -----------------------------------------------------------------------------
 .ProductContainerSection{
-  margin-top:137px;
+  margin-top:192px;
   padding: 0px 70px;
-  .breadcrump{
-    padding: 24px 0;
-    p{
-      margin: 0;
-      text-transform: capitalize;
-      span{
-          font-family: 'Heebo';
-          font-size: 14px;
-          font-weight: 400;
-      }
-      b{
-          font-family: 'Heebo';
-          font-size: 14px;
-          font-weight: 500;
-          a{
-            color: #000000;
-            &:hover{
-              color: #2974f0 !important;
-              text-decoration: none;
-            }
-          }
-      }
-    }
-  }
   .ProductDetailsSection {
     font-family: "Inter";
     padding-top: 16px;
@@ -87,29 +63,6 @@
       font-weight: 600;
       .MuiButton-startIcon{
         margin-right: 10px;
-      }
-    }
-    .MuiAccordion-root{
-      .panelSummary {
-        flex-direction: row-reverse;
-        // padding-left: 10px;
-        border: 1px solid rgba(112, 112, 112, 0.1);
-        border-right: none;
-        border-left: none;
-        .MuiAccordionSummary-content{
-          font-family: 'Heebo';
-          font-size: 16px;
-          margin: 23.5px 0;
-          margin-left: 10px;
-        }
-        .MuiIconButton-root{
-          padding-left: 0;
-        }
-      }
-      &:last-child{
-        .panelSummary {
-          border-bottom: none;
-        }
       }
     }
     
@@ -189,156 +142,6 @@
       background: #fafafa;
       width: 82px;
       padding: 16px;
-    }
-    .slidesection {
-      margin-right: 16px;
-      display: flex;
-      justify-content: center;
-    }
-    .slideimagelist {
-      flex-direction: row-reverse;
-      .imgdiv.active{
-        border: 2px solid #2874F0;
-      }
-      .imgdiv{
-        width: 100px;
-        height: 100px;
-        margin: 4px 0;
-      }
-    }
-    .slideimage {
-      width: 100%;
-    }
-    .chevron_prevbtn {
-      margin-bottom: 8px;
-    }
-    .chevron_nextbtn {
-      margin-top: 10px;
-    }
-    .chevron_btn {
-      width: 100px;
-      height: 38px;
-      background: #ffffff 0% 0% no-repeat padding-box;
-      border: 1px solid #2F4B66 !important;
-      border-radius: 2px;
-      opacity: 1;
-    }
-    .chevron_btn.disabled{
-      border: 1px solid #e5e5e5 !important;
-    }
-    .quantity-picker {
-      display: inline-flex;
-      width: 73px;
-      height: 30px;
-      align-items: center;
-      justify-content: space-around;
-      vertical-align:middle;
-      border: 1px solid #1B4B66;
-      border-radius: 4px;
-    
-    }
-    .quantity-input:focus {
-      background: red;
-    }
-    
-    .quantity-modifier,
-    .quantity-display {
-      -webkit-user-select: none;
-        -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
-      outline: none;
-    }
-    
-    .quantity-modifier {
-      font-size: 1.5rem;
-      background: none!important;
-      border: 0 solid #dbdbdb;
-      text-align: center;
-      cursor: pointer;
-      width: 24px;
-      color: #777 !important;
-    }
-    .quantity-modifier:hover {
-      background: #dadada;
-      color: #555555;
-    }
-    
-    .quantity-modifier:focus {
-      outline:0;
-    }
-    
-    .left-modifier {
-      border-radius: 3px 0 0 3px;
-    }
-    
-    .mod-disable {
-      color: #d9d9d9 !important;
-    }
-    
-    .mod-disable:hover {
-      // background-color: #f3f3f3 !important;
-      color:#d9d9d9;
-    }
-    
-    .right-modifier {
-      border-radius: 0 3px 3px 0;
-      /* background: none;
-      border: none; */
-    }
-    
-    .quantity-display {
-      font-family: "Inter";
-      font-weight: 600;
-      font-size: 14px;
-      width: 23px;
-      height: 28px;
-      border: 0;
-      /* border-top: 0 solid #dbdbdb;
-      border-bottom: 0 solid #dbdbdb; */
-      text-align: center;
-    }
-    .AccordionSection {
-      margin-top: 30px;
-      font-family: "Heebo";
-      font-size: 14px;
-      font-weight: 400;
-      .detail_feature p{
-        font-family: 'Heebo';
-        font-size: 14px;
-      }
-    }
-    
-    .AccordionSection .descpAttributes {
-      letter-spacing: -0.25px;
-      color: #878787;
-      opacity: 0.92;
-      padding: 4px 16px 4px 8px;
-    }
-    .AccordionSection .descpDetails {
-      letter-spacing: -0.25px;
-      color: #000000;
-      opacity: 0.92;
-      padding: 4px 0;
-    }
-    .AccordionSection .descpicon {
-      margin-right: 16px;
-    }
-    .AccordionSection .Offerslist {
-      margin-bottom: 11px;
-    }
-    .AccordionSection .discount_icon {
-      width: 16px;
-      height: 16px;
-      margin-right: 12px;
-    }
-    .AccordionSection .TClink {
-      text-decoration: none;
-      color: #2874f0;
-    }
-    
-    .MuiAccordionSummary-expandIcon.Mui-expanded {
-      transform: none !important;
     }
   }
   }

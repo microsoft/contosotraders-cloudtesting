@@ -17,10 +17,14 @@ import { ReactComponent as Close } from '../../assets/images/icon-close.svg';
 // import { ReactComponent as Cart } from '../../assets/images/icon-cart.svg';
 
 import { clickAction, submitAction } from "../../actions/actions";
-import { Categories } from '..';
+import Categories from '../../components/dropdowns/categories';
 
 // const Login = LoginContainer(LoginComponent);
-
+import laptopsImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/laptop_icon.svg';
+import controllersImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/controllers_icon.svg';
+import desktopsImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/desktops_icon.svg';
+import mobilesImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/mobiles_icon.svg';
+import monitorImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/monitor_icon.svg';
 class Header extends Component {
     constructor() {
         super();
@@ -94,80 +98,96 @@ class Header extends Component {
         this.props.history.push('/');
     }
 
-    onClickLogIn = async() => {
+    onClickLogIn = async () => {
         let user = await this.authService.login();
-        if(user)
-        {
+        if (user) {
             user['loggedIn'] = true;
             user['isB2c'] = true;
             user['token'] = sessionStorage.getItem('msal.idtoken');
-            localStorage.setItem('state',JSON.stringify(user))
+            localStorage.setItem('state', JSON.stringify(user))
             this.props.submitAction(user);
         }
     }
 
+
     render() {
+        const categories = {
+            title: 'All Categories',
+            categorylist: [
+                {
+                    name: 'Laptops',
+                    url: '/list/laptops',
+                    img: laptopsImg
+                },
+                {
+                    name: 'Controllers',
+                    url: '/list/controllers',
+                    img: controllersImg
+                },
+                {
+                    name: 'Desktops',
+                    url: '/list/desktops',
+                    img: desktopsImg
+                },
+                {
+                    name: 'Mobiles',
+                    url: '/list/mobiles',
+                    img: mobilesImg
+                },
+                {
+                    name: 'Monitor',
+                    url: '/list/monitors',
+                    img: monitorImg
+                },
+            ]
+        }
         // const { profile } = this.state;
         // const { loggedIn } = this.props.userInfo;
         return (
-            // <NamespacesConsumer>
-            //     {t => (
-                    <header className="header">
-                        <Categories />
-                        <nav className={this.state.isopened ? 'main-nav is-opened' : 'main-nav'}>
-                            <Link className={window.location.pathname === '/list/all-products' ? "main-nav__item_active" : "main-nav__item"} to="/list/all-products">
-                                All Products
+            <header className="header">
+                <Categories categories={categories} />
+                <nav className={this.state.isopened ? 'main-nav is-opened' : 'main-nav'}>
+                    <Link className={window.location.pathname === '/list/all-products' ? "main-nav__item_active" : "main-nav__item"} to="/list/all-products">
+                        All Products
+                    </Link>
+                    {categories.categorylist.map((item, key) => {
+                        return (
+                            <Link key={key} className={window.location.pathname === item.url ? "main-nav__item_active" : "main-nav__item"} to={item.url}>
+                                {item.name}
                             </Link>
-                            {/* <Link className={window.location.pathname === '/new-arrivals' ? "main-nav__item_active" : "main-nav__item"} to="/new-arrivals" >
-                                {t('shared.header.newArrivals')}
-                            </Link> */}
-                            <Link className={window.location.pathname === '/list/laptops' ? "main-nav__item_active" : "main-nav__item"} to="/list/laptops">
-                                Laptops
-                            </Link>
-                            <Link className={window.location.pathname === '/list/controllers' ? "main-nav__item_active" : "main-nav__item"} to="/list/controllers">
-                                Controllers
-                            </Link>
-                            <Link className={window.location.pathname === '/list/desktops' ? "main-nav__item_active" : "main-nav__item"} to="/list/desktops">
-                                Desktops
-                            </Link>
-                            <Link className={window.location.pathname === '/list/mobiles' ? "main-nav__item_active" : "main-nav__item"} to="/list/mobiles">
-                                Mobiles
-                            </Link>
-                            <Link className={window.location.pathname === '/list/monitors' ? "main-nav__item_active" : "main-nav__item"} to="/list/monitors">
-                                Monitors
-                            </Link>
-                            <div className="main-nav__actions">
-                                <Link className="main-nav__item" to="/profile">
-                                    Profile
-                                </Link>
-                                <button className="u-empty main-nav__item">
-                                    Logout
-                                </button>
-                            </div>
-                            <button className="u-empty btn-close" onClick={this.toggleClass}>
-                                <Close />
-                            </button>
-                        </nav>
-                        <nav className="secondary-nav">
-                            {/* {loggedIn && <Link to="/profile"><UserPortrait {...profile} /></Link>} */}
-                            {/* {loggedIn ? <div className="secondary-nav__login" onClick={this.onClickLogout}>{t('shared.header.logout')}</div>
+                        )
+                    })}
+                    <div className="main-nav__actions">
+                        <Link className="main-nav__item" to="/profile">
+                            Profile
+                        </Link>
+                        <button className="u-empty main-nav__item">
+                            Logout
+                        </button>
+                    </div>
+                    <button className="u-empty btn-close" onClick={this.toggleClass}>
+                        <Close />
+                    </button>
+                </nav>
+                <nav className="secondary-nav">
+                    {/* {loggedIn && <Link to="/profile"><UserPortrait {...profile} /></Link>} */}
+                    {/* {loggedIn ? <div className="secondary-nav__login" onClick={this.onClickLogout}>{t('shared.header.logout')}</div>
                                 : <div className="secondary-nav__login" onClick={this.onClickLogIn}>{t('shared.header.login')}</div>} */}
-                            {/* {loggedIn && <Link className="secondary-nav__cart" to="/shopping-cart">
+                    {/* {loggedIn && <Link className="secondary-nav__cart" to="/shopping-cart">
                                 <Cart />
                                 <div className="secondary-nav__cart-number">
                                     {this.props.quantity}
                                 </div>
                             </Link>} */}
-                            {/* <button className="u-empty" onClick={this.toggleClass}>
+                    {/* <button className="u-empty" onClick={this.toggleClass}>
                                 <Hamburger />
                             </button> */}
-                        </nav>
-                        {/* {this.state.ismodalopened ?
+                </nav>
+                {/* {this.state.ismodalopened ?
                             <Login UseB2C={this.state.UseB2C} toggleModalClass={this.state.ismodalopened} onClickClose={this.onClickClose} />
                             : null} */}
-                    </header>
-            //     )}
-            // </NamespacesConsumer>
+            </header>
+
         );
     }
 }

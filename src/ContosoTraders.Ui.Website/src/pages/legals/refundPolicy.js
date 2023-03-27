@@ -1,5 +1,5 @@
 import React from 'react';
-import Breadcrump from '../../components/breadcrumb.js'
+import Breadcrump from '../../components/breadcrumb/breadcrumb'
 import { useLocation } from 'react-router-dom';
 const RefundPolicy = (props) => {
     const location = useLocation();
