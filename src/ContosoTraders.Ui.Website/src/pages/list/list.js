@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import React from "react";
 import { OfferBanner, ListGrid, ListAside } from "./components";
-import Breadcrump  from "../../components/breadcrumb";
+import Breadcrump  from "../../components/breadcrumb/breadcrumb";
 import { useLocation } from "react-router-dom";
 
 const List = ({ typesList, brandsList, onFilterChecked, productsList, loggedIn }) => {

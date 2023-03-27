@@ -22,17 +22,17 @@ function Gridsection() {
       <div className="ProductSection">
         <div className="productgrid">
           <Grid container spacing={4}>
-            <Grid item xs={5}>
+            <Grid item lg={5} md={4} xs={12} className="lapsecimage-top">
               <img
                 src={laptopgirl}
                 className="lapsecimage"
                 alt="girl with laptop"
               />
             </Grid>
-            <Grid item xs={7}>
+            <Grid item lg={7} md={8} xs={12} className="img-class">
               <Grid container spacing={4}>
                 <Grid container item xs={12} spacing={4}>
-                  <Grid item xs={6}>
+                  <Grid item lg={6} sm={6} md={6} xs={12}>
                     <Card className="cardlap">
                       <CardActionArea onClick={() => startShopping()}>
                         <img
@@ -49,7 +49,7 @@ function Gridsection() {
                       </CardContent>
                     </Card>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item lg={6} sm={6} md={6} xs={12}>
                     <Card className="cardlap">
                       <CardActionArea onClick={() => startShopping()}>
                         <img
@@ -68,7 +68,7 @@ function Gridsection() {
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={4}>
-                  <Grid item xs={6}>
+                  <Grid item lg={6} sm={6} md={6} xs={12}>
                     <Card className="cardlap">
                       <CardActionArea onClick={() => startShopping()}>
                         <img
@@ -85,7 +85,7 @@ function Gridsection() {
                       </CardContent>
                     </Card>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item lg={6} sm={6} md={6} xs={12}>
                     <Card className="cardlap">
                       <CardActionArea onClick={() => startShopping()}>
                         <img

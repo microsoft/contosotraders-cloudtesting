@@ -1,0 +1,44 @@
+.slidesection {
+    margin-right: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.slideimagelist {
+    flex-direction: row-reverse;
+
+    .imgdiv.active {
+        border: 2px solid #2874F0;
+    }
+
+    .imgdiv {
+        width: 100px;
+        height: 100px;
+        margin: 4px 0;
+    }
+}
+
+.slideimage {
+    width: 100%;
+}
+
+.chevron_prevbtn {
+    margin-bottom: 8px;
+}
+
+.chevron_nextbtn {
+    margin-top: 10px;
+}
+
+.chevron_btn {
+    width: 100px;
+    height: 38px;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 1px solid #2F4B66 !important;
+    border-radius: 2px;
+    opacity: 1;
+}
+
+.chevron_btn.disabled {
+    border: 1px solid #e5e5e5 !important;
+}

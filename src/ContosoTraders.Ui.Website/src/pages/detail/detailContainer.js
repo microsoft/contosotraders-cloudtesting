@@ -8,7 +8,7 @@ import { LoadingSpinner } from "../../shared";
 // import Detail from "./detail";
 import { CartService, ProductService } from '../../services';
 import ProductDetails from "./productdetails";
-import Breadcrump from "../../components/breadcrumb";
+import Breadcrump from "../../components/breadcrumb/breadcrumb";
 import { useParams } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
 // import Slider from "../home/components/slider/slider";
@@ -19,7 +19,7 @@ import { Alert, Snackbar } from "@mui/material";
         const [detailProduct,setDetailProduct] = React.useState({})
         const [loadingRelated,setLoadingRelated] = React.useState(null)
         const [loading,setLoading] = React.useState(true)
-        const [alert,setAlert] = React.useState({open:false,type:'',message:''})
+        const [alert,setAlert] = React.useState({open:false,type:'error',message:''})
         const relatedDetailProducts = []
         // useEffect(() => {
         //     await getDetailPageData(productId);
@@ -69,7 +69,7 @@ import { Alert, Snackbar } from "@mui/material";
             //     this.setState({ relatedDetailProducts, loadingRelated: false });
             // }, 2000);
     
-            props.sumProductInState();
+            // props.sumProductInState();
         }
     
         const showSuccesMessage = (data) => {
@@ -92,7 +92,7 @@ import { Alert, Snackbar } from "@mui/material";
             // });
         }
         const handleClose = () => {
-            setAlert({open:false,type:'',message:''})
+            setAlert({open:false,type:'error',message:''})
         }
         const { loggedIn } = props.userInfo
         return (
