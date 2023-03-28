@@ -71,7 +71,7 @@ function Cart(props) {
               </Grid>
             </Grid>
           }
-          {cartItems.length > 0 && <div>
+          {cartItems.length > 0 && <div className="cart-header d-none d-lg-block d-md-block">
             <Grid container>
               <Grid item xs={12} container className="CartHeadings">
                 <Grid item xs={1}>
@@ -96,10 +96,10 @@ function Cart(props) {
           {cartItems.map((item) => (
             <div>
               <Grid container className="allProductlist">
-                <Grid item xs={1}>
+                <Grid item lg={1} md={1} sm={8} xs={12}>
                   <img src={item.imageUrl} className="imagesection" alt="" />
                 </Grid>
-                <Grid item xs={11} className="CartProducts">
+                <Grid item lg={11} md={11} xs={12} className="CartProducts">
                   <Grid item xs={12} className="Productname">
                     {item.name}
                   </Grid>
@@ -107,25 +107,25 @@ function Cart(props) {
                     Price / Unit : ${item.price.toFixed(2)}
                   </Grid>
                   <Grid item xs={12} container className="align-items-center">
-                    <Grid item xs={2} className="Productqty">
+                    <Grid item lg={2} md={2} xs={6} className="Productqty">
                       Qty&nbsp;&nbsp;
                       <QuantityPicker max={10} min={1} detailProduct={item} token={props.userInfo.token} getCartItems={getCartItems} page="cart" />
                     </Grid>
-                    <Grid item xs={2} className="Productprice">
-                      ${item.price.toFixed(2)}
+                    <Grid item lg={2} md={2} xs={12} className="Productprice">
+                      <b className="cart-hidden-detail mt-2 mb-2 mr-2 d-lg-none  d-inline-block">Price : </b>${item.price.toFixed(2)}
                     </Grid>
-                    <Grid item xs={2} className="Productprice">
-                      {item.quantity}
+                    <Grid item lg={2} md={2} xs={12} className="Productprice">
+                      <b className="cart-hidden-detail mt-2 mb-2 mr-2 d-lg-none  d-inline-block">Qty : </b>{item.quantity}
                     </Grid>
-                    <Grid item xs={2} className="Productprice">
-                      ${(item.price * item.quantity).toFixed(2)}
+                    <Grid item lg={2} md={2} xs={12} className="Productprice">
+                      <b className="cart-hidden-detail mt-2 mb-2 mr-2 d-lg-none  d-inline-block">Subtotal : </b>${(item.price * item.quantity).toFixed(2)}
                     </Grid>
-                    <Grid item xs={2} className="Productlinks">
+                    {/* <Grid item lg={2} md={2} xs={6} className="Productlinks">
                       <Link to="#" className="wishlistlink">
                         Move to wishlist
                       </Link>
-                    </Grid>
-                    <Grid item xs={2} className="Productlinks">
+                    </Grid> */}
+                    <Grid item lg={2} md={2} xs={12} className="Productlinks">
                       <Link to="#" className="removelink" onClick={() => removeFromCart(item)}>
                         Remove
                       </Link>
@@ -139,7 +139,7 @@ function Cart(props) {
 
           {cartItems.length > 0 && <div>
             <Grid container className="couponOrderSection">
-              <Grid item xs={4}>
+              <Grid item lg={4} md={5} xs={12}>
                 <Grid container>
                   <Grid item xs={12}>
                     <h2 className="CouponHeading "> Coupons </h2>
@@ -175,8 +175,8 @@ function Cart(props) {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={3}></Grid>
-              <Grid item xs={5}>
+              <Grid item lg={3} md={2} className="d-none d-lg-block d-md-block"></Grid>
+              <Grid item lg={5} md={5} xs={12}>
                 <Grid container>
                   <Grid item xs={12} className="CouponHeading ">
                     Order Summary <hr style={{ margin: '8px 0 18px 0' }} />

@@ -25,6 +25,13 @@ import controllersImg from '../../assets/images/original/Contoso_Assets/Mega_men
 import desktopsImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/desktops_icon.svg';
 import mobilesImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/mobiles_icon.svg';
 import monitorImg from '../../assets/images/original/Contoso_Assets/Mega_menu_dropdown_assets/monitor_icon.svg';
+import ProfileIcon from '../../assets/images/original/Contoso_Assets/Icons/profile_icon.svg'
+import BagIcon from '../../assets/images/original/Contoso_Assets/Icons/cart_icon.svg'
+import logout_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/logout_icon.svg";
+import { Badge, IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import LoginIcon from '@mui/icons-material/Login';
+
 class Header extends Component {
     constructor() {
         super();
@@ -142,7 +149,7 @@ class Header extends Component {
             ]
         }
         // const { profile } = this.state;
-        // const { loggedIn } = this.props.userInfo;
+        const { loggedIn } = this.props.userInfo;
         return (
             <header className="header">
                 <Categories categories={categories} />
@@ -170,18 +177,54 @@ class Header extends Component {
                     </button>
                 </nav>
                 <nav className="secondary-nav">
-                    {/* {loggedIn && <Link to="/profile"><UserPortrait {...profile} /></Link>} */}
-                    {/* {loggedIn ? <div className="secondary-nav__login" onClick={this.onClickLogout}>{t('shared.header.logout')}</div>
-                                : <div className="secondary-nav__login" onClick={this.onClickLogIn}>{t('shared.header.login')}</div>} */}
-                    {/* {loggedIn && <Link className="secondary-nav__cart" to="/shopping-cart">
-                                <Cart />
-                                <div className="secondary-nav__cart-number">
-                                    {this.props.quantity}
-                                </div>
-                            </Link>} */}
-                    {/* <button className="u-empty" onClick={this.toggleClass}>
-                                <Hamburger />
-                            </button> */}
+                    {loggedIn && <Link to="/profile/personal">
+                        <IconButton
+                            className='iconButton'
+                            // edge="end"
+                            aria-label="account of current user"
+                            aria-haspopup="true"
+                            //   onClick={handleProfileMenuOpen}
+                            color="inherit"
+                        >
+                            <img src={ProfileIcon} alt="iconimage" />
+                        </IconButton>
+                    </Link>}
+                    {loggedIn ? <div className="secondary-nav__login" onClick={this.onClickLogout}>
+                        <IconButton className='iconButton' aria-label="cart" color="inherit" >
+                            <img src={logout_icon} alt="iconimage" />
+                        </IconButton>
+                    </div>
+                        : <div className="secondary-nav__login" onClick={this.onClickLogIn}>
+                            <IconButton
+                                aria-label="show more"
+                                aria-haspopup="true"
+                                // onClick={handleMobileMenuOpen}
+                                color="inherit"
+                            >
+                                <LoginIcon />
+                            </IconButton>
+                        </div>}
+                    {loggedIn && <Link className="secondary-nav__cart" to="/cart">
+                        <IconButton className='iconButton' aria-label="cart" color="inherit" >
+                            <Badge badgeContent={1} color="secondary" overlap="rectangular">
+                                <img src={BagIcon} alt="iconimage" />
+                            </Badge>
+                        </IconButton>
+                        {/* <div className="secondary-nav__cart-number">
+                            {this.props.quantity}
+                        </div> */}
+                    </Link>}
+                    <button className="u-empty" onClick={this.toggleClass}>
+                        {/* <Hamburger /> */}
+                        <IconButton
+                            aria-label="show more"
+                            aria-haspopup="true"
+                            // onClick={handleMobileMenuOpen}
+                            color="inherit"
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </button>
                 </nav>
                 {/* {this.state.ismodalopened ?
                             <Login UseB2C={this.state.UseB2C} toggleModalClass={this.state.ismodalopened} onClickClose={this.onClickClose} />

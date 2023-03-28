@@ -136,7 +136,7 @@ function ProductDetails(props) {
   return (
     <div className="ProductDetailsSection">
       <Grid container>
-        <Grid item xs={6} className="ProductImagesSection">
+        <Grid item lg={6} md={5} xs={12} className="ProductImagesSection">
           <Grid container>
             {/* <Grid item xs={2}>
              <ImageSlider setSliderImg={setSliderImg} sliderImg={sliderImg} imageUrl={imageUrl}/>
@@ -146,7 +146,7 @@ function ProductDetails(props) {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item lg={6} md={7} xs={12}>
           <div className="detailsection">
             <div className="productdetailName">
               {name ? name : 'Xbox Series S Fortnite & Rocket League Bundle 512 GB (White)'}
