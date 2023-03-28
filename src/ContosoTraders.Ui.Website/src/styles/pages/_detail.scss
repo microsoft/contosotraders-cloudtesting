@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------------
 // This file contains styles that are specific to the Detail Products page.
 // -----------------------------------------------------------------------------
-.ProductContainerSection{
+.ProductContainerSectionMain{
   margin-top:192px;
+  .ProductContainerSection{
   padding: 0px 70px;
   .ProductDetailsSection {
     font-family: "Inter";
@@ -304,4 +305,5 @@
             font-size: 1.25rem;
         }
     }
+}
 }

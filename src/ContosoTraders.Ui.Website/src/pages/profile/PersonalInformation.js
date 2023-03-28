@@ -8,7 +8,6 @@ import {
   Avatar,
   FormLabel,
   InputAdornment,
-  FormControl,
   TextField,
 } from "@mui/material";
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
@@ -152,12 +151,12 @@ const MyOrders = () => {
                 </Button>
               </div>
             </div>
-            <Grid item xs={6} container>
-              <div className="field-container">
-                <FormControl>
-                  <Grid container>
-                    <Grid item xs={5}>
-                      <FormLabel htmlFor="first-name" className="form-labels">
+            <Grid container spacing={2}>
+              {/* <div className="field-container"> */}
+                {/* <FormControl className="d-flex flex-lg-row flex-xs-column flex-md-fill flex-xs-fill"> */}
+                  <Grid item lg={7} className="profile-div d-flex flex-lg-row flex-xs-column flex-xs-fill">
+                    <div className="mr-2 profile-name flex-fill">
+                      <FormLabel htmlFor="first-name" className="form-labels d-block">
                         First Name
                       </FormLabel>
                       <TextField
@@ -174,13 +173,12 @@ const MyOrders = () => {
                         }
                         style={{
                           margin: "7px 0px 16px 0px",
-                          width: "286px",
                         }}
                       />
-                    </Grid>
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={5}>
-                      <FormLabel htmlFor="last-name" className="form-labels">
+                    </div>
+                    {/* <Grid item xs={1}></Grid> */}
+                    <div className="profile-name flex-fill">
+                      <FormLabel htmlFor="last-name" className="form-labels d-block">
                         Last Name
                       </FormLabel>
                       <TextField
@@ -197,19 +195,16 @@ const MyOrders = () => {
                         }
                         style={{
                           margin: "7px 0px 16px 0px",
-                          width: "286px",
                         }}
                       />
-                    </Grid>
-                    <Grid item xs={2} />
+                    </div>
+                    {/* <Grid item xs={2} /> */}
                   </Grid>
-                  <Grid container className="email-container">
-                    <Grid item xs={12}>
-                      <FormLabel htmlFor="email" className="form-labels">
+                  {/* <Grid container className="email-container"> */}
+                    <Grid item lg={7} xs={12}>
+                      <FormLabel htmlFor="email" className="form-labels d-block">
                         Email
                       </FormLabel>
-                    </Grid>
-                    <Grid item xs={12}>
                       <TextField
                         id="email"
                         className="formtextfields"
@@ -221,24 +216,24 @@ const MyOrders = () => {
                         helperText={formik.touched.email && formik.errors.email}
                       />
                     </Grid>
-                  </Grid>
-                  <Grid container className="mobile-container">
+                  {/* </Grid> */}
+                  {/* <Grid container className="mobile-container"> */}
                     <Grid item xs={12}>
                       <FormLabel htmlFor="mobile" className="form-labels">
                         Mobile Number
                       </FormLabel>
                     </Grid>
-                    <Grid item>
+                    <Grid item lg={1} sm={2} xs={3} className="pt-0">
                       <TextField
                         id="mobilecode"
                         className="formtextfields"
                         style={{
                           marginRight: "8px",
-                          width: "80px",
+                          // width: "80px",
                         }}
                       />
                     </Grid>
-                    <Grid item>
+                    <Grid item lg={6} sm={10} xs={9} className="pt-0">
                       <TextField
                         id="mobile"
                         className="formtextfields"
@@ -251,19 +246,16 @@ const MyOrders = () => {
                           formik.touched.mobile && formik.errors.mobile
                         }
                         style={{
-                          width: "502px",
+                          // width: "auto",
                         }}
                       />
                     </Grid>
-                  </Grid>
-                  <Grid container className="dob-container">
-                    <Grid item xs={5}>
+                  {/* </Grid> */}
+                  {/* <Grid container className="dob-container"> */}
+                    <Grid item lg={7} xs={12}>
                       <FormLabel htmlFor="dob" className="form-labels">
                         Date of birth
                       </FormLabel>
-                    </Grid>
-                    <Grid item xs={7} />
-                    <Grid item xs={12}>
                       <TextField
                         id="dob"
                         type="date"
@@ -283,9 +275,9 @@ const MyOrders = () => {
                         }}
                       ></TextField>
                     </Grid>
-                  </Grid>
-                </FormControl>
-              </div>
+                  {/* </Grid> */}
+                {/* </FormControl> */}
+              {/* </div> */}
             </Grid>
             <Grid item xs={6}></Grid>
             <Grid item xs={12} className="passworddiv">
@@ -294,19 +286,16 @@ const MyOrders = () => {
               </Typography>
               <Divider style={{ marginTop: "8px", marginBottom: "30px" }} />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <div className="passwd-section">
                 <Grid container className="currentpassword-container">
-                  <Grid item xs={5}>
+                  <Grid item lg={7} xs={12}>
                     <FormLabel
                       htmlFor="current-password"
                       className="form-labels"
                     >
                       Current Password
                     </FormLabel>
-                  </Grid>
-                  <Grid item xs={7} />
-                  <Grid item xs={12}>
                     <TextField
                       type="password"
                       id="currentpassword"
@@ -326,13 +315,10 @@ const MyOrders = () => {
                 </Grid>
 
                 <Grid container className="newpassword-container">
-                  <Grid item xs={5}>
-                    <FormLabel htmlFor="new-password" className="form-labels">
+                  <Grid item lg={7} xs={12}>
+                    <FormLabel htmlFor="new-password" className="form-labels d-block">
                       New Password
                     </FormLabel>
-                  </Grid>
-                  <Grid item xs={7} />
-                  <Grid item xs={12}>
                     <TextField
                       type={values.showPassword ? "text" : "password"}
                       id="newpassword"
@@ -368,16 +354,13 @@ const MyOrders = () => {
                 </Grid>
 
                 <Grid container className="confirmpassword-container">
-                  <Grid item xs={5}>
+                  <Grid item lg={7} xs={12}>
                     <FormLabel
                       htmlFor="confirm-password"
                       style={{ color: "#000" }}
                     >
                       Confirm Password
                     </FormLabel>
-                  </Grid>
-                  <Grid item xs={7} />
-                  <Grid item xs={12}>
                     <TextField
                       type="password"
                       id="confirmpassword"

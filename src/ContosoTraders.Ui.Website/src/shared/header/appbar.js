@@ -11,6 +11,7 @@ import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+// import MenuIcon from '@mui/icons-material/Menu';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Logo from '../../assets/images/logo-horizontal.svg';
@@ -288,7 +289,7 @@ function TopAppBar(props) {
             :null}
           </div>
           <div style={{flexGrow:1}} />
-          {loggedIn && loggedIn ? <div className={`sectionDesktop`}>
+          {loggedIn && loggedIn ? <div className={`sectionDesktop d-none d-md-block`}>
             {/* <IconButton className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={()=>redirectUrl('/wishlist')}>
               <Badge badgeContent={0} color="secondary" overlap="rectangular">
                 <img src={WishlistIcon} alt="iconimage" />
@@ -321,7 +322,7 @@ function TopAppBar(props) {
             <FormControlLabel labelPlacement="start" control={<Switch aria-label='theme change' id="theme" color="primary" onChange={(e) => props.handleThemeChange(e.target.checked)}/>} label="Dark Mode" />
           </FormGroup> */}
           {/* #endregion */}
-          {/* <div className={`sectionMobile`}>
+          {/* <div className={`sectionMobile d-block d-md-none d-lg-none`}>
             <IconButton
               aria-label="show more"
               aria-controls={mobileMenuId}
@@ -329,7 +330,7 @@ function TopAppBar(props) {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <MenuIcon />
             </IconButton>
           </div> */}
         </Toolbar>

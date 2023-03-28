@@ -18,14 +18,14 @@ const List = ({ typesList, brandsList, onFilterChecked, productsList, loggedIn }
             <div className="list__content">
                 <h6 className="mainHeading">{currentCategory}</h6>
                 <Grid container>
-                    <Grid item xs={3}>
+                    <Grid item lg={3} xs={12}>
                         <ListAside
                             onFilterChecked={onFilterChecked}
                             typesList={typesList}
                             brandsList={brandsList}
                         />
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid item lg={9} xs={12}>
                         <ListGrid productsList={productsList} />
                     </Grid>
                 </Grid>

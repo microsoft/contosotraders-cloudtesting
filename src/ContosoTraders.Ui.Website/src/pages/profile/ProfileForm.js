@@ -50,7 +50,7 @@ const FormProfile = (props) => {
       </div>
       <div>
         <Grid container>
-          <Grid item xs={3}>
+          <Grid item lg={3} md={4} xs={12}>
             <div className="sidebar-container">
               <div
                 className={`${
@@ -130,7 +130,7 @@ const FormProfile = (props) => {
               </div> */}
             </div>
           </Grid>
-          <Grid item xs={9} container>
+          <Grid item lg={9} md={8} xs={12} container>
             {activeState === "personal" ?  <PersonalInformation/> : null}
             {/* {activeState === "orders" ?  <MyOrders/> : null}
             {activeState === "wishlist" ?  <MyWishlist/> : null}

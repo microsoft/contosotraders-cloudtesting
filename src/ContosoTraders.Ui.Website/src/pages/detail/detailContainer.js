@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { connect } from 'react-redux';
 
 // import { animateScroll as scroll } from "react-scroll";
@@ -96,9 +96,9 @@ import { Alert, Snackbar } from "@mui/material";
         }
         const { loggedIn } = props.userInfo
         return (
-            <Fragment>
+            <div className="ProductContainerSectionMain">
+                <Breadcrump parentPath='Products' parentUrl="/list/all-products" currentPath={detailProduct.name} />
                 <div className="ProductContainerSection">
-                    <Breadcrump parentPath='Products' parentUrl="/list/all-products" currentPath={detailProduct.name} />
                     <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleClose}>
                         <Alert onClose={handleClose} severity={alert.type} sx={{ width: '100%' }}>
                             {alert.message}
@@ -117,7 +117,7 @@ import { Alert, Snackbar } from "@mui/material";
                 <hr className="mb-3"/>
                 {/* <Slider firstHeading="Explore Awesome Products" secondHeading="RECOMMENDED FOR YOU"/> */}
                 {/* <hr className="m-0" /> */}
-            </Fragment>
+            </div>
         );
     }
 // }

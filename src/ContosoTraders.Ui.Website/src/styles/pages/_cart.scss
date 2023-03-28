@@ -43,6 +43,9 @@
   .CartSection .pincodesearchbar {
     min-width: 100%;
     padding: 14px 0 16px 0;
+    &:focus{
+      border: none
+    }
     input::placeholder{
       font-size: 14px;
       font-family: 'Inter';
