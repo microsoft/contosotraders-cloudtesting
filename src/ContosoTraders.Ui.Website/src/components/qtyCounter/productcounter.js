@@ -6,15 +6,27 @@ export default class QuantityPicker extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { value: this.props.min, disableDec: true, disableInc: false }
+    this.state = { value: this.props.qty || this.props.min, disableDec: true, disableInc: false }
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
   }
   //cartItemId
 
+  componentDidMount() {
+    if(this.state.value > this.props.min){
+      this.setState({ disableDec: false });
+    }
+    if(this.state.value >= this.props.max){
+      this.setState({ disableInc: true });
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.value !== this.state.value && this.props?.page === 'cart') {
       this.updateProductQty()
+    }
+    if (this.props.setQty) {
+      this.props.setQty(this.state.value)
     }
   }
 

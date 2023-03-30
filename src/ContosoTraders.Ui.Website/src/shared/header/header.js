@@ -142,7 +142,7 @@ class Header extends Component {
                     img: mobilesImg
                 },
                 {
-                    name: 'Monitor',
+                    name: 'Monitors',
                     url: '/list/monitors',
                     img: monitorImg
                 },
