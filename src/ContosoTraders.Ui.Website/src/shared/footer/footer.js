@@ -42,7 +42,7 @@ const Footer = () => {
     return (
         <div className='footer-container'>
             <Grid container className='footer-grid-container'>
-                <Grid item xs={4} className='section-1'>
+                <Grid item lg={4} xs={12} className='section-1'>
                     <Link to="/">
                         <Logo />
                     </Link>
@@ -51,7 +51,7 @@ const Footer = () => {
                         We pride ourselves on providing high-quality products at competitive prices, and our dedicated customer service team is always on hand to assist with any queries or concerns. With fast and secure shipping, convenient payment options, and a user-friendly interface, Contoso Traders is the perfect place to shop for all your electronic needs.
                     </p>
                 </Grid>
-                <Grid item xs={2} className='section-2'>
+                <Grid item lg={2} md={3} sm={6} xs={12} className='section-2'>
                     <ul>
                         <li className='main-element'>Catalog</li>
                         <li className='list-element'><Link to='/list/all-products'>All Products</Link></li>
@@ -60,7 +60,7 @@ const Footer = () => {
                         <li className='list-element'><Link to='/list/monitors'>Monitors</Link></li>
                     </ul>
                 </Grid>
-                <Grid item xs={2} className='section-3'>
+                <Grid item lg={2} md={3} sm={6} xs={12} className='section-3'>
                     <ul>
                         <li className='main-element'>Legals</li>
                         <li className='list-element'><Link to='/terms-of-service'>Terms of Service</Link></li>
@@ -68,7 +68,7 @@ const Footer = () => {
                         <li className='list-element'><Link to='/about-us'>About Us</Link></li>
                     </ul>
                 </Grid>
-                <Grid item xs={4} className='section-4'>
+                <Grid item lg={4} md={6} xs={12} className='section-4'>
                     <ul>
                         <li className='main-element'>Contact us</li>
                         <li className='list-element'>Feel free to get in touch with us via phone or send us a message</li>

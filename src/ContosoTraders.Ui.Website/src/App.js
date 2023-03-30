@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { connect } from "react-redux";
 // import { CartService } from "./services";
@@ -25,11 +25,35 @@ import {
 import "./main.scss";
 import warningIcon from './assets/images/original/Contoso_Assets/Icons/information_icon.svg'
 import { useLocation } from "react-router-dom";
+import { CartService } from "./services";
+import { getCartQuantity } from "./actions/actions";
 
 
   function App(props) {
     const location = useLocation()
-    const quantity = null;
+    // const [shoppingCart, setShoppingCart] = useState([])
+    const [quantity, setQuantity] = useState(0)
+
+    const getQuantity = useCallback(async() => {
+      if (props.userInfo.token) {
+        const shoppingcart = await CartService.getShoppingCart(
+          props.userInfo.token
+        );
+        // if (shoppingcart) {
+        //   setShoppingCart({ shoppingcart });
+        // }
+        let quantity = shoppingcart.length;
+        setQuantity(quantity);
+      }
+    },[props.userInfo.token])
+    
+    useEffect(() => {
+      props.getCartQuantity(quantity)
+    }, [quantity, props]);
+
+    React.useEffect(() => {
+      getQuantity()
+    }, [getQuantity]);
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
@@ -40,9 +64,9 @@ import { useLocation } from "react-router-dom";
         <Fragment>
           <div className="mainHeader">
             <HeaderMessage type="warning" icon={warningIcon} message="This Is A Demo Store For Testing Purposes — No Orders Shall Be Fulfilled."/>
-            <Appbar quantity={quantity} />
+            <Appbar />
             {location.pathname === '/' || location.pathname === '/new-arrivals' ?
-              <Header quantity={quantity} />
+              <Header/>
               :
               <div id="box"></div>}
           </div>
@@ -90,5 +114,7 @@ const mapStateToProps = (state) => {
     theme :  state.login.theme
   }
 };
-
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  getCartQuantity: (value) => dispatch(getCartQuantity(value)),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,43 +1,21 @@
 // -----------------------------------------------------------------------------
 // This file contains styles that are specific to the User Profile page.
 // -----------------------------------------------------------------------------
-.ProfileSection {
-    margin-top: 137px;
-    padding: 0 70px 0 70px;
-    .breadcrump{
-        padding: 24px 0;
-        p{
-          margin: 0;
-          text-transform: capitalize;
-          span{
-              font-family: 'Heebo';
-              font-size: 14px;
-              font-weight: 400;
-          }
-          b{
-              font-family: 'Heebo';
-              font-size: 14px;
-              font-weight: 500;
-              a{
-                color: #000000;
-                &:hover{
-                  color: #2974f0 !important;
-                  text-decoration: none;
-                }
-              }
-          }
+.profileMain {
+    margin-top: 192px;
+    .ProfileSection{
+        padding: 0 70px 0 70px;
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .MuiInputAdornment-positionStart{
+            position: absolute;
+            right: 15px;
         }
     }
-    input[type='date']::-webkit-calendar-picker-indicator {
-        display: none;
-        -webkit-appearance: none;
-        appearance: none;
-    }
-    .MuiInputAdornment-positionStart{
-        position: absolute;
-        right: 0;
-    }
-  }
+  
   .ProfileSection .topHeaderSection {
     display: flex;
     align-items: center;
@@ -186,7 +164,7 @@
   }
   
   .ProfileSection .formtextfields{
-  
+    width: 100%;
     background: #F1F1F1;
     border-radius: 4px;
     border: 0;
@@ -200,7 +178,7 @@
   }
   .ProfileSection .MuiInputBase-input {
     padding: 17px 23px 14px 16px;
-    width: 550px;
+    // width: 550px;
   }
   .ProfileSection .newpassword-container .MuiInputBase-input {
     padding: 17px 23px 14px 16px;
@@ -210,12 +188,10 @@
   .ProfileSection .MuiFormHelperText-root.Mui-error {
     color: red;
     background: white;
+    margin: 0;
   }
   .ProfileSection .formsection{
     width: 100%;
-  }
-  .ProfileSection .newpassfield{
-    width: 590px;
   }
   .ProfileSection .passworddiv{
     margin-top: 50px;
@@ -227,6 +203,7 @@
     width:24px;
     height: 24px;
   }
+}
 .profile {
     margin-bottom: 11.375rem;
     margin-left: auto;

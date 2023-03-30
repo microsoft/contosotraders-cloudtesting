@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import Breadcrumb from '../../components/breadcrumb';
+import Breadcrumb from '../../components/breadcrumb/breadcrumb';
 function Wishlist(props) {
     const location = useLocation();
     const currentCategory = location.pathname.split("/").pop().replaceAll('-',' ');
