@@ -133,6 +133,7 @@ function ProductDetails(props) {
     }
   ]
 
+
   return (
     <div className="ProductDetailsSection">
       <Grid container>
@@ -178,7 +179,7 @@ function ProductDetails(props) {
             <div>
               <span className="prodattributes">Quantity</span>
               <span>
-                <QuantityPicker min={1} max={10} />
+                <QuantityPicker min={1} max={10} setQty={props.setQty}/>
               </span>
             </div>
             <div>

@@ -22,6 +22,8 @@ function DetailContainer(props) {
     const [loading, setLoading] = React.useState(true)
     const [alert, setAlert] = React.useState({ open: false, type: 'error', message: '' })
     const relatedDetailProducts = []
+    const [qty, setQty] = React.useState(1);
+
     // useEffect(() => {
     //     await getDetailPageData(productId);
     // }, []);
@@ -57,6 +59,7 @@ function DetailContainer(props) {
 
         var tempProps = JSON.parse(JSON.stringify(detailProduct));
         tempProps.email = email;
+        tempProps.quantity = qty;
         Object.preventExtensions(tempProps);
 
         setDetailProduct(tempProps)
@@ -126,6 +129,7 @@ function DetailContainer(props) {
                         addProductToCart={addProductToCart}
                         loadingRelated={loadingRelated}
                         relatedDetailProducts={relatedDetailProducts}
+                        setQty={setQty}
                     />
                 }
             </div>

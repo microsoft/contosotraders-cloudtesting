@@ -112,7 +112,7 @@ function Cart(props) {
                   <Grid item xs={12} container className="align-items-center">
                     <Grid item lg={2} md={2} xs={12} className="Productqty">
                       Qty&nbsp;&nbsp;
-                      <QuantityPicker max={10} min={1} detailProduct={item} token={props.userInfo.token} getCartItems={getCartItems} page="cart" />
+                      <QuantityPicker max={10} min={1} qty={item.quantity} detailProduct={item} token={props.userInfo.token} getCartItems={getCartItems} page="cart" />
                     </Grid>
                     <Grid item lg={2} md={2} xs={12} className="Productprice">
                       <b className="cart-hidden-detail mt-2 mb-2 mr-2 d-lg-none  d-inline-block">Price : </b>${item.price.toFixed(2)}
