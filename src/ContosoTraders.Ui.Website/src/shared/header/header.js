@@ -165,10 +165,10 @@ class Header extends Component {
                         )
                     })}
                     <div className="main-nav__actions">
-                        <Link className="main-nav__item" to="/profile">
+                        <Link className="main-nav__item" to="/profile/personal">
                             Profile
                         </Link>
-                        <button className="u-empty main-nav__item">
+                        <button className="u-empty main-nav__item" onClick={this.onClickLogout}>
                             Logout
                         </button>
                     </div>
@@ -189,6 +189,13 @@ class Header extends Component {
                             <img src={ProfileIcon} alt="iconimage" />
                         </IconButton>
                     </Link>}
+                    {loggedIn && <Link className="secondary-nav__cart" to="/cart">
+                        <IconButton className='iconButton' aria-label="cart" color="inherit" >
+                            <Badge badgeContent={this.props.quantity} color="secondary" overlap="rectangular">
+                                <img src={BagIcon} alt="iconimage" />
+                            </Badge>
+                        </IconButton>
+                    </Link>}
                     {loggedIn ? <div className="secondary-nav__login" onClick={this.onClickLogout}>
                         <IconButton className='iconButton' aria-label="cart" color="inherit" >
                             <img src={logout_icon} alt="iconimage" />
@@ -204,16 +211,6 @@ class Header extends Component {
                                 <LoginIcon />
                             </IconButton>
                         </div>}
-                    {loggedIn && <Link className="secondary-nav__cart" to="/cart">
-                        <IconButton className='iconButton' aria-label="cart" color="inherit" >
-                            <Badge badgeContent={1} color="secondary" overlap="rectangular">
-                                <img src={BagIcon} alt="iconimage" />
-                            </Badge>
-                        </IconButton>
-                        {/* <div className="secondary-nav__cart-number">
-                            {this.props.quantity}
-                        </div> */}
-                    </Link>}
                     <button className="u-empty" onClick={this.toggleClass}>
                         {/* <Hamburger /> */}
                         <IconButton
@@ -235,6 +232,12 @@ class Header extends Component {
     }
 }
 
-const mapStateToProps = state => state.login;
+const mapStateToProps = (state) => { 
+    return { 
+      userInfo : state.login.userInfo,
+      theme :  state.login.theme,
+      quantity : state.login.quantity
+    }
+  };
 
 export default (connect(mapStateToProps, { clickAction, submitAction })(Header));

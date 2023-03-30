@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { CartService } from "../../services";
 import { connect } from "react-redux";
 import LoadingSpinner from "../../components/loadingSpinner/loadingSpinner";
+import { getCartQuantity } from "../../actions/actions";
 function Cart(props) {
   const textInput = React.useRef(null);
   const [coupon, setCoupon] = React.useState('DISCOUNT10');
@@ -28,7 +29,9 @@ function Cart(props) {
     }
     setCartItems(items)
     setLoading(false)
-  }, [props.userInfo.token])
+    let quantity = items.length;
+    props.getCartQuantity(quantity)
+  }, [props])
 
   useEffect(() => {
     getCartItems()
@@ -107,7 +110,7 @@ function Cart(props) {
                     Price / Unit : ${item.price.toFixed(2)}
                   </Grid>
                   <Grid item xs={12} container className="align-items-center">
-                    <Grid item lg={2} md={2} xs={6} className="Productqty">
+                    <Grid item lg={2} md={2} xs={12} className="Productqty">
                       Qty&nbsp;&nbsp;
                       <QuantityPicker max={10} min={1} detailProduct={item} token={props.userInfo.token} getCartItems={getCartItems} page="cart" />
                     </Grid>
@@ -225,5 +228,7 @@ function Cart(props) {
   );
 }
 const mapStateToProps = state => state.login;
-
-export default connect(mapStateToProps)(Cart);
+const mapDispatchToProps = (dispatch) => ({
+  getCartQuantity: (value) => dispatch(getCartQuantity(value)),
+})
+export default connect(mapStateToProps,mapDispatchToProps)(Cart);

@@ -7,7 +7,7 @@
         display: none !important;
     }
     .mainHeader .categories-btn{
-        min-width: 160px !important;
+        min-width: 135px !important;
         padding: 0;
     }
     .appbar .iconButton{
@@ -15,6 +15,34 @@
     }
     .secondary-nav{
         justify-content: end;
+        align-items: center;
+    }
+    .header{
+        justify-content: space-between;
+    }
+    .mainHeader{
+        position: relative;
+    }
+    .appbar .searchbar-upload{
+        padding: 15px;
+    }
+    .appbar .searchbar-upload .upload p {
+        font-size: 12px;
+    }
+    .appbar .searchbar-upload .upload > div {
+        min-height: 160px;
+    }
+    .main-nav__item{
+        font-weight: bold !important;
+    }
+    .home, .list, .ProductContainerSectionMain, .profileMain, .CartMain, .refund-policy-section{
+        margin-top: 0;
+    }
+}
+@media screen and (min-width : 320px) and (max-width : 340px) {
+    .secondary-nav {
+        justify-content: start;
+        align-items: center;
     }
 }
 //mobile
@@ -35,9 +63,10 @@
         position: absolute;
         z-index: 1;
         right: 0;
+        top: 15px;
     }
     .header{
-        padding: 15px !important;
+        padding: 0 15px !important;
         justify-content: space-between;
     }
     // Corosel start
@@ -104,8 +133,11 @@
     .list .offer_banner{
         margin: 0;
     }
-    .list__content, .profileMain .ProfileSection, .ProductContainerSectionMain .ProductContainerSection, .CartMain .CartSection {
+    .list__content, .profileMain .ProfileSection, .ProductContainerSectionMain .ProductContainerSection, .CartMain .CartSection, .refund-policy-section .refund-policy {
         padding: 0 35px;
+    }
+    .refund-policy-section .refund-policy{
+        text-align: justify;
     }
     .list__content .list__aside{
         padding-right: 0;
@@ -149,6 +181,16 @@
     }
     .CartMain .CartSection .Productlinks{
         margin: 20px 0;
+    }
+    .CartMain .CartSection .Productprice{
+        display: flex;
+        align-items: center;
+    }
+    .CartMain .CartSection .Productprice > b{
+        margin-right: auto !important;
+    }
+    .CartMain .CartSection .Productname, .CartMain .CartSection .Producttype, .CartMain .CartSection .CartProducts .Productqty{
+        text-align: center;
     }
 }
 @media screen and (min-width : 420px) and (max-width : 767px) {
