@@ -30,11 +30,11 @@
 
 .main-nav {
     align-items: center;
-    background-color: $color-background-primary;
+    background-color: #eaf2f9;//$color-background-primary;
     display: flex;
     height: 100vh;
     order: 2;
-    overflow: hidden;
+    // overflow: hidden;
     // padding: $space-m;
     position: fixed;
     right: -100vw;
@@ -71,7 +71,7 @@
     &.is-opened {
         flex-direction: column;
         padding-top: $padding-xl;
-        overflow: hidden;
+        overflow: auto;
         right: 0;
 
         .main-nav__item {
@@ -93,8 +93,8 @@
         .btn-close {
           display: block;
           position: absolute;
-          right: 2rem;
-          top: 1.5rem;
+          right: 20px;
+          top: 20px;
 
           svg {
             fill: $color-svg-tertiary;

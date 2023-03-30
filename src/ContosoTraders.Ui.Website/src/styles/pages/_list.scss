@@ -2,31 +2,7 @@
 // This file contains styles that are specific to the Products List pages.
 // -----------------------------------------------------------------------------
 .list {
-    margin-top: 137px;
-    .breadcrump{
-        padding: 24px 70px;
-        p{
-            margin: 0;
-            text-transform: capitalize;
-            span{
-                font-family: 'Heebo';
-                font-size: 14px;
-                font-weight: 400;
-            }
-            b{
-                font-family: 'Heebo';
-                font-size: 14px;
-                font-weight: 500;
-                a{
-                    color: #000000;
-                    &:hover{
-                      color: #2974f0 !important;
-                      text-decoration: none;
-                    }
-                }
-            }
-        }
-    }
+    margin-top: 192px;
     &__content {
         padding: 0 70px;
         .mainHeading{

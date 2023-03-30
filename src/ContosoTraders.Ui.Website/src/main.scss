@@ -30,15 +30,15 @@
 
 // 5. Components
 @import
-    'styles/components/loading-spinner',
-    'styles/components/btn',
-    'styles/components/cards',
-    'styles/components/banner',
-    'styles/components/filter',
-    'styles/components/coupon',
-    'styles/components/upload-input',
-    'styles/components/alert',
-    'styles/components/manager';
+    'components/loadingSpinner/loadingspinner',
+    'components/components/btn',
+    'components/components/cards',
+    'components/components/banner',
+    'components/components/filter',
+    'components/components/coupon',
+    'components/components/upload-input',
+    'components/components/alert',
+    'components/components/manager';
 
 // 6. Page-specific styles
 @import
@@ -51,4 +51,5 @@
     'styles/pages/shoppingcart',
     'styles/pages/arrivals',
     'styles/pages/cart',
-    'styles/pages/login-modal';
+    'styles/pages/login-modal',
+    'styles/pages/responsive/responsive';

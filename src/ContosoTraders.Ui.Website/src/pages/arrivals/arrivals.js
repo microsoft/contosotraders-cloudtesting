@@ -1,6 +1,6 @@
 import React from "react";
 
-import Slider from "../home/components/slider/slider";
+import Slider from "../../components/slider/slider";
 import Banner from "../home/components/Banner/banner";
 const Arrivals = (props) => {
     return (

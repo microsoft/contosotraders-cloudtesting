@@ -16,7 +16,7 @@ import personal_information_icon from "../../assets/images/original/Contoso_Asse
 // import my_wishlist_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_wishlist_icon.svg";
 // import my_address_book_icons from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_address_book_icons.svg";
 // import my_orders_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/my_orders_icon.svg";
-import Breadcrump from "../../components/breadcrumb";
+import Breadcrump from "../../components/breadcrumb/breadcrumb";
 import AuthB2CService from "../../services/authB2CService";
 
 const FormProfile = (props) => {
@@ -33,8 +33,9 @@ const FormProfile = (props) => {
     props.history.push('/');
   }
   return (
+    <div className="profileMain">
+    <Breadcrump currentPath="My Profile"/>
     <div className="ProfileSection">
-      <Breadcrump currentPath="My Profile"/>
       <div className="topHeaderSection">
         <h2 className="myprofileHeader"> My Profile</h2>
         <Button
@@ -49,7 +50,7 @@ const FormProfile = (props) => {
       </div>
       <div>
         <Grid container>
-          <Grid item xs={3}>
+          <Grid item lg={3} md={4} xs={12}>
             <div className="sidebar-container">
               <div
                 className={`${
@@ -129,7 +130,7 @@ const FormProfile = (props) => {
               </div> */}
             </div>
           </Grid>
-          <Grid item xs={9} container>
+          <Grid item lg={9} md={8} xs={12} container>
             {activeState === "personal" ?  <PersonalInformation/> : null}
             {/* {activeState === "orders" ?  <MyOrders/> : null}
             {activeState === "wishlist" ?  <MyWishlist/> : null}
@@ -137,6 +138,7 @@ const FormProfile = (props) => {
           </Grid>
         </Grid>
       </div>
+    </div>
     </div>
   );
 };

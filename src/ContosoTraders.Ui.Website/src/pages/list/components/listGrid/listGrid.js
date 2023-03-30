@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import React from "react";
-import Product from "../../../home/components/product/product";
+import Product from "../../../../components/productCard/product";
 // import MinimalSelect from "../../../../components/minimalselect";
 // import Pagination from '@material-ui/lab/Pagination';
 
@@ -15,7 +15,7 @@ const ListGrid = ({ productsList }) => {
             {productsList && productsList.length > 0 ?
             <Grid container justifyContent="center" spacing={3}>             
                 {productsList && productsList.map((productsListInfo, index) => {
-                    return <Grid key={index} item xs={4}><Product {...productsListInfo} key={index} /></Grid>;
+                    return <Grid key={index} item lg={4} sm={6} xs={12}><Product {...productsListInfo} key={index} /></Grid>;
                 })}
             </Grid>
             :

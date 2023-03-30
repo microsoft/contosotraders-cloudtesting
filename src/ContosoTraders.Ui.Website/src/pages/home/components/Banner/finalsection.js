@@ -12,9 +12,9 @@ const Finalsection = () => {
   return (
     <div className='final-section-container'>
       <Grid container className='grid-container'>
-        <Grid item xs={7}>
+        <Grid item lg={7} md={7} xs={12}>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item lg={5} md={5} xs={12}>
           <div className='content-section'>
             <h1>Play more, wait less</h1>
             <p>A streamlined dashboard designed to get you into the games and entertainment you love quickly.</p>

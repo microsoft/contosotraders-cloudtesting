@@ -52,10 +52,10 @@ const CartService = {
             "name": detailProduct.name,
             "price": finalPrice,
             "imageUrl": detailProduct.imageUrl,
-            "quantity": 1,
+            "quantity": detailProduct.quantity,
         };
 
-        const dataToPost = { detailProduct: productInfo, qty: 1 };
+        const dataToPost = { detailProduct: productInfo, qty: detailProduct.quantity };
 
         if (ConfigService._byPassShoppingCartApi) {
             await ConfigService._shoppingCartDao.addItem(dataToPost);
