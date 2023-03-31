@@ -1792,7 +1792,7 @@ resource chaosvmss 'Microsoft.Chaos/targets@2022-10-01-preview' = {
 // capability: vmss shutdown (version 2.0)
 resource chaosvmsscapability 'Microsoft.Chaos/targets/capabilities@2022-10-01-preview' = {
   #disable-next-line use-parent-property // @TODO: This looks like a schema bug in chaos studio resource definition
-  name: 'Microsoft-AzureVirtualMachineScaleSet/Shutdown-2.0'
+  name: 'Microsoft-VirtualMachineScaleSet/Shutdown-2.0'
   scope: aks
 }
 
