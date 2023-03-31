@@ -1333,9 +1333,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-11-02-preview' = {
   name: aksClusterName
   location: resourceLocation
   tags: resourceTags
-  sku: {
-    name: ''
-  }
   identity: {
     type: 'SystemAssigned'
   }
