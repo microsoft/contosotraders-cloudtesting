@@ -5,7 +5,7 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import description_off from "../../assets/images/original/Contoso_Assets/product_page_assets/description_off_icon.svg";
 import description_on from "../../assets/images/original/Contoso_Assets/product_page_assets/description_on_icon.svg";
-import './_accordion.scss'
+import './accordion.scss'
 
 const Accordion = (MuiAccordion);
 

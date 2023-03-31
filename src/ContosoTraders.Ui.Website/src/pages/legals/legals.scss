@@ -1,0 +1,36 @@
+
+.refund-policy-section{
+    margin-top: 192px;
+    font-family: var(--fontInter);
+  }
+  .refund-policy-section .refund-policy{
+    padding: 0 70px 36px 70px;
+  }
+  .refund-policy .mainHeading{
+    margin: 24px 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .refund-policy .subHeading{
+    margin-top: 35px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .refund-policy .paragraph{
+    font-size: 14px;
+  }
+  .refund-policy .paragraph b{
+    font-family: var(--fontInter);
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 2;
+  }
+
+  //Responsive
+  @media screen and (min-width : 320px) and (max-width : 767px) {
+    .refund-policy-section .refund-policy{
+        padding: 0 35px;
+        text-align: justify;
+    }
+}
+  

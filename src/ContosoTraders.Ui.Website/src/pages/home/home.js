@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 
-import { Hero } from "./components";
+import Hero from "./sections/hero";
 import { ConfigService } from './../../services'
 // import Slider from "./components/slider/slider";
 // import Banner from "./components/Banner/banner";
-import Gridsection from "./components/Banner/gridsection";
-import Finalsection from "./components/Banner/finalsection";
+import Gridsection from "./sections/gridSection";
+import Finalsection from "./sections/finalSection";
 const Home = ({ recommendedProducts, popularProducts, loggedIn }) => {
     // const [customerSupportEnabled, setCustomerSupportEnabled] = useState(false);
     useEffect(() => {

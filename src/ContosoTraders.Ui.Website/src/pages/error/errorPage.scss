@@ -1,0 +1,72 @@
+.ErrorSection {
+    margin-top: 137px;
+    background-image: url("../../assets/images/original/Contoso_Assets/404_page_assets/background_image.jpg");
+    background-size: cover;
+    padding-top: 130px;
+    padding-bottom: 130px;
+
+}
+
+.ErrorSection .errorpic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ErrorSection .errorsecHeading {
+    text-align: center;
+
+    font-weight: 600;
+    font-family: "Poppins";
+    font-size: 32px;
+    letter-spacing: -1.53px;
+    color: #111111;
+    margin-bottom: 0 !important;
+
+}
+
+.ErrorSection .errorsecContent {
+    text-align: center;
+
+    font-family: "Poppins";
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: -0.86px;
+    color: #111111;
+    margin: 8px auto 30px auto !important;
+}
+
+.ErrorSection .RefreshButton {
+    border: 1px solid #2874f0;
+    border-radius: 8px;
+    font-family: "Inter";
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0px;
+    color: #2874f0;
+    text-transform: capitalize;
+    box-shadow: none !important;
+    width: 134px;
+    height: 36px;
+    margin-right: 16px;
+}
+
+.ErrorSection .GoHomeButton {
+    background: #2874f0 0% 0% no-repeat padding-box;
+    border-radius: 8px;
+    text-transform: capitalize;
+    box-shadow: none !important;
+    text-align: center;
+
+    font-family: "Inter";
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0px;
+    color: #ffffff;
+    width: 200px;
+    height: 36px;
+}
+
+.ErrorSection .ButtonSection {
+    text-align: center;
+}

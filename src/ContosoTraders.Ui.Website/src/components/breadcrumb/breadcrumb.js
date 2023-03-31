@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import './_breadcrumb.scss'
+import './breadcrumb.scss'
 
 const Breadcrumb = ({parentPath, parentUrl, currentPath}) => {
     return(

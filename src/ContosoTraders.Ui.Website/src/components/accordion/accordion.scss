@@ -1,0 +1,72 @@
+.MuiAccordion-root{
+    .panelSummary {
+      flex-direction: row-reverse;
+      // padding-left: 10px;
+      border: 1px solid rgba(112, 112, 112, 0.1);
+      border-right: none;
+      border-left: none;
+      .MuiAccordionSummary-content{
+        font-family: 'Heebo';
+        font-size: 16px;
+        margin: 23.5px 0;
+        margin-left: 10px;
+      }
+      .MuiIconButton-root{
+        padding-left: 0;
+      }
+    }
+    &:last-child{
+      .panelSummary {
+        border-bottom: none;
+      }
+    }
+  }
+.AccordionSection {
+    margin-top: 30px;
+    font-family: "Heebo";
+    font-size: 14px;
+    font-weight: 400;
+    .detail_feature p{
+      font-family: 'Heebo';
+      font-size: 14px;
+    }
+  }
+  
+  .AccordionSection .descpAttributes {
+    letter-spacing: -0.25px;
+    color: #878787;
+    opacity: 0.92;
+    padding: 4px 16px 4px 8px;
+  }
+  .AccordionSection .descpDetails {
+    letter-spacing: -0.25px;
+    color: #000000;
+    opacity: 0.92;
+    padding: 4px 0;
+  }
+  .AccordionSection .descpicon {
+    margin-right: 16px;
+  }
+  .AccordionSection .Offerslist {
+    margin-bottom: 11px;
+  }
+  .AccordionSection .discount_icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 12px;
+  }
+  .AccordionSection .TClink {
+    text-decoration: none;
+    color: #2874f0;
+  }
+  
+  .MuiAccordionSummary-expandIcon.Mui-expanded {
+    transform: none !important;
+  }
+
+  //Responsive
+  @media screen and (min-width : 320px) and (max-width : 767px) {
+    .AccordionSection{
+        margin-top: 0;
+    }
+  }
