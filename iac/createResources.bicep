@@ -1783,7 +1783,7 @@ resource chaosaksexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
 
 // target: vmss
 resource chaosvmss 'Microsoft.Chaos/targets@2022-10-01-preview' = {
-  name: 'Microsoft-AzureVirtualMachineScaleSet'
+  name: 'Microsoft-VirtualMachineScaleSet'
   location: resourceLocation
   scope: aks
   properties: {}
