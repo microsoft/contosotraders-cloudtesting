@@ -1329,10 +1329,13 @@ resource dashboard 'Microsoft.Portal/dashboards@2020-09-01-preview' = {
 // aks cluster
 //
 
-resource aks 'Microsoft.ContainerService/managedClusters@2022-10-02-preview' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2022-11-02-preview' = {
   name: aksClusterName
   location: resourceLocation
   tags: resourceTags
+  sku: {
+    name: ''
+  }
   identity: {
     type: 'SystemAssigned'
   }
@@ -1347,6 +1350,11 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-10-02-preview' = {
         vmSize: 'standard_b2s'
         osType: 'Linux'
         mode: 'System'
+        availabilityZones: [
+          '1'
+          '2'
+          '3'
+        ]
       }
     ]
     linuxProfile: {
