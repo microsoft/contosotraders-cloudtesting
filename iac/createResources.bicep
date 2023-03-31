@@ -167,6 +167,8 @@ var chaosKvExperimentName = '${prefixHyphenated}-chaos-kv-experiment${suffix}'
 var chaosKvSelectorId = guid('${prefixHyphenated}-chaos-kv-selector-id${suffix}')
 var chaosAksExperimentName = '${prefixHyphenated}-chaos-aks-experiment${suffix}'
 var chaosAksSelectorId = guid('${prefixHyphenated}-chaos-aks-selector-id${suffix}')
+var chaosVmssExperimentName = '${prefixHyphenated}-chaos-aks-experiment${suffix}'
+var chaosVmssSelectorId = guid('${prefixHyphenated}-chaos-aks-selector-id${suffix}')
 
 // tags
 var resourceTags = {
@@ -1768,6 +1770,70 @@ resource chaosaksexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
                   {
                     key: 'jsonSpec'
                     value: '{\'action\':\'pod-failure\',\'mode\':\'all\',\'duration\':\'3s\',\'selector\':{\'namespaces\':[\'default\'],\'labelSelectors\':{\'app\':\'contoso-traders-products\'}}}'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+
+// target: vmss
+resource chaosvmss 'Microsoft.Chaos/targets@2022-10-01-preview' = {
+  name: 'Microsoft-AzureVirtualMachineScaleSet'
+  location: resourceLocation
+  scope: aks
+  properties: {}
+}
+
+// capability: vmss shutdown (version 2.0)
+resource chaosvmsscapability 'Microsoft.Chaos/targets/capabilities@2022-10-01-preview' = {
+  #disable-next-line use-parent-property // @TODO: This looks like a schema bug in chaos studio resource definition
+  name: 'Microsoft-AzureVirtualMachineScaleSet/Shutdown-2.0'
+  scope: aks
+}
+
+// chaos experiment: vmss shutdown (version 2.0)
+resource chaosvmssexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
+  name: chaosVmssExperimentName
+  location: resourceLocation
+  tags: resourceTags
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    selectors: [
+      {
+        type: 'List'
+        id: chaosVmssSelectorId
+        targets: [
+          {
+            id: chaosvmss.id
+            type: 'ChaosTarget'
+          }
+        ]
+      }
+    ]
+    startOnCreation: false
+    steps: [
+      {
+        name: 'step1'
+        branches: [
+          {
+            name: 'branch1'
+            actions: [
+              {
+                name: 'urn:csci:microsoft:azureVirtualMachineScaleSet:shutdown/2.0'
+                type: 'continuous'
+                selectorId: chaosVmssSelectorId
+                duration: 'PT5M'
+                parameters: [
+                  {
+                    key: 'jsonSpec'
+                    value: '{\'duration\':\'PT5M\'}'
                   }
                 ]
               }
