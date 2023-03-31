@@ -1,0 +1,120 @@
+.courousel-style {
+  padding: 70px;
+  /* background-image: url('./assets/images/original/Contoso_Assets/Slider_section/hero_banner.jpg') !important; */
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: right !important;
+  min-height: 594px;
+}
+
+.courousel-style {
+  background: #000000;
+  cursor: pointer;
+  max-height: 594px;
+}
+
+.courousel-style .BannerGrid {
+  padding: 100px 100px 0px 70px !important;
+}
+
+.courousel-style .BannerHeading {
+  text-align: left;
+  font-family: var(--fontInter) !important;
+  font-size: 34px !important;
+  font-weight: 600 !important;
+  color: #ffffff;
+  opacity: 1;
+  padding: 0px 0px 0px 0px;
+  text-transform: capitalize;
+  letter-spacing: -1.59px;
+}
+
+.courousel-style .BannerContent {
+  text-align: left;
+  font-family: var(--fontHeebo) !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  color: #ffffff;
+  opacity: 1;
+  padding: 16px 0px 0px 0px;
+}
+
+.courousel-style .BannerButtondiv {
+  padding: 50px 0px 0px 0px;
+}
+
+.courousel-style .BannerButton1 {
+  max-width: 142px;
+  opacity: 1;
+  width: 224px;
+  height: 49px;
+  background: #2874F0 !important;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-family: var(--fontHeebo) !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: #ffffff;
+  box-shadow: none;
+  margin-right: 24px;
+}
+
+.courousel-style .BannerButton2 {
+  max-width: 142px;
+  opacity: 1;
+  width: 224px;
+  height: 49px;
+  background: #666666 !important;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-family: var(--fontHeebo) !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.36px;
+  color: #ffffff;
+  box-shadow: none;
+  margin-right: 24px;
+}
+
+/* Button test */
+button[aria-label='Previous'] {
+  margin-left: 70px;
+}
+
+button[aria-label='Next'] {
+  margin-right: 70px;
+}
+
+@media screen and (min-width : 320px) and (max-width : 767px) {
+  button[aria-label='Previous'] {
+    margin-left: 10px;
+  }
+
+  button[aria-label='Next'] {
+    margin-right: 10px;
+  }
+
+  .courousel-style {
+    padding: 70px 50px 0 80px;
+    background-position: unset !important;
+
+    .BannerGrid {
+      padding: 0 !important;
+    }
+
+    .BannerButton1,
+    .BannerButton2 {
+      margin: 10px 0 10px 0 !important;
+      width: 100% !important;
+      max-width: unset !important;
+    }
+  }
+}
+
+@media screen and (min-width : 768px) and (max-width : 899px) {
+  .courousel-style {
+      background-position: unset !important;
+  }
+}

@@ -1,6 +1,6 @@
 import { Grid, TextField, InputAdornment, Button, Chip } from "@mui/material";
 import React, { useCallback, useEffect } from "react";
-import QuantityPicker from "../../components/qtyCounter/productcounter";
+import QuantityPicker from "../../components/quantityCounter/productCounter";
 import Breadcrumb from "../../components/breadcrumb/breadcrumb";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { CartService } from "../../services";

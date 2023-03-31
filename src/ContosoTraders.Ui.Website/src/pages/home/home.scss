@@ -1,0 +1,479 @@
+// -----------------------------------------------------------------------------
+// This file contains styles that are specific to the Home page.
+// -----------------------------------------------------------------------------
+$dark: #000;
+$light: #fff;
+$darkgrey: #222222;
+
+.home {
+    margin-top: 250px;
+
+    .upload {
+        margin-bottom: 1.5rem;
+    }
+}
+
+.light {
+    .mainHeader {
+        background-color: $light;
+        color: $dark !important;
+    }
+}
+
+.dark {
+    background-color: $darkgrey !important;
+    color: $light !important;
+
+    .appbar .iconButton {
+        background: #fff;
+        color: #000;
+        width: 40px;
+        height: 40px;
+        margin: 0 10px;
+    }
+
+    a {
+        color: $light !important;
+    }
+
+    .mainHeader {
+        background-color: $dark !important;
+        color: $light !important;
+
+        header {
+            background-color: $dark !important;
+        }
+    }
+
+    .home {
+        .LaptopSection {
+            background-color: $dark !important;
+            color: $light !important;
+
+            .LapHeadmain {
+                color: $light !important;
+            }
+
+            .LapHead {
+                color: $light !important;
+            }
+
+            .LaptopButton {
+                color: $light !important;
+                border: 1px solid $light !important;
+            }
+        }
+
+        .final-section-container {
+            background-color: #e6e6e6;
+        }
+    }
+
+    .footer-container {
+        background-color: $dark !important;
+        color: $light !important;
+
+        p,
+        li,
+        .logo-div,
+        .list-element {
+            color: $light !important;
+        }
+    }
+}
+
+
+/* **************LAPTOPS DESIGNED BY MICROSOFT******************* */
+.BannerSection {
+    background-image: url("../../assets/images/original/Contoso_Assets/Static_Banner/banner_controller.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    cursor: pointer;
+    min-height: 540px;
+}
+
+.BannerSection .BannerHeading {
+    font-family: 'Poppins' !important;
+    font-weight: 600 !important;
+    font-size: 34px !important;
+    text-align: left;
+    letter-spacing: -1.59px;
+    color: #ffffff;
+    opacity: 1;
+    padding: 144px 0px 0px 150px;
+}
+
+.BannerSection .BannerContent {
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) 16px/24px "Poppins";
+    color: var(--unnamed-color-ffffff);
+    text-align: left;
+    font: normal normal normal 16px/24px "Poppins";
+    letter-spacing: -0.75px;
+    color: #ffffff;
+    opacity: 1;
+    padding: 16px 0px 0px 150px;
+}
+
+.BannerSection .BannerButtondiv {
+    padding: 50px 0px 0px 150px;
+}
+
+.BannerSection .BannerButton {
+    border: 1px solid #ffffff;
+    opacity: 1;
+    width: 224px;
+    height: 56px;
+    background: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    color: var(--unnamed-color-ffffff);
+    text-align: center;
+    font: normal normal medium 16px/21px var(--fontRoboto);
+    letter-spacing: -0.36px;
+    color: #ffffff;
+
+    font-weight: 500;
+    font-size: 16px;
+    font-family: var(--fontRoboto);
+}
+
+
+
+/* laptopsection starts -------------------------------------------------------------------------------------------------------------*/
+
+.LaptopSection {
+    background-color: #fff;
+}
+
+.LaptopSection .LapHeadSection {
+    padding-top: 70px;
+}
+
+.LaptopSection .LapHead {
+    text-align: center;
+    font: normal normal normal 14px/21px "Poppins";
+    letter-spacing: -0.31px;
+    color: #302f2f;
+    text-transform: uppercase;
+    opacity: 1;
+}
+
+.LaptopSection .LapHeadmain {
+    text-align: center;
+    font: normal normal 600 30px/56px "Poppins";
+    letter-spacing: -1.44px;
+    color: #111111;
+    text-transform: uppercase;
+    opacity: 1;
+}
+
+.LaptopSection .ProductSection {
+    margin: 30px 38px 70px 70px;
+}
+
+.LaptopSection .LaptopButtondiv {
+    text-align: center;
+    padding: 50px 0px 50px 0px;
+}
+
+.LaptopSection .LaptopButton {
+    text-align: center;
+    font: normal normal medium 16px/21px var(--fontRoboto);
+    letter-spacing: -0.36px;
+    color: #302f2f;
+    text-transform: capitalize;
+    opacity: 1;
+    border: 1px solid #707070;
+    cursor: pointer;
+    width: 224px;
+    height: 56px;
+    background: none;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: var(--fontRoboto);
+}
+
+.LaptopSection .lapsecimage {
+    border-radius: 5px;
+    width: 100%;
+}
+
+.LaptopSection .laptopimage {
+    width: 75%;
+    margin: auto;
+    display: block;
+    margin-bottom: 23px !important;
+    margin-top: 2px !important;
+}
+
+.LaptopSection .cardlap {
+    min-height: 310px;
+    background: #f5f5f580 0% 0% no-repeat padding-box;
+    border-radius: 10px;
+    opacity: 1;
+    box-shadow: none;
+}
+
+.LaptopSection .Productname {
+    font: var(--unnamed-font-style-normal) normal 600 18px / var(--unnamed-line-spacing-32) "Poppins";
+    text-align: center;
+    font: normal normal 600 18px/32px "Poppins";
+    letter-spacing: -0.33px;
+    color: #111111;
+    opacity: 1;
+    margin-right: auto;
+}
+
+.LaptopSection .price {
+    text-align: center;
+    letter-spacing: -0.36px;
+    color: #2874f0;
+    opacity: 1;
+    background-color: white !important;
+    border-radius: 10px;
+
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border-radius: 17px;
+    width: 63px;
+    height: 34px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: "Poppins";
+}
+
+.LaptopSection .productdetails {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.LaptopSection .proddetails {
+    padding: 16px 30px;
+    box-shadow: none;
+}
+
+
+/* ************** */
+.final-section-container {
+    background-color: #80808030;
+    height: 800px;
+    background-image: url('../../assets/images/original/Contoso_Assets/5_Static_Banner/static_banner_2.jpg');
+    background-repeat: no-repeat;
+}
+
+.final-section-container .grid-container {
+    padding-top: 30px;
+}
+
+.final-section-container .image-section img {
+    min-height: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.final-section-container .content-section {
+    padding-top: 170px;
+    padding-right: 70px;
+}
+
+.final-section-container .content-section h1 {
+    font-family: 'Poppins' !important;
+    font-size: 34px !important;
+    color: #000000 !important;
+    font-weight: 600;
+    margin: 16px 0;
+}
+
+.final-section-container .content-section p {
+    font-family: 'Poppins' !important;
+    font-size: 16px !important;
+    color: #000000 !important;
+    font-weight: 400;
+}
+
+.final-section-container .start-btn {
+    text-align: center;
+    color: #302f2f;
+    text-transform: capitalize;
+    opacity: 1;
+    border: 1px solid #707070;
+    cursor: pointer;
+    width: 224px;
+    height: 56px;
+    background: none;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: var(--fontRoboto) !important;
+    margin-top: 34px;
+}
+
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the hero component of the site/application.
+// -----------------------------------------------------------------------------
+.hero {
+    position: relative;
+
+    // svg {
+    //     fill: $color-svg-tertiary;
+    // }
+
+    &__banner {
+        align-items: center;
+        background-color: $color-background-primary;
+        box-shadow: $box-shadow-m;
+        color: $color-text-tertiary;
+        display: flex;
+        height: 3rem;
+        justify-content: center;
+        left: 50%;
+        margin-top: -$margin-s;
+        position: absolute;
+        top: -$margin-s;
+        transform: translateX(-50%) translateZ(0);
+        width: 100%;
+        z-index: $z-index-s;
+
+        @media (min-width: $mq-s) {
+            width: 22.5rem;
+        }
+
+        @media (min-width: $mq-m) {
+            height: 4rem;
+            width: 63.5rem;
+        }
+
+        @media (min-width: $mq-m) {
+            width: 94%;
+        }
+
+        @media (min-width: $mq-l) {
+            width: 80%;
+        }
+    }
+
+    &__inner {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        width: 16rem;
+
+        @media (min-width: $mq-s) {
+            width: 17.8125rem;
+        }
+
+        @media (min-width: $mq-m) {
+            width: 18rem;
+        }
+
+        @media (min-width: $mq-l) {
+            width: 22rem;
+        }
+
+        & svg:nth-child(1) {
+            display: none;
+
+            @media (min-width: 23.625em) {
+                display: block;
+            }
+        }
+    }
+
+    &__text {
+        white-space: nowrap;
+
+        &--strong {
+            @include text-s();
+            font-weight: $font-weight-medium;
+        }
+
+        &--light {
+            @include text-xs();
+            font-weight: $font-weight-light;
+        }
+    }
+    &__image-wrapper {
+        background-color: $color-background-primary;
+    }
+
+    &__image {
+        height: 20rem;
+        background-size: cover;
+        opacity: 0;
+        transition: opacity $animation-speed-regular $animation-type-regular;
+
+        @media (min-width: $mq-m) {
+            height: 38.5rem;
+        }
+    }
+
+    .u-fade-in {
+        opacity: 1;
+    }
+}
+
+//Responsive
+@media screen and (min-width : 320px) and (max-width : 767px) {
+    .final-section-container .content-section {
+        padding: 170px 30px 0 30px;
+    }
+
+    .final-section-container {
+        background-size: contain;
+        height: 600px;
+    }
+
+    .LaptopSection {
+        .img-class,
+        .lapsecimage-top {
+            padding-left: 0 !important;
+        }
+    }
+}
+
+@media screen and (min-width : 420px) and (max-width : 767px) {
+    .final-section-container .content-section {
+        padding: 350px 30px 0 30px;
+    }
+
+    .final-section-container {
+        background-size: contain;
+        height: 700px;
+    }
+}
+
+@media screen and (min-width : 900px) and (max-width : 1350px) {
+    .final-section-container {
+        background-position: bottom;
+    }
+}
+
+@media screen and (min-width : 768px) and (max-width : 899px) {
+    .LaptopSection {
+        .img-class,
+        .lapsecimage-top {
+            padding-left: 0 !important;
+        }
+    }
+
+    .final-section-container .content-section {
+        padding: 430px 30px 0 30px;
+    }
+
+    .final-section-container {
+        background-size: contain;
+        height: 800px;
+    }
+}
+
+@media screen and (max-width : 1350px) {
+    .LaptopSection .cardlap {
+        min-height: 256px;
+    }
+}

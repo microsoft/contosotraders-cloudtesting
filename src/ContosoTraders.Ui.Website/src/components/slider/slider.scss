@@ -1,0 +1,88 @@
+.slider-style {
+    padding: 0 70px;
+}
+
+.slider-style .productCard {
+    box-shadow: none !important;
+}
+
+.slider-style .productCard .MuiCardMedia-root {
+    width: auto !important;
+    height: 270px !important;
+    margin: auto;
+}
+
+.slider-style .productCard:hover {
+    box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.16) !important;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* product slider */
+.product-slider-corousel>div {
+    min-height: 454px;
+}
+
+.slider-section button[aria-label='Previous'] {
+    margin-left: 86px;
+}
+
+.slider-section button[aria-label='Next'] {
+    margin-right: 86px;
+}
+
+.slider-section .topSection {
+    display: flex;
+    margin-bottom: 30px;
+    align-items: center;
+    padding: 70px 70px 0 70px;
+}
+
+.slider-section .LapHeadSection {
+    margin-right: auto;
+}
+
+.slider-section .LapButtonSection {
+    display: flex;
+}
+
+.slider-section .MuiGrid-root {
+    overflow: hidden;
+}
+
+.slider-section .LapSectionContent>div {
+    width: calc(112% + 40px) !important;
+    flex-wrap: nowrap !important;
+}
+
+.slider-section .LapSectionContent .MuiCard-root {
+    margin: auto !important;
+}
+
+.slider-section .LapHead {
+    font: normal normal normal 14px/21px "Poppins";
+    letter-spacing: -0.31px;
+    color: #302f2f;
+    text-transform: capitalize;
+    opacity: 1;
+}
+
+.slider-section .LapHeadmain {
+    line-height: unset !important;
+    font: normal normal 600 25px/56px "Poppins";
+    color: #111111;
+    text-transform: uppercase;
+    opacity: 1;
+    margin-bottom: 0;
+}
+
+@media screen and (max-width : 1250px) {
+    .slider-style .LapSectionContent>div {
+        width: calc(100% + 40px) !important;
+    }
+
+    .slider-style .LapSectionContent>div>div:last-child {
+        display: none;
+    }
+}
