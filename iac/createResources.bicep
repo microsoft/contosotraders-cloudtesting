@@ -167,8 +167,8 @@ var chaosKvExperimentName = '${prefixHyphenated}-chaos-kv-experiment${suffix}'
 var chaosKvSelectorId = guid('${prefixHyphenated}-chaos-kv-selector-id${suffix}')
 var chaosAksExperimentName = '${prefixHyphenated}-chaos-aks-experiment${suffix}'
 var chaosAksSelectorId = guid('${prefixHyphenated}-chaos-aks-selector-id${suffix}')
-var chaosVmssExperimentName = '${prefixHyphenated}-chaos-aks-experiment${suffix}'
-var chaosVmssSelectorId = guid('${prefixHyphenated}-chaos-aks-selector-id${suffix}')
+var chaosVmssExperimentName = '${prefixHyphenated}-chaos-vmss-experiment${suffix}'
+var chaosVmssSelectorId = guid('${prefixHyphenated}-chaos-vmss-selector-id${suffix}')
 
 // tags
 var resourceTags = {
