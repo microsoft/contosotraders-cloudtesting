@@ -119,12 +119,8 @@ var cdnImagesEndpointName = '${prefixHyphenated}-images${suffix}'
 var cdnUiEndpointName = '${prefixHyphenated}-ui${suffix}'
 var cdnUi2EndpointName = '${prefixHyphenated}-ui2${suffix}'
 
-// redis cache
-var redisCacheName = '${prefixHyphenated}-cache${suffix}'
-
 // azure container registry
 var acrName = '${prefix}acr${suffix}'
-// var acrCartsApiRepositoryName = '${prefix}apicarts' // @TODO: unused, probably remove later
 
 // load testing service
 var loadTestSvcName = '${prefixHyphenated}-loadtest${suffix}'
@@ -1214,23 +1210,6 @@ resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-11-01-pre
         }
       }
     ]
-  }
-}
-
-//
-// redis cache
-//
-
-resource rediscache 'Microsoft.Cache/redis@2022-06-01' = {
-  name: redisCacheName
-  location: resourceLocation
-  tags: resourceTags
-  properties: {
-    sku: {
-      capacity: 0
-      family: 'C'
-      name: 'Basic'
-    }
   }
 }
 
