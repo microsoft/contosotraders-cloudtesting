@@ -1846,7 +1846,7 @@ resource chaosvmssexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = 
             name: 'branch1'
             actions: [
               {
-                name: 'urn:csci:microsoft:azureVirtualMachineScaleSet:shutdown/2.0'
+                name: 'urn:csci:microsoft:virtualMachineScaleSet:shutdown/2.0'
                 type: 'continuous'
                 selectorId: chaosVmssSelectorId
                 duration: 'PT5M'
