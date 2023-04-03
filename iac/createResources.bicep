@@ -1341,21 +1341,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-11-02-preview' = {
   properties: {
     dnsPrefix: aksClusterDnsPrefix
     nodeResourceGroup: aksClusterNodeResourceGroup
-    agentPoolProfiles: [
-      {
-        name: 'agentpool'
-        osDiskSizeGB: 0 // Specifying 0 will apply the default disk size for that agentVMSize.
-        count: 3
-        vmSize: 'standard_b2s'
-        osType: 'Linux'
-        mode: 'System'
-        availabilityZones: [
-          '1'
-          '2'
-          '3'
-        ]
-      }
-    ]
     linuxProfile: {
       adminUsername: aksLinuxAdminUsername
       ssh: {
@@ -1377,6 +1362,24 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-11-02-preview' = {
   }
 }
 
+resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2020-09-01' = {
+  parent: aks
+  name: 'agentpool'
+  properties: {
+    type: 'VirtualMachineScaleSets'
+    osDiskSizeGB: 0 // Specifying 0 will apply the default disk size for that agentVMSize.
+    count: 3
+    vmSize: 'standard_b2s'
+    osType: 'Linux'
+    mode: 'System'
+    availabilityZones: [
+      '1'
+      '2'
+      '3'
+    ]
+  }
+}
+
 resource aks_roledefinitionforchaosexp 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
   scope: aks
   // This is the Azure Kubernetes Service Cluster Admin Role
@@ -1389,6 +1392,23 @@ resource aks_roleassignmentforchaosexp 'Microsoft.Authorization/roleAssignments@
   name: guid(aks.id, chaosaksexperiment.id, aks_roledefinitionforchaosexp.id)
   properties: {
     roleDefinitionId: aks_roledefinitionforchaosexp.id
+    principalId: chaosaksexperiment.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+resource vmss_roledefinitionforchaosexp 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
+  scope: agentPool
+  // This is the Virtual Machine Contributor Role
+  // See https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#virtual-machine-contributor
+  name: '9980e02c-c2be-4d73-94e8-173b1dc7cf3c'
+}
+
+resource vmss_roleassignmentforchaosexp 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: agentPool
+  name: guid(agentPool.id, chaosaksexperiment.id, vmss_roledefinitionforchaosexp.id)
+  properties: {
+    roleDefinitionId: vmss_roledefinitionforchaosexp.id
     principalId: chaosaksexperiment.identity.principalId
     principalType: 'ServicePrincipal'
   }
@@ -1782,10 +1802,10 @@ resource chaosaksexperiment 'Microsoft.Chaos/experiments@2022-10-01-preview' = {
 }
 
 // target: vmss
+// BLOCKED: https://github.com/Azure/AKS/issues/3293
 resource chaosvmss 'Microsoft.Chaos/targets@2022-10-01-preview' = {
   name: 'Microsoft-VirtualMachineScaleSet'
-  location: resourceLocation
-  scope: aks
+  scope: agentPool.properties.vmssName
   properties: {}
 }
 
@@ -1793,7 +1813,7 @@ resource chaosvmss 'Microsoft.Chaos/targets@2022-10-01-preview' = {
 resource chaosvmsscapability 'Microsoft.Chaos/targets/capabilities@2022-10-01-preview' = {
   #disable-next-line use-parent-property // @TODO: This looks like a schema bug in chaos studio resource definition
   name: 'Microsoft-VirtualMachineScaleSet/Shutdown-2.0'
-  scope: aks
+  scope: agentPool
 }
 
 // chaos experiment: vmss shutdown (version 2.0)
