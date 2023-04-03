@@ -14,42 +14,27 @@
 // 3. Base stuff
 @import
     'styles/base/base',
-    'styles/base/fonts',
     'styles/base/typography',
     'styles/base/utilities';
-
-// 4. Layout-related sections
-@import
-    'styles/layout/header',
-    'styles/layout/hero',
-    'styles/layout/recommend',
-    'styles/layout/getapp',
-    'styles/layout/featured',
-    'styles/layout/footer';
 
 
 // 5. Components
 @import
-    'components/loadingSpinner/loadingspinner',
-    'components/components/btn',
-    'components/components/cards',
-    'components/components/banner',
-    'components/components/filter',
-    'components/components/coupon',
-    'components/components/upload-input',
-    'components/components/alert',
-    'components/components/manager';
+    'components/loadingSpinner/loadingSpinner',
+    'components/dropdowns/categories',
+    'components/corousel/corousel',
+    'components/header/header',
+    'components/quantityCounter/productCounter',
+    'components/imageSlider/imageSlider',
+    'components/footer/footer';
 
 // 6. Page-specific styles
 @import
-    'styles/pages/list',
-    'styles/pages/suggestedproductslist',
-    'styles/pages/home',
-    'styles/pages/mycoupons',
-    'styles/pages/detail',
-    'styles/pages/profile',
-    'styles/pages/shoppingcart',
-    'styles/pages/arrivals',
-    'styles/pages/cart',
-    'styles/pages/login-modal',
-    'styles/pages/responsive/responsive';
+    'pages/list/list',
+    'pages/home/home',
+    'pages/detail/detail',
+    'pages/profile/profile',
+    'pages/arrivals/arrivals',
+    'pages/cart/cart',
+    'pages/legals/legals',
+    'pages/error/errorPage';

@@ -1,7 +1,7 @@
 import React from "react";
 
 import Slider from "../../components/slider/slider";
-import Banner from "../home/components/Banner/banner";
+import Banner from "../home/sections/banner";
 const Arrivals = (props) => {
     return (
         <div className="arrivals">

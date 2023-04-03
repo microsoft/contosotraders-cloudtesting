@@ -1,0 +1,190 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the footer of the site/application.
+// -----------------------------------------------------------------------------
+.foo {
+    background-color: $color-background-medium;
+    display: flex;
+    flex-wrap: wrap;
+    padding: $padding-l;
+
+    &__content {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+
+        @media (min-width: $mq-s) {
+            width: $grid-max-width-s;
+        }
+
+        @media (min-width: $mq-m) {
+            width: $grid-max-width-m;
+        }
+
+        @media (min-width: $mq-l) {
+            width: $grid-max-width-l;
+        }
+
+        @media (min-width: $mq-xl) {
+            width: $grid-max-width-xl;
+        }
+    }
+
+    &__disclaimer {
+        margin-top: $margin-s;
+    }
+
+    &-text {
+        @include text-xs();
+        color: $color-text-primary;
+        margin-top: $margin-m;
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    svg {
+        fill: $color-primary;
+        display: block;
+        margin-bottom: $margin-m;
+    }
+
+    &__links {
+        margin-top: $margin-m;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        text-align: center;
+
+        @media (min-width: $mq-m) {
+            margin-top: $margin-s;
+            flex-direction: row;
+        }
+    }
+
+    &__link {
+        @include text-s();
+        color: $color-text-primary;
+        font-weight: $font-weight-medium;
+        white-space: nowrap;
+
+        &:not(:last-of-type) {
+            @media (min-width: $mq-m) {
+                margin-right: $margin-l;
+            }
+        }
+    }
+}
+
+/* sha********************* */
+.footer-container {
+    padding: 60px 70px;
+    font-size: smaller;
+}
+
+.footer-container .MuiGrid-container {
+    justify-content: space-around;
+}
+
+.footer-container .footer-grid-container ul {
+    list-style: none;
+}
+
+.footer-container .footer-grid-container li {
+    padding-bottom: 20px;
+}
+
+.footer-container .footer-grid-container li a {
+    color: #302F2F;
+    text-decoration: none !important;
+}
+
+.footer-container .footer-grid-container p {
+    font-family: 'Roboto' !important;
+    font-size: 16px !important;
+    color: #302F2F !important;
+}
+
+.footer-container .section-2 {
+    padding-left: 20px;
+}
+
+.footer-container .section-3 {
+    padding-left: 60px;
+}
+
+.footer-container .section-4 {
+    padding-left: 100px;
+    float: right;
+}
+
+.footer-container .contact-div {
+    display: inline;
+}
+
+.footer-container .logo-div {
+    float: left;
+    padding-right: 5px;
+}
+
+.footer-container .list-element {
+    font-family: 'Roboto' !important;
+    font-size: 14px !important;
+    color: #302F2F !important;
+}
+
+.footer-container .main-element {
+    font-family: 'Poppins' !important;
+    font-size: 14px !important;
+    color: #302F2F !important;
+    font-weight: 600;
+}
+
+//Responsive
+@media screen and (min-width : 320px) and (max-width : 767px) {
+
+
+    .footer-container {
+        padding: 30px 35px;
+
+        .section-2,
+        .section-3,
+        .section-4 {
+            padding: 0;
+
+            ul {
+                padding: 0;
+            }
+        }
+
+        #mapviewer {
+            iframe {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width : 900px) and (max-width : 1350px) {
+    #mapviewer {
+        iframe {
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (min-width : 768px) and (max-width : 899px) {
+    .footer-container {
+        padding: 30px 35px;
+
+        .section-2,
+        .section-3,
+        .section-4 {
+            padding: 0;
+            ul {
+                padding: 0;
+            }
+        }
+    }
+}

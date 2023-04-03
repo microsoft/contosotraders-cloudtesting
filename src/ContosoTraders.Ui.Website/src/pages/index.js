@@ -2,8 +2,8 @@ import Home from './home/homeContainer';
 // import MyCoupons from './mycoupons/myCouponsContainer';
 import Detail from '../pages/detail/detailContainer';
 import List from './list/listContainer';
-import SuggestedProductsList from './suggestedproductslist/suggestedProductsList';
-import Profile from './profile/ProfileForm';
+import SuggestedProductsList from './suggestedProductsList/suggestedProductsList';
+import Profile from './profile/profileForm';
 // import ShoppingCart from './shoppingcart/shoppingCart'
 import Arrivals from './arrivals/arrivals';
 import RefundPolicy from './legals/refundPolicy';
