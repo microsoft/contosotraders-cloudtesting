@@ -1,0 +1,277 @@
+.CartMain{
+  margin-top: 192px;
+.CartSection {
+    padding: 0 70px 0 70px;
+    .innerCart{
+        padding: 0 30px;
+    }
+      .CartTopHeadPart{
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+      }
+  }
+  .CartSection .MyCartHeading {
+    font: normal normal 600 24px/44px "Inter";
+    letter-spacing: 0px;
+    color: #000000;
+    margin: 0;
+    margin-right: auto;
+  }
+  .CartSection .imagesection {
+    width: 100%;
+    // height: 100px;
+  }
+  .CartSection .CartTopGrandTotal {
+    font-size: 16px;
+    letter-spacing: 0px;
+    color: #171520;
+    margin: 0 16px;
+    font-weight: 600;
+  }
+  .CartSection .CartTopHeadTotal {
+    font: normal normal normal 14px/20px "Inter";
+    letter-spacing: 0px;
+    color: #171520;
+    margin: 0;
+  }
+  
+  /*===================search bar===========================*/
+  .CartSection {
+    font-family: "Inter";
+  }
+  .CartSection .pincodesearchbar {
+    min-width: 100%;
+    padding: 14px 0 16px 0;
+    &:focus{
+      border: none
+    }
+    input::placeholder{
+      font-size: 14px;
+      font-family: 'Inter';
+      font-weight: 400;
+      color: rgba(98, 98, 98, 0.9);
+    }
+    fieldset{
+      border: 1px solid #F1F1F1;
+    }
+  }
+  .CartSection .pincodebar {
+    width: 100%;
+  }
+  .CartSection .pincodebar input::placeholder{
+    text-align: left;
+    font: normal normal normal 14px/20px "Inter";
+    letter-spacing: 0px;
+  }
+  
+  
+  .CartSection .pinsearchbtn {
+    border-left: 1px solid #f1f1f1;
+    height: 56px;
+    float: right;
+    position: absolute;
+    right: 1px;
+    background: #fafafa;
+    width: 82px;
+    padding: 16px;
+  }
+  .CartSection .pinsearchbtnactive{
+    background: #2874f0;
+    color: white;
+    &:hover{
+        background: #2874f0;
+        color: white;
+    }
+  }
+  .CartSection .PlaceOrderButton {
+    background: #2874f0 0% 0% no-repeat padding-box;
+    border-radius: 8px;
+    width: 180px;
+    height: 40px;
+    float: right;
+    text-align: center;
+    letter-spacing: 0px;
+    color: #ffffff;
+    text-transform: capitalize;
+    font-weight: 400;
+    font-size: 16px !important;
+    box-shadow: none !important;
+  }
+  .CartSection .allProductlist {
+    margin: 23px 0px 0px 0px;
+  }
+  .CartSection .CartHeadings {
+    margin: 34px 0px 0px 0px;
+    text-align: left;
+    letter-spacing: 0px;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .CartSection .Productname {
+    letter-spacing: 0px;
+    color: #171520;
+    text-align: left;
+    font-size: 16px;
+  }
+  .CartSection .Producttype {
+    text-align: left;
+    font-size: 16px;
+    letter-spacing: 0px;
+    color: #626262;
+    margin: 8px 0px 18px 0px;
+  }
+  .CartSection .Producttype {
+    text-align: left;
+    font-size: 16px;
+    letter-spacing: 0px;
+    color: #626262;
+    margin-bottom: 10px;
+  }
+  
+  
+  
+  .CartSection .Productprice {
+    text-align: left;
+    font-size: 14px;
+    letter-spacing: 0px;
+    color: #171520;
+  }
+  .CartSection .Productlinks {
+    text-align: center;
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0px;
+  }
+  .CartSection .wishlistlink {
+    color: #000000;
+  }
+  .CartSection .removelink {
+    color: #b00020;
+  }
+  .CartSection .CartProducts {
+    padding-left: 16px;
+    .Productqty{
+        color: #626262
+    }
+  }
+  
+  
+  .CartSection .CouponHeading {
+    text-align: left;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 42px 0px 0px 0px;
+    letter-spacing: 0px;
+    color: #000000;
+  }
+  .CartSection .OrderSubHeading {
+    text-align: left;
+    font-size: 16px;
+    letter-spacing: 0px;
+    color: #626262;
+    margin-top: 12px;
+    font-weight: 500;
+  }
+  .CartSection .OrdertotalHeading {
+    text-align: left;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0px;
+    color: #171520;
+    margin: 12px 0px 14px 0px;
+  }
+  .CartSection .OrderSubPrice {
+    text-align: right;
+    font-size: 16px;
+    letter-spacing: 0px;
+    color: #171520;
+    margin-top: 12px;
+    font-weight: 500;
+  }
+  .CartSection .OrderTotalPrice {
+    font-weight: 600;
+    font-size: 16px;
+    text-align: right;
+    margin-top: 12px;
+    letter-spacing: 0px;
+    color: #171520;
+    margin: 12px 0px 14px 0px;
+  }
+  
+  .CartSection .CouponChip {
+    background: #000000 0% 0% no-repeat padding-box;
+    border: 1px solid #f1f1f1;
+    border-radius: 74px;
+    // margin: 16px 0px 8px 0px; 
+  }
+  .CartSection .MuiChip-root {
+    height: 40px;
+    margin: 0;
+  }
+  
+  .CartSection .MuiChip-label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+    font: normal normal normal 14px/20px "Inter";
+    letter-spacing: 0px;
+    color: #ffffff;
+    padding-left: 16px;
+    padding-right: 8px;
+  }
+  
+  .CartSection .MuiChip-deleteIcon {
+    color: white !important;
+    margin: 0 16px 0 0 !important;
+  }
+  .CartSection .nocouponheading {
+    text-align: left;
+    font: normal normal normal 14px/20px "Inter";
+    letter-spacing: 0px;
+    color: #62626280;
+  }
+  
+  .CartSection .OrderButtonsection{
+    margin-top: 34px;
+  }
+}
+
+//Responsive
+@media screen and (min-width : 320px) and (max-width : 767px) {
+  .CartMain .CartSection {
+      padding: 0 35px;
+  }
+  .CartMain .CartSection .CartTopHeadPart{
+      flex-direction: column;
+      align-items: end;
+  }
+  .CartMain .CartSection .CartTopGrandTotal{
+      margin: 10px 0;
+  }
+  .CartMain .CartSection .Productlinks{
+      margin: 20px 0;
+  }
+  .CartMain .CartSection .Productprice{
+      display: flex;
+      align-items: center;
+  }
+  .CartMain .CartSection .Productprice > b{
+      margin-right: auto !important;
+  }
+  .CartMain .CartSection .Productname, .CartMain .CartSection .Producttype, .CartMain .CartSection .CartProducts .Productqty{
+      text-align: center;
+  }
+}
+
+@media screen and (min-width : 768px) and (max-width : 899px) {
+  .CartMain .CartSection .Productlinks{
+      margin: 20px 0;
+  }
+  .cart-header{
+      display: none !important;
+  }
+}

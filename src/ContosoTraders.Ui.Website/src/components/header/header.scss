@@ -1,0 +1,444 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the header of the site/application.
+// -----------------------------------------------------------------------------
+.header {
+    align-items: center;
+    display: flex;
+    height: auto;
+    // justify-content: space-between;
+    padding-top: 37px;
+    padding-left: 70px;
+    padding-right: 70px;
+    overflow: hidden;
+
+    svg {
+        fill: $color-primary;
+        height: $icon-l;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    >svg {
+        // Logo
+        height: 2.35625rem;
+        width: 10.875rem;
+        min-width: 10.875rem;
+    }
+}
+
+.main-nav {
+    align-items: center;
+    background-color: #eaf2f9; //$color-background-primary;
+    display: flex;
+    height: 100vh;
+    order: 2;
+    // overflow: hidden;
+    // padding: $space-m;
+    position: fixed;
+    right: -100vw;
+    text-align: center;
+    text-transform: uppercase;
+    top: 0;
+    transition: right $animation-speed-regular $animation-type-regular;
+    width: 60%;
+    will-change: right;
+    z-index: $z-index-l;
+
+    @media (min-width: $mq-sl) {
+        background-color: transparent;
+        height: auto;
+        // justify-content: space-around;
+        order: 0;
+        position: relative;
+        right: auto;
+        top: auto;
+
+        &__actions {
+            display: none;
+        }
+
+        button:last-child {
+            display: none;
+        }
+    }
+
+    &:not(.is-opened) .main-nav__item {
+        color: $color-text-primary;
+    }
+
+    &.is-opened {
+        flex-direction: column;
+        padding-top: $padding-xl;
+        overflow: auto;
+        right: 0;
+
+        .main-nav__item {
+            display: block;
+            color: $color-text-tertiary;
+            font-weight: $font-weight-medium;
+            margin-bottom: $margin-m;
+
+            &:nth-child(7) {
+                margin-bottom: $margin-xl;
+            }
+        }
+
+        button.main-nav__item {
+            background-color: transparent;
+            border: 0;
+        }
+
+        .btn-close {
+            display: block;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+
+            svg {
+                fill: $color-svg-tertiary;
+            }
+        }
+    }
+
+    &__item {
+        @include text-xxs();
+        color: $color-link;
+        display: block;
+        text-decoration: none;
+        text-transform: uppercase;
+        white-space: nowrap;
+
+        &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+}
+
+.secondary-nav {
+    display: flex;
+    justify-content: space-around;
+    min-width: 13rem;
+    width: 10rem;
+
+    svg:nth-child(2) {
+        display: none;
+    }
+
+    @media (min-width: $mq-sl) {
+        svg:nth-child(2) {
+            display: inline;
+        }
+
+        button:last-child {
+            display: none;
+        }
+    }
+
+    &__cart {
+        position: relative;
+
+        &-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            width: 1.25rem;
+            height: 1.25rem;
+            font-size: 0.5rem;
+            border-radius: 50%;
+            background-color: $color-background-light;
+            border: 1px solid currentColor;
+            top: -.5rem;
+            right: -.5rem;
+            color: $color-text-primary;
+        }
+    }
+
+    &__login {
+        color: $color-text-primary;
+        cursor: pointer;
+    }
+
+    .portrait {
+        width: 1.875rem;
+        height: 1.875rem;
+        border-radius: 50%;
+    }
+}
+
+//Profile dropdown popup in header
+#profile-dropdown .MuiPopover-paper {
+    right: 122px !important;
+    left: unset !important;
+}
+
+#profile-dropdown .MuiMenu-paper {
+    box-shadow: 0px 3px 26px #00000029;
+    border: 1px solid #E5E5E5;
+    border-radius: 8px;
+}
+
+#profile-dropdown .MuiPopover-paper .MuiTypography-root {
+    font-family: 'Poppins' !important;
+    font-size: 16px;
+}
+
+#profile-dropdown .MuiPopover-paper .MuiListItemIcon-root {
+    min-width: 40px;
+}
+
+#profile-dropdown .MuiPopover-paper ul li {
+    min-width: 336px;
+    padding: 12px 19px;
+}
+
+
+/* Header Message */
+.headerMessageDiv {
+    height: 55px;
+    font-family: 'Poppins';
+    letter-spacing: 0.42px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.headerMessageDiv.warning {
+    background-color: #F0A428;
+    color: #fff;
+}
+
+.headerMessageDiv.error {
+    background-color: #E81D1D;
+    color: #fff;
+}
+
+//Top bar of application : Appbar 
+.appbar {
+    box-shadow: none !important;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-top: 31px;
+}
+
+.appbar .searchBar {
+    width: 41%;
+    position: relative;
+    margin-left: 50px;
+    margin-right: 16px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.appbar .sectionDesktop {
+    display: flex;
+}
+
+.appbar .sectionMobile {
+    display: flex;
+}
+
+.appbar .searchBar input {
+    font-family: 'Roboto' !important;
+    font-size: 14px !important;
+    font-weight: 300 !important;
+}
+
+.appbar .searchBar .MuiOutlinedInput-adornedEnd {
+    height: 48px;
+    padding-right: 8px;
+}
+
+.appbar .searchBar input::placeholder {
+    font-family: 'Roboto' !important;
+    font-size: 14px !important;
+    font-weight: 300 !important;
+    color: #686868 !important;
+}
+
+.appbar .iconButton {
+    padding: 12px 18px;
+}
+
+.appbar .iconButton:focus {
+    outline: none !important;
+}
+
+.appbar .headerLogo {
+    height: 71px;
+    width: 195px;
+}
+
+.appbar svg {
+    fill: #2f4b66;
+    overflow: unset;
+}
+
+.appbar .searchBtn {
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.appbar .searchBtn:focus {
+    outline: none;
+}
+
+.appbar .upload__subtitle {
+    font-family: 'Roboto' !important;
+}
+
+//Main menu
+
+.main-nav {
+    margin-left: 50px;
+}
+
+.main-nav__item {
+    text-decoration: none !important;
+    text-transform: capitalize !important;
+    text-align: left;
+    font-family: 'Roboto' !important;
+    letter-spacing: 0px !important;
+    color: #302F2F !important;
+    opacity: 0.92 !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    padding: 14px 24px 20px 24px;
+    text-align: center;
+}
+
+.main-nav__item:hover {
+    text-decoration: none !important;
+    text-transform: capitalize !important;
+    text-align: left;
+    font-family: 'Roboto', sans-serif !important;
+    letter-spacing: 0px !important;
+    color: #2F4B66 !important;
+    opacity: 0.92 !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 24px 14px 24px;
+    border-bottom: 5px solid #2874F0 !important;
+    background: rgba(40, 116, 240, 0.1) !important;
+    text-align: center;
+}
+
+.main-nav__item_active {
+    text-decoration: none !important;
+    text-transform: capitalize !important;
+    text-align: left;
+    font-family: 'Roboto', sans-serif !important;
+    letter-spacing: 0px !important;
+    color: #2F4B66 !important;
+    opacity: 0.92 !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 24px 20px 24px;
+    border-bottom: 5px solid #2874F0 !important;
+    background: rgba(40, 116, 240, 0.1) !important;
+    text-align: center;
+}
+
+//dark mode
+.theme-class>label {
+    border: 1px solid lightgray;
+    background-color: #a2a2a2;
+    border-radius: 20px;
+    padding: 3px 12px;
+    margin: 0;
+    color: #fff;
+}
+
+
+//Responsive
+@media (max-width: 65em) {
+    .sectionDesktop {
+        display: none !important;
+    }
+
+    .mainHeader .categories-btn>.MuiButton-startIcon {
+        display: none !important;
+    }
+
+    .mainHeader .categories-btn {
+        min-width: 135px !important;
+        padding: 0;
+    }
+
+    .appbar .iconButton {
+        display: none;
+    }
+
+    .secondary-nav {
+        justify-content: end;
+        align-items: center;
+    }
+
+    .header {
+        justify-content: space-between;
+    }
+
+    .mainHeader {
+        position: relative;
+    }
+
+    .appbar .searchbar-upload {
+        padding: 15px;
+    }
+
+    .appbar .searchbar-upload .upload p {
+        font-size: 12px;
+    }
+
+    .appbar .searchbar-upload .upload>div {
+        min-height: 160px;
+    }
+
+    .main-nav__item {
+        font-weight: bold !important;
+    }
+
+    .home,
+    .list,
+    .ProductContainerSectionMain,
+    .profileMain,
+    .CartMain,
+    .refund-policy-section {
+        margin-top: 0 !important;
+    }
+}
+
+@media screen and (min-width : 320px) and (max-width : 340px) {
+    .secondary-nav {
+        justify-content: start;
+        align-items: center;
+    }
+}
+
+@media screen and (min-width : 320px) and (max-width : 767px) {
+    .appbar{
+        padding: 0 15px !important;
+        flex-direction: column !important;
+    }
+    .appbar > div {
+        flex-direction: column !important;
+    }
+    .appbar .searchBar{
+        margin: 0;
+        width: 100%;
+    }
+    .appbar .sectionMobile{
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        top: 15px;
+    }
+    .header{
+        padding: 0 15px !important;
+        justify-content: space-between;
+    }
+}

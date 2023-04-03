@@ -1,0 +1,37 @@
+.appbar .searchbar-upload{
+    position: absolute;
+    z-index: 110;
+    width: 100%;
+    text-align: center;
+    padding: 30px;
+    background-color: #fff;
+    border: 1px solid #DFDFDF;
+  }
+  .appbar .searchbar-upload .upload{
+    margin: auto;
+    max-width: 100%;
+    margin-top: 10px;
+    background: transparent !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .appbar .searchbar-upload .upload .MuiDropzoneArea-textContainer, .appbar .searchbar-upload .upload .MuiDropzoneArea-textContainer .MuiDropzonePreviewList-root{
+    display: none;
+  }
+  .appbar .searchbar-upload .upload .MuiDropzoneArea-root{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background: #FAFAFA !important; */
+    background: transparent;
+  }
+  .appbar .searchbar-upload .upload .upload__label{
+    box-shadow: none;
+    /* background: #FAFAFA !important; */
+    position: absolute;
+    z-index: -1;
+  }
+  .appbar .searchbar-upload .upload .upload__label img{
+    width: 50px;
+  }

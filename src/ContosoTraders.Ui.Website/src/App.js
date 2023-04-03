@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 // import { CartService } from "./services";
 // import Meeting from './pages/home/components/videoCall/Meeting';
 
-import { Header, Footer, Appbar, HeaderMessage } from "./shared";
+import Header from "./components/header/header";
+import HeaderMessage from "./components/header/headerMessage";
+import Appbar from "./components/header/appbar";
+import Footer from "./components/footer/footer";
 import {
   Home,
   List,

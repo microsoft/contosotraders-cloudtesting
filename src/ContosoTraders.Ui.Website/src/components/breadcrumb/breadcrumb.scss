@@ -1,0 +1,36 @@
+.breadcrump {
+  padding: 24px 70px;
+
+  p {
+    margin: 0;
+    text-transform: capitalize;
+
+    span {
+      font-family: 'Heebo';
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    b {
+      font-family: 'Heebo';
+      font-size: 14px;
+      font-weight: 500;
+
+      a {
+        color: #000000;
+
+        &:hover {
+          color: #2974f0 !important;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+//Responsive
+@media screen and (min-width : 320px) and (max-width : 767px) {
+  .breadcrump {
+    padding: 12px 35px;
+  }
+}
