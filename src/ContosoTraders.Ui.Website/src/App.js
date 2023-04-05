@@ -38,6 +38,7 @@ import { getCartQuantity } from "./actions/actions";
     const [quantity, setQuantity] = useState(0)
 
     const getQuantity = useCallback(async() => {
+      let quantity = 0;
       if (props.userInfo.token) {
         const shoppingcart = await CartService.getShoppingCart(
           props.userInfo.token
@@ -45,9 +46,12 @@ import { getCartQuantity } from "./actions/actions";
         // if (shoppingcart) {
         //   setShoppingCart({ shoppingcart });
         // }
-        let quantity = shoppingcart.length;
-        setQuantity(quantity);
+        quantity = shoppingcart.length;
+      }else{
+        let cart = JSON.parse(localStorage.getItem('cart_items'));
+        quantity = cart.length;
       }
+      setQuantity(quantity);
     },[props.userInfo.token])
     
     useEffect(() => {
@@ -94,8 +98,8 @@ import { getCartQuantity } from "./actions/actions";
             {props.userInfo.loggedIn === true ?
             <>
             <Route path="/profile/:page" element={<Profile/>} />
-            <Route path="/cart" element={<Cart/>}/>
             </>:null}
+            <Route path="/cart" element={<Cart/>}/>
             {/* <PrivateRoute
               path="/shopping-cart"
               element={ShoppingCart}

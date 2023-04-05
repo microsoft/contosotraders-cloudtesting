@@ -312,17 +312,23 @@ useEffect(() => {
             >
               <img src={ProfileIcon} alt="iconimage" />
             </IconButton>
-            <IconButton className='iconButton' aria-label="cart" color="inherit" onClick={()=>redirectUrl('/cart')} >
+            {/* <IconButton className='iconButton' aria-label="cart" color="inherit" onClick={()=>redirectUrl('/cart')} >
               <Badge badgeContent={props.quantity} color="secondary" overlap="rectangular">
                 <img src={BagIcon} alt="iconimage" />
               </Badge>
-            </IconButton>
+            </IconButton> */}
           </div> :
           // null
-            process.env.REACT_APP_B2CCLIENTID && <Button className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={() => onClickLogIn()} >
+            process.env.REACT_APP_B2CCLIENTID && <>
+            <Button className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={() => onClickLogIn()} >
               Login
-            </Button>
+            </Button></>
           }
+          <IconButton className='iconButton' aria-label="cart" color="inherit" onClick={()=>redirectUrl('/cart')} >
+            <Badge badgeContent={props.quantity} color="secondary" overlap="rectangular">
+              <img src={BagIcon} alt="iconimage" />
+            </Badge>
+          </IconButton>
           {/* #region Uncomment below lines to run dark mode tests */}
           {/* <FormGroup className='theme-class'>
             <FormControlLabel labelPlacement="start" control={<Switch aria-label='theme change' id="theme" color="primary" onChange={(e) => props.handleThemeChange(e.target.checked)}/>} label="Dark Mode" />

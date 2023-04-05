@@ -189,13 +189,13 @@ class Header extends Component {
                             <img src={ProfileIcon} alt="iconimage" />
                         </IconButton>
                     </Link>}
-                    {loggedIn && <Link className="secondary-nav__cart" to="/cart">
+                    <Link className="secondary-nav__cart" to="/cart">
                         <IconButton className='iconButton' aria-label="cart" color="inherit" >
                             <Badge badgeContent={this.props.quantity} color="secondary" overlap="rectangular">
                                 <img src={BagIcon} alt="iconimage" />
                             </Badge>
                         </IconButton>
-                    </Link>}
+                    </Link>
                     {loggedIn ? <div className="secondary-nav__login" onClick={this.onClickLogout}>
                         <IconButton className='iconButton' aria-label="cart" color="inherit" >
                             <img src={logout_icon} alt="iconimage" />

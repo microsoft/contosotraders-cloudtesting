@@ -47,6 +47,10 @@ function DetailContainer(props) {
                 let quantity = shoppingcart.length;
                 props.getCartQuantity(quantity)
             }
+        }else{
+            let cartItem = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
+            let quantity = cartItem.length;
+            props.getCartQuantity(quantity)
         }
     }
 
@@ -55,15 +59,28 @@ function DetailContainer(props) {
 
         // const profile = await UserService.getProfileData(this.props.userInfo.token);
         // const { profile: { email } } = profile;
+        var tempProps = JSON.parse(JSON.stringify(detailProduct));
+        if(!loggedIn){
+            let cartItem = {
+                imageUrl: detailProduct.imageUrl,
+                name: detailProduct.name,
+                price: detailProduct.price,
+                productId: detailProduct.id,
+                quantity: qty,
+            }
+            let arr = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
+            arr.push(cartItem)
+            localStorage.setItem('cart_items',JSON.stringify(arr))
+            getQuantity()
+        }
         const email = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null
 
-        var tempProps = JSON.parse(JSON.stringify(detailProduct));
         tempProps.email = email;
         tempProps.quantity = qty;
         Object.preventExtensions(tempProps);
 
         setDetailProduct(tempProps)
-        // setDetailProduct({ ...detailProduct,email: email})
+
 
         const productToCart = await CartService.addProduct(props.userInfo.token, tempProps)
 
