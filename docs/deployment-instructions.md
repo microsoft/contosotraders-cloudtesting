@@ -12,7 +12,6 @@ You will need following to get started:
 
 ## Prepare your Azure Subscription
 1. Log into Azure CLI with your Azure credentials: `az login`\
-<sub>If your organization has MFA enabled, then you'll need to log into the Azure CLI as follows: `az login --tenant <AZURE-TENANT-ID>`. Replace `<AZURE-TENANT-ID>` with your Azure tenant ID.</sub>
 
 2. Ensure that the correct Azure subscription is selected: `az account show`\
 <sub>If not, select the correct subscription: `az account set -s <AZURE-SUBSCRIPTION-ID>`.\
@@ -23,10 +22,12 @@ Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub>
 <sub> `az provider register -n Microsoft.Cdn -c`</sub> \
 <sub> `az provider register -n Microsoft.Chaos -c`</sub>
 
-4. Create an Azure Service Principal and add it to the `Owner` role in your Azure subscription: \
-<sub> `az ad sp create-for-rbac -n contosotraders-sp --role Owner --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. \
+4. Create an Azure Service Principal and add it to the `Contributor` role in your Azure subscription: \
+<sub> `az ad sp create-for-rbac -n contosotraders-sp --role Contributor --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. \
 Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub> \
 <sub> Make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.</sub>
+
+5. @TODO: Custom role with `Microsoft.Authorization/roleAssignments/write` permissions.
 
 ## Prepare your GitHub Account
 
