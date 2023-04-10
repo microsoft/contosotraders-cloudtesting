@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CartService } from '../../services';
+// import { CartService } from '../../services';
 export default class QuantityPicker extends Component {
 
   constructor(props) {
@@ -30,10 +30,14 @@ export default class QuantityPicker extends Component {
   }
 
   async updateProductQty() {
-    let response = await CartService.updateQuantity(this.props.detailProduct, this.state.value, this.props.token)
-    if (response) {
+    let cart_items = JSON.parse(localStorage.getItem('cart_items'));
+    let objIndex = cart_items.findIndex((obj => obj.productId === this.props.detailProduct.productId));
+    cart_items[objIndex].quantity = this.state.value
+    localStorage.setItem('cart_items',JSON.stringify(cart_items))
+    // let response = await CartService.updateQuantity(this.props.detailProduct, this.state.value, this.props.token)
+    // if (response) {
       this.props.getCartItems()
-    }
+    // }
   }
 
   increment() {
