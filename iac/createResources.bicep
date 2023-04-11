@@ -1320,7 +1320,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-10-02-preview' = {
       {
         name: 'agentpool'
         osDiskSizeGB: 0 // Specifying 0 will apply the default disk size for that agentVMSize.
-        count: 3
+        count: 1
         vmSize: 'standard_b2s'
         osType: 'Linux'
         mode: 'System'
@@ -1482,6 +1482,12 @@ resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = {
       vmSize: 'standard_b2s'
     }
     storageProfile: {
+      osDisk: {
+        createOption: 'FromImage'
+        managedDisk: {
+          storageAccountType: 'StandardSSD_LRS'
+        }
+      }
       imageReference: {
         offer: 'WindowsServer'
         publisher: 'MicrosoftWindowsServer'
@@ -1585,7 +1591,7 @@ resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = 
     template: {
       scale: {
         minReplicas: 1
-        maxReplicas: 10
+        maxReplicas: 3
         rules: [
           {
             name: 'http-scaling-rule'
