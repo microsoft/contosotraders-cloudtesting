@@ -12,7 +12,6 @@ You will need following to get started:
 
 ## Prepare your Azure Subscription
 1. Log into Azure CLI with your Azure credentials: `az login`\
-<sub>If your organization has MFA enabled, then you'll need to log into the Azure CLI as follows: `az login --tenant <AZURE-TENANT-ID>`. Replace `<AZURE-TENANT-ID>` with your Azure tenant ID.</sub>
 
 2. Ensure that the correct Azure subscription is selected: `az account show`\
 <sub>If not, select the correct subscription: `az account set -s <AZURE-SUBSCRIPTION-ID>`.\
@@ -23,10 +22,12 @@ Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub>
 <sub> `az provider register -n Microsoft.Cdn -c`</sub> \
 <sub> `az provider register -n Microsoft.Chaos -c`</sub>
 
-4. Create an Azure Service Principal and add it to the `Owner` role in your Azure subscription: \
-<sub> `az ad sp create-for-rbac -n contosotraders-sp --role Owner --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. \
+4. Create an Azure Service Principal and add it to the `Contributor` role in your Azure subscription: \
+<sub> `az ad sp create-for-rbac -n contosotraders-sp --role Contributor --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. \
 Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub> \
 <sub> Make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.</sub>
+
+5. @TODO: Custom role with `Microsoft.Authorization/roleAssignments/write` permissions.
 
 ## Prepare your GitHub Account
 
@@ -108,10 +109,10 @@ Once done, you can safely delete the `contoso-traders-rg{SUFFIX}` resource group
 >A quick note on costs considerations when you deploy the application to your Azure subscription:
 >
 > 1. Azure Load Testing ([pricing details](https://azure.microsoft.com/pricing/details/load-testing/)): The number of virtual users and duration of the test are the key factors that determine the cost of the test. In this demo, the load tests are configured to use 5 virtual users and the test is set to run for 3 mins.
-> 2. Azure Kubernetes Service ([pricing details](https://azure.microsoft.com/pricing/details/kubernetes-service/)): The number of nodes and the number of hours that the cluster is running are the key factors that determine the cost of the cluster. In this demo, the cluster is configured to use 3 nodes (powered by vm scale sets) and the cluster is set to run 24x7.
-> 3. Azure Container Apps ([pricing details](https://azure.microsoft.com/pricing/details/container-apps/)): Each instance has 0.5 vCPU and 1.0 GiB of memory. In this demo, the container app is configured to use 1 instance, but can autoscale out to max 10 instances under load.
-> 4. Azure Virtual Machines ([pricing details](https://azure.microsoft.com/pricing/details/virtual-machines/windows/)): The jumpbox VM uses the `Standard_D2s_v3` VM size, which has 2 vCPU and 8 GiB of memory. The jumpbox VMs are set to run 24x7.
+> 2. Azure Kubernetes Service ([pricing details](https://azure.microsoft.com/pricing/details/kubernetes-service/)): The number of nodes and the number of hours that the cluster is running are the key factors that determine the cost of the cluster. In this demo, the cluster is configured to use 1 node (powered by vm scale sets) and the cluster is set to run 24x7. You can manually stop the cluster when not in use.
+> 3. Azure Container Apps ([pricing details](https://azure.microsoft.com/pricing/details/container-apps/)): Each instance has 0.5 vCPU and 1.0 GiB of memory. In this demo, the container app is configured to use 1 instance, but can autoscale out to max 3 instances under load.
+> 4. Azure Virtual Machines ([pricing details](https://azure.microsoft.com/pricing/details/virtual-machines/windows/)): The jumpbox VM uses the `Standard_D2s_v3` VM size, which has 2 vCPU and 8 GiB of memory. The jumpbox VMs are set to run 24x7. You can manually stop the VM when not in use.
 > 5. Github Actions / storage quota ([pricing details](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#included-storage-and-minutes)): We've set the playwright test to enable recordings only on failures/retries. This brings the playwright report to ~55 MB when tests fail.
 >
-> The above costs are based on the default configuration of the demo. You can modify the configuration to reduce the costs. For example, you can reduce the number of nodes in the AKS cluster, reduce the number of instances in the container app, reduce the number of virtual users in the load test, etc.
+> The above costs are based on the default configuration of the demo. You can modify the configuration to reduce the costs. For example, you can reduce the number of instances in the container app, reduce the number of virtual users in the load test, etc.
 >

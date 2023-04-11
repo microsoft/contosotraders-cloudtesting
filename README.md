@@ -8,7 +8,7 @@ This repo contains the source code, deployment templates, and demo scripts for e
 
 ## Documentation and Resources
 
-* Application Links: [UI](https://cloudtesting.contosotraders.com/) | [Carts API](https://contoso-traders-cartsctstg.livelygrass-74d6f26a.eastus.azurecontainerapps.io/swagger/index.html) | [Products API](https://contoso-traders-productsctstg.eastus.cloudapp.azure.com/swagger/index.html)
+* Application Links: [UI](https://cloudtesting.contosotraders.com/) | [Carts API](https://contoso-traders-cartscldprd.livelygrass-74d6f26a.eastus.azurecontainerapps.io/swagger/index.html) | [Products API](https://contoso-traders-productscldprd.eastus.cloudapp.azure.com/swagger/index.html)
 * [Deployment Instructions](./docs/deployment-instructions.md) | [Running Locally](./docs/running-locally.md)
 
 ## Demo Scripts
