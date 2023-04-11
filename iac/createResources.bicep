@@ -154,6 +154,8 @@ var jumpboxNicName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxVmName = 'jumpboxvm'
 var jumpboxVmAdminLogin = 'localadmin'
 var jumpboxVmAdminPassword = sqlPassword
+var jumpboxVmShutdownSchduleName = '${prefixHyphenated}-jumpbox-shutdown${suffix}'
+var jumpboxVmShutdownScheduleTimezoneId = 'UTC'
 
 // private dns zone
 var privateDnsZoneVnetLinkName = '${prefixHyphenated}-privatednszone-vnet-link${suffix}'
@@ -1503,6 +1505,25 @@ resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = {
       adminUsername: jumpboxVmAdminLogin
       computerName: jumpboxVmName
     }
+  }
+}
+
+// auto-shutdown schedule
+resource jumpboxvmschedule 'Microsoft.DevTestLab/labs/schedules@2018-09-15' = {
+  name: jumpboxVmShutdownSchduleName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    targetResourceId: jumpboxvm.id
+    dailyRecurrence: {
+      time: '2100'
+    }
+    notificationSettings: {
+      status: 'Disabled'
+    }
+    status: 'Enabled'
+    taskType: 'ComputeVmShutdownTask'
+    timeZoneId: jumpboxVmShutdownScheduleTimezoneId
   }
 }
 
