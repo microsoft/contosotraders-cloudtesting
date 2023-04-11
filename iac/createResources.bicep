@@ -1336,14 +1336,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-10-02-preview' = {
         ]
       }
     }
-    addonProfiles: {
-      omsagent: {
-        enabled: true
-        config: {
-          logAnalyticsWorkspaceResourceID: loganalyticsworkspace.id
-        }
-      }
-    }
   }
 }
 
@@ -1519,7 +1511,7 @@ resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = {
 //
 
 module privateDnsZone './createPrivateDnsZone.bicep' = {
-  name: 'foo'
+  name: 'createPrivateDnsZone'
   params: {
     privateDnsZoneName: join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.')
     privateDnsZoneVnetId: vnet.id
