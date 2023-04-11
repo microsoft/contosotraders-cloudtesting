@@ -154,7 +154,7 @@ var jumpboxNicName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxVmName = 'jumpboxvm'
 var jumpboxVmAdminLogin = 'localadmin'
 var jumpboxVmAdminPassword = sqlPassword
-var jumpboxVmShutdownSchduleName = '${prefixHyphenated}-jumpbox-shutdown${suffix}'
+var jumpboxVmShutdownSchduleName = 'shutdown-computevm-jumpboxvm'
 var jumpboxVmShutdownScheduleTimezoneId = 'UTC'
 
 // private dns zone
