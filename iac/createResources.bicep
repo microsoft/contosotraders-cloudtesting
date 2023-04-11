@@ -523,8 +523,7 @@ resource productsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${userassignedmiforkvaccess.id}': {
-      }
+      '${userassignedmiforkvaccess.id}': {}
     }
   }
   properties: {
@@ -656,8 +655,7 @@ resource cartsapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${userassignedmiforkvaccess.id}': {
-      }
+      '${userassignedmiforkvaccess.id}': {}
     }
   }
   properties: {
@@ -820,8 +818,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${uistgacc_mi.id}': {
-      }
+      '${uistgacc_mi.id}': {}
     }
   }
   dependsOn: [
@@ -893,8 +890,7 @@ resource deploymentScript2 'Microsoft.Resources/deploymentScripts@2020-10-01' = 
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${ui2stgacc_mi.id}': {
-      }
+      '${ui2stgacc_mi.id}': {}
     }
   }
   dependsOn: [
@@ -1241,8 +1237,7 @@ resource loadtestsvc 'Microsoft.LoadTestService/loadTests@2022-12-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${userassignedmiforkvaccess.id}': {
-      }
+      '${userassignedmiforkvaccess.id}': {}
     }
   }
 }
@@ -1509,7 +1504,7 @@ resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = {
 }
 
 // auto-shutdown schedule
-resource jumpboxvmschedule 'Microsoft.DevTestLab/labs/schedules@2018-09-15' = {
+resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = {
   name: jumpboxVmShutdownSchduleName
   location: resourceLocation
   tags: resourceTags
@@ -1568,8 +1563,7 @@ resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = 
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${userassignedmiforkvaccess.id}': {
-      }
+      '${userassignedmiforkvaccess.id}': {}
     }
   }
   properties: {
