@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from "react";
 import QuantityPicker from "../../components/quantityCounter/productCounter";
 import Breadcrumb from "../../components/breadcrumb/breadcrumb";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-// import { CartService } from "../../services";
+import { CartService } from "../../services";
 import { connect } from "react-redux";
 import LoadingSpinner from "../../components/loadingSpinner/loadingSpinner";
 import { getCartQuantity } from "../../actions/actions";
@@ -18,12 +18,11 @@ function Cart(props) {
   const getCartItems = useCallback(async () => {
     setLoading(true)
     let items;
-    //After logging take up cart detail from API
-    // if (props.userInfo.loggedIn) {
-    //   items = await CartService.getShoppingCart(props.userInfo.token)
-    // } else {
+    if (props.userInfo.loggedIn) {
+      items = await CartService.getShoppingCart(props.userInfo.token)
+    } else {
       items = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
-    // }
+    }
       let sum = 0;
       if (items.length > 0) {
         items.map((item) => {
@@ -52,13 +51,13 @@ function Cart(props) {
 
 
   const removeFromCart = async (item) => {
-    // if (props.userInfo.loggedIn) {
-    //   await CartService.deleteProduct(item, props.userInfo.token)
-    // }else{
+    if (props.userInfo.loggedIn) {
+      await CartService.deleteProduct(item, props.userInfo.token)
+    }else{
       let cartItem = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : [];
       var filtered = cartItem.filter(function(el) { return el.name !== item.name; });
       localStorage.setItem('cart_items',JSON.stringify(filtered))
-    // }
+    }
     getCartItems()
   }
 
