@@ -29,33 +29,35 @@ You will need following to get started:
    * Make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.
    * You'll notice a warning in the output: `Option '--sdk-auth' has been deprecated and will be removed in a future release`. This is [a known issue, without workarounds, but can be safely ignored](https://github.com/Azure/azure-cli/issues/20743).
 
-5. If for some reason, you do not have permissions to add the service principal in the `Owner` role on the subscription, then you can create a custom role with `Microsoft.Authorization/roleAssignments/write` permissions (on subscription scope) and assign this to the service principal as follows.
+5. If for some reason, you do not have permissions to add the service principal in the `Owner` role on the subscription, then you can create a custom role and assign it to the service principal as follows (remember to replace `<AZURE-SUBSCRIPTION-ID>` in snippets below with your Azure subscription ID).
 
-  If using bash:
+   1. If using bash:
 
-  ```bash
-  az role definition create --role-definition '{
-      "Name": "ContosoTraders Write Role Assignments",
-      "Description": "Perform Role Assignments",
-      "Actions": ["Microsoft.Authorization/roleAssignments/write"],
-      "AssignableScopes": ["/subscriptions/<AZURE-SUBSCRIPTION-ID>"]
-  }'
-  ```
+      ```bash
+      az role definition create --role-definition '{
+          "Name": "ContosoTraders Write Role Assignments",
+          "Description": "Perform Role Assignments",
+          "Actions": ["Microsoft.Authorization/roleAssignments/write"],
+          "AssignableScopes": ["/subscriptions/<AZURE-SUBSCRIPTION-ID>"]
+      }'
+      ```
 
-  If using PowerShell or cmd shell, you can run `az role definition create --role-definition ./custom-role.json`. Note that you need to first create a file called `custom-role.json` containing the following snippet.
+   2. If using PowerShell or cmd shell, you can run `az role definition create --role-definition ./custom-role.json`. Note that you need to first create a file called `custom-role.json` containing the following snippet.
 
-  ```json
-  {
-      "Name": "ContosoTraders Write Role Assignments",
-      "Description": "Perform Role Assignments",
-      "Actions": ["Microsoft.Authorization/roleAssignments/write"],
-      "AssignableScopes": ["/subscriptions/<AZURE-SUBSCRIPTION-ID>"]
-  }
-  ```
+      ```json
+      {
+          "Name": "ContosoTraders Write Role Assignments",
+          "Description": "Perform Role Assignments",
+          "Actions": ["Microsoft.Authorization/roleAssignments/write"],
+          "AssignableScopes": ["/subscriptions/<AZURE-SUBSCRIPTION-ID>"]
+      }
+      ```
 
->
-> Replace `<AZURE-SUBSCRIPTION-ID>` in snippets above with your Azure subscription ID.
->
+   3. Finally create the service principal and assign it to the custom role:
+
+      ```bash
+      `az ad sp create-for-rbac -n contosotraders-sp --role "ContosoTraders Write Role Assignments" --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`
+      ```
 
 ## Prepare your GitHub Account
 
