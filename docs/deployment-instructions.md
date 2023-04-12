@@ -89,9 +89,9 @@ You will need following to get started:
 
     * Then, for each of these above environments, create this environment variable:
 
-   | Variable Name | Variable Value                                                                               |
-   | ------------- | -------------------------------------------------------------------------------------------- |
-   | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
+   | Variable Name | Variable Value                                                                                                                          |
+   | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+   | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg' |
 
 ## Deploy the Application
 
