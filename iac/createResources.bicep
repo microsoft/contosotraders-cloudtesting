@@ -799,7 +799,7 @@ resource uistgacc_roledefinition 'Microsoft.Authorization/roleDefinitions@2022-0
   name: '17d1049b-9a84-46fb-8f53-869881c3d3ab'
 }
 
-// This requires the service principal to be in a custom role with 'Microsoft.Authorization/roleAssignments/write' permissions.
+// This requires the service principal to be in 'owner' role or a custom role with 'Microsoft.Authorization/roleAssignments/write' permissions.
 // Details: https://learn.microsoft.com/en-us/answers/questions/287573/authorization-failed-when-when-writing-a-roleassig.html
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: uistgacc
@@ -871,7 +871,7 @@ resource ui2stgacc_roledefinition 'Microsoft.Authorization/roleDefinitions@2022-
   name: '17d1049b-9a84-46fb-8f53-869881c3d3ab'
 }
 
-// This requires the service principal to be in a custom role with 'Microsoft.Authorization/roleAssignments/write' permissions.
+// This requires the service principal to be in 'owner' role or a custom role with 'Microsoft.Authorization/roleAssignments/write' permissions.
 // Details: https://learn.microsoft.com/en-us/answers/questions/287573/authorization-failed-when-when-writing-a-roleassig.html
 resource roleAssignment2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: ui2stgacc
