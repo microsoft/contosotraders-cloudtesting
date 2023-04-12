@@ -5,27 +5,29 @@ This document will help you deploy the Contoso Traders application in your Azure
 Once deployed, you'll be able to walk through various demo scenarios for Microsoft Playwright, Azure Load Testing, and Azure Chaos Studio.
 
 ## Prerequisites
+
 You will need following to get started:
+
 1. **GitHub account**: Create a free account [here](https://github.com/).
 2. **Azure subscription**: Create a free account [here](https://azure.microsoft.com/free/).
 3. **Azure CLI**: Instructions to download and install [here](https://learn.microsoft.com/cli/azure/install-azure-cli).
 
 ## Prepare your Azure Subscription
+
 1. Log into Azure CLI with your Azure credentials: `az login`\
 
-2. Ensure that the correct Azure subscription is selected: `az account show`\
-<sub>If not, select the correct subscription: `az account set -s <AZURE-SUBSCRIPTION-ID>`.\
-Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub>
+2. Ensure that the correct Azure subscription is selected: `az account show`
+   * If not, select the correct subscription: `az account set -s <AZURE-SUBSCRIPTION-ID>`. Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.
 
-3. Register some required resource providers in your Azure subscription: \
-<sub>`az provider register -n Microsoft.OperationsManagement -c`</sub> \
-<sub> `az provider register -n Microsoft.Cdn -c`</sub> \
-<sub> `az provider register -n Microsoft.Chaos -c`</sub>
+3. Register some required resource providers in your Azure subscription:
+   * `az provider register -n Microsoft.OperationsManagement -c`
+   * `az provider register -n Microsoft.Cdn -c`
+   * `az provider register -n Microsoft.Chaos -c`
 
-4. Create an Azure Service Principal and add it to the `Contributor` role in your Azure subscription: \
-<sub> `az ad sp create-for-rbac -n contosotraders-sp --role Contributor --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. \
-Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub> \
-<sub> Make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.</sub>
+4. Create an Azure Service Principal and add it to the `Owner` role in your Azure subscription:
+   * `az ad sp create-for-rbac -n contosotraders-sp --role Owner --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`. Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.
+   * Make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.
+   * You'll notice a warning in the output: `Option '--sdk-auth' has been deprecated and will be removed in a future release`. This is [a known issue, without workarounds, but can be safely ignored](https://github.com/Azure/azure-cli/issues/20743).
 
 5. @TODO: Custom role with `Microsoft.Authorization/roleAssignments/write` permissions.
 
@@ -36,9 +38,9 @@ Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub> \
 2. Set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Secrets` tab and create these necessary repository secrets:
 
     | Secret Name        | Secret Value                                      |
-     | ------------------ | ------------------------------------------------- |
+    | ------------------ | ------------------------------------------------- |
     | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs |
-   | `SERVICEPRINCIPAL` | See details below                                 |
+    | `SERVICEPRINCIPAL` | See details below                                 |
 
     The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
 
@@ -53,14 +55,14 @@ Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub> \
 
     The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
 
-3. Create two [environments for deployment](https://docs.github.com/actions/deployment/targeting-different-environments/using-environments-for-deployment). On your fork of the github repository, go to the `Settings` tab > `Environments` > Click on `New Environment` button and create the following two environments: 
-    * `staging` 
+3. Create two [environments for deployment](https://docs.github.com/actions/deployment/targeting-different-environments/using-environments-for-deployment). On your fork of the github repository, go to the `Settings` tab > `Environments` > Click on `New Environment` button and create the following two environments:
+    * `staging`
     * `production` (optional)
 
     * Then, for each of these above environments, create this environment variable:
 
    | Variable Name | Variable Value                                                                               |
-   | ------------- |  -------------------------------------------------------------------------------------------- |
+   | ------------- | -------------------------------------------------------------------------------------------- |
    | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only). E.g. 'test51' |
 
 ## Deploy the Application
@@ -75,7 +77,7 @@ Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.</sub> \
 
 1. Once the workflow completes, the UI's accessible CDN endpoint URL will be displayed in the github workflow run.
 
-  ![Endpoints in workflow logs](./images/ui-endpoint-github-workflow.png)
+    ![Endpoints in workflow logs](./images/ui-endpoint-github-workflow.png)
 
 2. Clicking on the URL above, will load the application in a new browser tab. You can then verify that the application is indeed up and running.
 
@@ -100,7 +102,7 @@ For further learning, you can run through some of the demo scripts listed below:
 * [Azure Chaos Studio](../demo-scripts/azure-chaos-studio/walkthrough.md)
 * [UI Testing with Playwright](../demo-scripts/testing-with-playwright/walkthrough.md)
 
-## Cloud costs and cleanup
+## Cleanup
 
 Once you are done deploying, testing, exploring, you should delete the `contoso-traders-rg{SUFFIX}` resource group to prevent incurring additional costs.
 
@@ -108,13 +110,16 @@ Once you are done deploying, testing, exploring, you should delete the `contoso-
 
 The `contoso-traders-aks-nodes-rg{SUFFIX}` will be automatically deleted as part of the AKS cluster deletion.
 
->A quick note on costs considerations when you deploy the application to your Azure subscription:
->
-> 1. Azure Load Testing ([pricing details](https://azure.microsoft.com/pricing/details/load-testing/)): The number of virtual users and duration of the test are the key factors that determine the cost of the test. In this demo, the load tests are configured to use 5 virtual users and the test is set to run for 3 mins.
-> 2. Azure Kubernetes Service ([pricing details](https://azure.microsoft.com/pricing/details/kubernetes-service/)): The number of nodes and the number of hours that the cluster is running are the key factors that determine the cost of the cluster. In this demo, the cluster is configured to use 1 node (powered by vm scale sets) and the cluster is set to run 24x7 (you can manually stop the cluster when not in use). Because of a [limitation in the AKS bicep schema](https://github.com/Azure/bicep/issues/6974), the AKS cluster has to use premium SSD storage disks.
-> 3. Azure Container Apps ([pricing details](https://azure.microsoft.com/pricing/details/container-apps/)): Each instance has 0.5 vCPU and 1.0 GiB of memory. In this demo, the container app is configured to use 1 instance, but can autoscale out to max 3 instances under load.
-> 4. Azure Virtual Machines ([pricing details](https://azure.microsoft.com/pricing/details/virtual-machines/windows/)): The jumpbox VM uses the `Standard_D2s_v3` VM size, which has 2 vCPU and 8 GiB of memory. The jumpbox VMs are schedule to auto-shutdown at 1900 UTC daily. You can also manually stop & deallocate the VM when not in use.
-> 5. Github Actions / storage quota ([pricing details](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#included-storage-and-minutes)): We've set the playwright test to enable recordings only on failures/retries. This brings the playwright report to ~55 MB when tests fail.
+## Cost Considerations
+
+A quick note on costs considerations when you deploy the application to your Azure subscription:
+
+1. Azure Load Testing ([pricing details](https://azure.microsoft.com/pricing/details/load-testing/)): The number of virtual users and duration of the test are the key factors that determine the cost of the test. In this demo, the load tests are configured to use 5 virtual users and the test is set to run for 3 mins.
+2. Azure Kubernetes Service ([pricing details](https://azure.microsoft.com/pricing/details/kubernetes-service/)): The number of nodes and the number of hours that the cluster is running are the key factors that determine the cost of the cluster. In this demo, the cluster is configured to use 1 node (powered by vm scale sets) and the cluster is set to run 24x7 (you can manually stop the cluster when not in use). Because of a [limitation in the AKS bicep schema](https://github.com/Azure/bicep/issues/6974), the AKS cluster has to use premium SSD storage disks.
+3. Azure Container Apps ([pricing details](https://azure.microsoft.com/pricing/details/container-apps/)): Each instance has 0.5 vCPU and 1.0 GiB of memory. In this demo, the container app is configured to use 1 instance, but can autoscale out to max 3 instances under load.
+4. Azure Virtual Machines ([pricing details](https://azure.microsoft.com/pricing/details/virtual-machines/windows/)): The jumpbox VM uses the `Standard_D2s_v3` VM size, which has 2 vCPU and 8 GiB of memory. The jumpbox VMs are schedule to auto-shutdown at 1900 UTC daily. You can also manually stop & deallocate the VM when not in use.
+5. Github Actions / storage quota ([pricing details](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#included-storage-and-minutes)): We've set the playwright test to enable recordings only on failures/retries. This brings the playwright report to ~55 MB when tests fail.
+
 >
 > The above costs are based on the default configuration of the demo. You can modify the configuration to reduce the costs. For example, you can reduce the number of instances in the container app, reduce the number of virtual users in the load test, etc.
 >
