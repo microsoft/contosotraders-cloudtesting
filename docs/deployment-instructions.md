@@ -14,7 +14,7 @@ You will need following to get started:
 
 ## Prepare your Azure Subscription
 
-1. Log into Azure CLI with your Azure credentials: `az login`\
+1. Log into Azure CLI with your Azure credentials: `az login`
 
 2. Ensure that the correct Azure subscription is selected: `az account show`
    * If not, select the correct subscription: `az account set -s <AZURE-SUBSCRIPTION-ID>`. Replace `<AZURE-SUBSCRIPTION-ID>` with your Azure subscription ID.
@@ -29,7 +29,33 @@ You will need following to get started:
    * Make a note of the JSON output from above step (especially the `clientId`, `clientSecret`, `subscriptionId` and `tenantId` properties). These will be required later.
    * You'll notice a warning in the output: `Option '--sdk-auth' has been deprecated and will be removed in a future release`. This is [a known issue, without workarounds, but can be safely ignored](https://github.com/Azure/azure-cli/issues/20743).
 
-5. @TODO: Custom role with `Microsoft.Authorization/roleAssignments/write` permissions.
+5. If for some reason, you do not have permissions to add the service principal in the `Owner` role on the subscription, then you can create a custom role with `Microsoft.Authorization/roleAssignments/write` permissions (on subscription scope) and assign this to the service principal as follows.
+
+  If using bash:
+
+  ```bash
+  az role definition create --role-definition '{
+      "Name": "ContosoTraders Write Role Assignments",
+      "Description": "Perform Role Assignments",
+      "Actions": ["Microsoft.Authorization/roleAssignments/write"],
+      "AssignableScopes": ["/subscriptions/<AZURE-SUBSCRIPTION-ID>"]
+  }'
+  ```
+
+  If using PowerShell or cmd shell, you can run `az role definition create --role-definition ./custom-role.json`. Note that you need to first create a file called `custom-role.json` containing the following snippet.
+
+  ```json
+  {
+      "Name": "ContosoTraders Write Role Assignments",
+      "Description": "Perform Role Assignments",
+      "Actions": ["Microsoft.Authorization/roleAssignments/write"],
+      "AssignableScopes": ["/subscriptions/<AZURE-SUBSCRIPTION-ID>"]
+  }
+  ```
+
+>
+> Replace `<AZURE-SUBSCRIPTION-ID>` in snippets above with your Azure subscription ID.
+>
 
 ## Prepare your GitHub Account
 
