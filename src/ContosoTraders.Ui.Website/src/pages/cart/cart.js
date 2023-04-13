@@ -20,7 +20,8 @@ function Cart(props) {
     let items;
     //After logging take up cart detail from API
     if (props.userInfo.loggedIn) {
-      items = await CartService.getShoppingCart(props.userInfo.token)
+      let res = await CartService.getShoppingCart(props.userInfo.token)
+      items = res ? res : []
     } else {
       items = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
     }
