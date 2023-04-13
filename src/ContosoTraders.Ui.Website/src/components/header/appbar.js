@@ -1,7 +1,7 @@
-import React ,{ useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {AppBar, InputAdornment, TextField, Button } from '@mui/material';
+import { AppBar, InputAdornment, TextField, Button } from '@mui/material';
 //#region Uncomment below lines to run dark mode tests
 // import {FormGroup, FormControlLabel, Switch } from '@mui/material';
 //#endregion
@@ -19,7 +19,7 @@ import SearchIconNew from '../../assets/images/original/Contoso_Assets/Icons/ima
 import ProfileIcon from '../../assets/images/original/Contoso_Assets/Icons/profile_icon.svg'
 import BagIcon from '../../assets/images/original/Contoso_Assets/Icons/cart_icon.svg'
 import UploadFile from '../uploadFile/uploadFile';
-import { clickAction, submitAction, handleThemeChange } from '../../actions/actions';
+import { clickAction, submitAction, handleThemeChange, getCartQuantity } from '../../actions/actions';
 import AuthB2CService from '../../services/authB2CService';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -27,7 +27,7 @@ import ListItemText from '@mui/material/ListItemText';
 import personal_information_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/personal_information_icon.svg";
 import logout_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/logout_icon.svg";
 // import delete_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/delete_icon.svg";
-import { ProductService } from '../../services';
+import { CartService, ProductService } from '../../services';
 
 
 const StyledMenu = ((props) => (
@@ -60,9 +60,9 @@ function TopAppBar(props) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   React.useEffect(() => {
-    if(searchUpload === true){
-      window.addEventListener('click', function(e){   
-        if (!document.getElementById('searchbox').contains(e.target)){
+    if (searchUpload === true) {
+      window.addEventListener('click', function (e) {
+        if (!document.getElementById('searchbox').contains(e.target)) {
           setSearchUpload(false)
         }
       });
@@ -97,14 +97,52 @@ function TopAppBar(props) {
 
   const { loggedIn } = props.userInfo;
 
-  const onClickLogIn = async() => {
+  const getQuantity = useCallback(async () => {
+    if (props.userInfo.token) {
+      const shoppingcart = await CartService.getShoppingCart(
+        props.userInfo.token
+      );
+      if (shoppingcart) {
+        let quantity = shoppingcart.length;
+        props.getCartQuantity(quantity)
+      }
+      if (localStorage.getItem('cart_items')) {
+        const email = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null
+        var tempProps = JSON.parse(localStorage.getItem('cart_items'));
+        tempProps.map(async (temp) => {
+          temp.email = email;
+          temp.id = temp.productId;
+          Object.preventExtensions(temp);
+
+          const productToCart = await CartService.addProduct(props.userInfo.token, temp)
+          if (productToCart.errMessage) {
+            // adding product to cart failed
+          } else {
+            getQuantity()
+          }
+        })
+        localStorage.removeItem('cart_items')
+      }
+    } else {
+      let cartItem = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
+      let quantity = cartItem.length;
+      props.getCartQuantity(quantity)
+    }
+  }, [props])
+
+
+  useEffect(() => {
+      getQuantity()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onClickLogIn = async () => {
     let user = await authService.login();
-    if(user)
-    {
+    if (user) {
       user['loggedIn'] = true;
       user['isB2c'] = true;
       user['token'] = sessionStorage.getItem('msal.idtoken');
-      localStorage.setItem('state',JSON.stringify(user))
+      localStorage.setItem('state', JSON.stringify(user))
       props.submitAction(user);
       window.location.reload()
     }
@@ -119,24 +157,24 @@ function TopAppBar(props) {
     history('/');
   }
   const setTextSearch = () => {
-    if(searchRef.current.value.length > 0){
+    if (searchRef.current.value.length > 0) {
       let searchData = searchRef.current.value;
       ProductService.getSearchResults(searchData)
-      .then((relatedProducts) => {
-        searchRef.current.value = '';
-        if (relatedProducts.length > 1) {
-          history("/suggested-products-list",{
-            state: { relatedProducts },
-          });
-        } else if(relatedProducts.length === 1){
-          history(`/product/detail/${relatedProducts[0].id}`);
-        }else{
-          props.history.push("/suggested-products-list",{
-            state: { relatedProducts },
-          });
-        }
-      })
-      .catch(() => {
+        .then((relatedProducts) => {
+          searchRef.current.value = '';
+          if (relatedProducts.length > 1) {
+            history("/suggested-products-list", {
+              state: { relatedProducts },
+            });
+          } else if (relatedProducts.length === 1) {
+            history(`/product/detail/${relatedProducts[0].id}`);
+          } else {
+            props.history.push("/suggested-products-list", {
+              state: { relatedProducts },
+            });
+          }
+        })
+        .catch(() => {
           searchRef.current.value = '';
           // Alert.error("There was an error, please try again", {
           //     position: "top",
@@ -144,7 +182,7 @@ function TopAppBar(props) {
           //     beep: true,
           //     timeout: 6000,
           // });
-      });//search function
+        });//search function
     }
   }
   React.useEffect(() => {
@@ -170,7 +208,7 @@ function TopAppBar(props) {
     >
       <StyledMenuItem onClick={() => redirectUrl('/profile/personal')}>
         <ListItemIcon>
-          <img src={personal_information_icon} alt=""/>
+          <img src={personal_information_icon} alt="" />
         </ListItemIcon>
         <ListItemText primary="Personal Information" />
         <ListItemIcon className='justify-content-end'></ListItemIcon>
@@ -201,7 +239,7 @@ function TopAppBar(props) {
       </StyledMenuItem> */}
       <StyledMenuItem onClick={onClickLogout}>
         <ListItemIcon>
-          <img src={logout_icon} alt=""/>
+          <img src={logout_icon} alt="" />
         </ListItemIcon>
         <ListItemText primary="Logout" />
         <ListItemIcon className='justify-content-end'>
@@ -250,51 +288,51 @@ function TopAppBar(props) {
       </MenuItem>
     </Menu>
   );
-useEffect(() => {
-  if(window.innerWidth >= '768'){
-    setMobileSearch(true)
-  }
-}, []);
+  useEffect(() => {
+    if (window.innerWidth >= '768') {
+      setMobileSearch(true)
+    }
+  }, []);
   return (
-    <div style={{flexGrow:1}}>
+    <div style={{ flexGrow: 1 }}>
       <AppBar color='inherit' className='appbar box-shadow-0' position="static">
         <Toolbar className='p-0'>
           <div className='headerLogo'>
             <Link to="/">
-                <img src={Logo} alt=""/>
+              <img src={Logo} alt="" />
             </Link>
           </div>
           {mobileSearch && <div className={`searchBar`} id="searchbox">
             <TextField
-                // label="Search by product name or search by image"
-                placeholder='Search by product name or search by image'
-                variant="outlined"
-                fullWidth
-                onBlur={()=>setTextSearch()}
-                onChange={()=>setSearchUpload(false)}
-                onFocus={()=>setSearchUpload(true)}
-                inputRef={searchRef}
-                InputProps={{
-                    endAdornment: (
-                    <InputAdornment position='end'>
-                        <IconButton onClick={()=>searchRef.current.value.length === 0 ? setSearchUpload(!searchUpload) : null} className="searchBtn">
-                          <img src={SearchIconNew} alt="iconimage"/>
-                        </IconButton>
-                    </InputAdornment>
-                    )
-                }}
+              // label="Search by product name or search by image"
+              placeholder='Search by product name or search by image'
+              variant="outlined"
+              fullWidth
+              onBlur={() => setTextSearch()}
+              onChange={() => setSearchUpload(false)}
+              onFocus={() => setSearchUpload(true)}
+              inputRef={searchRef}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <IconButton onClick={() => searchRef.current.value.length === 0 ? setSearchUpload(!searchUpload) : null} className="searchBtn">
+                      <img src={SearchIconNew} alt="iconimage" />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
             />
-            {searchUpload?
-            <div className='searchbar-upload'>
-              Search by an image
-              <UploadFile
+            {searchUpload ?
+              <div className='searchbar-upload'>
+                Search by an image
+                <UploadFile
                   title=""
                   subtitle="Drag an image or upload a file"
-              />
-            </div>
-            :null}
+                />
+              </div>
+              : null}
           </div>}
-          <div style={{flexGrow:1}} />
+          <div style={{ flexGrow: 1 }} />
           {loggedIn && loggedIn ? <div className={`sectionDesktop d-none d-md-block`}>
             {/* <IconButton className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={()=>redirectUrl('/wishlist')}>
               <Badge badgeContent={0} color="secondary" overlap="rectangular">
@@ -312,17 +350,23 @@ useEffect(() => {
             >
               <img src={ProfileIcon} alt="iconimage" />
             </IconButton>
-            <IconButton className='iconButton' aria-label="cart" color="inherit" onClick={()=>redirectUrl('/cart')} >
+            {/* <IconButton className='iconButton' aria-label="cart" color="inherit" onClick={()=>redirectUrl('/cart')} >
               <Badge badgeContent={props.quantity} color="secondary" overlap="rectangular">
                 <img src={BagIcon} alt="iconimage" />
               </Badge>
-            </IconButton>
+            </IconButton> */}
           </div> :
-          // null
-            process.env.REACT_APP_B2CCLIENTID && <Button className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={() => onClickLogIn()} >
-              Login
-            </Button>
+            // null
+            process.env.REACT_APP_B2CCLIENTID && <>
+              <Button className='iconButton' aria-label="show 4 new mails" color="inherit" onClick={() => onClickLogIn()} >
+                Login
+              </Button></>
           }
+          <IconButton className='iconButton' aria-label="cart" color="inherit" onClick={() => redirectUrl('/cart')} >
+            <Badge badgeContent={props.quantity} color="secondary" overlap="rectangular">
+              <img src={BagIcon} alt="iconimage" />
+            </Badge>
+          </IconButton>
           {/* #region Uncomment below lines to run dark mode tests */}
           {/* <FormGroup className='theme-class'>
             <FormControlLabel labelPlacement="start" control={<Switch aria-label='theme change' id="theme" color="primary" onChange={(e) => props.handleThemeChange(e.target.checked)}/>} label="Dark Mode" />
@@ -336,7 +380,7 @@ useEffect(() => {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <img src={SearchIconNew} alt="iconimage"/>
+              <img src={SearchIconNew} alt="iconimage" />
             </IconButton>
           </div>
         </Toolbar>
@@ -346,16 +390,17 @@ useEffect(() => {
     </div>
   );
 }
-const mapStateToProps = (state) => { 
-  return { 
-    userInfo : state.login.userInfo,
-    theme :  state.login.theme,
-    quantity : state.login.quantity
+const mapStateToProps = (state) => {
+  return {
+    userInfo: state.login.userInfo,
+    theme: state.login.theme,
+    quantity: state.login.quantity
   }
 };
 const mapDispatchToProps = (dispatch) => ({
   handleThemeChange: (value) => dispatch(handleThemeChange(value)),
   submitAction: (user) => dispatch(submitAction(user)),
-  clickAction: () => dispatch(clickAction()), 
+  clickAction: () => dispatch(clickAction()),
+  getCartQuantity: (value) => dispatch(getCartQuantity(value)),
 })
 export default (connect(mapStateToProps, mapDispatchToProps)(TopAppBar));

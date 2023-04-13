@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import discount_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/discount.png";
 
 function ProductDetails(props) {
-  const { name, price, imageUrl } = props.detailProductData;
+  const { name, price, imageUrl, loggedIn } = props.detailProductData;
   // const type = Object.assign({}, props.detailProductData.type);
   const { features } = props.detailProductData;
 
@@ -179,7 +179,7 @@ function ProductDetails(props) {
             <div>
               <span className="prodattributes">Quantity</span>
               <span>
-                <QuantityPicker min={1} max={10} setQty={props.setQty}/>
+                <QuantityPicker min={1} max={10} setQty={props.setQty} loggedIn={loggedIn}/>
               </span>
             </div>
             <div>
