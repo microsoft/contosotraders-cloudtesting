@@ -119,12 +119,8 @@ var cdnImagesEndpointName = '${prefixHyphenated}-images${suffix}'
 var cdnUiEndpointName = '${prefixHyphenated}-ui${suffix}'
 var cdnUi2EndpointName = '${prefixHyphenated}-ui2${suffix}'
 
-// redis cache
-var redisCacheName = '${prefixHyphenated}-cache${suffix}'
-
 // azure container registry
 var acrName = '${prefix}acr${suffix}'
-// var acrCartsApiRepositoryName = '${prefix}apicarts' // @TODO: unused, probably remove later
 
 // load testing service
 var loadTestSvcName = '${prefixHyphenated}-loadtest${suffix}'
@@ -158,6 +154,8 @@ var jumpboxNicName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxVmName = 'jumpboxvm'
 var jumpboxVmAdminLogin = 'localadmin'
 var jumpboxVmAdminPassword = sqlPassword
+var jumpboxVmShutdownSchduleName = 'shutdown-computevm-jumpboxvm'
+var jumpboxVmShutdownScheduleTimezoneId = 'UTC'
 
 // private dns zone
 var privateDnsZoneVnetLinkName = '${prefixHyphenated}-privatednszone-vnet-link${suffix}'
@@ -525,8 +523,7 @@ resource productsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${userassignedmiforkvaccess.id}': {
-      }
+      '${userassignedmiforkvaccess.id}': {}
     }
   }
   properties: {
@@ -658,8 +655,7 @@ resource cartsapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${userassignedmiforkvaccess.id}': {
-      }
+      '${userassignedmiforkvaccess.id}': {}
     }
   }
   properties: {
@@ -803,8 +799,7 @@ resource uistgacc_roledefinition 'Microsoft.Authorization/roleDefinitions@2022-0
   name: '17d1049b-9a84-46fb-8f53-869881c3d3ab'
 }
 
-// @TODO: Unfortunately, this requires the service principal to be in the owner role for the subscription.
-// This is just a temporary mitigation, and needs to be fixed using a custom role.
+// This requires the service principal to be in 'owner' role or a custom role with 'Microsoft.Authorization/roleAssignments/write' permissions.
 // Details: https://learn.microsoft.com/en-us/answers/questions/287573/authorization-failed-when-when-writing-a-roleassig.html
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: uistgacc
@@ -823,8 +818,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${uistgacc_mi.id}': {
-      }
+      '${uistgacc_mi.id}': {}
     }
   }
   dependsOn: [
@@ -877,8 +871,7 @@ resource ui2stgacc_roledefinition 'Microsoft.Authorization/roleDefinitions@2022-
   name: '17d1049b-9a84-46fb-8f53-869881c3d3ab'
 }
 
-// @TODO: Unfortunately, this requires the service principal to be in the owner role for the subscription.
-// This is just a temporary mitigation, and needs to be fixed using a custom role.
+// This requires the service principal to be in 'owner' role or a custom role with 'Microsoft.Authorization/roleAssignments/write' permissions.
 // Details: https://learn.microsoft.com/en-us/answers/questions/287573/authorization-failed-when-when-writing-a-roleassig.html
 resource roleAssignment2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   scope: ui2stgacc
@@ -897,8 +890,7 @@ resource deploymentScript2 'Microsoft.Resources/deploymentScripts@2020-10-01' = 
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${ui2stgacc_mi.id}': {
-      }
+      '${ui2stgacc_mi.id}': {}
     }
   }
   dependsOn: [
@@ -1218,23 +1210,6 @@ resource cdnprofile_ui2endpoint 'Microsoft.Cdn/profiles/endpoints@2022-11-01-pre
 }
 
 //
-// redis cache
-//
-
-resource rediscache 'Microsoft.Cache/redis@2022-06-01' = {
-  name: redisCacheName
-  location: resourceLocation
-  tags: resourceTags
-  properties: {
-    sku: {
-      capacity: 0
-      family: 'C'
-      name: 'Basic'
-    }
-  }
-}
-
-//
 // container registry
 //
 
@@ -1262,8 +1237,7 @@ resource loadtestsvc 'Microsoft.LoadTestService/loadTests@2022-12-01' = {
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${userassignedmiforkvaccess.id}': {
-      }
+      '${userassignedmiforkvaccess.id}': {}
     }
   }
 }
@@ -1343,7 +1317,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-10-02-preview' = {
       {
         name: 'agentpool'
         osDiskSizeGB: 0 // Specifying 0 will apply the default disk size for that agentVMSize.
-        count: 3
+        count: 1
         vmSize: 'standard_b2s'
         osType: 'Linux'
         mode: 'System'
@@ -1357,14 +1331,6 @@ resource aks 'Microsoft.ContainerService/managedClusters@2022-10-02-preview' = {
             keyData: loadTextContent('rsa.pub') // @TODO: temporary hack, until we autogen the keys
           }
         ]
-      }
-    }
-    addonProfiles: {
-      omsagent: {
-        enabled: true
-        config: {
-          logAnalyticsWorkspaceResourceID: loganalyticsworkspace.id
-        }
       }
     }
   }
@@ -1505,6 +1471,12 @@ resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = {
       vmSize: 'standard_b2s'
     }
     storageProfile: {
+      osDisk: {
+        createOption: 'FromImage'
+        managedDisk: {
+          storageAccountType: 'StandardSSD_LRS'
+        }
+      }
       imageReference: {
         offer: 'WindowsServer'
         publisher: 'MicrosoftWindowsServer'
@@ -1531,12 +1503,31 @@ resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = {
   }
 }
 
+// auto-shutdown schedule
+resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = {
+  name: jumpboxVmShutdownSchduleName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    targetResourceId: jumpboxvm.id
+    dailyRecurrence: {
+      time: '2100'
+    }
+    notificationSettings: {
+      status: 'Disabled'
+    }
+    status: 'Enabled'
+    taskType: 'ComputeVmShutdownTask'
+    timeZoneId: jumpboxVmShutdownScheduleTimezoneId
+  }
+}
+
 //
 // private dns zone
 //
 
 module privateDnsZone './createPrivateDnsZone.bicep' = {
-  name: 'foo'
+  name: 'createPrivateDnsZone'
   params: {
     privateDnsZoneName: join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.')
     privateDnsZoneVnetId: vnet.id
@@ -1572,8 +1563,7 @@ resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = 
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${userassignedmiforkvaccess.id}': {
-      }
+      '${userassignedmiforkvaccess.id}': {}
     }
   }
   properties: {
@@ -1608,7 +1598,7 @@ resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = 
     template: {
       scale: {
         minReplicas: 1
-        maxReplicas: 10
+        maxReplicas: 3
         rules: [
           {
             name: 'http-scaling-rule'
