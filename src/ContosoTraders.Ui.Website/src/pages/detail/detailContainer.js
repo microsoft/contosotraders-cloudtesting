@@ -6,7 +6,8 @@ import LoadingSpinner from "../../components/loadingSpinner/loadingSpinner";
 // import Alert from "react-s-alert";
 
 // import Detail from "./detail";
-import { CartService, ProductService } from '../../services';
+// import CartService from "../../services";
+import { ProductService, CartService } from '../../services';
 import ProductDetails from "./productDetails";
 import Breadcrump from "../../components/breadcrumb/breadcrumb";
 import { useNavigate, useParams } from "react-router-dom";
@@ -50,6 +51,10 @@ function DetailContainer(props) {
                 let quantity = shoppingcart.length;
                 props.getCartQuantity(quantity)
             }
+        }else{
+            let cartItem = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
+            let quantity = cartItem.length;
+            props.getCartQuantity(quantity)
         }
     }
 
@@ -58,26 +63,49 @@ function DetailContainer(props) {
 
         // const profile = await UserService.getProfileData(this.props.userInfo.token);
         // const { profile: { email } } = profile;
-        const email = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null
-
         var tempProps = JSON.parse(JSON.stringify(detailProduct));
-        tempProps.email = email;
-        tempProps.quantity = qty;
-        Object.preventExtensions(tempProps);
-
-        setDetailProduct(tempProps)
-        // setDetailProduct({ ...detailProduct,email: email})
-
-        const productToCart = await CartService.addProduct(props.userInfo.token, tempProps)
-
-        if (productToCart.errMessage) {
-            return showErrorMessage(productToCart)
-        } else {
-            showSuccesMessage(productToCart)
+        if(!loggedIn){
+            let cartItem = {
+                imageUrl: detailProduct.imageUrl,
+                name: detailProduct.name,
+                price: detailProduct.price,
+                productId: detailProduct.id,
+                quantity: qty,
+                type: detailProduct.type
+            }
+            let arr = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
+            let objIndex = arr.findIndex((obj => obj.productId === detailProduct.id));
+            if(objIndex === -1){
+                arr.push(cartItem)
+                localStorage.setItem('cart_items',JSON.stringify(arr))
+                showSuccesMessage(`Added ${detailProduct.name} to Cart`)
+            }else{
+                showErrorMessage({errMessage : `Already Added to Cart`})
+            }
+            setLoadingRelated(true)
             getQuantity()
+        }else{
+
+            const email = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null
+
+            tempProps.email = email;
+            tempProps.quantity = qty;
+            Object.preventExtensions(tempProps);
+
+            setDetailProduct(tempProps)
+
+
+            const productToCart = await CartService.addProduct(props.userInfo.token, tempProps)
+
+            if (productToCart.errMessage) {
+                return showErrorMessage(productToCart)
+            } else {
+                showSuccesMessage(productToCart)
+                getQuantity()
+            }
         }
 
-        setLoadingRelated(true)
+        // setLoadingRelated(true)
 
         // setTimeout(async () => {
         //     let relatedDetailProducts = await CartService
@@ -120,7 +148,7 @@ function DetailContainer(props) {
         <div className="ProductContainerSectionMain">
             <Breadcrump parentPath='Products' parentUrl="/list/all-products" currentPath={detailProduct.name} />
             <div className="ProductContainerSection">
-                <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleClose}>
+                <Snackbar anchorOrigin={{ vertical:'bottom', horizontal:'right' }} open={alert.open} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity={alert.type} sx={{ width: '100%' }}>
                         {alert.message}
                     </Alert>
