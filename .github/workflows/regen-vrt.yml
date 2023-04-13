@@ -1,4 +1,4 @@
-name: contoso-traders-cloud-testing-template
+name: regen-vrt
 
 on:
     workflow_dispatch:
