@@ -71,6 +71,7 @@ function DetailContainer(props) {
                 price: detailProduct.price,
                 productId: detailProduct.id,
                 quantity: qty,
+                type: detailProduct.type
             }
             let arr = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
             let objIndex = arr.findIndex((obj => obj.productId === detailProduct.id));
