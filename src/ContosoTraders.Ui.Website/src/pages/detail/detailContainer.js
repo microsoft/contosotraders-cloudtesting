@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { connect } from 'react-redux';
 
 // import { animateScroll as scroll } from "react-scroll";
@@ -10,7 +10,7 @@ import LoadingSpinner from "../../components/loadingSpinner/loadingSpinner";
 import { ProductService, CartService } from '../../services';
 import ProductDetails from "./productDetails";
 import Breadcrump from "../../components/breadcrumb/breadcrumb";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
 import { getCartQuantity } from "../../actions/actions";
 // import Slider from "../home/components/slider/slider";
@@ -18,6 +18,7 @@ import { getCartQuantity } from "../../actions/actions";
 
 function DetailContainer(props) {
     const { productId } = useParams();
+    const navigate = useNavigate();
     const [detailProduct, setDetailProduct] = React.useState({})
     const [loadingRelated, setLoadingRelated] = React.useState(null)
     const [loading, setLoading] = React.useState(true)
@@ -25,19 +26,21 @@ function DetailContainer(props) {
     const relatedDetailProducts = []
     const [qty, setQty] = React.useState(1);
 
-    // useEffect(() => {
-    //     await getDetailPageData(productId);
-    // }, []);
+
+    const getDetailPageData = useCallback( async (productId) => {
+        let detailProducts = await ProductService.getDetailProductData(productId);
+        if(detailProducts){
+            setDetailProduct(detailProducts)
+        }else{
+            navigate('/product-not-found');
+        }
+        setLoading(false)
+    },[navigate]);
 
     React.useEffect(() => {
         getDetailPageData(productId);
-    }, [productId]);
+    }, [productId, getDetailPageData]);
 
-    const getDetailPageData = async (productId) => {
-        let detailProducts = await ProductService.getDetailProductData(productId);
-        setDetailProduct(detailProducts)
-        setLoading(false)
-    }
 
     const getQuantity = async () => {
         if (props.userInfo.token) {
