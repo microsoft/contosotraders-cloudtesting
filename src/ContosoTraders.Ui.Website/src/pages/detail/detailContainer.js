@@ -7,7 +7,7 @@ import LoadingSpinner from "../../components/loadingSpinner/loadingSpinner";
 
 // import Detail from "./detail";
 // import CartService from "../../services";
-import { ProductService } from '../../services';
+import { ProductService, CartService } from '../../services';
 import ProductDetails from "./productDetails";
 import Breadcrump from "../../components/breadcrumb/breadcrumb";
 import { useParams } from "react-router-dom";
@@ -40,19 +40,19 @@ function DetailContainer(props) {
     }
 
     const getQuantity = async () => {
-        // if (props.userInfo.token) {
-        //     const shoppingcart = await CartService.getShoppingCart(
-        //         props.userInfo.token
-        //     );
-        //     if (shoppingcart) {
-        //         let quantity = shoppingcart.length;
-        //         props.getCartQuantity(quantity)
-        //     }
-        // }else{
+        if (props.userInfo.token) {
+            const shoppingcart = await CartService.getShoppingCart(
+                props.userInfo.token
+            );
+            if (shoppingcart) {
+                let quantity = shoppingcart.length;
+                props.getCartQuantity(quantity)
+            }
+        }else{
             let cartItem = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
             let quantity = cartItem.length;
             props.getCartQuantity(quantity)
-        // }
+        }
     }
 
 
@@ -60,8 +60,8 @@ function DetailContainer(props) {
 
         // const profile = await UserService.getProfileData(this.props.userInfo.token);
         // const { profile: { email } } = profile;
-        // var tempProps = JSON.parse(JSON.stringify(detailProduct));
-        // if(!loggedIn){
+        var tempProps = JSON.parse(JSON.stringify(detailProduct));
+        if(!loggedIn){
             let cartItem = {
                 imageUrl: detailProduct.imageUrl,
                 name: detailProduct.name,
@@ -80,24 +80,26 @@ function DetailContainer(props) {
             }
             setLoadingRelated(true)
             getQuantity()
-        // }
-        // const email = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null
+        }else{
 
-        // tempProps.email = email;
-        // tempProps.quantity = qty;
-        // Object.preventExtensions(tempProps);
+            const email = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null
 
-        // setDetailProduct(tempProps)
+            tempProps.email = email;
+            tempProps.quantity = qty;
+            Object.preventExtensions(tempProps);
+
+            setDetailProduct(tempProps)
 
 
-        // const productToCart = await CartService.addProduct(props.userInfo.token, tempProps)
+            const productToCart = await CartService.addProduct(props.userInfo.token, tempProps)
 
-        // if (productToCart.errMessage) {
-        //     return showErrorMessage(productToCart)
-        // } else {
-        //     showSuccesMessage(productToCart)
-        //     getQuantity()
-        // }
+            if (productToCart.errMessage) {
+                return showErrorMessage(productToCart)
+            } else {
+                showSuccesMessage(productToCart)
+                getQuantity()
+            }
+        }
 
         // setLoadingRelated(true)
 

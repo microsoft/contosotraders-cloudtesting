@@ -28,7 +28,7 @@ import {
 import "./main.scss";
 import warningIcon from './assets/images/original/Contoso_Assets/Icons/information_icon.svg'
 import { useLocation } from "react-router-dom";
-// import { CartService } from "./services";
+import { CartService } from "./services";
 import { getCartQuantity } from "./actions/actions";
 
 
@@ -40,20 +40,20 @@ import { getCartQuantity } from "./actions/actions";
     const getQuantity = useCallback(async() => {
       let quantity = 0;
       //Show cart using API
-      // if (props.userInfo.token) {
-      //   const shoppingcart = await CartService.getShoppingCart(
-      //     props.userInfo.token
-      //   );
-      //   // if (shoppingcart) {
-      //   //   setShoppingCart({ shoppingcart });
-      //   // }
-      //   quantity = shoppingcart.length;
-      // }else{
+      if (props.userInfo.token) {
+        const shoppingcart = await CartService.getShoppingCart(
+          props.userInfo.token
+        );
+        // if (shoppingcart) {
+        //   setShoppingCart({ shoppingcart });
+        // }
+        quantity = shoppingcart.length;
+      }else{
         let cart = JSON.parse(localStorage.getItem('cart_items'));
         quantity = cart.length;
-      // }
+      }
       setQuantity(quantity);
-    },[])
+    },[props])
     
     useEffect(() => {
       props.getCartQuantity(quantity)
