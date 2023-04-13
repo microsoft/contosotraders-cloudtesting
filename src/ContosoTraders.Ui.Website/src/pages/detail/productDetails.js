@@ -142,7 +142,7 @@ function ProductDetails(props) {
             {/* <Grid item xs={2}>
              <ImageSlider setSliderImg={setSliderImg} sliderImg={sliderImg} imageUrl={imageUrl}/>
             </Grid> */}
-            <Grid item xs={10} className="productdetailsimagediv">
+            <Grid item xs={10} className="productdetailsimagediv" style={{backgroundImage:`url(${imageUrl})`}}>
               <img src={imageUrl} className="productdetailsimage" alt="" />
             </Grid>
           </Grid>

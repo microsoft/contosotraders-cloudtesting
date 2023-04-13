@@ -81,6 +81,31 @@ test.describe('Product Listing', () => {
   });
 });
 
+test.describe('Product Details', () => {
+  test('Image does not break UI', async ({ page }) => {
+    // Navigate to the page with the image
+    await page.getByRole('link', { name: 'Mobiles' }).click();
+    await page.getByRole('img', { name: 'Asus Zenfone 5Z' }).click();
+  
+    // Get the dimensions of the image
+    const image = await page.waitForSelector('.productdetailsimage');
+    const imageSize = await image.evaluate((img) => ({
+      width: img.getBoundingClientRect().width,
+      height: img.getBoundingClientRect().height
+    }));
+    
+    // Get the dimensions of the container
+    // const container = await page.locator('.MuiGrid-root > div > div').first();
+    // const containerRect = await container.boundingBox();
+
+    let containerSize = {height:600};
+    
+    // Assert that the image fits within the container
+    // expect(imageSize.width).toBeLessThanOrEqual(containerRect.width);
+    await expect(imageSize?.height).toBeLessThanOrEqual(containerSize?.height);
+  });
+});
+
 test.describe('Footer', () => {
   test('should be able to select footer menu', async ({ page }) => {
     await page.getByRole('listitem').filter({ hasText: 'Monitors' }).getByRole('link', { name: 'Monitors' }).click();

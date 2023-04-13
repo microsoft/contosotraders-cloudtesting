@@ -34,7 +34,7 @@ const ProductService = {
     async getDetailProductData(productId) {
         await ConfigService.loadSettings();
         const response = await axios.get(`${ConfigService._apiUrl}/products/${productId}`, ConfigService.HeadersConfig(), { errorHandle: false });
-        return response.data;
+        return response && response.data ? response.data : null;
     },
 
     async getRelatedProducts(formData, token) {
