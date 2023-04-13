@@ -2,6 +2,9 @@ name: generate-snapshots
 
 on:
     workflow_dispatch:
+    push:
+      branches:
+        - "mithun/generate-snapshots"
 
 jobs:
   playwright-tests-snapshots-linux:
