@@ -106,22 +106,6 @@ function TopAppBar(props) {
         let quantity = shoppingcart.length;
         props.getCartQuantity(quantity)
       }
-    } else {
-      let cartItem = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
-      let quantity = cartItem.length;
-      props.getCartQuantity(quantity)
-    }
-  }, [props])
-
-
-  useEffect(() => {
-    const getShoppingDetails = async () => {
-
-      //Shopping cart items from API
-      // const shoppingcart = await CartService.getShoppingCart(
-      //   props.userInfo.token
-      // );
-
       if (localStorage.getItem('cart_items')) {
         const email = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).userName : null
         var tempProps = JSON.parse(localStorage.getItem('cart_items'));
@@ -136,14 +120,21 @@ function TopAppBar(props) {
           } else {
             getQuantity()
           }
-
         })
         localStorage.removeItem('cart_items')
       }
+    } else {
+      let cartItem = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : []
+      let quantity = cartItem.length;
+      props.getCartQuantity(quantity)
     }
-    getShoppingDetails()
+  }, [props])
+
+
+  useEffect(() => {
+      getQuantity()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.userInfo.token]);
+  }, []);
 
   const onClickLogIn = async () => {
     let user = await authService.login();

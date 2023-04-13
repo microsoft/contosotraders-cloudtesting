@@ -49,7 +49,7 @@ import { getCartQuantity } from "./actions/actions";
         // }
         quantity = shoppingcart.length;
       }else{
-        let cart = JSON.parse(localStorage.getItem('cart_items'));
+        let cart = localStorage.getItem('cart_items') ? JSON.parse(localStorage.getItem('cart_items')) : [];
         quantity = cart.length;
       }
       setQuantity(quantity);
