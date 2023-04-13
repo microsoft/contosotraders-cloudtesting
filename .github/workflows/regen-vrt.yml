@@ -1,0 +1,38 @@
+name: contoso-traders-cloud-testing-template
+
+on:
+    workflow_dispatch:
+
+jobs:
+  playwright-tests-snapshots:
+    timeout-minutes: 20
+    runs-on: ubuntu-22.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.32.0-focal
+    defaults:
+      run:
+        working-directory: src/ContosoTraders.Ui.Website
+    env:
+      AADUSERNAME: ${{secrets.AADUSERNAME}}
+      AADPASSWORD: ${{secrets.AADPASSWORD}}
+      REACT_APP_APIURLSHOPPINGCART: 'https://contoso-traders-cartsctstg.livelygrass-74d6f26a.eastus.azurecontainerapps.io/v1'
+      REACT_APP_APIURL: 'https://contoso-traders-productsctstg.eastus.cloudapp.azure.com/v1'
+      REACT_APP_BASEURLFORPLAYWRIGHTTESTING: 'https://staging.contosotraders.com'      
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json
+      - name: install dependencies
+        run: npm ci
+      - name: run playwright tests
+        run: HOME=/root npx playwright test --update-snapshots
+      - name: upload playwright snapshots
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-snapshots
+          path: src/ContosoTraders.Ui.Website/tests
+          retention-days: 1
