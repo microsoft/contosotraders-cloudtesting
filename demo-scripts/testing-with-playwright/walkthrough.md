@@ -63,15 +63,9 @@ In order to test authentication, we can configure AAD, then run tests to log in 
    > * Note: In order for you to add the service principal to the `Application Administrator` role, you must yourself be a member of the `Global Administrator` role in Azure Active Directory.
    >
 
-3. Then, in your github fork, create a repository variable. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab.
+3. Create a test account (MFA disabled).
 
-   | Variable Name  | Variable Value |
-   | -------------- | -------------- |
-   | `ENABLE_LOGIN` | `true`         |
-
-4. Create a test account (MFA disabled).
-
-5. To run the [example test](../../src/ContosoTraders.Ui.Website/tests/account.ts) in GitHub Actions, add the test account credentials as github environment-level variables.
+4. To run the [example test](../../src/ContosoTraders.Ui.Website/tests/account.ts) in GitHub Actions, add the test account credentials as github environment-level variables.
 
    | Variable Name | Variable Value               |
    | ------------- | ---------------------------- |
@@ -80,11 +74,11 @@ In order to test authentication, we can configure AAD, then run tests to log in 
 
    > If you wish to run the [example test](../../src/ContosoTraders.Ui.Website/tests/account.ts) locally, set the credentials as 2 environment variables: AADUSERNAME and AADPASSWORD
 
-6. Re-run the github workflow `contoso-traders-cloud-testing`. This will configure the Azure AD to enable login functionality in the app.
+5. Re-run the github workflow `contoso-traders-cloud-testing`. This will configure the Azure AD to enable login functionality in the app.
 
    This test has a beforeAll hook that will log in to the app, then the test case uses the logged in state to fill out the personal info form.
 
-7. Read the [Playwright Authentication Documentation](https://playwright.dev/docs/auth)
+6. Read the [Playwright Authentication Documentation](https://playwright.dev/docs/auth)
 
 > Tests written with Playwright execute in isolated clean-slate environments called browser contexts. This isolation model improves reproducibility and prevents cascading test failures. New browser contexts can load existing authentication state. This eliminates the need to login in every context and speeds up test execution.
 
