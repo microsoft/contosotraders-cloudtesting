@@ -1,0 +1,132 @@
+name: contoso-traders-cloud-testing
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["mithun/deployment-simplification"]
+
+env:
+  # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
+  # metadata will be stored, and not where the resource groups will be deployed.
+  ACR_NAME: contosotradersacr
+  AKS_CLUSTER_NAME: contoso-traders-aks
+  AKS_DNS_LABEL: contoso-traders-products
+  AKS_NODES_RESOURCE_GROUP_NAME: contoso-traders-aks-nodes-rg
+  AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
+  AKS_SECRET_NAME_KV_ENDPOINT: contoso-traders-kv-endpoint
+  AKS_SECRET_NAME_MI_CLIENTID: contoso-traders-mi-clientid
+  AZURE_AD_APP_NAME: contoso-traders-cloud-testing-app
+  CARTS_ACA_NAME: contoso-traders-carts
+  CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
+  CARTS_INTERNAL_ACA_NAME: contoso-traders-intcarts
+  CDN_PROFILE_NAME: contoso-traders-cdn
+  CHAOS_AKS_EXPERIMENT_NAME: contoso-traders-chaos-aks-experiment
+  KV_NAME: contosotraderskv
+  LOAD_TEST_SERVICE_NAME: contoso-traders-loadtest
+  MSGRAPH_API_ID: 00000003-0000-0000-c000-000000000000
+  MSGRAPH_API_PERMISSION_EMAIL: 64a6cdd6-aab1-4aaf-94b8-3cc8405e90d0=Scope
+  MSGRAPH_API_PERMISSION_USER_READ: e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope
+  PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
+  PRODUCTS_DB_NAME: productsdb
+  PRODUCTS_DB_SERVER_NAME: contoso-traders-products
+  PRODUCTS_DB_USER_NAME: localadmin
+  PRODUCT_DETAILS_CONTAINER_NAME: product-details
+  PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME: contosotradersimg
+  PRODUCT_LIST_CONTAINER_NAME: product-list
+  PRODUCTS_CDN_ENDPOINT_NAME: contoso-traders-images
+  RESOURCE_GROUP_NAME: contoso-traders-rg
+  STORAGE_ACCOUNT_NAME: contosotradersimg
+  SUB_DEPLOYMENT_REGION: eastus2
+  UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
+  UI_STORAGE_ACCOUNT_NAME: contosotradersui2
+  USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
+
+jobs:
+  provision:
+    runs-on: ubuntu-22.04
+    env:
+      AADUSERNAME: ${{ secrets.AADUSERNAME }}
+      AADPASSWORD: ${{ secrets.AADPASSWORD }}
+    outputs:
+      azureAdAppClientId: ${{ steps.get-azureAdAppClientId.outputs.azureAdAppClientId }}
+      azureAdAppObjId: ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }}
+      cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
+      productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
+      uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+    concurrency:
+      group: provision
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: get azure ad app's object id
+        uses: azure/CLI@v1
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        id: get-azureAdAppObjId
+        with:
+          inlineScript: echo "azureAdAppObjId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].id -o tsv)" >> $GITHUB_OUTPUT
+      - name: get azure ad app's client id
+        uses: azure/CLI@v1
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        id: get-azureAdAppClientId
+        with:
+          inlineScript: echo "azureAdAppClientId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].appId -o tsv)" >> $GITHUB_OUTPUT
+      - name: get carts api endpoint
+        uses: azure/CLI@v1
+        id: get-cartsApiEndpoint
+        with:
+          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: get products api endpoint
+        uses: azure/CLI@v1
+        id: get-productsApiEndpoint
+        with:
+          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: get ui cdn endpoint
+        uses: azure/CLI@v1
+        id: get-uiCdnEndpoint
+        with:
+          inlineScript: echo "uiCdnEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+
+  playwright-tests-ui:
+    needs: [provision]
+    timeout-minutes: 20
+    runs-on: ubuntu-22.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.32.0-focal
+    defaults:
+      run:
+        working-directory: src/ContosoTraders.Ui.Website
+    env:
+      AADUSERNAME: ${{ secrets.AADUSERNAME }}
+      AADPASSWORD: ${{ secrets.AADPASSWORD }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: src/ContosoTraders.Ui.Website/package-lock.json
+      - name: Set env variables for testing endpoints
+        run: |
+          echo "REACT_APP_APIURLSHOPPINGCART"="https://${{ needs.provision.outputs.cartsApiEndpoint }}/v1" >> $GITHUB_ENV
+          echo "REACT_APP_APIURL"="https://${{ needs.provision.outputs.productsApiEndpoint }}/v1" >> $GITHUB_ENV
+          echo "REACT_APP_BASEURLFORPLAYWRIGHTTESTING"="https://${{ needs.provision.outputs.uiCdnEndpoint }}" >> $GITHUB_ENV
+      - name: Set env variables for testing login
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        run: |
+          echo "REACT_APP_B2CCLIENTID"="${{ needs.provision.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
+      - name: install dependencies
+        run: npm ci
+      - name: run playwright tests
+        run: HOME=/root npx playwright test
+      - name: upload playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: src/ContosoTraders.Ui.Website/playwright-report/
+          retention-days: 30
