@@ -16,7 +16,9 @@ export default defineConfig({
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 6000
+    timeout: 6000,
+    // Account for pixel difference between login being enabled/disabled
+    toHaveScreenshot: { maxDiffPixels: 30 }
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
