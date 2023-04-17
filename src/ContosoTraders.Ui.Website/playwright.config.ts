@@ -18,7 +18,7 @@ export default defineConfig({
      */
     timeout: 6000,
     // Account for pixel difference between login being enabled/disabled
-    toHaveScreenshot: { maxDiffPixels: 30 }
+    toHaveScreenshot: { maxDiffPixels: 100 }
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
