@@ -4,7 +4,7 @@ const authFile = '.auth/user.json';
 
 setup('authenticate', async ({ browser }) => {
     // skip setup if environment variables for AAD creds are not set
-    setup.skip(process.env.AADUSERNAME === undefined || process.env.AADPASSWORD === undefined, 'AADUSERNAME and AADPASSWORD environment variables must be set');
+    setup.skip(process.env.REACT_APP_B2CCLIENTID === undefined, 'REACT_APP_B2CCLIENTID environment variables must be set');
     const page = await browser.newPage();
     await page.goto('');
     // Sign in using creds from env variables
