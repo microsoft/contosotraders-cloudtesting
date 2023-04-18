@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 // import { withRouter } from 'react-router-dom';
 import LoadingSpinner from '../../components/loadingSpinner/loadingSpinner';
-
+import './list.scss'
 import List from './list';
 import { ProductService } from '../../services';
 import { useParams } from 'react-router-dom';

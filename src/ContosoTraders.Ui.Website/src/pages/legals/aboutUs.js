@@ -1,6 +1,8 @@
 import React from 'react';
 import Breadcrump from '../../components/breadcrumb/breadcrumb'
 import { useLocation } from 'react-router-dom';
+import './legals.scss'
+
 const AboutUs = (props) => {
     const location = useLocation();
     const currentCategory = location.pathname.split("/").pop().replaceAll('-',' ');

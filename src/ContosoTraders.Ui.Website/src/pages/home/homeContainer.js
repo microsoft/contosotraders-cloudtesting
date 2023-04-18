@@ -7,7 +7,7 @@ import Plumbing from "../../assets/images/home_plumbing.jpg";
 import Powertools from "../../assets/images/home_powertools.jpg";
 import { ProductService } from "../../services";
 import Home from "./home";
-
+import './home.scss'
 class HomeContainer extends Component {
     constructor() {
         super();
