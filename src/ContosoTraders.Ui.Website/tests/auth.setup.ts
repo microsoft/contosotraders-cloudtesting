@@ -1,4 +1,4 @@
-import { test as setup } from '@playwright/test';
+import { expect, test as setup } from '@playwright/test';
 
 const authFile = '.auth/user.json';
 
@@ -17,5 +17,10 @@ setup('authenticate', async ({ browser }) => {
     await dialog.getByRole('button', { name: 'Sign in' }).click();
     // Do not stay signed in
     await dialog.getByRole('button', { name: 'No' }).click();
+    // If app permissions prompt is shown, click "Yes"
+    if (await dialog.getByRole('heading', { name: 'Let this app access your info?' }).isVisible()) {
+        await dialog.getByRole('button', { name: 'Yes' }).click();
+    }
+    // Save auth state to file
     await page.context().storageState({ path: authFile });
-});
+}); 
