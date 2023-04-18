@@ -440,7 +440,7 @@ jobs:
           inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)
 
   load-tests-with-chaos-products-api:
-    needs: [provision]
+    needs: [provision, playwright-tests-ui]
     runs-on: ubuntu-22.04
     concurrency:
       group: load-tests-with-chaos-products-api
@@ -500,7 +500,7 @@ jobs:
             ]
 
   load-tests-carts-internal-api:
-    needs: [provision]
+    needs: [provision, playwright-tests-ui]
     runs-on: ubuntu-22.04
     concurrency:
       group: load-tests-carts-internal-api
@@ -566,7 +566,7 @@ jobs:
             ]
 
   load-tests-carts-api:
-    needs: [provision]
+    needs: [provision, playwright-tests-ui]
     runs-on: ubuntu-22.04
     concurrency:
       group: load-tests-carts-api
@@ -614,13 +614,7 @@ jobs:
             ]
 
   playwright-tests-ui:
-    needs:
-      [
-        provision,
-        load-tests-carts-api,
-        load-tests-carts-internal-api,
-        load-tests-with-chaos-products-api,
-      ]
+    needs: [provision]
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     container:
