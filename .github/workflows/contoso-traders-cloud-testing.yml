@@ -641,6 +641,8 @@ jobs:
         if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
         run: |
           echo "REACT_APP_B2CCLIENTID"="${{ needs.provision.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
+          echo "REACT_APP_AADUSERNAME"="${{ env.AADUSERNAME }}" >> $GITHUB_ENV
+          echo "REACT_APP_AADPASSWORD"="${{ env.AADPASSWORD }}" >> $GITHUB_ENV
       - name: install dependencies
         run: npm ci
       - name: run playwright tests
