@@ -100,7 +100,6 @@ test.describe('Product Details', () => {
     let containerSize = { height: 600 };
 
     // Assert that the image fits within the container
-    // expect(imageSize.width).toBeLessThanOrEqual(containerRect.width);
     await expect(imageSize?.height).toBeLessThanOrEqual(containerSize?.height);
   });
 });
