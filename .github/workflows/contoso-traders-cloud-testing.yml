@@ -159,7 +159,7 @@ jobs:
       - name: add service principal to kv access policy
         uses: azure/CLI@v1
         with:
-          inlineScript: az keyvault set-policy -n ${{ env.KV_NAME }}${{ vars.SUFFIX }} --secret-permissions get list set --object-id $(az ad sp show --id $(az account show --query "user.name" -o tsv) --query "id" -o tsv)
+          inlineScript: az keyvault set-policy -n ${{ env.KV_NAME }}${{ vars.SUFFIX }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --secret-permissions get list set --object-id $(az ad sp show --id $(az account show --query "user.name" -o tsv) --query "id" -o tsv)
       # The AKS agent pool needs to be assigned the user-assigned managed identity created (which has kv access)
       - name: assign user-assigned managed-identity to aks agentpool
         uses: azure/CLI@v1
