@@ -26,18 +26,16 @@ The Playwright docs have more details here: [Using the Playwright VSCode Extensi
     1. Navigate to [ContosoTraders/Actions](https://github.com/microsoft/ContosoTraders-CloudTesting/actions)
 
     1. Drill into the latest run by clicking on the `playwright-tests-ui` job, then clicking on the step `Set env variables for testing endpoints`.
-
     ![image](media/actions1.png)
-
     1. This project uses a `.env` file to easily manage these variables. Open `src\ContosoTraders.Ui.Website\.env` and set the following environment variables using the values from the logs above (these will be unique to your environment):
 
-       ```bash
-       REACT_APP_APIURLSHOPPINGCART = ''
-       REACT_APP_APIURL = ''
-       REACT_APP_BASEURLFORPLAYWRIGHTTESTING = ''
-       ```
+   ```bash
+   REACT_APP_APIURLSHOPPINGCART = ''
+   REACT_APP_APIURL = ''
+   REACT_APP_BASEURLFORPLAYWRIGHTTESTING = ''
+   ```
 
-1. Click on the `Testing` tab in VSCode's activity bar. This will show you all the tests in your project (in a tree structure).
+1. Click on the `Testing` tab in VSCode's activity bar. This will show you all the tests in your project (in a tree structure). There are tests that demonstrate [API testing](../../src/ContosoTraders.Ui.Website/tests/api.cart.spec.ts), [Authentication](../../src/ContosoTraders.Ui.Website/tests/auth.setup.ts), [Visual Comparisons](../../src/ContosoTraders.Ui.Website/tests/pages.spec.ts:63), [Emulation](../../src/ContosoTraders.Ui.Website/tests/map.spec.ts), [Mocking](../../src/ContosoTraders.Ui.Website/tests/mocks.spec.ts), and [using a CSV for data](../../src/ContosoTraders.Ui.Website/tests/account.ts).
 
    ![Playwright](./media/playwright-2.png)
 
