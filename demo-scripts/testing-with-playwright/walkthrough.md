@@ -29,11 +29,11 @@ The Playwright docs have more details here: [Using the Playwright VSCode Extensi
     ![image](media/actions1.png)
     1. This project uses a `.env` file to easily manage these variables. Open `src\ContosoTraders.Ui.Website\.env` and set the following environment variables using the values from the logs above (these will be unique to your environment):
 
-   ```bash
-   REACT_APP_APIURLSHOPPINGCART = ''
-   REACT_APP_APIURL = ''
-   REACT_APP_BASEURLFORPLAYWRIGHTTESTING = ''
-   ```
+    ```bash
+    REACT_APP_APIURLSHOPPINGCART = ''
+    REACT_APP_APIURL = ''
+    REACT_APP_BASEURLFORPLAYWRIGHTTESTING = ''
+    ```
 
 1. Click on the `Testing` tab in VSCode's activity bar. This will show you all the tests in your project (in a tree structure). There are tests that demonstrate [API testing](../../src/ContosoTraders.Ui.Website/tests/api.cart.spec.ts), [Authentication](../../src/ContosoTraders.Ui.Website/tests/auth.setup.ts), [Visual Comparisons](../../src/ContosoTraders.Ui.Website/tests/pages.spec.ts:63), [Emulation](../../src/ContosoTraders.Ui.Website/tests/map.spec.ts), [Mocking](../../src/ContosoTraders.Ui.Website/tests/mocks.spec.ts), and [using a CSV for data](../../src/ContosoTraders.Ui.Website/tests/account.ts).
 
@@ -69,19 +69,19 @@ In order to test authentication, we can configure AAD, then run tests to log in 
 
 1. Add the above Service Principal into the the [Application Administrator](https://learn.microsoft.com/azure/active-directory/roles/permissions-reference#application-administrator) active directory role.
 
-   1. Go to the Azure portal, and navigate to the Azure Active Directory blade. Then click on the `Roles and Administrators` tab on the left.
-   2. Select the `Application Administrator` role, and click on the `Add assignments` button.
-   3. Select the service principal that you created in the previous step. Click on the `Add` button.
+    1. Go to the Azure portal, and navigate to the Azure Active Directory blade. Then click on the `Roles and Administrators` tab on the left.
+    1. Select the `Application Administrator` role, and click on the `Add assignments` button.
+    1. Select the service principal that you created in the previous step. Click on the `Add` button.
 
-   ![Application Administrator](../../docs/images/ad-application-administrator.png)
+    ![Application Administrator](../../docs/images/ad-application-administrator.png)
 
-   >
-   > Notes:
-   >
-   > * Unfortunately, there is no AZ CLI, AZ PowerShell or Bicep template support to add a service principal to the `Application Administrator` role. You'll have to do this manually through the Azure portal.
-   >
-   > * Note: In order for you to add the service principal to the `Application Administrator` role, you must yourself be a member of the `Global Administrator` role in Azure Active Directory.
-   >
+    >
+    > Notes:
+    >
+    > * Unfortunately, there is no AZ CLI, AZ PowerShell or Bicep template support to add a service principal to the `Application Administrator` role. You'll have to do this manually through the Azure portal.
+    >
+    > * Note: In order for you to add the service principal to the `Application Administrator` role, you must yourself be a member of the `Global Administrator` role in Azure Active Directory.
+    >
 
 1. Create a test account (MFA disabled).
 
