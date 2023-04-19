@@ -72,7 +72,7 @@ In order to test authentication, we can configure AAD, then run tests to log in 
    | `AADUSERNAME` | username of the test account |
    | `AADPASSWORD` | password of the test account |
 
-   > If you wish to run the [example test](../../src/ContosoTraders.Ui.Website/tests/account.ts) locally, set the credentials as 2 environment variables: AADUSERNAME and AADPASSWORD
+   > If you wish to run the [example test](../../src/ContosoTraders.Ui.Website/tests/account.ts) locally, set the credentials as 2 environment variables: REACT_APP_AADUSERNAME and REACT_APP_AADPASSWORD
 
 5. Re-run the github workflow `contoso-traders-cloud-testing`. This will configure the Azure AD to enable login functionality in the app.
 

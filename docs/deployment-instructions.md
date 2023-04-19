@@ -11,6 +11,7 @@ You will need following to get started:
 1. **GitHub account**: Create a free account [here](https://github.com/).
 2. **Azure subscription**: Create a free account [here](https://azure.microsoft.com/free/).
 3. **Azure CLI**: Instructions to download and install [here](https://learn.microsoft.com/cli/azure/install-azure-cli).
+4. **VS Code**: Download and install [here](https://code.visualstudio.com/download).
 
 ## Prepare your Azure Subscription
 
