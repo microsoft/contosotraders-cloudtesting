@@ -24,21 +24,17 @@ Let us take a look at the GitHub Actions used by Contoso Traders for CI/CD.
 
 1. Navigate to [ContosoTraders CloudTesting repository.](https://github.com/microsoft/ContosoTraders-CloudTesting)
 
-2. Go to the **github/workflows (1)** folder; inside, you'll find the workflow **YAML file** that are used to deploy and set up the resources.  
+2. Go to the **github/workflows** folder; inside, you'll find the workflow **YAML file** that are used to deploy and set up the resources.  
 
-    ![image](media/actionlist.jpg)
+    ![image](media/actionlist.png)
 
 3. Here is a quick overview of the workflow. If you are interested, you can review the workflow code to get into more details.  
 
-    a. **contoso-traders-cloud-testing:**  This workflow provisions Azure resources used for hosting the application and deploys the application and initial data to the provisioned resources. It also runs load testing & playwright tests as part of CI/CD cycle ensure the app is production ready with each change.
+    a. **contoso-traders-cloud-testing:**  This workflow provisions Azure resources used for hosting the application, deploys the application to the provisioned resources. It also runs load testing & playwright tests as part of CI/CD cycle ensure the app is production ready with each change.
 
-     It includes everything needed to get the application up and running in an Azure Environment.  
+     It includes everything needed to get the application up and running in an Azure Environment.
 
       ![image](media/provision.png)
-
-    b. **contoso-traders-load-testing:** This workflow runs a load testing against the ContosoTraders application using Azure Load Testing.  
-
-      ![image](media/ct5.png)
 
 ## Monitor GitHub Actions Workflow
 
@@ -46,27 +42,21 @@ GitHub Actions workflows can be monitored from the Actions tab on a repository. 
 
 Let us take a look at the workflows status for Contoso Traders in this public repository.
 
-1. Navigate to [ContosoTraders/Actions](https://github.com/microsoft/ContosoTraders-CloudTesting/actions)
-
-    ![image](media/actions.png)
-
-2. Select the workflow **contoso-traders-cloud-testing**. This will the history of workflows execution.  
+1. Navigate to [ContosoTraders/Actions](https://github.com/microsoft/ContosoTraders-CloudTesting/actions). Select the workflow **contoso-traders-cloud-testing**. This will the history of workflows execution.  
 
     ![image](media/actions1.png)
 
-3. Select the latest run from the list. In Summary, you will see 4 jobs listed.
+2. Select the latest run from the list. In Summary, you will see 5 jobs listed.
 
-    - Provision-infrastructure: Used for provisioning Azure resources, configure access policies and permissions, seeding initial database.
-    - deploy-carts-api: Used to deploy the Carts API in Azure Container Apps.  
-    - deploy-products-api: Used to deploy Products API service in Azure Kubernetes Service.
-    - load-tests-carts-api: Used to execute Azure Load testing to validate performance for Carts API
-    - load-tests-products-api: Used to execute Azure Load testing to validate performance for Products API
-    - playwright-tests-ui: Used to execute pkaywright tests to validate UI functionalities before the UI service is deployed.
-    - deploy-ui: Used to deploy the front end website to Azure App Service.  
+    - `provision`: Used for provisioning Azure resources, configure access policies and permissions, seeding initial database.
+    - `playwright-tests-ui`: Used to execute playwright tests to validate UI functionalities before the UI service is deployed.
+    - `load-tests-carts-api`: Used to execute Azure Load testing to validate performance for Carts API.
+    - `load-tests-carts-internal-api`: Same as above, but executes Load testing against an internal/private API endpoint.
+    - `load-tests-with-chaos-products-api`: Used to execute Azure Load testing to validate performance for Products API with simultaneous chaos experiments (fault injection) enabled.
 
     ![image](media/actionmonitor.png)
 
-4. Click on **provision-infrastructure** job. You can now see the detailed task of this job and expand to see the logs and steps.
+3. Click on **provision** job. You can now see the detailed task of this job and expand to see the logs and steps.
 
    ![image](media/actions3.png)
 
