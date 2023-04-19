@@ -2,9 +2,9 @@ name: contoso-traders-cloud-testing
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches: ["main"]
-    paths-ignore: ["docs/**"]
+    paths-ignore: ["docs/**", "demo-scripts/**"]
 
 env:
   # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
