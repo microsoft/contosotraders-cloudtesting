@@ -128,5 +128,5 @@ Reference Links
 
 - [DevSecops in GitHub](https://learn.microsoft.com/azure/architecture/solution-ideas/articles/devsecops-in-github)
 - [GitHub features and Actions](https://github.com/features/actions)
-- [GitHub Advnced Security](https://docs.github.com/en/get-started/learning-about-github/about-github-advanced-security)
+- [GitHub Advnced Security](https://docs.github.com/get-started/learning-about-github/about-github-advanced-security)
 - [Microsoft Defender for DevOps - the benefits and features | Microsoft Learn](https://learn.microsoft.com/azure/defender-for-cloud/defender-for-devops-introduction)  
