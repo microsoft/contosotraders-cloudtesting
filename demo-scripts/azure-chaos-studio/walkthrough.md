@@ -117,5 +117,5 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
 ## More Information
 
-- [Azure Chaos Studio](https://learn.microsoft.com/en-us/azure/chaos-studio/)
-- [Pricing](https://azure.microsoft.com/en-us/pricing/details/chaos-studio/)
+- [Azure Chaos Studio](https://learn.microsoft.com/azure/chaos-studio/)
+- [Pricing](https://azure.microsoft.com/pricing/details/chaos-studio/)
