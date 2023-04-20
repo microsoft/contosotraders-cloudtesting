@@ -91,7 +91,7 @@ test.describe('Product Details', () => {
     await page.getByRole('img', { name: 'Asus Zenfone 5Z' }).click();
 
     // Get the dimensions of the image
-    const image = await page.waitForSelector('.productdetailsimage');
+    const image = page.locator('.productdetailsimage')
     const imageSize = await image.evaluate((img) => ({
       width: img.getBoundingClientRect().width,
       height: img.getBoundingClientRect().height
@@ -100,7 +100,7 @@ test.describe('Product Details', () => {
     let containerSize = { height: 600 };
 
     // Assert that the image fits within the container
-    await expect(imageSize?.height).toBeLessThanOrEqual(containerSize?.height);
+    expect(imageSize?.height).toBeLessThanOrEqual(containerSize?.height);
   });
 });
 
