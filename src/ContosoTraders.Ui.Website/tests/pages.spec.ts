@@ -92,10 +92,7 @@ test.describe('Product Details', () => {
 
     // Get the dimensions of the image
     const image = page.locator('.productdetailsimage')
-    const imageSize = await image.evaluate((img) => ({
-      width: img.getBoundingClientRect().width,
-      height: img.getBoundingClientRect().height
-    }));
+    const imageSize = await image.boundingBox();
 
     let containerSize = { height: 600 };
 
