@@ -5,7 +5,7 @@ import { parse } from 'csv-parse/sync';
 
 test.beforeEach(async () => {
     // skip test if environment variables for AAD creds are not set
-    test.skip(process.env.REACT_APP_AADUSERNAME === undefined || process.env.REACT_APP_AADPASSWORD === undefined, 'AADUSERNAME and AADPASSWORD environment variables must be set');
+    test.skip(!process.env.REACT_APP_AADUSERNAME || !process.env.REACT_APP_AADPASSWORD, 'AADUSERNAME and AADPASSWORD environment variables must be set');
 });
 
 test.describe('My Profile', () => {
@@ -29,7 +29,7 @@ test.describe('My Profile', () => {
             await page.locator('#confirmpassword').fill(`${record.confirmpassword}`);
             await page.getByRole('button', { name: 'Save Changes' }).click();
             // Verify no validation errors are present
-            expect(await page.locator('.Mui-error').count()).toEqual(0);
+            await expect(page.locator('.Mui-error')).toHaveCount(0);
         }
     });
 });
@@ -39,8 +39,6 @@ test.describe('My Cart', () => {
         await page.goto('');
         await page.getByRole('button', { name: 'cart' }).click();
         await expect(page).toHaveURL('/cart');
-        await expect(page.getByRole('heading', { name: 'My Cart' })).toBeTruthy();
+        await expect(page.getByRole('heading', { name: 'My Cart' })).toBeVisible();
     });
 });
-
-
