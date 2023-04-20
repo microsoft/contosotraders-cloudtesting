@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches: ["main"]
-    paths-ignore: ["docs/**"]
+    paths-ignore: ["docs/**", "demo-scripts/**"]
 
 env:
   # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
@@ -159,7 +159,7 @@ jobs:
       - name: add service principal to kv access policy
         uses: azure/CLI@v1
         with:
-          inlineScript: az keyvault set-policy -n ${{ env.KV_NAME }}${{ vars.SUFFIX }} --secret-permissions get list set --object-id $(az ad sp show --id $(az account show --query "user.name" -o tsv) --query "id" -o tsv)
+          inlineScript: az keyvault set-policy -n ${{ env.KV_NAME }}${{ vars.SUFFIX }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --secret-permissions get list set --object-id $(az ad sp show --id $(az account show --query "user.name" -o tsv) --query "id" -o tsv)
       # The AKS agent pool needs to be assigned the user-assigned managed identity created (which has kv access)
       - name: assign user-assigned managed-identity to aks agentpool
         uses: azure/CLI@v1
@@ -440,7 +440,7 @@ jobs:
           inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)
 
   load-tests-with-chaos-products-api:
-    needs: [provision]
+    needs: [provision, playwright-tests-ui]
     runs-on: ubuntu-22.04
     concurrency:
       group: load-tests-with-chaos-products-api
@@ -500,7 +500,7 @@ jobs:
             ]
 
   load-tests-carts-internal-api:
-    needs: [provision]
+    needs: [provision, playwright-tests-ui]
     runs-on: ubuntu-22.04
     concurrency:
       group: load-tests-carts-internal-api
@@ -566,7 +566,7 @@ jobs:
             ]
 
   load-tests-carts-api:
-    needs: [provision]
+    needs: [provision, playwright-tests-ui]
     runs-on: ubuntu-22.04
     concurrency:
       group: load-tests-carts-api
@@ -641,6 +641,8 @@ jobs:
         if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
         run: |
           echo "REACT_APP_B2CCLIENTID"="${{ needs.provision.outputs.azureAdAppClientId }}" >> $GITHUB_ENV
+          echo "REACT_APP_AADUSERNAME"="${{ env.AADUSERNAME }}" >> $GITHUB_ENV
+          echo "REACT_APP_AADPASSWORD"="${{ env.AADPASSWORD }}" >> $GITHUB_ENV
       - name: install dependencies
         run: npm ci
       - name: run playwright tests

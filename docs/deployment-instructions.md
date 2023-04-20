@@ -11,6 +11,7 @@ You will need following to get started:
 1. **GitHub account**: Create a free account [here](https://github.com/).
 2. **Azure subscription**: Create a free account [here](https://azure.microsoft.com/free/).
 3. **Azure CLI**: Instructions to download and install [here](https://learn.microsoft.com/cli/azure/install-azure-cli).
+4. **VS Code**: Download and install [here](https://code.visualstudio.com/download).
 
 ## Prepare your Azure Subscription
 
@@ -116,6 +117,8 @@ Here are some common problems that you may encounter during deployment:
    * You can read more about Responsible AI [here](https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai).
 
 2. Other intermittent errors: Should you encounter any of [these intermittent errors](https://github.com/microsoft/ContosoTraders/issues?q=is%3Aissue+is%3Aopen+label%3Adevops) in the github workflow, please re-run the failed jobs (it'll will pass on retry). We're working to fix these soon.
+
+3. There is a [known issue](https://github.com/Azure/login/issues/249) where the Azure login github action fails if the service principal's `clientSecret` begins with `-` (hyphen). If you encounter this, please regenerate a new secret, update the repository secret in your github fork, and restart the workflow.
 
 ## Explore Demo Scenarios
 

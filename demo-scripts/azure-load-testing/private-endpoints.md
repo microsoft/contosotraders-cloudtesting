@@ -78,8 +78,8 @@ In this demo, we saw how Azure Load Testing can be used to generate load from wi
 
 ## More Information
 
-* [Troubleshooting private endpoints](https://docs.microsoft.com/en-us/azure/container-apps/troubleshoot-private-endpoints)
-* [Test private endpoints by deploying Azure Load Testing in an Azure virtual network](https://learn.microsoft.com/en-us/azure/load-testing/how-to-test-private-endpoint)
-* [Scenarios for deploying Azure Load Testing in a virtual network](https://learn.microsoft.com/en-us/azure/load-testing/concept-azure-load-testing-vnet-injection)
+* [Troubleshooting private endpoints](https://docs.microsoft.com/azure/container-apps/troubleshoot-private-endpoints)
+* [Test private endpoints by deploying Azure Load Testing in an Azure virtual network](https://learn.microsoft.com/azure/load-testing/how-to-test-private-endpoint)
+* [Scenarios for deploying Azure Load Testing in a virtual network](https://learn.microsoft.com/azure/load-testing/concept-azure-load-testing-vnet-injection)
 * [Blog Post: Load test endpoints with access restrictions using Azure Load Testing](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/load-test-endpoints-with-access-restrictions-using-azure-load/ba-p/3610412)
 * [Blog Post: Load test private endpoints deployed in another Azure region or subscription](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/load-test-private-endpoints-deployed-in-another-azure-region-or/ba-p/3693277)
