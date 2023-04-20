@@ -1,8 +1,7 @@
 // -----------------------------------------------------------------------------
 // This file contains styles that are specific to the User Profile page.
 // -----------------------------------------------------------------------------
-@import '../../styles/abstracts/variables';
-@import '../../styles/abstracts/mixins/font-placeholders';
+@import "../../main.scss";
 
 .profileMain {
     margin-top: 192px;

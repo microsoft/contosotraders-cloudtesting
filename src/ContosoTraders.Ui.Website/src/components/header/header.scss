@@ -1,8 +1,7 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the header of the site/application.
 // -----------------------------------------------------------------------------
-@import '../../styles/abstracts/variables';
-@import '../../styles/abstracts/mixins/font-placeholders';
+@import "../../main.scss";
 
 .header {
     align-items: center;

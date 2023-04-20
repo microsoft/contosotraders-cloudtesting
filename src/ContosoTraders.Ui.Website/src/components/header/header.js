@@ -31,7 +31,6 @@ import logout_icon from "../../assets/images/original/Contoso_Assets/profile_pag
 import { Badge, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginIcon from '@mui/icons-material/Login';
-import './header.scss'
 
 class Header extends Component {
     constructor() {

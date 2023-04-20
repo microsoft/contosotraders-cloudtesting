@@ -1,5 +1,4 @@
 import React from 'react';
-import './header.scss'
 
 function HeaderMessage(props) {
     const { type, icon, message } = props
