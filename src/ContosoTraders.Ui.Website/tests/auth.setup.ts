@@ -24,6 +24,6 @@ setup('authenticate', async ({ page }) => {
     } catch (e) {
         // Consent dialog was not shown       
     }
-    // Save auth state to file
+    // Save auth state to file (.gitignore'd)
     await page.context().storageState({ path: authFile });
 }); 
