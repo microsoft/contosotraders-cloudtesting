@@ -2,6 +2,7 @@ import React from "react";
 
 import Slider from "../../components/slider/slider";
 import Banner from "../home/sections/banner";
+import './arrivals.scss'
 const Arrivals = (props) => {
     return (
         <div className="arrivals">

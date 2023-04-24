@@ -28,7 +28,7 @@ import personal_information_icon from "../../assets/images/original/Contoso_Asse
 import logout_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/logout_icon.svg";
 // import delete_icon from "../../assets/images/original/Contoso_Assets/profile_page_assets/delete_icon.svg";
 import { CartService, ProductService } from '../../services';
-
+import './header.scss'
 
 const StyledMenu = ((props) => (
   <Menu

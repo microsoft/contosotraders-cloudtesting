@@ -14,7 +14,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
 import { getCartQuantity } from "../../actions/actions";
 // import Slider from "../home/components/slider/slider";
-
+import './detail.scss'
 
 function DetailContainer(props) {
     const { productId } = useParams();
