@@ -5,7 +5,7 @@ import { Grid } from '@mui/material';
 import phoneLogo from '../../assets/images/original/Contoso_Assets/Icons/telephone_icon.svg'
 import emailLogo from '../../assets/images/original/Contoso_Assets/Icons/email_icon.svg'
 import { ReactComponent as Logo } from '../../assets/images/logo-horizontal.svg';
-
+import './footer.scss'
 
 const Footer = () => {
     const getLocation = useCallback(() => {
