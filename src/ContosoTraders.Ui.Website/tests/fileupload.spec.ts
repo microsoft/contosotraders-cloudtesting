@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
-const imgPath = require('path').resolve(__dirname, '..') + '/src/assets/images/original/Contoso_Assets/Grid_Products_Collection/product_image.png';
+import path from 'path';
+
+const imgPath = path.join(__dirname, '../src/assets/images/original/Contoso_Assets/Grid_Products_Collection/product_image.png');
 
 test.describe('File Upload', () => {
   test('should be able to upload a file', async ({ page }) => {

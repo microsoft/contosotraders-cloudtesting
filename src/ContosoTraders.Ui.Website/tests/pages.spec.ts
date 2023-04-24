@@ -12,11 +12,13 @@ test.describe('Header', () => {
     await page.getByPlaceholder('Search by product name or search by image').press('Enter');
     await expect(page).toHaveURL('/suggested-products-list');
   });
+
   test('should be able to select category', async ({ page }) => {
     await page.getByRole('button', { name: 'All Categories' }).click();
     await page.getByRole('menuitem', { name: 'Laptops' }).click();
     await expect(page).toHaveURL('/list/laptops');
   });
+
   test('should be able to hover over header menus', async ({ page }) => {
     await page.getByRole('navigation').getByRole('link', { name: 'All Products' }).hover();
     await page.getByRole('navigation').getByRole('link', { name: 'Laptops' }).hover();
@@ -24,11 +26,11 @@ test.describe('Header', () => {
     await page.getByRole('navigation').getByRole('link', { name: 'Mobiles' }).hover();
     await page.getByRole('navigation').getByRole('link', { name: 'Monitors' }).hover();
   });
+
   test('should be able to select header menu', async ({ page }) => {
     await page.getByRole('navigation').getByRole('link', { name: 'All Products' }).click();
     await expect(page).toHaveURL('/list/all-products');
   });
-
 });
 
 test.describe('Carousel', () => {
@@ -46,7 +48,6 @@ test.describe('Carousel', () => {
     await expect(carousel.getByText('Xbox Wireless Controller - Mineral Camo Special Edition')).toBeVisible();
     await carousel.getByRole('button', { name: 'carousel indicator 1' }).click();
     await expect(carousel.getByText('The Fastest, Most Powerful Xbox Ever.')).toBeVisible();
-
   })
 
   test('buy now button links to product page', async ({ page }) => {
@@ -62,6 +63,7 @@ test.describe('Carousel', () => {
   test('verify carousel is pixel perfect - slide 1', async ({ page }) => {
     await expect(page.getByTestId('carousel')).toHaveScreenshot();
   })
+
   test('verify carousel is pixel perfect - slide 2', async ({ page }) => {
     const carousel = page.getByTestId('carousel');
     await carousel.getByRole('button', { name: 'Next' }).click();
@@ -72,9 +74,10 @@ test.describe('Carousel', () => {
 test.describe('Product Listing', () => {
   test('should be able to select product to view details', async ({ page }) => {
     await page.goto('/list/all-products');
-    await page.locator('.MuiGrid-root > .MuiPaper-root').first().click();
+    await page.getByRole('img', { name: 'Xbox Wireless Controller Lunar Shift Special Edition' }).click();
     await expect(page).toHaveURL('/product/detail/' + _productid);
   });
+
   test('should be able to filter product by brands', async ({ page }) => {
     await page.goto('/list/all-products');
     await page.locator('[id="\\32 "]').check();
@@ -86,23 +89,15 @@ test.describe('Product Details', () => {
     // Navigate to the page with the image
     await page.getByRole('link', { name: 'Mobiles' }).click();
     await page.getByRole('img', { name: 'Asus Zenfone 5Z' }).click();
-  
-    // Get the dimensions of the image
-    const image = await page.waitForSelector('.productdetailsimage');
-    const imageSize = await image.evaluate((img) => ({
-      width: img.getBoundingClientRect().width,
-      height: img.getBoundingClientRect().height
-    }));
-    
-    // Get the dimensions of the container
-    // const container = await page.locator('.MuiGrid-root > div > div').first();
-    // const containerRect = await container.boundingBox();
 
-    let containerSize = {height:600};
-    
+    // Get the dimensions of the image
+    const image = page.locator('.productdetailsimage')
+    const imageSize = await image.boundingBox();
+
+    let containerSize = { height: 600 };
+
     // Assert that the image fits within the container
-    // expect(imageSize.width).toBeLessThanOrEqual(containerRect.width);
-    await expect(imageSize?.height).toBeLessThanOrEqual(containerSize?.height);
+    expect(imageSize?.height).toBeLessThanOrEqual(containerSize?.height);
   });
 });
 

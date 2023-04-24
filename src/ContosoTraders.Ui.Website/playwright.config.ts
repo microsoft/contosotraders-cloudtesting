@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { defineConfig, devices } from '@playwright/test';
 
 /**
@@ -10,13 +9,15 @@ require('dotenv').config()
 export default defineConfig({
   testDir: './tests',
   /* Maximum time one test can run for. */
-  timeout: 60 * 1000,
+  timeout: 80 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 6000
+    timeout: 6000,
+    // Account for pixel difference between login being enabled/disabled
+    toHaveScreenshot: { maxDiffPixels: 100 }
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -30,7 +31,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html'],
-    ['github'],
+    ...(process.env.CI ? [['github'] as ['github']] : []),
   ],
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

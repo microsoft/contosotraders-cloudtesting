@@ -1,6 +1,8 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the footer of the site/application.
 // -----------------------------------------------------------------------------
+@import "../../main.scss";
+
 .foo {
     background-color: $color-background-medium;
     display: flex;

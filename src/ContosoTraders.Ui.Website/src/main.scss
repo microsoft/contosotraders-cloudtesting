@@ -16,25 +16,3 @@
     'styles/base/base',
     'styles/base/typography',
     'styles/base/utilities';
-
-
-// 5. Components
-@import
-    'components/loadingSpinner/loadingSpinner',
-    'components/dropdowns/categories',
-    'components/corousel/corousel',
-    'components/header/header',
-    'components/quantityCounter/productCounter',
-    'components/imageSlider/imageSlider',
-    'components/footer/footer';
-
-// 6. Page-specific styles
-@import
-    'pages/list/list',
-    'pages/home/home',
-    'pages/detail/detail',
-    'pages/profile/profile',
-    'pages/arrivals/arrivals',
-    'pages/cart/cart',
-    'pages/legals/legals',
-    'pages/error/errorPage';

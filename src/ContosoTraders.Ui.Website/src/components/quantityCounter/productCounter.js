@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { CartService } from '../../services';
+import './productCounter.scss'
+
 export default class QuantityPicker extends Component {
 
   constructor(props) {

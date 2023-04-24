@@ -8,6 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 // import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { useNavigate } from 'react-router-dom';
+import './categories.scss' 
 
 const StyledMenu = ((props) => (
   <Menu

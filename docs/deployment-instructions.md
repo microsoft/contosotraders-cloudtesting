@@ -11,6 +11,7 @@ You will need following to get started:
 1. **GitHub account**: Create a free account [here](https://github.com/).
 2. **Azure subscription**: Create a free account [here](https://azure.microsoft.com/free/).
 3. **Azure CLI**: Instructions to download and install [here](https://learn.microsoft.com/cli/azure/install-azure-cli).
+4. **VS Code**: Download and install [here](https://code.visualstudio.com/download).
 
 ## Prepare your Azure Subscription
 
@@ -67,7 +68,7 @@ You will need following to get started:
 
     | Secret Name        | Secret Value                                      |
     | ------------------ | ------------------------------------------------- |
-    | `SQL_PASSWORD`     | A password which will be set on all SQL Azure DBs |
+    | `SQLPASSWORD`      | A password which will be set on all SQL Azure DBs |
     | `SERVICEPRINCIPAL` | See details below                                 |
 
     The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
@@ -83,15 +84,11 @@ You will need following to get started:
 
     The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
 
-3. Create two [environments for deployment](https://docs.github.com/actions/deployment/targeting-different-environments/using-environments-for-deployment). On your fork of the github repository, go to the `Settings` tab > `Environments` > Click on `New Environment` button and create the following two environments:
-    * `staging`
-    * `production` (optional)
+3. Set up the repository variables in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab and create these necessary repository variables:
 
-    * Then, for each of these above environments, create this environment variable:
-
-   | Variable Name | Variable Value                                                                                                                          |
-   | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-   | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg' |
+    | Secret Name | Secret Value                                                                                                                            |
+    | ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+    | `SUFFIX`    | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg' |
 
 ## Deploy the Application
 
@@ -120,6 +117,8 @@ Here are some common problems that you may encounter during deployment:
    * You can read more about Responsible AI [here](https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai).
 
 2. Other intermittent errors: Should you encounter any of [these intermittent errors](https://github.com/microsoft/ContosoTraders/issues?q=is%3Aissue+is%3Aopen+label%3Adevops) in the github workflow, please re-run the failed jobs (it'll will pass on retry). We're working to fix these soon.
+
+3. There is a [known issue](https://github.com/Azure/login/issues/249) where the Azure login github action fails if the service principal's `clientSecret` begins with `-` (hyphen). If you encounter this, please regenerate a new secret, update the repository secret in your github fork, and restart the workflow.
 
 ## Explore Demo Scenarios
 

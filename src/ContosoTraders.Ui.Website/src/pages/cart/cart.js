@@ -7,6 +7,8 @@ import { CartService } from "../../services";
 import { connect } from "react-redux";
 import LoadingSpinner from "../../components/loadingSpinner/loadingSpinner";
 import { getCartQuantity } from "../../actions/actions";
+import './cart.scss'
+
 function Cart(props) {
   const textInput = React.useRef(null);
   const [coupon, setCoupon] = React.useState('DISCOUNT10');

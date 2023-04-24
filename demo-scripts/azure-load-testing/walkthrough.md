@@ -182,6 +182,6 @@ In this demo, you got an overview of Azure's Load Testing service; including how
 
 ## More Information
 
-- [Azure Load Testing](https://learn.microsoft.com/en-us/azure/load-testing/)
+- [Azure Load Testing](https://learn.microsoft.com/azure/load-testing/)
 - [Blogs on Azure Load Testing](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/bg-p/AppsonAzureBlog/label-name/Azure%20Load%20Testing)
-- [Pricing](https://azure.microsoft.com/en-us/pricing/details/load-testing/)
+- [Pricing](https://azure.microsoft.com/pricing/details/load-testing/)

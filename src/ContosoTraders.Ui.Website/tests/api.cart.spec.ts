@@ -8,9 +8,13 @@ const PRODUCTIMAGE = 'PID1-1.jpg';
 const PRODUCTPRICE = 99;
 const PRODUCTQUANTITY = 1;
 
+test.use({
+    baseURL: process.env.REACT_APP_APIURLSHOPPINGCART + '/'
+});
+
 // SETUP: Create a new cart
 test.beforeAll(async ({ request }) => {
-    const newCart = await request.post(`${process.env.REACT_APP_APIURLSHOPPINGCART}/ShoppingCart`, {
+    const newCart = await request.post('./ShoppingCart', {
         data: {
             cartItemId: "string",
             email: USER,
@@ -21,20 +25,20 @@ test.beforeAll(async ({ request }) => {
             quantity: PRODUCTQUANTITY
         }
     });
-    await expect(newCart.status()).toBe(201);
+    expect(newCart.status()).toBe(201);
 });
 
 test.describe('Shopping Cart API', () => {
     test('should be able to GET shopping cart', async ({ request }) => {
-        const cart = await request.get(`${process.env.REACT_APP_APIURLSHOPPINGCART}/ShoppingCart`, {
+        const cart = await request.get('./ShoppingCart', {
             headers: {
                 'Accept': 'accept: */*',
                 'x-tt-email': USER,
             }
         });
-        await expect(cart.status()).toBe(200);
+        await expect(cart).toBeOK();
 
-        await expect(await cart.json()).toContainEqual(expect.objectContaining({
+        expect(await cart.json()).toContainEqual(expect.objectContaining({
             email: USER,
             productId: PRODUCTID,
             name: PRODUCT,
@@ -47,18 +51,18 @@ test.describe('Shopping Cart API', () => {
 
 // TEARDOWN: Delete the cart
 test.afterAll(async ({ request }) => {
-    const cart = await request.get(`${process.env.REACT_APP_APIURLSHOPPINGCART}/ShoppingCart`, {
+    const cart = await request.get('./ShoppingCart', {
         headers: {
             'Accept': 'accept: */*',
             'x-tt-email': USER,
         }
     });
-    await expect(cart.status()).toBe(200);
+    await expect(cart).toBeOK();
 
     // Loop through each cart item and delete it
     const cartBody = JSON.parse(await cart.text());
     for (let i = 0; i < cartBody.length; i++) {
-        const deleteCart = await request.delete(`${process.env.REACT_APP_APIURLSHOPPINGCART}/ShoppingCart/product`, {
+        const deleteCart = await request.delete('./ShoppingCart/product', {
             data: {
                 cartItemId: cartBody[i].cartItemId,
                 email: USER,
@@ -69,6 +73,6 @@ test.afterAll(async ({ request }) => {
                 quantity: cartBody[i].quantity
             }
         });
-        await expect(deleteCart.status()).toBe(200);
+        await expect(deleteCart).toBeOK();
     }
 });

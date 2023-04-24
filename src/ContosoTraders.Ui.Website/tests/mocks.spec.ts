@@ -3,20 +3,20 @@ import { test, expect } from '@playwright/test';
 test.describe('Mocks', () => {
     // Mock home page
     test('should be able to load mock home page', async ({ page }) => {
-        await page.route(`${process.env.REACT_APP_BASEURLFORPLAYWRIGHTTESTING}`, async route => {
+        await page.route('/', async route => {
             await route.fulfill({ status: 200, body: "<html>Test Content</html>" });
         });
 
         // Load home page
-        await page.goto(`${process.env.REACT_APP_BASEURLFORPLAYWRIGHTTESTING}`);
+        await page.goto('/');
         
         // Assert content of mock page
-        await expect(await page.locator('html').first().innerText()).toContain("Test Content");
+        await expect(page.locator('html').first()).toContainText("Test Content");
     });
 
     // Mock API - load product details
     test('should be able to load product details', async ({ page }) => {
-      await page.route(`${process.env.REACT_APP_APIURL}/Products/1`, async route => {
+      await page.route('/Products/1', async route => {
           const jsonResponse = 
           {
             "id": 1,
@@ -26,10 +26,10 @@ test.describe('Mocks', () => {
           await route.fulfill({ status: 200, json: jsonResponse });
       });
 
-      await page.goto(`${process.env.REACT_APP_APIURL}/Products/1`);
+      await page.goto('/Products/1');
 
       let data = await page.locator('pre').first().allInnerTexts();
       let product = JSON.parse(data[0]);
-      await expect(product.name).toBe("Test Product 01");
+      expect(product.name).toBe("Test Product 01");
     });
 });
