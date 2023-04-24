@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { defineConfig, devices } from '@playwright/test';
 
 /**
@@ -32,7 +31,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html'],
-    ['github'],
+    ...(process.env.CI ? [['github'] as ['github']] : []),
   ],
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

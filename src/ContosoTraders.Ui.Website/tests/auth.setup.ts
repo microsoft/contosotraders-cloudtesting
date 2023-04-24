@@ -2,10 +2,10 @@ import { test as setup } from '@playwright/test';
 
 const authFile = '.auth/user.json';
 
-setup('authenticate', async ({ browser }) => {
+setup('authenticate', async ({ page }) => {
     // skip setup if environment variables for AAD creds are not set
-    setup.skip(process.env.REACT_APP_AADUSERNAME === undefined || process.env.REACT_APP_AADPASSWORD === undefined, 'AADUSERNAME and AADPASSWORD environment variables must be set');
-    const page = await browser.newPage();
+    setup.skip(!process.env.REACT_APP_AADUSERNAME || !process.env.REACT_APP_AADPASSWORD, 'AADUSERNAME and AADPASSWORD environment variables must be set');
+
     await page.goto('');
     // Sign in using creds from env variables
     const dialogPromise = page.waitForEvent('popup');
