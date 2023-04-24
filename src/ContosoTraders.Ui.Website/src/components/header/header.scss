@@ -348,11 +348,11 @@
 //dark mode
 .theme-class>label {
     border: 1px solid lightgray;
-    background-color: #a2a2a2;
+    background-color: #fff;
     border-radius: 20px;
     padding: 3px 12px;
     margin: 0;
-    color: #fff;
+    color: #000;
 }
 
 
@@ -442,5 +442,32 @@
     .header{
         padding: 0 15px !important;
         justify-content: space-between;
+    }
+    .theme-class{
+        padding-top: 10px;
+        position: relative;
+        width: 100%;
+    }
+    .theme-class > label{
+        position: absolute;
+        top: 60px;
+        min-width: 140px;
+        right: 0;
+    }
+}
+@media screen and (min-width : 320px) and (max-width : 1039px) {
+    .theme-class > label > span {
+        font-size: 11px;
+    }
+    .dark .main-nav{
+        background-color: #302F2F !important;
+    }
+    .dark .main-nav__item{
+        color: #fff !important;
+    }
+    .dark .header img {
+        background-color: #fff;
+        border-radius: 50%;
+        padding: 3px;
     }
 }
