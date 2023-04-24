@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 // Shopping cart data
-const USER = 'fake@fake.com';
+const USER = 'fake@outlook.com';
 const PRODUCT = 'Xbox Wireless Controller Lunar Shift Special Edition';
 const PRODUCTID = 1;
 const PRODUCTIMAGE = 'PID1-1.jpg';

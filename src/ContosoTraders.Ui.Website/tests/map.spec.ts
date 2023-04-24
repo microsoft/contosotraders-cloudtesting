@@ -29,9 +29,11 @@ test.describe('Map', () => {
       }
     }).toPass();
   });
+
   test('should zoom in on bing maps iframe', async ({ page }) => {
     await page.frameLocator('iframe[title="geolocation"]').getByRole('button', { name: 'Zoom avanti' }).click();
   });
+
   test('should zoom out on bing maps iframe', async ({ page }) => {
     await page.frameLocator('iframe[title="geolocation"]').getByRole('button', { name: 'Zoom indietro' }).click();
   });
