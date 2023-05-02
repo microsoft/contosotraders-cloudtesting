@@ -1,21 +1,15 @@
 import React from "react";
 import { Grid, Button } from "@mui/material";
 import CustomizedAccordions from "../../components/accordion/accordion";
-// import ImageSlider from "../../components/imageSlider/imageslider";
 import QuantityPicker from "../../components/quantityCounter/productCounter";
 import add_to_bag_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/add_to_bag_icon.svg";
 import { Link } from "react-router-dom";
-// import add_to_wishlist_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/add_to_wishlist_icon.svg";
 import discount_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/discount.png";
 
 function ProductDetails(props) {
   const { name, price, imageUrl, loggedIn } = props.detailProductData;
-  // const type = Object.assign({}, props.detailProductData.type);
   const { features } = props.detailProductData;
 
-  // const relatedDetailProducts = props.relatedDetailProducts;
-  // const hasRelatedDetailProducts = relatedDetailProducts && relatedDetailProducts.length;
-  // const [sliderImg, setSliderImg] = React.useState(imageUrl)
   const [loading, setLoading] = React.useState(false)
   const addToCart = async () => {
     setLoading(true);
@@ -94,9 +88,6 @@ function ProductDetails(props) {
       <Grid container>
         <Grid item lg={6} md={5} xs={12} className="ProductImagesSection">
           <Grid container>
-            {/* <Grid item xs={2}>
-             <ImageSlider setSliderImg={setSliderImg} sliderImg={sliderImg} imageUrl={imageUrl}/>
-            </Grid> */}
             <Grid item xs={10} className="productdetailsimagediv" style={{backgroundImage:`url(${imageUrl})`}}>
               <img src={imageUrl} className="productdetailsimage" alt="" />
             </Grid>
@@ -112,25 +103,6 @@ function ProductDetails(props) {
               <span className="oldprice">{'$' + price.toFixed(2)}</span>
               <span className="newoffer">15%Off</span>
             </div>
-            {/* <div className="pincodebar">
-              <span className="prodattributes">Delivery</span>
-              <span>
-                <TextField
-                  className="pincodesearchbar"
-                  placeholder="Enter valid pincode"
-                  // label="Enter valid pincode"
-                  variant="outlined"
-                  InputProps={{
-                    style: { maxHeight: 49 },
-                    endAdornment: (
-                      <InputAdornment position='end'>
-                        <Button className="pinsearchbtn">CHECK</Button>
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </span>
-            </div> */}
             <div>
               <span className="prodattributes">Quantity</span>
               <span>
@@ -148,15 +120,6 @@ function ProductDetails(props) {
               >
                 {loading ? 'Adding...' : 'Add To Bag'}
               </Button>
-
-              {/* <Button
-              variant="outlined"
-              color="primary"
-              startIcon={<img src={add_to_wishlist_icon} alt=""/>}
-              className="WishListButton"
-            >
-              Add to WishList
-            </Button> */}
             </div>
             <div>
               <div>
