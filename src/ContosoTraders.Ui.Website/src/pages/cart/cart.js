@@ -48,10 +48,7 @@ function Cart(props) {
 
   const location = useLocation();
   const currentCategory = location.pathname.split("/").pop().replaceAll('-', ' ');
-  // const checkDiscount = () => {
-  //   setCoupon(textInput.current.value);
-  //   textInput.current.value = ''
-  // }
+
 
 
   const removeFromCart = async (item) => {
