@@ -65,10 +65,11 @@ function DetailContainer(props) {
         // const { profile: { email } } = profile;
         var tempProps = JSON.parse(JSON.stringify(detailProduct));
         if(!loggedIn){
+            let finalPrice = parseInt(detailProduct.price - ((detailProduct.price/100)*15))
             let cartItem = {
                 imageUrl: detailProduct.imageUrl,
                 name: detailProduct.name,
-                price: detailProduct.price,
+                price: finalPrice,
                 productId: detailProduct.id,
                 quantity: qty,
                 type: detailProduct.type

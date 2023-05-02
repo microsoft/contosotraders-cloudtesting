@@ -1,4 +1,4 @@
-import { Grid, TextField, InputAdornment, Button, Chip } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import React, { useCallback, useEffect } from "react";
 import QuantityPicker from "../../components/quantityCounter/productCounter";
 import Breadcrumb from "../../components/breadcrumb/breadcrumb";
@@ -10,8 +10,8 @@ import { getCartQuantity } from "../../actions/actions";
 import './cart.scss'
 
 function Cart(props) {
-  const textInput = React.useRef(null);
-  const [coupon, setCoupon] = React.useState('DISCOUNT10');
+  // const textInput = React.useRef(null);
+  // const [coupon, setCoupon] = React.useState('DISCOUNT10');
   const [cartItems, setCartItems] = React.useState([]);
   const [loading, setLoading] = React.useState(false)
   const [total, setTotal] = React.useState(0);
@@ -48,10 +48,10 @@ function Cart(props) {
 
   const location = useLocation();
   const currentCategory = location.pathname.split("/").pop().replaceAll('-', ' ');
-  const checkDiscount = () => {
-    setCoupon(textInput.current.value);
-    textInput.current.value = ''
-  }
+  // const checkDiscount = () => {
+  //   setCoupon(textInput.current.value);
+  //   textInput.current.value = ''
+  // }
 
 
   const removeFromCart = async (item) => {
@@ -114,7 +114,7 @@ function Cart(props) {
             {cartItems.map((item, key) => (
               <div key={key}>
                 <Grid container className="allProductlist">
-                  <Grid item lg={1} md={1} sm={8} xs={12}>
+                  <Grid item lg={1} md={1} sm={8} xs={12} onClick={() => navigate('/product/detail/'+item.productId)} role="button">
                     <img src={item.imageUrl} className="imagesection" alt="" />
                   </Grid>
                   <Grid item lg={11} md={11} xs={12} className="CartProducts">
@@ -158,7 +158,7 @@ function Cart(props) {
             {cartItems.length > 0 && <div>
               <Grid container className="couponOrderSection">
                 <Grid item lg={4} md={5} xs={12}>
-                  <Grid container>
+                  {/* <Grid container>
                     <Grid item xs={12}>
                       <h2 className="CouponHeading "> Coupons </h2>
                     </Grid>
@@ -191,7 +191,7 @@ function Cart(props) {
                     <Grid item xs={12}>
                       <p className="nocouponheading m-0">No coupons are available</p>
                     </Grid>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
                 <Grid item lg={3} md={2} className="d-none d-lg-block d-md-block"></Grid>
                 <Grid item lg={5} md={5} xs={12}>
