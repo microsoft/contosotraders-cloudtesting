@@ -60,16 +60,12 @@ function DetailContainer(props) {
 
 
     const addProductToCart = async () => {
-
-        // const profile = await UserService.getProfileData(this.props.userInfo.token);
-        // const { profile: { email } } = profile;
         var tempProps = JSON.parse(JSON.stringify(detailProduct));
         if(!loggedIn){
-            let finalPrice = parseInt(detailProduct.price - ((detailProduct.price/100)*15))
             let cartItem = {
                 imageUrl: detailProduct.imageUrl,
                 name: detailProduct.name,
-                price: finalPrice,
+                price: detailProduct.price,
                 productId: detailProduct.id,
                 quantity: qty,
                 type: detailProduct.type
