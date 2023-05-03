@@ -240,13 +240,13 @@ function Cart(props) {
                     <Grid item xs={10} className="OrderSubHeading">
                       Sub Total
                     </Grid>
-                    <Grid item xs={2} className="OrderSubPrice">
+                    <Grid item xs={2} className="OrderSubPrice" data-testid="subtotal">
                       ${total.toFixed(2)}
                     </Grid>
                     <Grid item xs={10} className="OrderSubHeading">
                       Discount
                     </Grid>
-                    <Grid item xs={2} className="OrderSubPrice text-success">
+                    <Grid item xs={2} className="OrderSubPrice text-success" data-testid="discount">
                       -${discountPrice.toFixed(2)}
                     </Grid>
                     <Grid item xs={10} className="OrderSubHeading">
