@@ -60,10 +60,12 @@ function Cart(props) {
   }, [getCartItems]);
 
   useEffect(() => {
-    let discount = (total/100)*discountPercentage;
-    setDiscountPrice(Math.ceil(discount));
-    let totalval = parseInt((total - discount) + delivery);
-    setgrandTotal(totalval);
+    if(total > 0){
+      let discount = (total/100)*discountPercentage;
+      setDiscountPrice(Math.ceil(discount));
+      let totalval = parseInt((total - discount) + delivery);
+      setgrandTotal(totalval);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [discountPercentage]);
 
