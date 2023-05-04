@@ -12,7 +12,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test.describe('Discount Codes', () => {
-    validDiscountCodes.forEach((code) => {
+    for (const code of validDiscountCodes) {
         test(`should be able to use VALID discount code ${code}`, async ({ page }) => {
             await page.getByPlaceholder('Enter coupon code').fill(code);
             await page.getByRole('button', { name: 'CHECK' }).click();
