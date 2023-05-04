@@ -2,6 +2,8 @@ import { test, expect } from '@playwright/test';
 
 let _productid = 1;
 
+test.skip(() => !process.env.REACT_APP_APIURL, 'requires REACT_APP_APIURL');
+
 test.use({
   baseURL: process.env.REACT_APP_APIURL + '/',
 });
