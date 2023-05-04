@@ -26,7 +26,7 @@ test.describe('Discount Codes', () => {
         });
     });
 
-    invalidDiscountCodes.forEach((code) => {
+    for (const code of invalidDiscountCodes) {
         test(`should not be able to use INVALID discount code ${code}`, async ({ page }) => {
             await page.getByPlaceholder('Enter coupon code').fill(code);
             await page.getByRole('button', { name: 'CHECK' }).click();
