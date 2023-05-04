@@ -43,14 +43,12 @@ const CartService = {
             typeid: detailProduct.type.id
         };
 
-        let finalPrice = parseInt(detailProduct.price - ((detailProduct.price/100)*15))
-
         const cartItems = {
             "cartItemId": Math.floor(Math.random() * 1000).toString(),
             "email": detailProduct.email.toLowerCase(),
             "productId": detailProduct.id,
             "name": detailProduct.name,
-            "price": finalPrice,
+            "price": detailProduct.price,
             "imageUrl": detailProduct.imageUrl,
             "quantity": detailProduct.quantity,
         };

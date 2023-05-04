@@ -1,23 +1,20 @@
 import React from "react";
-import { Grid, Button, TextField, InputAdornment, Typography } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import CustomizedAccordions from "../../components/accordion/accordion";
-// import ImageSlider from "../../components/imageSlider/imageslider";
 import QuantityPicker from "../../components/quantityCounter/productCounter";
 import add_to_bag_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/add_to_bag_icon.svg";
 import { Link } from "react-router-dom";
-// import add_to_wishlist_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/add_to_wishlist_icon.svg";
 import discount_icon from "../../assets/images/original/Contoso_Assets/product_page_assets/discount.png";
 
 function ProductDetails(props) {
   const { name, price, imageUrl, loggedIn } = props.detailProductData;
-  // const type = Object.assign({}, props.detailProductData.type);
   const { features } = props.detailProductData;
 
-  // const relatedDetailProducts = props.relatedDetailProducts;
-  // const hasRelatedDetailProducts = relatedDetailProducts && relatedDetailProducts.length;
-  // const [sliderImg, setSliderImg] = React.useState(imageUrl)
-  const addToCart = () => {
-    props.addProductToCart();
+  const [loading, setLoading] = React.useState(false)
+  const addToCart = async () => {
+    setLoading(true);
+    await props.addProductToCart();
+    setLoading(false);
   };
 
   const discountOffer = (price) => {
@@ -35,51 +32,18 @@ function ProductDetails(props) {
       title: 'Description',
       body:
         <Grid container spacing={2}>
-          <Grid item xs={4} className="descpAttributes">
-            Model Number
-          </Grid>
-          <Grid item xs={8} className="descpDetails">
-            Xbox Series X
-          </Grid>
-          <Grid item xs={4} className="descpAttributes">
-            Sales Package
-          </Grid>
-          <Grid item xs={8} className="descpDetails">
-            1 Series X Console, 1 Controller, 1 Ultra High Speed HDMI Cable
-            and 1 Power Cord.
-          </Grid>
-          <Grid item xs={4} className="descpAttributes">
-            Additional Content
-          </Grid>
-          <Grid item xs={8} className="descpDetails">
-            Series X console, One Wireless Controller, A high-speed HDMI Cable
-            and Power Cable
-          </Grid>
-          <Grid item xs={4} className="descpAttributes">
-            Console Type
-          </Grid>
-          <Grid item xs={8} className="descpDetails">
-            Console
-          </Grid>
-          <Grid item xs={4} className="descpAttributes">
-            Sound
-          </Grid>
-          <Grid item xs={8} className="descpDetails">
-            L-PCM, up to 7.1, Dolby Digital 5.1, DTS 5.1, Dolby TrueHD with
-            Atmos
-          </Grid>
-          <Grid item xs={4} className="descpAttributes">
-            Motion Controller Included
-          </Grid>
-          <Grid item xs={8} className="descpDetails">
-            Yes
-          </Grid>
-          <Grid item xs={4} className="descpAttributes">
-            RAM
-          </Grid>
-          <Grid item xs={8} className="descpDetails">
-            16GB GDDR6 w/320 bit-wide bus
-          </Grid>
+          {features && features.map((feature, index) => {
+            return (
+              <>
+                <Grid item xs={4} className="descpAttributes">
+                  {feature.title}
+                </Grid>
+                <Grid item xs={8} className="descpDetails">
+                  {feature.description}
+                </Grid>
+              </>
+            )
+          })}
         </Grid>
     },
     {
@@ -115,21 +79,6 @@ function ProductDetails(props) {
         </span>
       </div>
       </div>
-    },
-    {
-      name : 'panel3',
-      title : 'Questions and Answers',
-      body :
-      <ul>
-      {features && features.map((feature, index) => (
-        <li className="detail_feature" key={index}>
-          <Typography className="detail_feature-title">{`${feature.title}:`}</Typography>
-          <Typography className="detail_feature-description">
-            {feature.description}
-          </Typography>
-        </li>
-      ))}
-    </ul>
     }
   ]
 
@@ -139,9 +88,6 @@ function ProductDetails(props) {
       <Grid container>
         <Grid item lg={6} md={5} xs={12} className="ProductImagesSection">
           <Grid container>
-            {/* <Grid item xs={2}>
-             <ImageSlider setSliderImg={setSliderImg} sliderImg={sliderImg} imageUrl={imageUrl}/>
-            </Grid> */}
             <Grid item xs={10} className="productdetailsimagediv" style={{backgroundImage:`url(${imageUrl})`}}>
               <img src={imageUrl} className="productdetailsimage" alt="" />
             </Grid>
@@ -157,25 +103,6 @@ function ProductDetails(props) {
               <span className="oldprice">{'$' + price.toFixed(2)}</span>
               <span className="newoffer">15%Off</span>
             </div>
-            <div className="pincodebar">
-              <span className="prodattributes">Delivery</span>
-              <span>
-                <TextField
-                  className="pincodesearchbar"
-                  placeholder="Enter valid pincode"
-                  // label="Enter valid pincode"
-                  variant="outlined"
-                  InputProps={{
-                    style: { maxHeight: 49 },
-                    endAdornment: (
-                      <InputAdornment position='end'>
-                        <Button className="pinsearchbtn">CHECK</Button>
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </span>
-            </div>
             <div>
               <span className="prodattributes">Quantity</span>
               <span>
@@ -189,18 +116,10 @@ function ProductDetails(props) {
                 startIcon={<img src={add_to_bag_icon} alt="" />}
                 className="CartButton"
                 onClick={() => addToCart()}
+                disabled={loading}
               >
-                Add To Bag
+                {loading ? 'Adding...' : 'Add To Bag'}
               </Button>
-
-              {/* <Button
-              variant="outlined"
-              color="primary"
-              startIcon={<img src={add_to_wishlist_icon} alt=""/>}
-              className="WishListButton"
-            >
-              Add to WishList
-            </Button> */}
             </div>
             <div>
               <div>

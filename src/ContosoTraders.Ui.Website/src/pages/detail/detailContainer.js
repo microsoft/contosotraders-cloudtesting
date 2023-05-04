@@ -60,9 +60,6 @@ function DetailContainer(props) {
 
 
     const addProductToCart = async () => {
-
-        // const profile = await UserService.getProfileData(this.props.userInfo.token);
-        // const { profile: { email } } = profile;
         var tempProps = JSON.parse(JSON.stringify(detailProduct));
         if(!loggedIn){
             let cartItem = {
