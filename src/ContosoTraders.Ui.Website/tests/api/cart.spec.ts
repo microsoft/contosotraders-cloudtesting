@@ -8,6 +8,8 @@ const PRODUCTIMAGE = 'PID1-1.jpg';
 const PRODUCTPRICE = 99;
 const PRODUCTQUANTITY = 1;
 
+test.skip(() => !process.env.REACT_APP_APIURLSHOPPINGCART, 'requires REACT_APP_APIURLSHOPPINGCART');
+
 test.use({
     baseURL: process.env.REACT_APP_APIURLSHOPPINGCART + '/'
 });
