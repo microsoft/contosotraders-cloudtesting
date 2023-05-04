@@ -22,7 +22,7 @@ test.describe('Discount Codes', () => {
             // append .00 to the end of the discount code
             const expectedDiscount = code.replace('DISCOUNT', '') + '.00';
             // assert that both are equal
-            await expect(orderDiscount.replace('-$', '')).toEqual(expectedDiscount);
+           expect(orderDiscount.replace('-$', '')).toEqual(expectedDiscount);
         });
     });
 
