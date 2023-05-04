@@ -22,9 +22,9 @@ test.describe('Discount Codes', () => {
             // append .00 to the end of the discount code
             const expectedDiscount = code.replace('DISCOUNT', '') + '.00';
             // assert that both are equal
-           expect(orderDiscount.replace('-$', '')).toEqual(expectedDiscount);
+            expect(orderDiscount.replace('-$', '')).toEqual(expectedDiscount);
         });
-    });
+    }
 
     for (const code of invalidDiscountCodes) {
         test(`should not be able to use INVALID discount code ${code}`, async ({ page }) => {
@@ -32,5 +32,5 @@ test.describe('Discount Codes', () => {
             await page.getByRole('button', { name: 'CHECK' }).click();
             await expect(page.getByText('This coupon is invalid')).toBeVisible();
         });
-    });
+    }
 });
