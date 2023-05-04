@@ -1,4 +1,4 @@
-import { Grid, TextField, InputAdornment, Button, Chip } from "@mui/material";
+import { Grid, Button, TextField, InputAdornment, Chip } from "@mui/material";
 import React, { useCallback, useEffect } from "react";
 import QuantityPicker from "../../components/quantityCounter/productCounter";
 import Breadcrumb from "../../components/breadcrumb/breadcrumb";
@@ -11,10 +11,16 @@ import './cart.scss'
 
 function Cart(props) {
   const textInput = React.useRef(null);
-  const [coupon, setCoupon] = React.useState('DISCOUNT10');
+  const validCoupons = ['discount10','discount15'];
+  const [coupon, setCoupon] = React.useState('DISCOUNT15');
+  const [invalidCoupon, setInvalidCoupon] = React.useState(false);
+  const [discountPrice, setDiscountPrice] = React.useState(0);
+  const [discountPercentage, setDiscountPercentage] = React.useState(15);
   const [cartItems, setCartItems] = React.useState([]);
   const [loading, setLoading] = React.useState(false)
   const [total, setTotal] = React.useState(0);
+  const [grandtotal, setgrandTotal] = React.useState(0);
+  const [delivery, setDelivery] = React.useState(10);
   const navigate = useNavigate();
 
   const getCartItems = useCallback(async () => {
@@ -35,22 +41,54 @@ function Cart(props) {
           )
         })
         setTotal(sum);
+        let discount = (sum/100)*discountPercentage;
+        setDiscountPrice(Math.ceil(discount));
+        let deliveryChrge = 10;
+        setDelivery(deliveryChrge)
+        let totalval = parseInt((sum - discount) + deliveryChrge);
+        setgrandTotal(totalval);
       }
       setCartItems(items)
       setLoading(false)
       let quantity = items.length;
       props.getCartQuantity(quantity)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   useEffect(() => {
     getCartItems()
   }, [getCartItems]);
 
+  useEffect(() => {
+    if(total > 0){
+      let discount = (total/100)*discountPercentage;
+      setDiscountPrice(Math.ceil(discount));
+      let totalval = parseInt((total - discount) + delivery);
+      setgrandTotal(totalval);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [discountPercentage]);
+
   const location = useLocation();
   const currentCategory = location.pathname.split("/").pop().replaceAll('-', ' ');
   const checkDiscount = () => {
-    setCoupon(textInput.current.value);
-    textInput.current.value = ''
+    if(validCoupons.includes(textInput.current.value.toLowerCase())){
+      switch (textInput.current.value.toLowerCase()) {
+        case 'discount15':
+          setDiscountPercentage(15);
+          break;
+        case 'discount10':
+          setDiscountPercentage(10);
+          break;
+        default:
+          break;
+      }
+      setCoupon(textInput.current.value);
+      textInput.current.value = ''
+      setInvalidCoupon(false);
+    }else{
+      setInvalidCoupon(true)
+    }
   }
 
 
@@ -74,7 +112,7 @@ function Cart(props) {
             <h5 className="MyCartHeading">My Cart</h5>
             {cartItems.length > 0 && <>
               <h5 className="CartTopHeadTotal">Grand Total:</h5>
-              <h5 className="CartTopGrandTotal">${total.toFixed(2)}</h5>
+              <h5 className="CartTopGrandTotal">${grandtotal.toFixed(2)}</h5>
               <Button variant="contained" className="PlaceOrderButton">Place Order</Button>
             </>}
           </div>
@@ -114,7 +152,7 @@ function Cart(props) {
             {cartItems.map((item, key) => (
               <div key={key}>
                 <Grid container className="allProductlist">
-                  <Grid item lg={1} md={1} sm={8} xs={12}>
+                  <Grid item lg={1} md={1} sm={8} xs={12} onClick={() => navigate('/product/detail/'+item.productId)} role="button">
                     <img src={item.imageUrl} className="imagesection" alt="" />
                   </Grid>
                   <Grid item lg={11} md={11} xs={12} className="CartProducts">
@@ -169,6 +207,9 @@ function Cart(props) {
                           <TextField
                             className="pincodesearchbar"
                             // label="Enter coupon code"
+                            id="outlined-error-helper-text"
+                            error={invalidCoupon}
+                            helperText={invalidCoupon ? "This coupon is invalid" : ""}
                             placeholder="Enter coupon code"
                             variant="outlined"
                             inputRef={textInput}
@@ -185,12 +226,9 @@ function Cart(props) {
                     </Grid>
 
                     {coupon && <Grid item xs={12} >
-                      <Chip label={coupon} onDelete={() => setCoupon('')} className="CouponChip" />
+                      <Chip label={coupon} onDelete={() => {setCoupon('');setDiscountPercentage(0)}} className="CouponChip" />
                       <hr />
                     </Grid>}
-                    <Grid item xs={12}>
-                      <p className="nocouponheading m-0">No coupons are available</p>
-                    </Grid>
                   </Grid>
                 </Grid>
                 <Grid item lg={3} md={2} className="d-none d-lg-block d-md-block"></Grid>
@@ -202,26 +240,26 @@ function Cart(props) {
                     <Grid item xs={10} className="OrderSubHeading">
                       Sub Total
                     </Grid>
-                    <Grid item xs={2} className="OrderSubPrice">
+                    <Grid item xs={2} className="OrderSubPrice" data-testid="subtotal">
                       ${total.toFixed(2)}
                     </Grid>
                     <Grid item xs={10} className="OrderSubHeading">
                       Discount
                     </Grid>
-                    <Grid item xs={2} className="OrderSubPrice">
-                      -$0.00
+                    <Grid item xs={2} className="OrderSubPrice text-success" data-testid="discount">
+                      -${discountPrice.toFixed(2)}
                     </Grid>
                     <Grid item xs={10} className="OrderSubHeading">
                       Delivery Fee
                     </Grid>
                     <Grid item xs={2} className="OrderSubPrice">
-                      -$0.00
+                      ${delivery.toFixed(2)}
                     </Grid>
                     <Grid item xs={10} className="OrdertotalHeading">
                       Grand Total
                     </Grid>
                     <Grid item xs={2} className="OrderTotalPrice">
-                      ${total.toFixed(2)}
+                      ${grandtotal.toFixed(2)}
                     </Grid>
                     <Grid item xs={12}>
                       <hr />

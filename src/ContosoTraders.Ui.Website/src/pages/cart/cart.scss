@@ -52,9 +52,6 @@
       font-weight: 400;
       color: rgba(98, 98, 98, 0.9);
     }
-    fieldset{
-      border: 1px solid #F1F1F1;
-    }
   }
   .CartSection .pincodebar {
     width: 100%;
@@ -75,6 +72,9 @@
     background: #fafafa;
     width: 82px;
     padding: 16px;
+    &:focus{
+      outline: none !important;
+    }
   }
   .CartSection .pinsearchbtnactive{
     background: #2874f0;
@@ -202,7 +202,7 @@
   }
   
   .CartSection .CouponChip {
-    background: #000000 0% 0% no-repeat padding-box;
+    background: #29ae49 0% 0% no-repeat padding-box;
     border: 1px solid #f1f1f1;
     border-radius: 74px;
     // margin: 16px 0px 8px 0px; 
