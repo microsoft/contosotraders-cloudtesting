@@ -27,9 +27,10 @@ test.describe('Mocks', () => {
       });
 
       await page.goto('/Products/1');
-
-      let data = await page.locator('pre').first().allInnerTexts();
-      let product = JSON.parse(data[0]);
-      expect(product.name).toBe("Test Product 01");
+      await expect(async () => {
+        const data = await page.locator('pre').first().allInnerTexts();
+        const product = JSON.parse(data[0]);
+        expect(product.name).toBe("Test Product 01");
+      }).toPass();
     });
 });

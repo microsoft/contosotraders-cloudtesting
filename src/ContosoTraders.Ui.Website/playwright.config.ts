@@ -11,11 +11,6 @@ export default defineConfig({
   /* Maximum time one test can run for. */
   timeout: 80 * 1000,
   expect: {
-    /**
-     * Maximum time expect() should wait for the condition to be met.
-     * For example in `await expect(locator).toHaveText();`
-     */
-    timeout: 6000,
     // Account for pixel difference between login being enabled/disabled
     toHaveScreenshot: { maxDiffPixels: 100 }
   },
@@ -38,8 +33,6 @@ export default defineConfig({
   use: {
     /* https://github.com/microsoft/playwright/issues/14440 - TODO - Investigate later */
     ignoreHTTPSErrors: true,
-    /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-    actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.REACT_APP_BASEURLFORPLAYWRIGHTTESTING || 'https://production.contosotraders.com/',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
