@@ -22,12 +22,17 @@ test.describe('Shopping Cart', () => {
         await expect(page.getByText('Subtotal', { exact: true })).toBeVisible();
     });
 
-    test('should be able to increase quantity', async ({ page }) => {
-        await page.getByRole('button', { name: '+' }).first().click();
-    });
+    test('should be able to increase and decrease test quantity', async ({ page }) => {
+        const subtotal = async () => Number((await page.getByTestId('subtotal').innerText()).replace('$', ''));
+        const clickButton = async (name: string) => await page.getByRole('button', { name }).first().click();
 
-    test('should be able to decrease quantity', async ({ page }) => {
-        await page.getByRole('button', { name: '-' }).first().click();
+        const subtotalBefore = await subtotal();
+        await clickButton('+');
+        await expect(await subtotal()).toBeGreaterThan(subtotalBefore);
+
+        const subtotalAfter = await subtotal();
+        await clickButton('-');
+        await expect(await subtotal()).toBeLessThan(subtotalAfter);
     });
 });
 
