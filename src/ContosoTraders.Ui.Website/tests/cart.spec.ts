@@ -34,12 +34,10 @@ test.describe('Shopping Cart', () => {
         await clickButton('-');
         await expect(await subtotal()).toBeLessThan(subtotalAfter);
     });
-});
-
-// TEARDOWN: Remove items from cart
-test.afterAll(async ({ page }) => {
-    // Remove items from the cart
-    while (!(await page.getByRole('heading', { name: 'Your Cart is empty' }).isVisible())) {
-        await page.getByRole('link', { name: 'Remove' }).first().click();
-    }
+    
+    test('should be able to remove items from cart', async ({ page }) => {
+        while (!(await page.getByRole('heading', { name: 'Your Cart is empty' }).isVisible())) {
+            await page.getByRole('link', { name: 'Remove' }).first().click();
+        }
+    });    
 });
