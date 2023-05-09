@@ -28,16 +28,20 @@ test.describe('Shopping Cart', () => {
 
         const subtotalBefore = await subtotal();
         await clickButton('+');
-        await expect(await subtotal()).toBeGreaterThan(subtotalBefore);
+        await expect(async () => {
+            expect(await subtotal()).toBeGreaterThan(subtotalBefore);
+        }).toPass();
 
         const subtotalAfter = await subtotal();
         await clickButton('-');
-        await expect(await subtotal()).toBeLessThan(subtotalAfter);
+        await expect(async () => {
+            expect(await subtotal()).toBeLessThan(subtotalAfter);
+        }).toPass();
     });
-    
+
     test('should be able to remove items from cart', async ({ page }) => {
         while (!(await page.getByRole('heading', { name: 'Your Cart is empty' }).isVisible())) {
             await page.getByRole('link', { name: 'Remove' }).first().click();
         }
-    });    
+    });
 });
