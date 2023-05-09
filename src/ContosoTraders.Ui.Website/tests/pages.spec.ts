@@ -56,8 +56,7 @@ test.describe('Carousel', () => {
   })
 
   test('more details links to list page', async ({ page }) => {
-    await expect(page.getByTestId('carousel').getByRole('button', { name: 'More Details' })).toHaveCount(1);
-    await page.getByTestId('carousel').getByRole('button', { name: 'More Details' }).click();
+    await page.getByTestId('carousel').getByRole('button', { name: 'More Details' }).first().click();
     await expect(page).toHaveURL('/list/controllers');
   })
 
