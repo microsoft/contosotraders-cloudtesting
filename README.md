@@ -4,7 +4,7 @@ The Contoso Traders app is a sample application showcasing [Playwright](https://
 
 This repo contains the source code, deployment templates, and demo scripts for exploring these cloud testing tools.
 
-![Logo](https://github.com/microsoft/ContosoTraders/blob/main/docs/images/logo-1280x640.png)
+![Landing Page](./docs/images/landing-page.png)
 
 ## Documentation and Resources
 
@@ -14,10 +14,17 @@ This repo contains the source code, deployment templates, and demo scripts for e
 ## Demo Scripts
 
 * [Developer Workflow](./demo-scripts/dev-workflow/walkthrough.md)
-* [Azure Load Testing](./demo-scripts/azure-load-testing/walkthrough.md)
-  * [Load Testing Private Endpoints](./demo-scripts/azure-load-testing/private-endpoints.md)
-* [Azure Chaos Studio](./demo-scripts/azure-chaos-studio/walkthrough.md)
-* [Testing With Playwright](./demo-scripts/testing-with-playwright/walkthrough.md)
+* Azure Load Testing - Generate high-scale load and identify performance bottlenecks.
+  * [Create a load test for the shopping cart API.](./demo-scripts/azure-load-testing/walkthrough.md)
+  * [Use GitHub Actions for regression testing.](./demo-scripts/azure-load-testing/walkthrough.md#walkthrough-regression-testing-with-github-workflows)
+  * [Create a load test for a private endpoint that’s behind a VNet.](./demo-scripts/azure-load-testing/private-endpoints.md)
+
+* Azure Chaos Studio - Improve application resilience by introducing faults and simulating outages.
+  * [Create an experiment using Key Vault Deny Access fault to test the products API (AKS).](./demo-scripts/azure-chaos-studio/walkthrough.md)
+  * [Run experiment in GitHub Actions to inject faults (pod failures) into the AKS cluster.](./demo-scripts/azure-chaos-studio/walkthrough.md#walkthrough-running-chaos-experiments-via-github-workflows)
+
+* Playwright - Reliable end-to-end testing for modern web apps.
+  * [Use the VS Code extension to explore and run web tests](./demo-scripts/testing-with-playwright/walkthrough.md) for [API testing](../../src/ContosoTraders.Ui.Website/tests/api), [Authentication](../../src/ContosoTraders.Ui.Website/tests/auth.setup.ts), [Shopping cart](../../src/ContosoTraders.Ui.Website/tests/cart.spec.ts), [Uploading files](../../src/ContosoTraders.Ui.Website/tests/fileupload.spec.ts), [Visual Comparisons](../../src/ContosoTraders.Ui.Website/tests/pages.spec.ts#L63), [Emulation](../../src/ContosoTraders.Ui.Website/tests/map.spec.ts), [Mocking](../../src/ContosoTraders.Ui.Website/tests/mocks.spec.ts), and [using a CSV for data](../../src/ContosoTraders.Ui.Website/tests/account.ts)
 
 ## Architecture
 
@@ -27,7 +34,7 @@ This repo contains the source code, deployment templates, and demo scripts for e
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+the rights to use your contribution. For details, visit <https://cla.opensource.microsoft.com>.
 
 When you submit a pull request, a CLA bot will automatically determine whether you need to provide
 a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
@@ -43,7 +50,3 @@ This project may contain trademarks or logos for projects, products, or services
 trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
-
-----------
-
-![Landing Page](./docs/images/landing-page.png)
