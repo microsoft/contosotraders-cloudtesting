@@ -24,7 +24,7 @@ This repo contains the source code, deployment templates, and demo scripts for e
   * [Run experiment in GitHub Actions to inject faults (pod failures) into the AKS cluster.](./demo-scripts/azure-chaos-studio/walkthrough.md#walkthrough-running-chaos-experiments-via-github-workflows)
 
 * Playwright - Reliable end-to-end testing for modern web apps.
-  * [Use the VS Code extension to explore and run web tests](./demo-scripts/testing-with-playwright/walkthrough.md) for [API testing](../../src/ContosoTraders.Ui.Website/tests/api), [Authentication](../../src/ContosoTraders.Ui.Website/tests/auth.setup.ts), [Shopping cart](../../src/ContosoTraders.Ui.Website/tests/cart.spec.ts), [Uploading files](../../src/ContosoTraders.Ui.Website/tests/fileupload.spec.ts), [Visual Comparisons](../../src/ContosoTraders.Ui.Website/tests/pages.spec.ts#L63), [Emulation](../../src/ContosoTraders.Ui.Website/tests/map.spec.ts), [Mocking](../../src/ContosoTraders.Ui.Website/tests/mocks.spec.ts), and [using a CSV for data](../../src/ContosoTraders.Ui.Website/tests/account.ts)
+  * [Use the VS Code extension to explore and run web tests](./demo-scripts/testing-with-playwright/walkthrough.md) for [API testing](src/ContosoTraders.Ui.Website/tests/api), [Authentication](src/ContosoTraders.Ui.Website/tests/auth.setup.ts), [Shopping cart](src/ContosoTraders.Ui.Website/tests/cart.spec.ts), [Uploading files](src/ContosoTraders.Ui.Website/tests/fileupload.spec.ts), [Visual Comparisons](src/ContosoTraders.Ui.Website/tests/pages.spec.ts#L63), [Emulation](src/ContosoTraders.Ui.Website/tests/map.spec.ts), [Mocking](src/ContosoTraders.Ui.Website/tests/mocks.spec.ts), and [using a CSV for data](src/ContosoTraders.Ui.Website/tests/account.ts)
 
 ## Architecture
 
