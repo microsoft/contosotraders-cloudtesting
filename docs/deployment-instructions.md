@@ -86,9 +86,9 @@ You will need following to get started:
 
 3. Set up the repository variables in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab and create these necessary repository variables:
 
-    | Secret Name | Secret Value                                                                                                                            |
-    | ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-    | `SUFFIX`    | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg' |
+    | Variable Name | Variable Value                                                                                                                          |
+    | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+    | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg' |
 
 ## Deploy the Application
 
