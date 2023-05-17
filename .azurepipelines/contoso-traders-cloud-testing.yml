@@ -3,7 +3,14 @@ name: contoso-traders-cloud-testing.yml
 trigger:
   - main
 
-pr: none
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - "docs/**" 
+      - "demo-scripts/**"
 
 variables:
   - group: contosotraders-cloudtesting-variable-group
@@ -733,6 +740,16 @@ stages:
             displayName: run playwright tests
             workingDirectory: src/ContosoTraders.Ui.Website
             timeoutInMinutes: 20
+          - task: PublishTestResults@2
+            displayName: publish test results
+            condition: succeededOrFailed()
+            inputs:
+              searchFolder: src/ContosoTraders.Ui.Website/playwright-report-junit
+              testResultsFormat: JUnit
+              testResultsFiles: e2e-junit-results.xml
+              mergeTestResults: true
+              failTaskOnFailedTests: true
+              testRunTitle: Playwright Tests
           - task: PublishPipelineArtifact@1
             displayName: upload playwright report
             condition: always()
