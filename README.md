@@ -11,6 +11,13 @@ This repo contains the source code, deployment templates, and demo scripts for e
 * Application Links: [UI](https://cloudtesting.contosotraders.com/) | [Carts API](https://contoso-traders-cartsctprd.bluestone-748d2276.eastus.azurecontainerapps.io/swagger/index.html) | [Products API](https://contoso-traders-productsctprd.eastus.cloudapp.azure.com/swagger/index.html)
 * [Deployment Instructions](./docs/deployment-instructions.md) | [Running Locally](./docs/running-locally.md)
 
+## Continuous Integration
+
+| Pipeline                                                                     | Status                                                                                                                                                                                                                                                                               | Details                                                        |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| [GitHub Workflow](./.github/workflows/contoso-traders-cloud-testing.yml)     | [![contoso-traders-cloud-testing](https://github.com/microsoft/contosotraders-cloudtesting/actions/workflows/contoso-traders-cloud-testing.yml/badge.svg?branch=main)](https://github.com/microsoft/contosotraders-cloudtesting/actions/workflows/contoso-traders-cloud-testing.yml) | Deploys to [production](https://production.contosotraders.com) |
+| [Azure DevOps Pipeline](./.azurepipelines/contoso-traders-cloud-testing.yml) | [![Build Status](https://dev.azure.com/MicrosoftTestDemos/ContosoTraders_Testing/_apis/build/status%2Fmicrosoft.contosotraders-cloudtesting?branchName=main)](https://dev.azure.com/MicrosoftTestDemos/ContosoTraders_Testing/_build/latest?definitionId=1&branchName=main)          | Deploys to [staging](https://staging.contosotraders.com)       |
+
 ## Demo Scripts
 
 * [Developer Workflow](./demo-scripts/dev-workflow/walkthrough.md)

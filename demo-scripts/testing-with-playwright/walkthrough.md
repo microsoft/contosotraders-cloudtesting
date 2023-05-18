@@ -92,6 +92,8 @@ In order to test authentication, we can configure AAD, then run tests to log in 
    | `AADUSERNAME` | username of the test account |
    | `AADPASSWORD` | password of the test account |
 
+   > If you're using Azure Pipelines instead of GitHub Actions, you can set the above variables in the `contosotraders-cloudtesting-variable-group` variable group. See [this document](../../docs/deployment-instructions-azure-pipelines.md#prepare-your-azure-pipeline-for-deployment) for details.
+   >
    > If you wish to run the [example test](../../src/ContosoTraders.Ui.Website/tests/account.ts) locally, set the credentials as 2 environment variables: REACT_APP_AADUSERNAME and REACT_APP_AADPASSWORD
 
 1. Re-run the github workflow `contoso-traders-cloud-testing`. This will configure the Azure AD to enable login functionality in the app.
