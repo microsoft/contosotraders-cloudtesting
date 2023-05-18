@@ -1,0 +1,758 @@
+name: contoso-traders-cloud-testing.yml
+
+trigger:
+  - main
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - "docs/**" 
+      - "demo-scripts/**"
+
+variables:
+  - group: contosotraders-cloudtesting-variable-group
+  - name: ACR_NAME
+    value: contosotradersacr
+  - name: AKS_CLUSTER_NAME
+    value: contoso-traders-aks
+  - name: AKS_DNS_LABEL
+    value: contoso-traders-products
+  - name: AKS_NODES_RESOURCE_GROUP_NAME
+    value: contoso-traders-aks-nodes-rg
+  - name: AKS_SECRET_NAME_ACR_PASSWORD
+    value: contoso-traders-acr-password
+  - name: AKS_SECRET_NAME_KV_ENDPOINT
+    value: contoso-traders-kv-endpoint
+  - name: AKS_SECRET_NAME_MI_CLIENTID
+    value: contoso-traders-mi-clientid
+  - name: AZURE_AD_APP_NAME
+    value: contoso-traders-cloud-testing-app
+  - name: CARTS_ACA_NAME
+    value: contoso-traders-carts
+  - name: CARTS_ACR_REPOSITORY_NAME
+    value: contosotradersapicarts
+  - name: CARTS_INTERNAL_ACA_NAME
+    value: contoso-traders-intcarts
+  - name: CDN_PROFILE_NAME
+    value: contoso-traders-cdn
+  - name: CHAOS_AKS_EXPERIMENT_NAME
+    value: contoso-traders-chaos-aks-experiment
+  - name: KV_NAME
+    value: contosotraderskv
+  - name: LOAD_TEST_SERVICE_NAME
+    value: contoso-traders-loadtest
+  - name: MSGRAPH_API_ID
+    value: 00000003-0000-0000-c000-000000000000
+  - name: MSGRAPH_API_PERMISSION_EMAIL
+    value: 64a6cdd6-aab1-4aaf-94b8-3cc8405e90d0=Scope
+  - name: MSGRAPH_API_PERMISSION_USER_READ
+    value: e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope
+  - name: PRODUCTS_ACR_REPOSITORY_NAME
+    value: contosotradersapiproducts
+  - name: PRODUCTS_DB_NAME
+    value: productsdb
+  - name: PRODUCTS_DB_SERVER_NAME
+    value: contoso-traders-products
+  - name: PRODUCTS_DB_USER_NAME
+    value: localadmin
+  - name: PRODUCT_DETAILS_CONTAINER_NAME
+    value: product-details
+  - name: PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME
+    value: contosotradersimg
+  - name: PRODUCT_LIST_CONTAINER_NAME
+    value: product-list
+  - name: PRODUCTS_CDN_ENDPOINT_NAME
+    value: contoso-traders-images
+  - name: RESOURCE_GROUP_NAME
+    value: contoso-traders-rg
+  - name: STORAGE_ACCOUNT_NAME
+    value: contosotradersimg
+  - name: SUB_DEPLOYMENT_REGION
+    value: eastus2
+  - name: UI_CDN_ENDPOINT_NAME
+    value: contoso-traders-ui2
+  - name: UI_STORAGE_ACCOUNT_NAME
+    value: contosotradersui2
+  - name: USER_ASSIGNED_MANAGED_IDENTITY_NAME
+    value: contoso-traders-mi-kv-access
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: default
+    jobs:
+      - job: provision
+        steps:
+          # section #0: optional configuration of the Azure AD app.
+          # create the Azure AD application (and update it if it already exists).
+          # note: This is an idempotent operation.
+          - task: AzureCLI@1
+            displayName: create/update azure active directory app
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az ad app create --display-name $(AZURE_AD_APP_NAME)$(SUFFIX) --sign-in-audience AzureADandPersonalMicrosoftAccount
+          - task: AzureCLI@1
+            displayName: get azure ad app's object id
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+            name: getAzureAdAppObjId
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=azureAdAppObjId;isOutput=true]$(az ad app list --display-name $(AZURE_AD_APP_NAME)$(SUFFIX) --query [].id -o tsv)"
+          - task: AzureCLI@1
+            displayName: get azure ad app's client id
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+            name: getAzureAdAppClientId
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=azureAdAppClientId;isOutput=true]$(az ad app list --display-name $(AZURE_AD_APP_NAME)$(SUFFIX) --query [].appId -o tsv)"
+          - task: AzureCLI@1
+            displayName: register app as a spa
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: |
+                az rest \
+                  --method PATCH \
+                  --uri https://graph.microsoft.com/v1.0/applications/$(getAzureAdAppObjId.azureAdAppObjId) \
+                  --headers 'Content-Type=application/json' \
+                  --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback"]}}'
+          - task: AzureCLI@1
+            displayName: enable issuance of id, access tokens
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az ad app update --id $(getAzureAdAppObjId.azureAdAppObjId) --enable-access-token-issuance true --enable-id-token-issuance true
+          - task: AzureCLI@1
+            displayName: enable email claim in access token
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az ad app update --id $(getAzureAdAppObjId.azureAdAppObjId) --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
+          # note: requesting MS Graph permissions in Azure AD app unfortunately isn't idempotent.
+          # Even, if you have already requested the permissions, it'll keep adding to the list of requested permissions until you hit limit on max permissions requested.
+          # Details: https://github.com/Azure/azure-cli/issues/24512
+          - task: AzureCLI@1
+            displayName: delete any requested Microsoft Graph permissions
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: |
+                az ad app permission delete \
+                  --id $(getAzureAdAppObjId.azureAdAppObjId) \
+                  --api $(MSGRAPH_API_ID)
+          - task: AzureCLI@1
+            displayName: request Microsoft Graph permissions
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: |
+                az ad app permission add \
+                  --id $(getAzureAdAppObjId.azureAdAppObjId) \
+                  --api $(MSGRAPH_API_ID) \
+                  --api-permissions $(MSGRAPH_API_PERMISSION_USER_READ) $(MSGRAPH_API_PERMISSION_EMAIL)
+
+          #
+          # section #1: provisioning the resources on Azure using bicep templates
+          #
+          # The first step is to create the resource group: `contoso-traders-rg`.
+          # The below step can also be manually executed as follows:
+          # az deployment sub create --location {LOCATION} --template-file .\createResourceGroup.bicep
+          # Note: You can specify any location for `{LOCATION}`. It's the region where the deployment metadata will be stored, and not
+          # where the resource groups will be deployed.
+          - task: AzureResourceManagerTemplateDeployment@3
+            displayName: create resource group
+            inputs:
+              deploymentScope: Subscription
+              azureResourceManagerConnection: SERVICEPRINCIPAL
+              location: $(SUB_DEPLOYMENT_REGION)
+              csmFile: ./iac/createResourceGroup.bicep
+              overrideParameters: -rgName $(RESOURCE_GROUP_NAME) -suffix $(SUFFIX)
+          # Next step is to deploy the Azure resources to the resource group `contoso-traders-rg` created above. The deployed resources
+          # include storage accounts, function apps, app services cosmos db, and service bus etc.
+          # The below step can also be manually executed as follows:
+          # az deployment group create -g contoso-traders-rg --template-file .\createResources.bicep --parameters .\createResources.parameters.json
+          # Note: The `createResources.parameters.json` file contains the parameters for the deployment; specifically the environment name.
+          # You can modify the parameters to customize the deployment.
+          # Note: The bicep template outputs are not shown in the logs. You can extract the outputs as shown here:
+          # https://github.com/Azure/arm-deploy#another-example-on-how-to-use-this-action-to-get-the-output-of-arm-template
+          - task: AzureResourceManagerTemplateDeployment@3
+            displayName: create resources
+            inputs:
+              deploymentScope: Resource Group
+              azureResourceManagerConnection: SERVICEPRINCIPAL
+              location: $(SUB_DEPLOYMENT_REGION)
+              resourceGroupName: "$(RESOURCE_GROUP_NAME)$(SUFFIX)"
+              csmFile: ./iac/createResources.bicep
+              csmParametersFile: ./iac/createResources.parameters.json
+              overrideParameters: -suffix $(SUFFIX) -sqlPassword $(SQLPASSWORD)
+
+          # Add the logged-in service principal to the key vault access policy
+          - task: AzureCLI@1
+            displayName: add service principal to kv access policy
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az keyvault set-policy -n $(KV_NAME)$(SUFFIX) -g $(RESOURCE_GROUP_NAME)$(SUFFIX) --secret-permissions get list set --object-id $(az ad sp show --id $(az account show --query "user.name" -o tsv) --query "id" -o tsv)
+          # The AKS agent pool needs to be assigned the user-assigned managed identity created (which has kv access)
+          - task: AzureCLI@1
+            displayName: assign user-assigned managed-identity to aks agentpool
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: |
+                az vmss identity assign \
+                  --identities $(az identity show -g $(RESOURCE_GROUP_NAME)$(SUFFIX) --name $(USER_ASSIGNED_MANAGED_IDENTITY_NAME)$(SUFFIX) --query "id" -o tsv) \
+                  --ids $(az vmss list -g $(AKS_NODES_RESOURCE_GROUP_NAME)$(SUFFIX) --query "[0].id" -o tsv) \
+          # Seed the DBs and storage accounts
+          - script: sqlcmd -S $(PRODUCTS_DB_SERVER_NAME)$(SUFFIX).database.windows.net -U $(PRODUCTS_DB_USER_NAME) -P $(SQLPASSWORD) -d $(PRODUCTS_DB_NAME) -i ./src/ContosoTraders.Api.Products/Migration/productsdb.sql
+            displayName: seed products db
+          - task: AzureCLI@1
+            displayName: seed product image (product details)
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az storage blob sync --account-name '$(PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME)$(SUFFIX)' -c '$(PRODUCT_DETAILS_CONTAINER_NAME)' -s 'src/ContosoTraders.Api.Images/product-details'
+          - task: AzureCLI@1
+            displayName: seed product image (product list)
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az storage blob sync --account-name '$(PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME)$(SUFFIX)' -c '$(PRODUCT_LIST_CONTAINER_NAME)' -s 'src/ContosoTraders.Api.Images/product-list'
+          - task: AzureCLI@1
+            displayName: purge product images cdn endpoint
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '$(PRODUCTS_CDN_ENDPOINT_NAME)$(SUFFIX)' -g '$(RESOURCE_GROUP_NAME)$(SUFFIX)' --profile-name '$(CDN_PROFILE_NAME)$(SUFFIX)'
+          - task: AzureCLI@1
+            displayName: extract acr password
+            name: extractAcrPassword
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=acrPassword;isOutput=true]$(az acr credential show -n $(ACR_NAME)$(SUFFIX) -g $(RESOURCE_GROUP_NAME)$(SUFFIX) --query "passwords[0].value" --output tsv)"
+          - script: docker login $(ACR_NAME)$(SUFFIX).azurecr.io --username $(ACR_NAME)$(SUFFIX) --password $(extractAcrPassword.acrPassword)
+            displayName: azure container registry login
+          - task: AzureCLI@1
+            displayName: set aks context
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az aks get-credentials --resource-group $(RESOURCE_GROUP_NAME)$(SUFFIX) --name $(AKS_CLUSTER_NAME)$(SUFFIX)
+
+          #
+          # section #2: deploy the carts api
+          #
+          - script: docker build src -f ./src/ContosoTraders.Api.Carts/Dockerfile -t $(ACR_NAME)$(SUFFIX).azurecr.io/$(CARTS_ACR_REPOSITORY_NAME):latest -t $(ACR_NAME)$(SUFFIX).azurecr.io/$(CARTS_ACR_REPOSITORY_NAME):$(Build.SourceVersion)
+            displayName: docker build
+          - script: docker push --all-tags $(ACR_NAME)$(SUFFIX).azurecr.io/$(CARTS_ACR_REPOSITORY_NAME)
+            displayName: docker push (to acr)
+          - task: AzureCLI@1
+            displayName: deploy to aca
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: |
+                az config set extension.use_dynamic_install=yes_without_prompt
+                az containerapp update -n $(CARTS_ACA_NAME)$(SUFFIX) -g $(RESOURCE_GROUP_NAME)$(SUFFIX) --image $(ACR_NAME)$(SUFFIX).azurecr.io/$(CARTS_ACR_REPOSITORY_NAME):$(Build.SourceVersion)
+          - task: AzureCLI@1
+            displayName: deploy to aca (internal)
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: |
+                az config set extension.use_dynamic_install=yes_without_prompt
+                az containerapp update -n $(CARTS_INTERNAL_ACA_NAME)$(SUFFIX) -g $(RESOURCE_GROUP_NAME)$(SUFFIX) --image $(ACR_NAME)$(SUFFIX).azurecr.io/$(CARTS_ACR_REPOSITORY_NAME):$(Build.SourceVersion)
+          - task: AzureCLI@1
+            displayName: get carts api endpoint
+            name: getCartsApiEndpoint
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=cartsApiEndpoint;isOutput=true]$(az keyvault secret show --vault-name $(KV_NAME)$(SUFFIX) --name cartsApiEndpoint --query value -o tsv)"
+
+          #
+          # section #3: deploy the products api
+          #
+          - task: HelmInstaller@1
+            displayName: install helm
+            name: installHelm
+            inputs:
+              helmVersionToInstall: 3.9.0
+          - script: docker build src -f ./src/ContosoTraders.Api.Products/Dockerfile -t $(ACR_NAME)$(SUFFIX).azurecr.io/$(PRODUCTS_ACR_REPOSITORY_NAME):latest -t $(ACR_NAME)$(SUFFIX).azurecr.io/$(PRODUCTS_ACR_REPOSITORY_NAME):$(Build.SourceVersion)
+            displayName: docker build
+          - script: docker push --all-tags $(ACR_NAME)$(SUFFIX).azurecr.io/$(PRODUCTS_ACR_REPOSITORY_NAME)
+            displayName: docker push (to acr)
+          # more details: https://stackoverflow.com/a/45881324
+          - script: kubectl delete secret $(AKS_SECRET_NAME_ACR_PASSWORD) --ignore-not-found
+            displayName: delete any existing kubernetes secret (acr password)
+          - script: |
+              kubectl create secret docker-registry $(AKS_SECRET_NAME_ACR_PASSWORD) \
+                --docker-server=$(ACR_NAME)$(SUFFIX).azurecr.io \
+                --docker-username=$(ACR_NAME)$(SUFFIX) \
+                --docker-password=$(extractAcrPassword.acrPassword) \
+                --save-config \
+                -o yaml | kubectl apply -f -
+            displayName: create kubernetes secret (acr password)
+          - task: AzureCLI@1
+            displayName: get managedIdentityClientId
+            name: getManagedIdentityClientId
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=managedIdentityClientId;isOutput=true]$(az identity show -g $(RESOURCE_GROUP_NAME)$(SUFFIX) --name $(USER_ASSIGNED_MANAGED_IDENTITY_NAME)$(SUFFIX) --query "clientId" -o tsv)"
+          - task: KubernetesManifest@1
+            displayName: create kubernetes secret (kv endpoint)
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: createSecret
+              secretName: $(AKS_SECRET_NAME_KV_ENDPOINT)
+              secretType: generic
+              secretArguments: --from-literal=$(AKS_SECRET_NAME_KV_ENDPOINT)="https://$(KV_NAME)$(SUFFIX).vault.azure.net/"
+          - task: KubernetesManifest@1
+            displayName: create kubernetes secret (managed identity client id)
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: createSecret
+              secretName: $(AKS_SECRET_NAME_MI_CLIENTID)
+              secretType: generic
+              secretArguments: --from-literal=$(AKS_SECRET_NAME_MI_CLIENTID)=$(getManagedIdentityClientId.managedIdentityClientId)
+          - task: replacetokens@5
+            displayName: substitute tokens in deployment manifest
+            inputs:
+              targetFiles: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+              tokenPattern: custom
+              tokenPrefix: "{"
+              tokenSuffix: "}"
+              inlineVariables: "SUFFIX: $(SUFFIX)"
+          - task: KubernetesManifest@1
+            displayName: apply deployment manifest
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: deploy
+              manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+              containers: $(ACR_NAME)$(SUFFIX).azurecr.io/$(PRODUCTS_ACR_REPOSITORY_NAME):$(Build.SourceVersion)
+              imagePullSecrets: $(AKS_SECRET_NAME_ACR_PASSWORD)
+          - task: KubernetesManifest@1
+            displayName: apply service manifest
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: deploy
+              manifests: ./src/ContosoTraders.Api.Products/Manifests/Service.yaml
+          # setup chaos mesh
+          - task: KubernetesManifest@1
+            displayName: apply namespace manifest (chaos-testing)
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: deploy
+              manifests: ./src/ContosoTraders.Api.Products/Manifests/NamespaceChaosTesting.yaml
+          - script: |
+              az aks get-credentials --resource-group $(RESOURCE_GROUP_NAME)$(SUFFIX) --name $(AKS_CLUSTER_NAME)$(SUFFIX)
+              helm repo add chaos-mesh https://charts.chaos-mesh.org
+              helm repo update
+              helm upgrade --install chaos-mesh chaos-mesh/chaos-mesh --namespace=chaos-testing --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock
+            displayName: setup chaos mesh
+          # create the ingress controller
+          - script: |
+              az aks get-credentials --resource-group $(RESOURCE_GROUP_NAME)$(SUFFIX) --name $(AKS_CLUSTER_NAME)$(SUFFIX)
+              helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+              helm repo update
+              helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
+                --set controller.replicaCount=1 \
+                --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+                --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
+                --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux \
+                --set controller.service.externalTrafficPolicy=Local
+            displayName: create ingress controller
+          - task: AzureCLI@1
+            displayName: set dns label on public ip
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az network public-ip update --dns-name $(AKS_DNS_LABEL)$(SUFFIX) -g $(AKS_NODES_RESOURCE_GROUP_NAME)$(SUFFIX) -n $(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].name" -o tsv -g $(AKS_NODES_RESOURCE_GROUP_NAME)$(SUFFIX))
+          # hack: extract the full fqdn / dns label of the aks app's public IP address
+          - task: AzureCLI@1
+            displayName: get aks-fqdn
+            name: getAksFqdn
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              # note: There should be a whitespace between ')' and ']'. More details: https://stackoverflow.com/a/59154958
+              inlineScript: echo "##vso[task.setvariable variable=aksFqdn;isOutput=true]$(az network public-ip list --query "[?starts_with(name,'kubernetes-') ].dnsSettings.fqdn" -o tsv -g $(AKS_NODES_RESOURCE_GROUP_NAME)$(SUFFIX))"
+          # install cert-manager
+          - task: KubernetesManifest@1
+            displayName: apply namespace manifest (cert-manager)
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: deploy
+              manifests: ./src/ContosoTraders.Api.Products/Manifests/NamespaceCertManager.yaml
+          - script: |
+              az aks get-credentials --resource-group $(RESOURCE_GROUP_NAME)$(SUFFIX) --name $(AKS_CLUSTER_NAME)$(SUFFIX)
+              kubectl apply --validate=false -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.yaml
+            displayName: install cert-manager
+          - bash: sleep 30s
+            displayName: sleep for 30 seconds
+          - task: KubernetesManifest@1
+            displayName: apply clusterIssuer manifest
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: deploy
+              manifests: ./src/ContosoTraders.Api.Products/Manifests/ClusterIssuer.yaml
+          - task: replacetokens@5
+            displayName: substitute tokens in certificate manifest
+            inputs:
+              targetFiles: ./src/ContosoTraders.Api.Products/Manifests/Certificate.yaml
+              tokenPattern: custom
+              tokenPrefix: "{"
+              tokenSuffix: "}"
+              inlineVariables: "AKS_FQDN: $(getAksFqdn.aksFqdn)"
+          - task: KubernetesManifest@1
+            displayName: apply certificate manifest
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: deploy
+              manifests: ./src/ContosoTraders.Api.Products/Manifests/Certificate.yaml
+          - task: replacetokens@5
+            displayName: substitute tokens in ingress manifest
+            inputs:
+              targetFiles: ./src/ContosoTraders.Api.Products/Manifests/Ingress.yaml
+              tokenPattern: custom
+              tokenPrefix: "{"
+              tokenSuffix: "}"
+              inlineVariables: "AKS_FQDN: $(getAksFqdn.aksFqdn)"
+          - task: KubernetesManifest@1
+            displayName: apply ingress manifest
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: deploy
+              manifests: ./src/ContosoTraders.Api.Products/Manifests/Ingress.yaml
+          - task: KubernetesManifest@1
+            displayName: apply clusterRole manifest
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: deploy
+              manifests: ./src/ContosoTraders.Api.Products/Manifests/ClusterRole.yaml
+          - task: AzureCLI@1
+            displayName: set productsApiEndpoint in kv
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az keyvault secret set --vault-name $(KV_NAME)$(SUFFIX) --name productsApiEndpoint --value $(getAksFqdn.aksFqdn) --description "endpoint url (fqdn) of the products api"
+          - task: AzureCLI@1
+            displayName: get products api endpoint
+            name: getProductsApiEndpoint
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=productsApiEndpoint;isOutput=true]$(az keyvault secret show --vault-name $(KV_NAME)$(SUFFIX) --name productsApiEndpoint --query value -o tsv)"
+
+          #
+          # section #4: deploy the ui
+          #
+          - script: echo "##vso[task.setvariable variable=REACT_APP_APIURLSHOPPINGCART]https://$(getCartsApiEndpoint.cartsApiEndpoint)/v1"
+            displayName: set REACT_APP_APIURLSHOPPINGCART
+          - script: echo "##vso[task.setvariable variable=REACT_APP_APIURL]https://$(getProductsApiEndpoint.productsApiEndpoint)/v1"
+            displayName: set REACT_APP_APIURL
+          - script: echo "##vso[task.setvariable variable=REACT_APP_B2CCLIENTID]$(getAzureAdAppClientId.azureAdAppClientId)"
+            displayName: set REACT_APP_B2CCLIENTID
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+          - task: NodeTool@0
+            displayName: install nodejs
+            inputs:
+              versionSpec: 18.x
+          - script: npm ci
+            displayName: npm ci
+            workingDirectory: src/ContosoTraders.Ui.Website
+          - script: npm run build
+            displayName: npm run build
+            workingDirectory: src/ContosoTraders.Ui.Website
+          - task: AzureCLI@1
+            displayName: deploy ui to storage
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az storage blob sync --account-name '$(UI_STORAGE_ACCOUNT_NAME)$(SUFFIX)' -c '$web' -s 'src/ContosoTraders.Ui.Website/build'
+          - task: AzureCLI@1
+            displayName: purge ui cdn endpoint
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '$(UI_CDN_ENDPOINT_NAME)$(SUFFIX)' -g '$(RESOURCE_GROUP_NAME)$(SUFFIX)' --profile-name '$(CDN_PROFILE_NAME)$(SUFFIX)'
+          - task: AzureCLI@1
+            displayName: get ui cdn endpoint
+            name: getUiCdnEndpoint
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=uiCdnEndpoint;isOutput=true]$(az keyvault secret show --vault-name $(KV_NAME)$(SUFFIX) --name uiCdnEndpoint --query value -o tsv)"
+          - task: AzureCLI@1
+            displayName: register auth callback (UI CDN)
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: |
+                az rest \
+                  --method PATCH \
+                  --uri https://graph.microsoft.com/v1.0/applications/$(getAzureAdAppObjId.azureAdAppObjId) \
+                  --headers 'Content-Type=application/json' \
+                  --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback","https://$(getUiCdnEndpoint.uiCdnEndpoint)/authcallback"]}}'
+          - task: AzureCLI@1
+            displayName: display ui cdn endpoint
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name $(KV_NAME)$(SUFFIX) --name uiCdnEndpoint --query value -o tsv)
+
+      - job: load_tests_with_chaos_products_api
+        dependsOn: [provision, playwright_tests_ui]
+        variables:
+          productsApiEndpoint: $[ dependencies.provision.outputs['getProductsApiEndpoint.productsApiEndpoint'] ]
+        steps:
+          - task: AzureCLI@1
+            displayName: get chaos experiment resource id
+            name: getChaosAksExperimentResourceId
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=chaosAksExperimentResourceId;isOutput=true]$(az resource show --resource-group $(RESOURCE_GROUP_NAME)$(SUFFIX) --namespace Microsoft.Chaos --resource-type Experiments --name $(CHAOS_AKS_EXPERIMENT_NAME)$(SUFFIX) --query "id" -o tsv)"
+          - task: AzureCLI@1
+            displayName: start chaos experiment (pod failure)
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: az rest --method post --uri https://management.azure.com$(getChaosAksExperimentResourceId.chaosAksExperimentResourceId)/start?api-version=2021-09-15-preview
+          - bash: sleep 30s
+            displayName: sleep for 30 seconds
+          - task: AzureLoadTest@1
+            displayName: load test (products API)
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+              loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
+              resourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              loadtestResource: $(LOAD_TEST_SERVICE_NAME)$(SUFFIX)
+              env: |
+                [
+                  {
+                    "name": "domain",
+                    "value": "$(productsApiEndpoint)"
+                  },
+                  {
+                    "name": "protocol",
+                    "value": "https"
+                  },
+                  {
+                    "name": "path",
+                    "value": "v1/Products/1"
+                  },
+                  {
+                    "name": "threads_per_engine",
+                    "value": "5"
+                  },
+                  {
+                    "name": "ramp_up_time",
+                    "value": "0"
+                  },
+                  {
+                    "name": "duration_in_sec",
+                    "value": "120"
+                  }
+                ]
+
+      - job: load_tests_carts_internal_api
+        dependsOn: [provision, playwright_tests_ui]
+        steps:
+          - task: AzureCLI@1
+            displayName: get carts api endpoint (internal)
+            name: getCartsInternalApiEndpoint
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=cartsInternalApiEndpoint;isOutput=true]$(az keyvault secret show --vault-name $(KV_NAME)$(SUFFIX) --name cartsInternalApiEndpoint --query value -o tsv)"
+          - task: AzureCLI@1
+            displayName: get vnetAcaSubnetId
+            name: getVnetAcaSubnetId
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=vnetAcaSubnetId;isOutput=true]$(az keyvault secret show --vault-name $(KV_NAME)$(SUFFIX) -n vnetAcaSubnetId --query "value" -o tsv)"
+          - task: replacetokens@5
+            displayName: substitute tokens in load test config file
+            inputs:
+              targetFiles: ./loadtests/contoso-traders-carts-internal.yaml
+              tokenPattern: doublebraces
+              inlineVariables: "LOAD_TEST_SUBNET_ID: $(getVnetAcaSubnetId.vnetAcaSubnetId)"
+          - task: AzureLoadTest@1
+            displayName: load test (carts API)
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+              loadtestConfigFile: ./loadtests/contoso-traders-carts-internal.yaml
+              resourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              loadtestResource: $(LOAD_TEST_SERVICE_NAME)$(SUFFIX)
+              env: |
+                [
+                  {
+                    "name": "domain",
+                    "value": "$(getCartsInternalApiEndpoint.cartsInternalApiEndpoint)"
+                  },
+                  {
+                    "name": "protocol",
+                    "value": "https"
+                  },
+                  {
+                    "name": "path",
+                    "value": "v1/ShoppingCart/loadtest"
+                  },
+                  {
+                    "name": "threads_per_engine",
+                    "value": "5"
+                  },
+                  {
+                    "name": "ramp_up_time",
+                    "value": "0"
+                  },
+                  {
+                    "name": "duration_in_sec",
+                    "value": "120"
+                  }
+                ]
+
+      - job: load_tests_carts_api
+        dependsOn: [provision, playwright_tests_ui]
+        variables:
+          cartsApiEndpoint: $[ dependencies.provision.outputs['getCartsApiEndpoint.cartsApiEndpoint'] ]
+        steps:
+          - task: AzureLoadTest@1
+            displayName: load test (carts API)
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+              loadtestConfigFile: ./loadtests/contoso-traders-carts.yaml
+              resourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              loadtestResource: $(LOAD_TEST_SERVICE_NAME)$(SUFFIX)
+              env: |
+                [
+                  {
+                    "name": "domain",
+                    "value": "$(cartsApiEndpoint)"
+                  },
+                  {
+                    "name": "protocol",
+                    "value": "https"
+                  },
+                  {
+                    "name": "path",
+                    "value": "v1/ShoppingCart/loadtest"
+                  },
+                  {
+                    "name": "threads_per_engine",
+                    "value": "5"
+                  },
+                  {
+                    "name": "ramp_up_time",
+                    "value": "0"
+                  },
+                  {
+                    "name": "duration_in_sec",
+                    "value": "120"
+                  }
+                ]
+
+      - job: playwright_tests_ui
+        dependsOn: [provision]
+        container: mcr.microsoft.com/playwright:v1.32.0-focal
+        variables:
+          APIURLSHOPPINGCART: $[ dependencies.provision.outputs['getCartsApiEndpoint.cartsApiEndpoint'] ]
+          APIURL: $[ dependencies.provision.outputs['getProductsApiEndpoint.productsApiEndpoint'] ]
+          BASEURLFORPLAYWRIGHTTESTING: $[ dependencies.provision.outputs['getUiCdnEndpoint.uiCdnEndpoint'] ]
+          B2CCLIENTID: $[ dependencies.provision.outputs['getAzureAdAppClientId.azureAdAppClientId'] ]
+        steps:
+          - task: NodeTool@0
+            displayName: install nodejs
+            inputs:
+              versionSpec: 18.x
+          - script: echo "##vso[task.setvariable variable=REACT_APP_APIURLSHOPPINGCART]https://$(APIURLSHOPPINGCART)/v1"
+            displayName: set REACT_APP_APIURLSHOPPINGCART
+          - script: echo "##vso[task.setvariable variable=REACT_APP_APIURL]https://$(APIURL)/v1"
+            displayName: set REACT_APP_APIURL
+          - script: echo "##vso[task.setvariable variable=REACT_APP_BASEURLFORPLAYWRIGHTTESTING]https://$(BASEURLFORPLAYWRIGHTTESTING)"
+            displayName: set REACT_APP_BASEURLFORPLAYWRIGHTTESTING
+          - script: echo "##vso[task.setvariable variable=REACT_APP_B2CCLIENTID]$(B2CCLIENTID)"
+            displayName: set REACT_APP_B2CCLIENTID
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+          - script: echo "##vso[task.setvariable variable=REACT_APP_AADUSERNAME]$(AADUSERNAME)"
+            displayName: set REACT_APP_AADUSERNAME
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+          - script: echo "##vso[task.setvariable variable=REACT_APP_AADPASSWORD]$(AADPASSWORD)"
+            displayName: set REACT_APP_AADPASSWORD
+            condition: and(ne(variables['AADUSERNAME'], ''), ne(variables['AADPASSWORD'], ''))
+          - script: npm ci
+            displayName: install dependencies
+            workingDirectory: src/ContosoTraders.Ui.Website
+          - script: |
+              echo "##vso[task.setvariable variable=CI;]1"
+              npx playwright test
+            displayName: run playwright tests
+            workingDirectory: src/ContosoTraders.Ui.Website
+            timeoutInMinutes: 20
+          - task: PublishTestResults@2
+            displayName: publish test results
+            condition: succeededOrFailed()
+            inputs:
+              searchFolder: src/ContosoTraders.Ui.Website/playwright-report-junit
+              testResultsFormat: JUnit
+              testResultsFiles: e2e-junit-results.xml
+              mergeTestResults: true
+              failTaskOnFailedTests: true
+              testRunTitle: Playwright Tests
+          - task: PublishPipelineArtifact@1
+            displayName: upload playwright report
+            condition: always()
+            inputs:
+              artifact: playwright-report
+              targetPath: src/ContosoTraders.Ui.Website/playwright-report

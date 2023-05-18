@@ -26,6 +26,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html'],
+    ["junit", { outputFile: "playwright-report-junit/e2e-junit-results.xml" }],
     ...(process.env.CI ? [['github'] as ['github']] : []),
   ],
 
