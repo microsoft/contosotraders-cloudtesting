@@ -6,6 +6,10 @@ This document will help you deploy the Contoso Traders application in your Azure
 
 1. You'll have to follow the steps in the [Deployment Instructions](./deployment-instructions.md) document to set up your Azure subscription and github repository fork.
 2. You'll need to have an Azure DevOps organization and project set up. If you don't have one, you can follow the instructions [here](https://docs.microsoft.com/en-us/azure/devops/organizations/projects/create-project?view=azure-devops&tabs=preview-page).
+3. Please ensure that the following Azure DevOps marketplace extensions are installed for your organization:
+
+   - [Azure Load Testing](https://marketplace.visualstudio.com/items?itemName=AzloadTest.AzloadTesting)
+   - [Replace Tokens](https://marketplace.visualstudio.com/items?itemName=qetza.replacetokens)
 
 ## Prepare your Azure Pipeline for Deployment
 
