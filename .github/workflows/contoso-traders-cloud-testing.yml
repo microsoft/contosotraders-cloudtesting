@@ -2,6 +2,8 @@ name: contoso-traders-cloud-testing
 
 on:
   workflow_dispatch:
+  push:
+    branches: ["main"]
   pull_request:
     branches: ["main"]
     paths-ignore: ["docs/**", "demo-scripts/**"]
@@ -433,7 +435,7 @@ jobs:
               --method PATCH \
               --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
               --headers 'Content-Type=application/json' \
-              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
+              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
       - name: display ui cdn endpoint
         uses: azure/CLI@v1
         with:

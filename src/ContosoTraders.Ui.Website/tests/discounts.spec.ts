@@ -18,11 +18,7 @@ test.describe('Discount Codes', () => {
             await page.getByRole('button', { name: 'CHECK' }).click();
             await expect(page.getByRole('button', { name: code })).toBeVisible();
             // check that correct discount is applied
-            const orderDiscount = await page.getByTestId('discount').innerText();
-            // append .00 to the end of the discount code
-            const expectedDiscount = code.replace('DISCOUNT', '') + '.00';
-            // assert that both are equal
-            expect(orderDiscount.replace('-$', '')).toEqual(expectedDiscount);
+            await expect(page.getByTestId('discount')).toHaveText(`-$${code.replace('DISCOUNT', '')}.00`);
         });
     }
 

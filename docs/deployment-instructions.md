@@ -60,16 +60,22 @@ You will need following to get started:
       `az ad sp create-for-rbac -n contosotraders-sp --role "ContosoTraders Write Role Assignments" --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`
       ```
 
-## Prepare your GitHub Account
+## Prepare your GitHub Repository
 
 1. Fork the [contosotraders-cloudtesting repo](https://github.com/microsoft/contosotraders-cloudtesting) in your account.
 
-2. Set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Secrets` tab and create these necessary repository secrets:
+## Prepare your GitHub Workflow for Deployment
 
-    | Secret Name        | Secret Value                                      |
-    | ------------------ | ------------------------------------------------- |
-    | `SQLPASSWORD`      | A password which will be set on all SQL Azure DBs |
-    | `SERVICEPRINCIPAL` | See details below                                 |
+>
+>If you wish to deploy using Azure Pipelines instead of GitHub Workflows, you can follow the instructions [here](./deployment-instructions-azure-pipelines.md) and skip this section entirely.
+>
+
+1. Set up the repository secrets in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Secrets` tab and create these necessary repository secrets:
+
+    | Secret Name        | Secret Value                                                                       |
+    | ------------------ | ---------------------------------------------------------------------------------- |
+    | `SQLPASSWORD`      | 8 to 15 characters long, must contain uppercase, lowercase, and numeric characters |
+    | `SERVICEPRINCIPAL` | See details below                                                                  |
 
     The value of the `SERVICEPRINCIPAL` secret above needs to have the below format.
 
@@ -84,13 +90,13 @@ You will need following to get started:
 
     The values of the properties needed can be found in the JSON output of the `az ad sp create-for-rbac` command in the previous section.
 
-3. Set up the repository variables in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab and create these necessary repository variables:
+2. Set up the repository variables in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab and create these necessary repository variables:
 
-    | Secret Name | Secret Value                                                                                                                            |
-    | ----------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-    | `SUFFIX`    | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg' |
+    | Variable Name | Variable Value                                                                                                                          |
+    | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+    | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg' |
 
-## Deploy the Application
+### Deploy the Application
 
 1. Go to your forked repo's `Actions` tab, selecting the `contoso-traders-cloud-testing` workflow, and click on the `Run workflow` button.
 
@@ -98,7 +104,7 @@ You will need following to get started:
 
   ![workflow-logs](./images/github-workflow.png)
 
-## Verify the Deployment
+### Verify the Deployment
 
 1. Once the workflow completes, the UI's accessible CDN endpoint URL will be displayed in the github workflow run.
 
