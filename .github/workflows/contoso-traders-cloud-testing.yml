@@ -59,6 +59,9 @@ jobs:
     concurrency:
       group: provision
       cancel-in-progress: true
+    environment:
+      url: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+      name: production
     steps:
       - name: checkout code
         uses: actions/checkout@v3
