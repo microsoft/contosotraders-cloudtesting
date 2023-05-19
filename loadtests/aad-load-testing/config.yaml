@@ -1,0 +1,33 @@
+displayName: Contoso traders with AAD
+testPlan: Contoso-traders-aad.jmx
+description: CICD test from GitHub Actions
+engineInstances: 2
+testId: contosotradersaad
+splitAllCSVs: False
+configurationFiles:
+- Samsung phone.jpg
+failureCriteria:
+- View product: percentage(error) > 10
+- Product landing page: p90(response_time_ms) > 3000
+- View cart: p90(response_time_ms) > 100
+secrets:
+- name: clientId
+  value: https://contosotradersloadtest.vault.azure.net/secrets/clientId
+- name: tenantId
+  value: https://contosotradersloadtest.vault.azure.net/secrets/tenantId
+- name: username
+  value: https://contosotradersloadtest.vault.azure.net/secrets/username
+- name: password
+  value: https://contosotradersloadtest.vault.azure.net/secrets/password
+env:
+- name: cartsAPI
+  value: ''
+- name: productsAPI
+  value: ''
+- name: email
+  value: ''
+- name: contoso_threads
+  value: 500
+- name: contoso_duration
+  value: 420
+  
