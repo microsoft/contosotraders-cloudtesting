@@ -615,6 +615,58 @@ jobs:
               }
             ]
 
+  load-tests-carts-api-aad:
+    needs: [provision, playwright-tests-ui]
+    runs-on: ubuntu-22.04
+    env:
+      AADUSERNAME: ${{ secrets.AADUSERNAME }}
+      AADPASSWORD: ${{ secrets.AADPASSWORD }}
+    concurrency:
+      group: load-tests-carts-api-aad
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: load test with AAD login (carts API)
+        uses: Azure/load-testing@v1.1.13
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./loadtests/contoso-traders-carts-aad.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ needs.provision.outputs.cartsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/ShoppingCart/loadtest"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "5"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "120"
+              }
+            ]
+
   playwright-tests-ui:
     needs: [provision]
     timeout-minutes: 20

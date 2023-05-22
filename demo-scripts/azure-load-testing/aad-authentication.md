@@ -14,7 +14,7 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
 1. In the Azure portal, you can navigate to the Azure Load Testing resource in the `contoso-traders-rg{SUFFIX}` resource group.
 
-1. Go to **Identity blade** and turn on System assigned Managed Identity. 
+1. Go to **Identity blade** and turn on System assigned Managed Identity.
 
 1. In the Azure portal, create an Azure Key Vault or use an existing one.
 
