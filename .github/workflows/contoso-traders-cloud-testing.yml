@@ -644,11 +644,11 @@ jobs:
             [
               {
                 "name": "username"
-                "value": "${{ env.AADUSERNAME }}"
+                "value": "${{ secrets.AADUSERNAME }}"
               },
               {
                 "name": "password"
-                "value": "${{ env.AADPASSWORD }}"
+                "value": "${{ secrets.AADPASSWORD }}"
               }
             ]
           env: |
