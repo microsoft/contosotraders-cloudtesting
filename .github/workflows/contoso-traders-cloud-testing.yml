@@ -66,14 +66,14 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
-      # section #0: optional configuration of the Azure AD app.
-      # create the Azure AD application (and update it if it already exists).
-      # note: This is an idempotent operation.
-      - name: create/update azure active directory app
-        uses: azure/CLI@v1
-        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-        with:
-          inlineScript: az ad app create --display-name ${{ env.AZURE_AD_APP_NAME}}${{ vars.SUFFIX }} --sign-in-audience AzureADandPersonalMicrosoftAccount
+      # # section #0: optional configuration of the Azure AD app.
+      # # create the Azure AD application (and update it if it already exists).
+      # # note: This is an idempotent operation.
+      # - name: create/update azure active directory app
+      #   uses: azure/CLI@v1
+      #   if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+      #   with:
+      #     inlineScript: az ad app create --display-name ${{ env.AZURE_AD_APP_NAME}}${{ vars.SUFFIX }} --sign-in-audience AzureADandPersonalMicrosoftAccount
       - name: get azure ad app's object id
         uses: azure/CLI@v1
         if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
@@ -86,46 +86,46 @@ jobs:
         id: get-azureAdAppClientId
         with:
           inlineScript: echo "azureAdAppClientId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].appId -o tsv)" >> $GITHUB_OUTPUT
-      - name: register app as a spa
-        uses: azure/CLI@v1
-        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-        with:
-          inlineScript: |
-            az rest \
-              --method PATCH \
-              --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
-              --headers 'Content-Type=application/json' \
-              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback"]}}'
-      - name: enable issuance of id, access tokens
-        uses: azure/CLI@v1
-        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-        with:
-          inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --enable-access-token-issuance true --enable-id-token-issuance true
-      - name: enable email claim in access token
-        uses: azure/CLI@v1
-        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-        with:
-          inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
-      # note: requesting MS Graph permissions in Azure AD app unfortunately isn't idempotent.
-      # Even, if you have already requested the permissions, it'll keep adding to the list of requested permissions until you hit limit on max permissions requested.
-      # Details: https://github.com/Azure/azure-cli/issues/24512
-      - name: delete any requested Microsoft Graph permissions
-        uses: azure/CLI@v1
-        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-        with:
-          inlineScript: |
-            az ad app permission delete \
-              --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
-              --api ${{ env.MSGRAPH_API_ID }}
-      - name: request Microsoft Graph permissions
-        uses: azure/CLI@v1
-        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-        with:
-          inlineScript: |
-            az ad app permission add \
-              --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
-              --api ${{ env.MSGRAPH_API_ID }} \
-              --api-permissions ${{ env.MSGRAPH_API_PERMISSION_USER_READ }} ${{ env.MSGRAPH_API_PERMISSION_EMAIL }}
+      # - name: register app as a spa
+      #   uses: azure/CLI@v1
+      #   if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+      #   with:
+      #     inlineScript: |
+      #       az rest \
+      #         --method PATCH \
+      #         --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+      #         --headers 'Content-Type=application/json' \
+      #         --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback"]}}'
+      # - name: enable issuance of id, access tokens
+      #   uses: azure/CLI@v1
+      #   if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+      #   with:
+      #     inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --enable-access-token-issuance true --enable-id-token-issuance true
+      # - name: enable email claim in access token
+      #   uses: azure/CLI@v1
+      #   if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+      #   with:
+      #     inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
+      # # note: requesting MS Graph permissions in Azure AD app unfortunately isn't idempotent.
+      # # Even, if you have already requested the permissions, it'll keep adding to the list of requested permissions until you hit limit on max permissions requested.
+      # # Details: https://github.com/Azure/azure-cli/issues/24512
+      # - name: delete any requested Microsoft Graph permissions
+      #   uses: azure/CLI@v1
+      #   if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+      #   with:
+      #     inlineScript: |
+      #       az ad app permission delete \
+      #         --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+      #         --api ${{ env.MSGRAPH_API_ID }}
+      # - name: request Microsoft Graph permissions
+      #   uses: azure/CLI@v1
+      #   if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+      #   with:
+      #     inlineScript: |
+      #       az ad app permission add \
+      #         --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+      #         --api ${{ env.MSGRAPH_API_ID }} \
+      #         --api-permissions ${{ env.MSGRAPH_API_PERMISSION_USER_READ }} ${{ env.MSGRAPH_API_PERMISSION_EMAIL }}
   #     #
   #     # section #1: provisioning the resources on Azure using bicep templates
   #     #
@@ -426,20 +426,20 @@ jobs:
         id: get-uiCdnEndpoint
         with:
           inlineScript: echo "uiCdnEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-      - name: register auth callback (UI CDN)
-        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az rest \
-              --method PATCH \
-              --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
-              --headers 'Content-Type=application/json' \
-              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
-      - name: display ui cdn endpoint
-        uses: azure/CLI@v1
-        with:
-          inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)
+      # - name: register auth callback (UI CDN)
+      #   if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: |
+      #       az rest \
+      #         --method PATCH \
+      #         --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+      #         --headers 'Content-Type=application/json' \
+      #         --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
+      # - name: display ui cdn endpoint
+      #   uses: azure/CLI@v1
+      #   with:
+      #     inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)
 
   # load-tests-with-chaos-products-api:
   #   needs: [provision, playwright-tests-ui]
