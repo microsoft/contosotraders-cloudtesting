@@ -45,87 +45,87 @@ env:
   USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
 
 jobs:
-  # provision:
-  #   runs-on: ubuntu-22.04
-  #   env:
-  #     AADUSERNAME: ${{ secrets.AADUSERNAME }}
-  #     AADPASSWORD: ${{ secrets.AADPASSWORD }}
-  #   outputs:
-  #     azureAdAppClientId: ${{ steps.get-azureAdAppClientId.outputs.azureAdAppClientId }}
-  #     azureAdAppObjId: ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }}
-  #     cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
-  #     productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
-  #     uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
-  #   concurrency:
-  #     group: provision
-  #     cancel-in-progress: true
-  #   steps:
-  #     - name: checkout code
-  #       uses: actions/checkout@v3
-  #     - name: azure login
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.SERVICEPRINCIPAL }}
-  #     # section #0: optional configuration of the Azure AD app.
-  #     # create the Azure AD application (and update it if it already exists).
-  #     # note: This is an idempotent operation.
-  #     - name: create/update azure active directory app
-  #       uses: azure/CLI@v1
-  #       if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-  #       with:
-  #         inlineScript: az ad app create --display-name ${{ env.AZURE_AD_APP_NAME}}${{ vars.SUFFIX }} --sign-in-audience AzureADandPersonalMicrosoftAccount
-  #     - name: get azure ad app's object id
-  #       uses: azure/CLI@v1
-  #       if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-  #       id: get-azureAdAppObjId
-  #       with:
-  #         inlineScript: echo "azureAdAppObjId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].id -o tsv)" >> $GITHUB_OUTPUT
-  #     - name: get azure ad app's client id
-  #       uses: azure/CLI@v1
-  #       if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-  #       id: get-azureAdAppClientId
-  #       with:
-  #         inlineScript: echo "azureAdAppClientId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].appId -o tsv)" >> $GITHUB_OUTPUT
-  #     - name: register app as a spa
-  #       uses: azure/CLI@v1
-  #       if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-  #       with:
-  #         inlineScript: |
-  #           az rest \
-  #             --method PATCH \
-  #             --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
-  #             --headers 'Content-Type=application/json' \
-  #             --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback"]}}'
-  #     - name: enable issuance of id, access tokens
-  #       uses: azure/CLI@v1
-  #       if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-  #       with:
-  #         inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --enable-access-token-issuance true --enable-id-token-issuance true
-  #     - name: enable email claim in access token
-  #       uses: azure/CLI@v1
-  #       if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-  #       with:
-  #         inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
-  #     # note: requesting MS Graph permissions in Azure AD app unfortunately isn't idempotent.
-  #     # Even, if you have already requested the permissions, it'll keep adding to the list of requested permissions until you hit limit on max permissions requested.
-  #     # Details: https://github.com/Azure/azure-cli/issues/24512
-  #     - name: delete any requested Microsoft Graph permissions
-  #       uses: azure/CLI@v1
-  #       if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-  #       with:
-  #         inlineScript: |
-  #           az ad app permission delete \
-  #             --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
-  #             --api ${{ env.MSGRAPH_API_ID }}
-  #     - name: request Microsoft Graph permissions
-  #       uses: azure/CLI@v1
-  #       if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-  #       with:
-  #         inlineScript: |
-  #           az ad app permission add \
-  #             --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
-  #             --api ${{ env.MSGRAPH_API_ID }} \
-  #             --api-permissions ${{ env.MSGRAPH_API_PERMISSION_USER_READ }} ${{ env.MSGRAPH_API_PERMISSION_EMAIL }}
+  provision:
+    runs-on: ubuntu-22.04
+    env:
+      AADUSERNAME: ${{ secrets.AADUSERNAME }}
+      AADPASSWORD: ${{ secrets.AADPASSWORD }}
+    outputs:
+      azureAdAppClientId: ${{ steps.get-azureAdAppClientId.outputs.azureAdAppClientId }}
+      azureAdAppObjId: ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }}
+      cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
+      productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
+      uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+    concurrency:
+      group: provision
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      # section #0: optional configuration of the Azure AD app.
+      # create the Azure AD application (and update it if it already exists).
+      # note: This is an idempotent operation.
+      - name: create/update azure active directory app
+        uses: azure/CLI@v1
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        with:
+          inlineScript: az ad app create --display-name ${{ env.AZURE_AD_APP_NAME}}${{ vars.SUFFIX }} --sign-in-audience AzureADandPersonalMicrosoftAccount
+      - name: get azure ad app's object id
+        uses: azure/CLI@v1
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        id: get-azureAdAppObjId
+        with:
+          inlineScript: echo "azureAdAppObjId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].id -o tsv)" >> $GITHUB_OUTPUT
+      - name: get azure ad app's client id
+        uses: azure/CLI@v1
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        id: get-azureAdAppClientId
+        with:
+          inlineScript: echo "azureAdAppClientId"="$(az ad app list --display-name ${{ env.AZURE_AD_APP_NAME }}${{ vars.SUFFIX }} --query [].appId -o tsv)" >> $GITHUB_OUTPUT
+      - name: register app as a spa
+        uses: azure/CLI@v1
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        with:
+          inlineScript: |
+            az rest \
+              --method PATCH \
+              --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+              --headers 'Content-Type=application/json' \
+              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback"]}}'
+      - name: enable issuance of id, access tokens
+        uses: azure/CLI@v1
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        with:
+          inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --enable-access-token-issuance true --enable-id-token-issuance true
+      - name: enable email claim in access token
+        uses: azure/CLI@v1
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        with:
+          inlineScript: az ad app update --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} --optional-claims "{\"accessToken\":[{\"name\":\"email\",\"essential\":false}]}"
+      # note: requesting MS Graph permissions in Azure AD app unfortunately isn't idempotent.
+      # Even, if you have already requested the permissions, it'll keep adding to the list of requested permissions until you hit limit on max permissions requested.
+      # Details: https://github.com/Azure/azure-cli/issues/24512
+      - name: delete any requested Microsoft Graph permissions
+        uses: azure/CLI@v1
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        with:
+          inlineScript: |
+            az ad app permission delete \
+              --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+              --api ${{ env.MSGRAPH_API_ID }}
+      - name: request Microsoft Graph permissions
+        uses: azure/CLI@v1
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        with:
+          inlineScript: |
+            az ad app permission add \
+              --id ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+              --api ${{ env.MSGRAPH_API_ID }} \
+              --api-permissions ${{ env.MSGRAPH_API_PERMISSION_USER_READ }} ${{ env.MSGRAPH_API_PERMISSION_EMAIL }}
   #     #
   #     # section #1: provisioning the resources on Azure using bicep templates
   #     #
@@ -223,11 +223,11 @@ jobs:
   #         inlineScript: |
   #           az config set extension.use_dynamic_install=yes_without_prompt
   #           az containerapp update -n ${{ env.CARTS_INTERNAL_ACA_NAME }}${{ vars.SUFFIX }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --image ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
-  #     - name: get carts api endpoint
-  #       uses: azure/CLI@v1
-  #       id: get-cartsApiEndpoint
-  #       with:
-  #         inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: get carts api endpoint
+        uses: azure/CLI@v1
+        id: get-cartsApiEndpoint
+        with:
+          inlineScript: echo "cartsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name cartsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
 
   #     #
   #     # section #3: deploy the products api
@@ -386,11 +386,11 @@ jobs:
   #       uses: azure/CLI@v1
   #       with:
   #         inlineScript: az keyvault secret set --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --value ${{ steps.get-aks-fqdn.outputs.aksFqdn }} --description "endpoint url (fqdn) of the products api"
-  #     - name: get products api endpoint
-  #       uses: azure/CLI@v1
-  #       id: get-productsApiEndpoint
-  #       with:
-  #         inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: get products api endpoint
+        uses: azure/CLI@v1
+        id: get-productsApiEndpoint
+        with:
+          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
 
   #     #
   #     # section #4: deploy the ui
@@ -421,25 +421,25 @@ jobs:
   #       uses: azure/CLI@v1
   #       with:
   #         inlineScript: az cdn endpoint purge --no-wait --content-paths '/*' -n '${{ env.UI_CDN_ENDPOINT_NAME }}${{ vars.SUFFIX }}' -g '${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}' --profile-name '${{ env.CDN_PROFILE_NAME }}${{ vars.SUFFIX }}'
-  #     - name: get ui cdn endpoint
-  #       uses: azure/CLI@v1
-  #       id: get-uiCdnEndpoint
-  #       with:
-  #         inlineScript: echo "uiCdnEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
-  #     - name: register auth callback (UI CDN)
-  #       if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
-  #       uses: azure/CLI@v1
-  #       with:
-  #         inlineScript: |
-  #           az rest \
-  #             --method PATCH \
-  #             --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
-  #             --headers 'Content-Type=application/json' \
-  #             --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
-  #     - name: display ui cdn endpoint
-  #       uses: azure/CLI@v1
-  #       with:
-  #         inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)
+      - name: get ui cdn endpoint
+        uses: azure/CLI@v1
+        id: get-uiCdnEndpoint
+        with:
+          inlineScript: echo "uiCdnEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: register auth callback (UI CDN)
+        if: ${{ env.AADUSERNAME != '' && env.AADPASSWORD != '' }}
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az rest \
+              --method PATCH \
+              --uri https://graph.microsoft.com/v1.0/applications/${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }} \
+              --headers 'Content-Type=application/json' \
+              --body '{"spa":{"redirectUris":["https://localhost:3000/authcallback","http://localhost:3000/authcallback","https://staging.contosotraders.com/authcallback","https://production.contosotraders.com/authcallback","https://cloudtesting.contosotraders.com/authcallback","https://${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}/authcallback"]}}'
+      - name: display ui cdn endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: echo UI CDN endpoint accessible at https://$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name uiCdnEndpoint --query value -o tsv)
 
   # load-tests-with-chaos-products-api:
   #   needs: [provision, playwright-tests-ui]
@@ -616,6 +616,7 @@ jobs:
   #           ]
 
   load-tests-carts-api-aad:
+    needs: [provision]
     #needs: [provision, playwright-tests-ui]
     runs-on: ubuntu-22.04
     env:
@@ -643,19 +644,19 @@ jobs:
             [
               {
                 "name": "clientId"
-                "value": "https://contosotradersloadtest.vault.azure.net/secrets/clientId"
+                "value": "${{ needs.provision.outputs.azureAdAppClientId }}"
               },
               {
                 "name": "tenantId"
-                "value": "https://contosotradersloadtest.vault.azure.net/secrets/tenantId"
+                "value": "common"
               },
               {
                 "name": "username"
-                "value": "https://contosotradersloadtest.vault.azure.net/secrets/username"
+                "value": "${{ env.AADUSERNAME }}"
               },
               {
                 "name": "password"
-                "value": "https://contosotradersloadtest.vault.azure.net/secrets/password"
+                "value": "${{ env.AADPASSWORD }}"
               }
             ]
           env: |
