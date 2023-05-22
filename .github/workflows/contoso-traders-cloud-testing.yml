@@ -643,14 +643,6 @@ jobs:
           secrets: |
             [
               {
-                "name": "clientId"
-                "value": "${{ needs.provision.outputs.azureAdAppClientId }}"
-              },
-              {
-                "name": "tenantId"
-                "value": "common"
-              },
-              {
                 "name": "username"
                 "value": "${{ env.AADUSERNAME }}"
               },
