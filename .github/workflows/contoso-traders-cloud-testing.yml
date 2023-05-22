@@ -639,6 +639,25 @@ jobs:
           loadtestConfigFile: ./loadtests/contoso-traders-carts-aad.yaml
           loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
           resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+          secrets: |
+            [
+              {
+                "name": "clientId"
+                "value": "https://contosotradersloadtest.vault.azure.net/secrets/clientId"
+              },
+              {
+                "name": "tenantId"
+                "value": "https://contosotradersloadtest.vault.azure.net/secrets/tenantId"
+              },
+              {
+                "name": "username"
+                "value": "https://contosotradersloadtest.vault.azure.net/secrets/username"
+              },
+              {
+                "name": "password"
+                "value": "https://contosotradersloadtest.vault.azure.net/secrets/password"
+              }
+            ]
           env: |
             [
               {
@@ -664,6 +683,26 @@ jobs:
               {
                 "name": "duration_in_sec",
                 "value": "120"
+              },
+              {
+                "name": "contoso_threads",
+                "value": "5"
+              },
+              {
+                "name": "contoso_duration",
+                "value": "120"
+              },
+              {
+                "name": "cartsAPI"
+                "value": ""
+              },
+              {
+                "name": "productsAPI"
+                "value": ""
+              },
+              {
+                "name": "email"
+                "value": ""
               }
             ]
 
