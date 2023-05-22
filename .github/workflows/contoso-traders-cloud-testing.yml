@@ -276,7 +276,7 @@ jobs:
         env:
           SUFFIX: ${{ vars.SUFFIX }}
       - name: lint deployment manifest
-        uses: azure/k8s-lint@v2.0
+        uses: azure/k8s-lint@4a3fddd6e0906514b426af21958f431722e8c8bf
         with:
           manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
       - name: apply deployment manifest
