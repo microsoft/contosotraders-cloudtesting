@@ -4,8 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
     paths-ignore: ["docs/**", "demo-scripts/**"]
 
 env:
