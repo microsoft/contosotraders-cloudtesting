@@ -12,7 +12,7 @@ The key takeaways from this demo are:
   
 ## Before you Begin
 
-You must have Contoso Traders deployed in your environment and setup with GitHub Actions.  Please refer to the deployment instructions [here](../demo-scripts/app-deployment-guide.md)
+You must have Contoso Traders deployed in your environment and setup with GitHub Actions.  Please refer to the deployment instructions [here](../../docs/deployment-instructions.md)
 
 ## Walkthrough – GitHub Actions for CI/CD
 
