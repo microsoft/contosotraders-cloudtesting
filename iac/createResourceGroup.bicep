@@ -14,7 +14,7 @@ param rgName string
 param suffix string
 
 @description('Set default rg location to East US.')
-param rgLocation string = 'eastus'
+param rgLocation string = '<location>'
 
 // variables
 ////////////////////////////////////////////////////////////////////////////////
