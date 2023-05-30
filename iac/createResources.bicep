@@ -42,6 +42,8 @@ var kvSecretNameCartsApiEndpoint = 'cartsApiEndpoint'
 var kvSecretNameCartsInternalApiEndpoint = 'cartsInternalApiEndpoint'
 var kvSecretNameCartsDbConnStr = 'cartsDbConnectionString'
 var kvSecretNameImagesEndpoint = 'imagesEndpoint'
+var kvSecretNameCognitiveServicesEndpoint = 'cognitiveServicesEndpoint'
+var kvSecretNameCognitiveServicesAccountKey = 'cognitiveServicesAccountKey'
 var kvSecretNameAppInsightsConnStr = 'appInsightsConnectionString'
 var kvSecretNameUiCdnEndpoint = 'uiCdnEndpoint'
 var kvSecretNameVnetAcaSubnetId = 'vnetAcaSubnetId'
@@ -107,6 +109,9 @@ var ui2StgAccName = '${prefix}ui2${suffix}'
 // storage account (image classifier)
 var imageClassifierStgAccName = '${prefix}ic${suffix}'
 var imageClassifierWebsiteUploadsContainerName = 'website-uploads'
+
+// cognitive service (image recognition)
+var cognitiveServiceName = '${prefixHyphenated}-cs${suffix}'
 
 // cdn
 var cdnProfileName = '${prefixHyphenated}-cdn${suffix}'
@@ -282,6 +287,26 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     properties: {
       contentType: 'endpoint url of the images cdn'
       value: 'https://${cdnprofile_imagesendpoint.properties.hostName}'
+    }
+  }
+
+  // secret
+  resource kv_secretCognitiveServicesEndpoint 'secrets' = {
+    name: kvSecretNameCognitiveServicesEndpoint
+    tags: resourceTags
+    properties: {
+      contentType: 'endpoint url of the cognitive services'
+      value: cognitiveservice.properties.endpoint
+    }
+  }
+
+  // secret
+  resource kv_secretCognitiveServicesAccountKey 'secrets' = {
+    name: kvSecretNameCognitiveServicesAccountKey
+    tags: resourceTags
+    properties: {
+      contentType: 'account key of the cognitive services'
+      value: cognitiveservice.listKeys().key1
     }
   }
 
@@ -914,6 +939,23 @@ resource imageclassifierstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = 
         publicAccess: 'Container'
       }
     }
+  }
+}
+
+//
+// cognitive services (image recognition)
+// 
+
+resource cognitiveservice 'Microsoft.CognitiveServices/accounts@2022-10-01' = {
+  name: cognitiveServiceName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'S0'
+  }
+  kind: 'CognitiveServices'
+  properties: {
+    publicNetworkAccess: 'Enabled'
   }
 }
 
