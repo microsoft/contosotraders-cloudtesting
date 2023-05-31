@@ -243,7 +243,7 @@ stages:
             inputs:
               azureSubscription: SERVICEPRINCIPAL
               scriptLocation: inlineScript
-              inlineScript: echo "##vso[task.setvariable variable=acrPassword;isOutput=true]$(az acr credential show -n $(ACR_NAME)$(SUFFIX) -g $(RESOURCE_GROUP_NAME)$(SUFFIX) --query "passwords[0].value" --output tsv)"
+              inlineScript: echo "##vso[task.setvariable variable=acrPassword;isOutput=true;issecret=true]$(az acr credential show -n $(ACR_NAME)$(SUFFIX) -g $(RESOURCE_GROUP_NAME)$(SUFFIX) --query "passwords[0].value" --output tsv)"
           - script: docker login $(ACR_NAME)$(SUFFIX).azurecr.io --username $(ACR_NAME)$(SUFFIX) --password $(extractAcrPassword.acrPassword)
             displayName: azure container registry login
           - task: AzureCLI@1
