@@ -20,7 +20,7 @@ spec:
       http:
         paths:
           - path: /*
-            pathType: ImplementationSpecific
+            pathType: Exact
             backend:
               service:
                 name: contoso-traders-products
