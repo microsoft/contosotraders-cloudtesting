@@ -14,10 +14,12 @@ test.describe.skip('Dark Mode', () => {
     await expect(page.locator('.App')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
   })
   test('verify dark mode is pixel perfect - on', async ({ page }) => {
+    test.skip(({ browserName }) => browserName !== 'chromium', 'Chromium only!');
     await page.getByLabel('Dark Mode').check();
     await expect(page).toHaveScreenshot();
   })
   test('verify dark mode is pixel perfect - off', async ({ page }) => {
+    test.skip(({ browserName }) => browserName !== 'chromium', 'Chromium only!');
     await expect(page).toHaveScreenshot();
   })
 });
