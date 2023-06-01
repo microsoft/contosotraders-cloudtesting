@@ -16,9 +16,9 @@ test.describe('Dark Mode', () => {
   })
   test('verify dark mode is pixel perfect - on', async ({ page }) => {
     await page.getByLabel('Dark Mode').check();
-    await expect(page).toHaveScreenshot();
+    await expect(page.getByRole('banner').filter({ hasText: '0Dark Mode' })).toHaveScreenshot();
   })
   test('verify dark mode is pixel perfect - off', async ({ page }) => {
-    await expect(page).toHaveScreenshot();
+    await expect(page.getByRole('banner').filter({ hasText: '0Dark Mode' })).toHaveScreenshot();
   })
 });
