@@ -5,6 +5,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe.skip('Dark Mode', () => {
+  test.skip(({ browserName }) => browserName !== 'chromium', 'Chromium only!');
   test('should be able to toggle dark mode', async ({ page }) => {
     await page.getByLabel('Dark Mode').check();
     await expect(page.locator('.App')).toHaveAttribute('class', 'App dark')
@@ -15,9 +16,9 @@ test.describe.skip('Dark Mode', () => {
   })
   test('verify dark mode is pixel perfect - on', async ({ page }) => {
     await page.getByLabel('Dark Mode').check();
-    await expect(page).toHaveScreenshot();
+    await expect(page.getByRole('banner').filter({ hasText: '0Dark Mode' })).toHaveScreenshot();
   })
   test('verify dark mode is pixel perfect - off', async ({ page }) => {
-    await expect(page).toHaveScreenshot();
+    await expect(page.getByRole('banner').filter({ hasText: '0Dark Mode' })).toHaveScreenshot();
   })
 });

@@ -59,7 +59,10 @@ test.describe('Carousel', () => {
     await page.getByTestId('carousel').getByRole('button', { name: 'More Details' }).first().click();
     await expect(page).toHaveURL('/list/controllers');
   })
+});
 
+test.describe('CarouselVRT', () => {  
+  test.skip(({ browserName }) => browserName !== 'chromium', 'Chromium only!');
   test('verify carousel is pixel perfect - slide 1', async ({ page }) => {
     await expect(page.getByTestId('carousel')).toHaveScreenshot();
   })

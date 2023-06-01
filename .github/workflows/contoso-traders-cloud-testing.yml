@@ -621,7 +621,7 @@ jobs:
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     container:
-      image: mcr.microsoft.com/playwright:v1.32.0-jammy
+      image: mcr.microsoft.com/playwright:v1.34.3-jammy
     defaults:
       run:
         working-directory: src/ContosoTraders.Ui.Website
