@@ -2,7 +2,9 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AppBar, InputAdornment, TextField, Button } from '@mui/material';
-import {FormGroup, FormControlLabel, Switch } from '@mui/material';
+//#region Uncomment below lines to run dark mode tests
+// import {FormGroup, FormControlLabel, Switch } from '@mui/material';
+//#endregion
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
@@ -365,9 +367,11 @@ function TopAppBar(props) {
               <img src={BagIcon} alt="iconimage" />
             </Badge>
           </IconButton>
-          <FormGroup className='theme-class'>
+          {/* #region Uncomment below lines to run dark mode tests */}
+          {/* <FormGroup className='theme-class'>
             <FormControlLabel labelPlacement="start" control={<Switch aria-label='theme change' id="theme" color="primary" onChange={(e) => props.handleThemeChange(e.target.checked)}/>} label="Dark Mode" />
-          </FormGroup>
+          </FormGroup> */}
+          {/* #endregion */}
           <div className={`sectionMobile d-block d-md-none d-lg-none`}>
             <IconButton
               aria-label="show more"
