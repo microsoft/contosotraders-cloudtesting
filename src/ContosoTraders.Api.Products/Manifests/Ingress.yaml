@@ -19,8 +19,8 @@ spec:
     - host: {AKS_FQDN}
       http:
         paths:
-          - path: /
-            pathType: Prefix
+          - path: /*
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: contoso-traders-products
