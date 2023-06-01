@@ -19,7 +19,7 @@ spec:
     - host: {AKS_FQDN}
       http:
         paths:
-          - path: /(.*)
+          - path: /
             pathType: Prefix
             backend:
               service:
