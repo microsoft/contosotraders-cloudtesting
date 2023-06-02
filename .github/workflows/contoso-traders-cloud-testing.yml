@@ -7,8 +7,6 @@ on:
     paths-ignore: ["docs/**", "demo-scripts/**"]
 
 env:
-  # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
-  # metadata will be stored, and not where the resource groups will be deployed.
   ACR_NAME: contosotradersacr
   AKS_CLUSTER_NAME: contoso-traders-aks
   AKS_DNS_LABEL: contoso-traders-products
@@ -37,7 +35,6 @@ env:
   PRODUCTS_CDN_ENDPOINT_NAME: contoso-traders-images
   RESOURCE_GROUP_NAME: contoso-traders-rg
   STORAGE_ACCOUNT_NAME: contosotradersimg
-  SUB_DEPLOYMENT_REGION: eastus2
   UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
   UI_STORAGE_ACCOUNT_NAME: contosotradersui2
   USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
@@ -136,7 +133,7 @@ jobs:
         uses: Azure/arm-deploy@v1
         with:
           scope: subscription
-          region: ${{ env.SUB_DEPLOYMENT_REGION }}
+          region: ${{ vars.DEPLOYMENTREGION }}
           template: ./iac/createResourceGroup.bicep
           parameters: rgName=${{ env.RESOURCE_GROUP_NAME }} suffix=${{ vars.SUFFIX }}
       # Next step is to deploy the Azure resources to the resource group `contoso-traders-rg` created above. The deployed resources
@@ -151,7 +148,7 @@ jobs:
         uses: Azure/arm-deploy@v1
         with:
           scope: resourcegroup
-          region: ${{ env.SUB_DEPLOYMENT_REGION }}
+          region: ${{ vars.DEPLOYMENTREGION }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
           template: ./iac/createResources.bicep
           parameters: ./iac/createResources.parameters.json suffix=${{ vars.SUFFIX }} sqlPassword=${{ secrets.SQLPASSWORD }}

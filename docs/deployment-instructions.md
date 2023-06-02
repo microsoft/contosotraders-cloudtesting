@@ -92,9 +92,10 @@ You will need following to get started:
 
 2. Set up the repository variables in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab and create these necessary repository variables:
 
-    | Variable Name | Variable Value                                                                                                                          |
-    | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-    | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg' |
+    | Variable Name      | Variable Value                                                                                                                                                                              |
+    | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `SUFFIX`           | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg'                                                     |
+    | `DEPLOYMENTREGION` | The Azure region to deploy the application in. Must be one of: `australiaeast`,`centralus`,`eastus`,`eastus2`,`japaneast`,`northcentralus`,`uksouth`,`westcentralus`,`westeurope`,`westus2` |
 
 ### Deploy the Application
 
@@ -121,6 +122,8 @@ Here are some common problems that you may encounter during deployment:
    * The Responsible AI terms are shown only once per subscription (during first Cognitive Service resource creation in subscription), and once accepted, they are not shown again.
    * Currently, there exists no mechanism to accept the Responsible AI terms programmatically. It can only be done manually through the Azure portal.
    * You can read more about Responsible AI [here](https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai).
+
+   ![agree-cognitive-service-screenshot](./images/agree-cognitive-service-screenshot.png)
 
 2. Other intermittent errors: Should you encounter any of [these intermittent errors](https://github.com/microsoft/ContosoTraders/issues?q=is%3Aissue+is%3Aopen+label%3Adevops) in the github workflow, please re-run the failed jobs (it'll will pass on retry). We're working to fix these soon.
 
