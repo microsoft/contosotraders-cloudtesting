@@ -92,9 +92,10 @@ You will need following to get started:
 
 2. Set up the repository variables in your forked repo. On your fork of the github repository, go to the `Settings` tab > `Secrets and variables` > `Actions` > `Variables` tab and create these necessary repository variables:
 
-    | Variable Name | Variable Value                                                                                                                          |
-    | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-    | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg' |
+    | Variable Name      | Variable Value                                                                                                                                                                              |
+    | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `SUFFIX`           | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg'                                                     |
+    | `DEPLOYMENTREGION` | The Azure region to deploy the application in. Must be one of: `australiaeast`,`centralus`,`eastus`,`eastus2`,`japaneast`,`northcentralus`,`uksouth`,`westcentralus`,`westeurope`,`westus2` |
 
 ### Deploy the Application
 
