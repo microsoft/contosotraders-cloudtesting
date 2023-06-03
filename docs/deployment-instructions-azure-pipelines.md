@@ -48,10 +48,11 @@ This document will help you deploy the Contoso Traders application in your Azure
 
 4. Set up the variables for your Azure Pipeline. Click on `Pipelines` > `Library` > `+ Variable Group`. Create a variable group called `contosotraders-cloudtesting-variable-group` with the following variables:
 
-    | Variable Name | Variable Value                                                                                                                          | Is Secret? |
-    | ------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-    | `SQLPASSWORD` | 8 to 15 characters long, must contain uppercase, lowercase, and numeric characters                                                      | YES        |
-    | `SUFFIX`      | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg' | NO         |
+    | Variable Name      | Variable Value                                                                                                                                                                              | Is Secret? |
+    | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+    | `SQLPASSWORD`      | 8 to 15 characters long, must contain uppercase, lowercase, and numeric characters                                                                                                          | YES        |
+    | `SUFFIX`           | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg'                                                     | NO         |
+    | `DEPLOYMENTREGION` | The Azure region to deploy the application in. Must be one of: `australiaeast`,`centralus`,`eastus`,`eastus2`,`japaneast`,`northcentralus`,`uksouth`,`westcentralus`,`westeurope`,`westus2` | NO         |
 
    After saving the variable group, click on `Pipeline permissions` and ensure that the `azure-pipelines.yml` pipeline has access to the variable group.
 

@@ -70,8 +70,6 @@ variables:
     value: contoso-traders-rg
   - name: STORAGE_ACCOUNT_NAME
     value: contosotradersimg
-  - name: SUB_DEPLOYMENT_REGION
-    value: eastus2
   - name: UI_CDN_ENDPOINT_NAME
     value: contoso-traders-ui2
   - name: UI_STORAGE_ACCOUNT_NAME
@@ -177,9 +175,9 @@ stages:
             inputs:
               deploymentScope: Subscription
               azureResourceManagerConnection: SERVICEPRINCIPAL
-              location: $(SUB_DEPLOYMENT_REGION)
+              location: $(DEPLOYMENTREGION)
               csmFile: ./iac/createResourceGroup.bicep
-              overrideParameters: -rgName $(RESOURCE_GROUP_NAME) -suffix $(SUFFIX)
+              overrideParameters: -rgName $(RESOURCE_GROUP_NAME) -suffix $(SUFFIX) -rgLocation $(DEPLOYMENTREGION)
           # Next step is to deploy the Azure resources to the resource group `contoso-traders-rg` created above. The deployed resources
           # include storage accounts, function apps, app services cosmos db, and service bus etc.
           # The below step can also be manually executed as follows:
@@ -193,7 +191,7 @@ stages:
             inputs:
               deploymentScope: Resource Group
               azureResourceManagerConnection: SERVICEPRINCIPAL
-              location: $(SUB_DEPLOYMENT_REGION)
+              location: $(DEPLOYMENTREGION)
               resourceGroupName: "$(RESOURCE_GROUP_NAME)$(SUFFIX)"
               csmFile: ./iac/createResources.bicep
               csmParametersFile: ./iac/createResources.parameters.json
