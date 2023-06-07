@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   name: contoso-traders-products
 spec:
-  replicas: 1
+  #Note: The '{AKS_REPLICAS}' token will be substituted by the github workflow.
+  replicas: {AKS_REPLICAS}
   selector:
     matchLabels:
       app: contoso-traders-products
@@ -34,5 +35,6 @@ spec:
               cpu: 100m
               memory: 128Mi
             limits:
-              cpu: 250m
-              memory: 256Mi
+              #Note: The '{AKS_CPU_LIMIT}', '${AKS_MEMORY_LIMIT}' tokens will be substituted by the github workflow.
+              cpu: {AKS_CPU_LIMIT}
+              memory: {AKS_MEMORY_LIMIT}

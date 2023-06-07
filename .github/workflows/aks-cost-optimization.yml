@@ -1,0 +1,166 @@
+name: aks-cost-optimization
+
+on:
+  workflow_dispatch:
+  
+env:
+  ACR_NAME: contosotradersacr
+  AKS_CLUSTER_NAME: contoso-traders-aks
+  AKS_CPU_LIMIT: 250m
+  AKS_MEMORY_LIMIT: 256Mi
+  AKS_REPLICAS: "1"
+  AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
+  KV_NAME: contosotraderskv
+  LOAD_TEST_SERVICE_NAME: contoso-traders-loadtest
+  PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
+  RESOURCE_GROUP_NAME: contoso-traders-rg
+
+jobs:
+  aks-cost-optimization:
+    strategy:
+      fail-fast: false
+      matrix:
+        AKS_CPU_LIMIT: ["250m", "100m"]
+        AKS_MEMORY_LIMIT: ["256Mi", "128Mi"]
+      max-parallel: 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: extract acr password
+        uses: azure/CLI@v1
+        id: extract-acr-password
+        with:
+          inlineScript: |
+            acrPassword=$(az acr credential show -n ${{ env.ACR_NAME }}${{ vars.SUFFIX }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --query "passwords[0].value" --output tsv)
+            echo "::add-mask::$acrPassword"
+            echo acrPassword=$acrPassword >> $GITHUB_OUTPUT
+      - name: azure container registry login
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io
+          username: ${{ env.ACR_NAME }}${{ vars.SUFFIX }}
+          password: ${{ steps.extract-acr-password.outputs.acrPassword }}
+      - name: set aks context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+          cluster-name: ${{ env.AKS_CLUSTER_NAME }}${{ vars.SUFFIX }}
+      - name: get products api endpoint
+        uses: azure/CLI@v1
+        id: get-productsApiEndpoint
+        with:
+          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: substitute tokens in deployment manifest
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: "{"
+          tokenSuffix: "}"
+          files: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+        env:
+          SUFFIX: ${{ vars.SUFFIX }}
+          AKS_REPLICAS: ${{ env.AKS_REPLICAS }}
+          AKS_CPU_LIMIT: ${{ matrix.AKS_CPU_LIMIT }}
+          AKS_MEMORY_LIMIT: ${{ matrix.AKS_MEMORY_LIMIT }}
+      - name: apply deployment manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+          images: ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:latest
+          imagepullsecrets: ${{ env.AKS_SECRET_NAME_ACR_PASSWORD }}
+          force: true
+      - name: sleep for 30 seconds
+        run: sleep 30s
+        shell: bash
+      - name: load test (products API)
+        uses: Azure/load-testing@v1.1.13
+        with:
+          # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+          loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+          env: |
+            [
+              {
+                "name": "domain",
+                "value": "${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}"
+              },
+              {
+                "name": "protocol",
+                "value": "https"
+              },
+              {
+                "name": "path",
+                "value": "v1/Products/1"
+              },
+              {
+                "name": "threads_per_engine",
+                "value": "25"
+              },
+              {
+                "name": "ramp_up_time",
+                "value": "0"
+              },
+              {
+                "name": "duration_in_sec",
+                "value": "45"
+              }
+            ]
+
+  reset-aks:
+    runs-on: ubuntu-latest
+    needs: [aks-cost-optimization]
+    if: always()
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: extract acr password
+        uses: azure/CLI@v1
+        id: extract-acr-password
+        with:
+          inlineScript: |
+            acrPassword=$(az acr credential show -n ${{ env.ACR_NAME }}${{ vars.SUFFIX }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --query "passwords[0].value" --output tsv)
+            echo "::add-mask::$acrPassword"
+            echo acrPassword=$acrPassword >> $GITHUB_OUTPUT
+      - name: azure container registry login
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io
+          username: ${{ env.ACR_NAME }}${{ vars.SUFFIX }}
+          password: ${{ steps.extract-acr-password.outputs.acrPassword }}
+      - name: set aks context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+          cluster-name: ${{ env.AKS_CLUSTER_NAME }}${{ vars.SUFFIX }}
+      - name: get products api endpoint
+        uses: azure/CLI@v1
+        id: get-productsApiEndpoint
+        with:
+          inlineScript: echo "productsApiEndpoint"="$(az keyvault secret show --vault-name ${{ env.KV_NAME }}${{ vars.SUFFIX }} --name productsApiEndpoint --query value -o tsv)" >> $GITHUB_OUTPUT
+      - name: substitute tokens in deployment manifest
+        uses: cschleiden/replace-tokens@v1.2
+        with:
+          tokenPrefix: "{"
+          tokenSuffix: "}"
+          files: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+        env:
+          SUFFIX: ${{ vars.SUFFIX }}
+          AKS_REPLICAS: ${{ env.AKS_REPLICAS }}
+          AKS_CPU_LIMIT: ${{ env.AKS_CPU_LIMIT }}
+          AKS_MEMORY_LIMIT: ${{ env.AKS_MEMORY_LIMIT }}
+      - name: apply deployment manifest
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+          images: ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io/${{ env.PRODUCTS_ACR_REPOSITORY_NAME }}:latest
+          imagepullsecrets: ${{ env.AKS_SECRET_NAME_ACR_PASSWORD }}
+          force: true

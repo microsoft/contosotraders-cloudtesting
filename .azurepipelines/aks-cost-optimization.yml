@@ -1,0 +1,156 @@
+name: aks-cost-optimization
+
+trigger: none
+
+pr: none
+
+variables:
+  - group: contosotraders-cloudtesting-variable-group
+  - name: ACR_NAME
+    value: contosotradersacr
+  - name: AKS_CLUSTER_NAME
+    value: contoso-traders-aks
+  - name: AKS_CPU_LIMIT
+    value: 250m
+  - name: AKS_MEMORY_LIMIT
+    value: 256Mi
+  - name: AKS_REPLICAS
+    value: "1"
+  - name: AKS_SECRET_NAME_ACR_PASSWORD
+    value: contoso-traders-acr-password
+  - name: KV_NAME
+    value: contosotraderskv
+  - name: LOAD_TEST_SERVICE_NAME
+    value: contoso-traders-loadtest
+  - name: PRODUCTS_ACR_REPOSITORY_NAME
+    value: contosotradersapiproducts
+  - name: RESOURCE_GROUP_NAME
+    value: contoso-traders-rg
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: default
+    jobs:
+      - job: aks_cost_optimization
+        strategy:
+          matrix:
+            Cpu250m_Mem256Mi:
+              AKS_REPLICAS: "1"
+              AKS_CPU_LIMIT: "250m"
+              AKS_MEMORY_LIMIT: "256Mi"
+            Cpu250m_Mem128Mi:
+              AKS_REPLICAS: "1"
+              AKS_CPU_LIMIT: "250m"
+              AKS_MEMORY_LIMIT: "128Mi"
+            Cpu100m_Mem256Mi:
+              AKS_REPLICAS: "1"
+              AKS_CPU_LIMIT: "100m"
+              AKS_MEMORY_LIMIT: "256Mi"
+            Cpu100m_Mem128Mi:
+              AKS_REPLICAS: "1"
+              AKS_CPU_LIMIT: "100m"
+              AKS_MEMORY_LIMIT: "128Mi"
+          maxParallel: 1
+        steps:
+          - task: AzureCLI@1
+            displayName: get products api endpoint
+            name: getProductsApiEndpoint
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=productsApiEndpoint;isOutput=true]$(az keyvault secret show --vault-name $(KV_NAME)$(SUFFIX) --name productsApiEndpoint --query value -o tsv)"
+          - task: replacetokens@5
+            displayName: substitute tokens in deployment manifest
+            inputs:
+              targetFiles: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+              tokenPattern: custom
+              tokenPrefix: "{"
+              tokenSuffix: "}"
+              inlineVariables: |
+                SUFFIX: "$(SUFFIX)"
+                AKS_REPLICAS: "$(AKS_REPLICAS)"
+                AKS_CPU_LIMIT: "$(AKS_CPU_LIMIT)"
+                AKS_MEMORY_LIMIT: "$(AKS_MEMORY_LIMIT)"
+          - task: KubernetesManifest@1
+            displayName: apply deployment manifest
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: deploy
+              manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+              containers: $(ACR_NAME)$(SUFFIX).azurecr.io/$(PRODUCTS_ACR_REPOSITORY_NAME):latest
+              imagePullSecrets: $(AKS_SECRET_NAME_ACR_PASSWORD)
+          - task: AzureLoadTest@1
+            displayName: load test (products API)
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              # Path of the YAML file. Should be fully qualified path or relative to the default working directory
+              loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
+              resourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              loadtestResource: $(LOAD_TEST_SERVICE_NAME)$(SUFFIX)
+              env: |
+                [
+                  {
+                    "name": "domain",
+                    "value": "$(getProductsApiEndpoint.productsApiEndpoint)"
+                  },
+                  {
+                    "name": "protocol",
+                    "value": "https"
+                  },
+                  {
+                    "name": "path",
+                    "value": "v1/Products/1"
+                  },
+                  {
+                    "name": "threads_per_engine",
+                    "value": "25"
+                  },
+                  {
+                    "name": "ramp_up_time",
+                    "value": "0"
+                  },
+                  {
+                    "name": "duration_in_sec",
+                    "value": "45"
+                  }
+                ]
+
+      - job: reset_aks
+        dependsOn: [aks_cost_optimization]
+        condition: always()
+        steps:
+          - task: AzureCLI@1
+            displayName: get products api endpoint
+            name: getProductsApiEndpoint
+            inputs:
+              azureSubscription: SERVICEPRINCIPAL
+              scriptLocation: inlineScript
+              inlineScript: echo "##vso[task.setvariable variable=productsApiEndpoint;isOutput=true]$(az keyvault secret show --vault-name $(KV_NAME)$(SUFFIX) --name productsApiEndpoint --query value -o tsv)"
+          - task: replacetokens@5
+            displayName: substitute tokens in deployment manifest
+            inputs:
+              targetFiles: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+              tokenPattern: custom
+              tokenPrefix: "{"
+              tokenSuffix: "}"
+              inlineVariables: |
+                SUFFIX: "$(SUFFIX)"
+                AKS_REPLICAS: "$(AKS_REPLICAS)"
+                AKS_CPU_LIMIT: "$(AKS_CPU_LIMIT)"
+                AKS_MEMORY_LIMIT: "$(AKS_MEMORY_LIMIT)"
+          - task: KubernetesManifest@1
+            displayName: apply deployment manifest
+            inputs:
+              connectionType: azureResourceManager
+              azureSubscriptionConnection: SERVICEPRINCIPAL
+              azureResourceGroup: $(RESOURCE_GROUP_NAME)$(SUFFIX)
+              kubernetesCluster: $(AKS_CLUSTER_NAME)$(SUFFIX)
+              action: deploy
+              manifests: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
+              containers: $(ACR_NAME)$(SUFFIX).azurecr.io/$(PRODUCTS_ACR_REPOSITORY_NAME):latest
+              imagePullSecrets: $(AKS_SECRET_NAME_ACR_PASSWORD)

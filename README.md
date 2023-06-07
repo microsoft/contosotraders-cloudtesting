@@ -21,10 +21,12 @@ This repo contains the source code, deployment templates, and demo scripts for e
 ## Demo Scripts
 
 * [Developer Workflow](./demo-scripts/dev-workflow/walkthrough.md)
+
 * Azure Load Testing - Generate high-scale load and identify performance bottlenecks.
   * [Create a load test for the shopping cart API.](./demo-scripts/azure-load-testing/walkthrough.md)
   * [Use GitHub Actions for regression testing.](./demo-scripts/azure-load-testing/walkthrough.md#walkthrough-regression-testing-with-github-workflows)
   * [Create a load test for a private endpoint that’s behind a VNet.](./demo-scripts/azure-load-testing/private-endpoints.md)
+  * [Right-size your AKS cluster using load tests.](./demo-scripts/azure-load-testing/aks-cost-optimization.md)
 
 * Azure Chaos Studio - Improve application resilience by introducing faults and simulating outages.
   * [Create an experiment using Key Vault Deny Access fault to test the products API (AKS).](./demo-scripts/azure-chaos-studio/walkthrough.md)
