@@ -9,8 +9,11 @@ on:
 env:
   ACR_NAME: contosotradersacr
   AKS_CLUSTER_NAME: contoso-traders-aks
+  AKS_CPU_LIMIT: 250m
   AKS_DNS_LABEL: contoso-traders-products
+  AKS_MEMORY_LIMIT: 256Mi
   AKS_NODES_RESOURCE_GROUP_NAME: contoso-traders-aks-nodes-rg
+  AKS_REPLICAS: "1"
   AKS_SECRET_NAME_ACR_PASSWORD: contoso-traders-acr-password
   AKS_SECRET_NAME_KV_ENDPOINT: contoso-traders-kv-endpoint
   AKS_SECRET_NAME_MI_CLIENTID: contoso-traders-mi-clientid
@@ -273,6 +276,9 @@ jobs:
           files: ./src/ContosoTraders.Api.Products/Manifests/Deployment.yaml
         env:
           SUFFIX: ${{ vars.SUFFIX }}
+          AKS_REPLICAS: ${{ env.AKS_REPLICAS }}
+          AKS_CPU_LIMIT: ${{ env.AKS_CPU_LIMIT }}
+          AKS_MEMORY_LIMIT: ${{ env.AKS_MEMORY_LIMIT }}
       - name: lint deployment manifest
         uses: azure/k8s-lint@v2.0
         with:
