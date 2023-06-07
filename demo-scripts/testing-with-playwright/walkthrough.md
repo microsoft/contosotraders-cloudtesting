@@ -27,7 +27,7 @@ The Playwright docs have more details here: [Using the Playwright VSCode Extensi
 
     1. Drill into the latest run by clicking on the `playwright-tests-ui` job, then clicking on the step `Set env variables for testing endpoints`.
     ![image](media/actions1.png)
-    1. This project uses a `.env` file to easily manage these variables. Open `src\ContosoTraders.Ui.Website\.env` and set the following environment variables using the values from the logs above (these will be unique to your environment). NOTE: Do NOT check in these changes to source control!:
+    1. This project uses a `.env.playwright.local` file to easily manage these variables. Open `src\ContosoTraders.Ui.Website\.env.playwright.local` and set the following environment variables using the values from the logs above (these will be unique to your environment). NOTE: Do NOT check in these changes to source control!:
 
     ```bash
     REACT_APP_APIURLSHOPPINGCART = ''
