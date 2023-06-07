@@ -1,4 +1,4 @@
-name: contoso-traders-cloud-testing.yml
+name: contoso-traders-cloud-testing
 
 trigger:
   - main
@@ -9,7 +9,7 @@ pr:
       - main
   paths:
     exclude:
-      - "docs/**" 
+      - "docs/**"
       - "demo-scripts/**"
 
 variables:
@@ -18,10 +18,16 @@ variables:
     value: contosotradersacr
   - name: AKS_CLUSTER_NAME
     value: contoso-traders-aks
+  - name: AKS_CPU_LIMIT
+    value: 250m
   - name: AKS_DNS_LABEL
     value: contoso-traders-products
+  - name: AKS_MEMORY_LIMIT
+    value: 256Mi
   - name: AKS_NODES_RESOURCE_GROUP_NAME
     value: contoso-traders-aks-nodes-rg
+  - name: AKS_REPLICAS
+    value: "1"
   - name: AKS_SECRET_NAME_ACR_PASSWORD
     value: contoso-traders-acr-password
   - name: AKS_SECRET_NAME_KV_ENDPOINT
@@ -341,7 +347,11 @@ stages:
               tokenPattern: custom
               tokenPrefix: "{"
               tokenSuffix: "}"
-              inlineVariables: "SUFFIX: $(SUFFIX)"
+              inlineVariables: |
+                SUFFIX: "$(SUFFIX)"
+                AKS_REPLICAS: "$(AKS_REPLICAS)"
+                AKS_CPU_LIMIT: "$(AKS_CPU_LIMIT)"
+                AKS_MEMORY_LIMIT: "$(AKS_MEMORY_LIMIT)"
           - task: KubernetesManifest@1
             displayName: apply deployment manifest
             inputs:
