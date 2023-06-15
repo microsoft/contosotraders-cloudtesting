@@ -159,5 +159,5 @@ A quick note on costs considerations when you deploy the application to your Azu
 >
 > The above costs are based on the default configuration of the demo. You can modify the configuration to reduce the costs. For example, you can reduce the number of instances in the container app, reduce the number of virtual users in the load test, etc.
 >
-> Our deployment script automatically sets up cost alerts at the subscription level. A budget of $100 is set. Email alerts are triggered when 50%, 75%, and 90% thresholds are exceeded and emails are sent subscription owners, contributors.
+> Our deployment script automatically sets up cost alerts at the subscription level. A budget of $100 is set. Email alerts are sent to the subscription owners, contributors when 50%, 75%, and 90% thresholds are exceeded.
 >
