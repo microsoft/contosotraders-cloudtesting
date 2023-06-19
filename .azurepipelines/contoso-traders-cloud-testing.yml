@@ -713,7 +713,7 @@ stages:
 
       - job: playwright_tests_ui
         dependsOn: [provision]
-        container: mcr.microsoft.com/playwright:v1.34.3-jammy
+        container: mcr.microsoft.com/playwright:v1.35-jammy
         variables:
           APIURLSHOPPINGCART: $[ dependencies.provision.outputs['getCartsApiEndpoint.cartsApiEndpoint'] ]
           APIURL: $[ dependencies.provision.outputs['getProductsApiEndpoint.productsApiEndpoint'] ]
