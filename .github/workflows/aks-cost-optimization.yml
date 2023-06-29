@@ -77,7 +77,7 @@ jobs:
         run: sleep 30s
         shell: bash
       - name: load test (products API)
-        uses: Azure/load-testing@v1.1.13
+        uses: Azure/load-testing@v1.1.17
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
