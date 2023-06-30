@@ -4,7 +4,8 @@ The Contoso Traders app is a sample application showcasing [Playwright](https://
 
 This repo contains the source code, deployment templates, and demo scripts for exploring these cloud testing tools.
 
-![Landing Page](./docs/images/landing-page.png)
+## Overview Video
+[![Watch the overview video](https://img.youtube.com/vi/7JletmiT3io/hq1.jpg)](https://youtu.be/7JletmiT3io)
 
 ## Documentation and Resources
 
