@@ -7,7 +7,7 @@
     "@mui/material": "^5.11.7",
     "axios": "^1.4.0",
     "formik": "^2.4.2",
-    "history": "^4.9.0",
+    "history": "^5.3.0",
     "msal": "^1.4.17",
     "mui-file-dropzone": "^4.0.2",
     "qs": "^6.11.0",
