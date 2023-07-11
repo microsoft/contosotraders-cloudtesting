@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@mui/icons-material": "^5.11.16",
+    "@mui/icons-material": "^5.13.7",
     "@mui/material": "^5.13.7",
     "axios": "^1.4.0",
     "formik": "^2.4.2",
