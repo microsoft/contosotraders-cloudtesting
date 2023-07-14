@@ -758,9 +758,10 @@ stages:
               mergeTestResults: true
               failTaskOnFailedTests: true
               testRunTitle: Playwright Tests
-          - task: PublishPipelineArtifact@1
+          - task: PublishBuildArtifacts@1
             displayName: upload playwright report
-            condition: always()
+            condition: failed()
             inputs:
-              artifact: playwright-report
-              targetPath: src/ContosoTraders.Ui.Website/playwright-report
+              PathtoPublish: 'src/ContosoTraders.Ui.Website/playwright-report'
+              ArtifactName: 'playwright-report'
+              publishLocation: 'Container'              
