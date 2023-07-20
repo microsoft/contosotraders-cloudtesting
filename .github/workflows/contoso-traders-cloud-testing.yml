@@ -315,7 +315,7 @@ jobs:
           az aks get-credentials --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --name ${{ env.AKS_CLUSTER_NAME }}${{ vars.SUFFIX }}
           ${{ steps.install-helm.outputs.helm-path }} repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
           ${{ steps.install-helm.outputs.helm-path }} repo update
-          ${{ steps.install-helm.outputs.helm-path }} upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
+          ${{ steps.install-helm.outputs.helm-path }} upgrade --install --wait --timeout=1h nginx-ingress ingress-nginx/ingress-nginx \
             --set controller.replicaCount=1 \
             --set controller.nodeSelector."kubernetes\.io/os"=linux \
             --set defaultBackend.nodeSelector."kubernetes\.io/os"=linux \
