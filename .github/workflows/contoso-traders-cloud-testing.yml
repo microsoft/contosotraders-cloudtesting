@@ -317,9 +317,9 @@ jobs:
           ${{ steps.install-helm.outputs.helm-path }} repo update
           ${{ steps.install-helm.outputs.helm-path }} upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
             --set controller.replicaCount=1 \
-            --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
-            --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
-            --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux \
+            --set controller.nodeSelector."kubernetes\.io/os"=linux \
+            --set defaultBackend.nodeSelector."kubernetes\.io/os"=linux \
+            --set controller.admissionWebhooks.patch.nodeSelector."kubernetes\.io/os"=linux \
             --set controller.service.externalTrafficPolicy=Local
       - name: set dns label on public ip
         uses: azure/CLI@v1
