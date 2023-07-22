@@ -60,6 +60,15 @@ You will need following to get started:
       `az ad sp create-for-rbac -n contosotraders-sp --role "ContosoTraders Write Role Assignments" --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`
       ```
 
+6. If you haven't used Azure Cognitive Services with your subscription, you'll need to accept the responsible AI terms.
+Manually create an Azure Cognitive Service resource in your subscription temporarily, and accept the Responsible AI terms. You can then delete the resource.
+
+   * The Responsible AI terms are shown only once per subscription (during first Cognitive Service resource creation in subscription), and once accepted, they are not shown again.
+   * Currently, there exists no mechanism to accept the Responsible AI terms programmatically. It can only be done manually through the Azure portal.
+   * You can read more about Responsible AI [here](https://learn.microsoft.com/azure/machine-learning/concept-responsible-ai).
+
+   ![agree-cognitive-service-screenshot](./images/agree-cognitive-service-screenshot.png)
+
 ## Prepare your GitHub Repository
 
 1. Fork the [contosotraders-cloudtesting repo](https://github.com/microsoft/contosotraders-cloudtesting) in your account.
@@ -117,17 +126,9 @@ You will need following to get started:
 
 Here are some common problems that you may encounter during deployment:
 
-1. AI Terms and services: If you see an error stating that "Responsible AI terms are not accepted for this subscription", you'll have to manually create an Azure Cognitive Service resource in your subscription temporarily, and accept the Responsible AI terms. Once created, you can then re-run the workflow job.
+1. Intermittent errors: Should you encounter any of [these intermittent errors](https://github.com/microsoft/ContosoTraders/issues?q=is%3Aissue+is%3Aopen+label%3Adevops) in the github workflow, please re-run the failed jobs (it'll will pass on retry). We're working to fix these soon.
 
-   * The Responsible AI terms are shown only once per subscription (during first Cognitive Service resource creation in subscription), and once accepted, they are not shown again.
-   * Currently, there exists no mechanism to accept the Responsible AI terms programmatically. It can only be done manually through the Azure portal.
-   * You can read more about Responsible AI [here](https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai).
-
-   ![agree-cognitive-service-screenshot](./images/agree-cognitive-service-screenshot.png)
-
-2. Other intermittent errors: Should you encounter any of [these intermittent errors](https://github.com/microsoft/ContosoTraders/issues?q=is%3Aissue+is%3Aopen+label%3Adevops) in the github workflow, please re-run the failed jobs (it'll will pass on retry). We're working to fix these soon.
-
-3. There is a [known issue](https://github.com/Azure/login/issues/249) where the Azure login github action fails if the service principal's `clientSecret` begins with `-` (hyphen). If you encounter this, please regenerate a new secret, update the repository secret in your github fork, and restart the workflow.
+2. There is a [known issue](https://github.com/Azure/login/issues/249) where the Azure login github action fails if the service principal's `clientSecret` begins with `-` (hyphen). If you encounter this, please regenerate a new secret, update the repository secret in your github fork, and restart the workflow.
 
 ## Explore Demo Scenarios
 
