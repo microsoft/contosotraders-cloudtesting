@@ -95,7 +95,7 @@ You will need following to get started:
     | Variable Name      | Variable Value                                                                                                                                                                              |
     | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | `SUFFIX`           | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg'                                                     |
-    | `DEPLOYMENTREGION` | The Azure region to deploy the application in. Must be one of: `australiaeast`,`centralus`,`eastus`,`eastus2`,`japaneast`,`northcentralus`,`uksouth`,`westcentralus`,`westeurope`,`westus2` |
+    | `DEPLOYMENTREGION` | The Azure region to deploy the application in. Must be one of: `australiaeast`,`centralus`,`eastus`,`eastus2`,`japaneast`,`northcentralus`,`uksouth`,`westcentralus`,`westeurope` |
 
 ### Deploy the Application
 
