@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.36",
-    "@types/node": "^18.11.18",
+    "@types/node": "^20.4.5",
     "babel-plugin-macros": "^3.1.0",
     "csv-parse": "^5.3.4",
     "sass": "^1.63.6",
