@@ -59,7 +59,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: azure login
         uses: azure/login@v1
         with:
@@ -453,7 +453,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: azure login
         uses: azure/login@v1
         with:
@@ -513,7 +513,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: azure login
         uses: azure/login@v1
         with:
@@ -579,7 +579,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: azure login
         uses: azure/login@v1
         with:
@@ -632,7 +632,7 @@ jobs:
       AADUSERNAME: ${{ secrets.AADUSERNAME }}
       AADPASSWORD: ${{ secrets.AADPASSWORD }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 18
