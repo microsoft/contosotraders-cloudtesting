@@ -6,7 +6,7 @@
     "@mui/icons-material": "^5.13.7",
     "@mui/material": "^5.14.0",
     "axios": "^1.4.0",
-    "formik": "^2.4.2",
+    "formik": "^2.4.4",
     "history": "^5.3.0",
     "msal": "^1.4.18",
     "mui-file-dropzone": "^4.0.2",
@@ -48,7 +48,7 @@
     "@playwright/test": "1.36",
     "@types/node": "^18.11.18",
     "babel-plugin-macros": "^3.1.0",
-    "csv-parse": "^5.3.4",
+    "csv-parse": "^5.5.0",
     "sass": "^1.63.6",
     "typescript": "^5.1.6"
   },
