@@ -48,7 +48,7 @@
     "@playwright/test": "1.36",
     "@types/node": "^18.11.18",
     "babel-plugin-macros": "^3.1.0",
-    "csv-parse": "^5.3.4",
+    "csv-parse": "^5.5.0",
     "sass": "^1.63.6",
     "typescript": "^5.1.6"
   },
