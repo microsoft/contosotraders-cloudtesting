@@ -59,7 +59,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: azure login
         uses: azure/login@v1
         with:
@@ -453,7 +453,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: azure login
         uses: azure/login@v1
         with:
@@ -471,7 +471,7 @@ jobs:
         run: sleep 30s
         shell: bash
       - name: load test (products API)
-        uses: Azure/load-testing@v1.1.18
+        uses: Azure/load-testing@v1.1.19
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./loadtests/contoso-traders-products.yaml
@@ -513,7 +513,7 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: azure login
         uses: azure/login@v1
         with:
@@ -537,7 +537,7 @@ jobs:
         env:
           LOAD_TEST_SUBNET_ID: ${{ steps.get-vnetAcaSubnetId.outputs.vnetAcaSubnetId }}
       - name: load test (carts internal API)
-        uses: Azure/load-testing@v1.1.18
+        uses: Azure/load-testing@v1.1.19
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./loadtests/contoso-traders-carts-internal.yaml
@@ -579,13 +579,13 @@ jobs:
       cancel-in-progress: true
     steps:
       - name: checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: azure login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
       - name: load test (carts API)
-        uses: Azure/load-testing@v1.1.18
+        uses: Azure/load-testing@v1.1.19
         with:
           # Path of the YAML file. Should be fully qualified path or relative to the default working directory
           loadtestConfigFile: ./loadtests/contoso-traders-carts.yaml
@@ -624,7 +624,7 @@ jobs:
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     container:
-      image: mcr.microsoft.com/playwright:v1.36.0-jammy
+      image: mcr.microsoft.com/playwright:v1.36.2-jammy
     defaults:
       run:
         working-directory: src/ContosoTraders.Ui.Website
@@ -632,7 +632,7 @@ jobs:
       AADUSERNAME: ${{ secrets.AADUSERNAME }}
       AADPASSWORD: ${{ secrets.AADPASSWORD }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 18
