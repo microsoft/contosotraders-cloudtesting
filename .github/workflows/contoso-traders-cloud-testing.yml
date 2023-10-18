@@ -142,7 +142,7 @@ jobs:
       - name: set subscription id
         uses: azure/CLI@v1
         with:
-          inlineScript: az account set -s ffa067fd-36c1-4774-a161-7ebdac9a934f
+          inlineScript: az account show --subscription "" | jq -r '.id'
       # Next step is to deploy the Azure resources to the resource group `contoso-traders-rg` created above. The deployed resources
       # include storage accounts, function apps, app services cosmos db, and service bus etc.
       # The below step can also be manually executed as follows:
