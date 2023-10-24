@@ -106,6 +106,12 @@ Manually create an Azure Cognitive Service resource in your subscription tempora
     | `SUFFIX`           | A unique environment suffix (max 6 characters, alphanumeric, lower case only, no whitespace, no special chars). E.g. 'test51' or '1stg'                                                     |
     | `DEPLOYMENTREGION` | The Azure region to deploy the application in. Must be one of: `australiaeast`,`centralus`,`eastus`,`eastus2`,`japaneast`,`northcentralus`,`uksouth`,`westcentralus`,`westeurope` |
 
+3. (optional) if you would like to deploy the additional resources to test private endpoints, set the following variable:'
+
+    | Variable Name      | Variable Value                                                                                                                                                                              |
+    | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `DEPLOYPRIVATEENDPOINTS`           | `true`
+
 ### Deploy the Application
 
 1. Go to your forked repo's `Actions` tab, selecting the `contoso-traders-cloud-testing` workflow, and click on the `Run workflow` button.
