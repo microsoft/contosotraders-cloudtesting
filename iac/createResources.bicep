@@ -1494,7 +1494,7 @@ module privateDnsZone './createPrivateDnsZone.bicep' = if (deployPrivateEndpoint
     privateDnsZoneVnetId: vnet.id
     privateDnsZoneVnetLinkName: privateDnsZoneVnetLinkName
     privateDnsZoneARecordName: deployPrivateEndpoints ? join(take(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.') : ''
-    privateDnsZoneARecordIp: cartsinternalapiacaenv.properties.staticIp
+    privateDnsZoneARecordIp: deployPrivateEndpoints ? cartsinternalapiacaenv.properties.staticIp : ''
     resourceTags: resourceTags
   }
 }
