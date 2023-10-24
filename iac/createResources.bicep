@@ -29,6 +29,9 @@ param prefixHyphenated string = 'contoso-traders'
 // sql
 param sqlServerHostName string = environment().suffixes.sqlServerHostname
 
+// use param to conditionally deploy private endpoint resources
+param deployPrivateEndpoints bool = false
+
 // variables
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -256,7 +259,7 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 
   // secret
-  resource kv_secretCartsInternalApiEndpoint 'secrets' = {
+  resource kv_secretCartsInternalApiEndpoint 'secrets' = if (deployPrivateEndpoints) {
     name: kvSecretNameCartsInternalApiEndpoint
     tags: resourceTags
     properties: {
@@ -1484,7 +1487,7 @@ resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = {
 // private dns zone
 //
 
-module privateDnsZone './createPrivateDnsZone.bicep' = {
+module privateDnsZone './createPrivateDnsZone.bicep' = if (deployPrivateEndpoints) {
   name: 'createPrivateDnsZone'
   params: {
     privateDnsZoneName: join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.')
@@ -1497,7 +1500,7 @@ module privateDnsZone './createPrivateDnsZone.bicep' = {
 }
 
 // aca environment (internal)
-resource cartsinternalapiacaenv 'Microsoft.App/managedEnvironments@2022-06-01-preview' = {
+resource cartsinternalapiacaenv 'Microsoft.App/managedEnvironments@2022-06-01-preview' = if (deployPrivateEndpoints) {
   name: cartsInternalApiAcaEnvName
   location: resourceLocation
   tags: resourceTags
@@ -1514,7 +1517,7 @@ resource cartsinternalapiacaenv 'Microsoft.App/managedEnvironments@2022-06-01-pr
 }
 
 // aca (internal)
-resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
+resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = if (deployPrivateEndpoints) {
   name: cartsInternalApiAcaName
   location: resourceLocation
   tags: resourceTags
