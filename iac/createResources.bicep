@@ -30,7 +30,7 @@ param prefixHyphenated string = 'contoso-traders'
 param sqlServerHostName string = environment().suffixes.sqlServerHostname
 
 // use param to conditionally deploy private endpoint resources
-param deployPrivateEndpoints bool
+param deployPrivateEndpoints bool = false
 
 // variables
 ////////////////////////////////////////////////////////////////////////////////
