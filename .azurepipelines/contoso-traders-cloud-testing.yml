@@ -274,6 +274,7 @@ stages:
                 az containerapp update -n $(CARTS_ACA_NAME)$(SUFFIX) -g $(RESOURCE_GROUP_NAME)$(SUFFIX) --image $(ACR_NAME)$(SUFFIX).azurecr.io/$(CARTS_ACR_REPOSITORY_NAME):$(Build.SourceVersion)
           - task: AzureCLI@1
             displayName: deploy to aca (internal)
+            condition: ne(variables['DEPLOYPRIVATEENDPOINTS'], '')
             inputs:
               azureSubscription: SERVICEPRINCIPAL
               scriptLocation: inlineScript
@@ -612,6 +613,7 @@ stages:
                 ]
 
       - job: load_tests_carts_internal_api
+        condition: ne(variables['DEPLOYPRIVATEENDPOINTS'], '')
         dependsOn: [provision, playwright_tests_ui]
         steps:
           - task: AzureCLI@1

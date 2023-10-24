@@ -9,6 +9,9 @@ We'll demonstrate Azure Load Testing service's capability to generate load from 
 
 Please execute the steps outlined in the [deployment instructions](../../docs/deployment-instructions.md) to provision the infrastructure in your own Azure subscription.
 
+> **Warning**
+To deploy the additional resources for this walkthrough ensure you have set the GitHub Action's variable `DEPLOYPRIVATEENDPOINTS` to `true`.
+
 Specifically, here's what happens behind the scenes:
 
 * An Azure virtual network (VNET) is created with three subnets:
