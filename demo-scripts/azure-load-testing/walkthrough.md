@@ -40,11 +40,11 @@ Please execute the steps outlined in the [deployment instructions](../../docs/de
 
    ![load testing](./media/load-test-browse.png)
 
-2. You can create a new load test as follows: Navigate to the `Tests` section, and then click on `Create` > `Create a Quick Test` button.
+2. You can create a new load test as follows: Navigate to the `Tests` section, and then click on `Create` > `Create a URL-based Test` button.
 
    ![load testing](./media/load-test-create-1.png)
 
-3. In the `Quick Test` blade, you can specify the target URL. You can also specify the number of concurrent users, and the duration of the test. See example below:
+3. In the `Basic` blade, you can specify the target URL. You can also specify the number of concurrent users, and the duration of the test. See example below:
 
    ![load testing](./media/load-test-create-2.png)
 
