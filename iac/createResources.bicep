@@ -264,7 +264,7 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     tags: resourceTags
     properties: {
       contentType: 'endpoint url (fqdn) of the (internal) carts api'
-      value: deployPrivateEndpoints ? cartsinternalapiaca.properties.configuration.ingress.fqdn : ''
+      value: cartsinternalapiaca.properties.configuration.ingress.fqdn
     }
   }
 
@@ -309,7 +309,7 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 
   // secret
-  resource kv_secretVnetAcaSubnetId 'secrets' = {
+  resource kv_secretVnetAcaSubnetId 'secrets' = if (deployPrivateEndpoints) {
     name: kvSecretNameVnetAcaSubnetId
     tags: resourceTags
     properties: {
@@ -1318,7 +1318,7 @@ resource aks_roleassignmentforchaosexp 'Microsoft.Authorization/roleAssignments@
 // virtual network
 //
 
-resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
+resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = if (deployPrivateEndpoints) {
   name: vnetName
   location: resourceLocation
   tags: resourceTags
@@ -1356,7 +1356,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
 // 
 
 // public ip address
-resource jumpboxpublicip 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
+resource jumpboxpublicip 'Microsoft.Network/publicIPAddresses@2022-07-01' = if (deployPrivateEndpoints) {
   name: jumpboxPublicIpName
   location: resourceLocation
   tags: resourceTags
@@ -1371,7 +1371,7 @@ resource jumpboxpublicip 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
 }
 
 // network security group
-resource jumpboxnsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
+resource jumpboxnsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = if (deployPrivateEndpoints) {
   name: jumpboxNsgName
   location: resourceLocation
   tags: resourceTags
@@ -1395,7 +1395,7 @@ resource jumpboxnsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
 }
 
 // network interface controller
-resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = {
+resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = if (deployPrivateEndpoints) {
   name: jumpboxNicName
   location: resourceLocation
   tags: resourceTags
@@ -1423,7 +1423,7 @@ resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = {
 }
 
 // virtual machine
-resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = {
+resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = if (deployPrivateEndpoints) {
   name: jumpboxVmName
   location: resourceLocation
   tags: resourceTags
@@ -1465,7 +1465,7 @@ resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = {
 }
 
 // auto-shutdown schedule
-resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = {
+resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (deployPrivateEndpoints) {
   name: jumpboxVmShutdownSchduleName
   location: resourceLocation
   tags: resourceTags
@@ -1490,11 +1490,11 @@ resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = {
 module privateDnsZone './createPrivateDnsZone.bicep' = if (deployPrivateEndpoints) {
   name: 'createPrivateDnsZone'
   params: {
-    privateDnsZoneName: deployPrivateEndpoints ? join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.') : ''
+    privateDnsZoneName: join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.')
     privateDnsZoneVnetId: vnet.id
     privateDnsZoneVnetLinkName: privateDnsZoneVnetLinkName
-    privateDnsZoneARecordName: deployPrivateEndpoints ? join(take(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.') : ''
-    privateDnsZoneARecordIp: deployPrivateEndpoints ? cartsinternalapiacaenv.properties.staticIp : ''
+    privateDnsZoneARecordName: join(take(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.')
+    privateDnsZoneARecordIp: cartsinternalapiacaenv.properties.staticIp
     resourceTags: resourceTags
   }
 }
