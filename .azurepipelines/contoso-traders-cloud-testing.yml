@@ -201,7 +201,7 @@ stages:
               resourceGroupName: "$(RESOURCE_GROUP_NAME)$(SUFFIX)"
               csmFile: ./iac/createResources.bicep
               csmParametersFile: ./iac/createResources.parameters.json
-              overrideParameters: -suffix $(SUFFIX) -sqlPassword $(SQLPASSWORD)
+              overrideParameters: -suffix $(SUFFIX) -sqlPassword $(SQLPASSWORD) -deployPrivateEndpoints $(DEPLOYPRIVATEENDPOINTS)
 
           # Add the logged-in service principal to the key vault access policy
           - task: AzureCLI@1
@@ -274,7 +274,7 @@ stages:
                 az containerapp update -n $(CARTS_ACA_NAME)$(SUFFIX) -g $(RESOURCE_GROUP_NAME)$(SUFFIX) --image $(ACR_NAME)$(SUFFIX).azurecr.io/$(CARTS_ACR_REPOSITORY_NAME):$(Build.SourceVersion)
           - task: AzureCLI@1
             displayName: deploy to aca (internal)
-            condition: ne(variables['DEPLOYPRIVATEENDPOINTS'], '')
+            condition: eq(variables['DEPLOYPRIVATEENDPOINTS'], 'true')
             inputs:
               azureSubscription: SERVICEPRINCIPAL
               scriptLocation: inlineScript
@@ -613,7 +613,7 @@ stages:
                 ]
 
       - job: load_tests_carts_internal_api
-        condition: ne(variables['DEPLOYPRIVATEENDPOINTS'], '')
+        condition: eq(variables['DEPLOYPRIVATEENDPOINTS'], 'true')
         dependsOn: [provision, playwright_tests_ui]
         steps:
           - task: AzureCLI@1
