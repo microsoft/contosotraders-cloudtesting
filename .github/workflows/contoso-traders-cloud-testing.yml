@@ -219,7 +219,7 @@ jobs:
             az config set extension.use_dynamic_install=yes_without_prompt
             az containerapp update -n ${{ env.CARTS_ACA_NAME }}${{ vars.SUFFIX }} -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --image ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
       - name: deploy to aca (internal)
-        if: ${{ vars.DEPLOYPRIVATEENDPOINTS }}
+        if: ${{ vars.DEPLOYPRIVATEENDPOINTS == 'true' }}
         uses: azure/CLI@v1
         with:
           inlineScript: |
@@ -507,7 +507,7 @@ jobs:
             ]
 
   load-tests-carts-internal-api:
-    if: ${{ vars.DEPLOYPRIVATEENDPOINTS }}
+    if: ${{ vars.DEPLOYPRIVATEENDPOINTS == 'true' }}
     needs: [provision, playwright-tests-ui]
     runs-on: ubuntu-22.04
     concurrency:
