@@ -10,7 +10,8 @@ We'll demonstrate Azure Load Testing service's capability to generate load from 
 Please execute the steps outlined in the [deployment instructions](../../docs/deployment-instructions.md) to provision the infrastructure in your own Azure subscription.
 
 > **Warning**
-To deploy the additional resources for this walkthrough ensure you have set the GitHub Action's variable `DEPLOYPRIVATEENDPOINTS` to `true`.
+To deploy the additional resources for this walkthrough ensure you have set the GitHub Action's variable `DEPLOYPRIVATEENDPOINTS` to `true`. If you're using Azure DevOps Pipeline, then please ensure that the variable `DEPLOYPRIVATEENDPOINTS` is set to `true` in the `contosotraders-cloudtesting-variable-group` variable group.
+ 
 
 Specifically, here's what happens behind the scenes:
 
