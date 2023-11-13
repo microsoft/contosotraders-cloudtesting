@@ -314,7 +314,7 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
     tags: resourceTags
     properties: {
       contentType: 'subnet id of the aca subnet'
-      value: vnet.properties.subnets[0].id
+      value: deployPrivateEndpoints ? vnet.properties.subnets[0].id : ''
     }
   }
 
@@ -1407,16 +1407,16 @@ resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = if (deplo
           primary: true
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: vnet.properties.subnets[1].id // vm subnet
+            id: deployPrivateEndpoints ? vnet.properties.subnets[1].id : ''
           }
           publicIPAddress: {
-            id: jumpboxpublicip.id
+            id: deployPrivateEndpoints ? jumpboxpublicip.id : ''
           }
         }
       }
     ]
     networkSecurityGroup: {
-      id: jumpboxnsg.id
+      id: deployPrivateEndpoints ? jumpboxnsg.id : ''
     }
     nicType: 'Standard'
   }
@@ -1448,7 +1448,7 @@ resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = if (deployPr
     networkProfile: {
       networkInterfaces: [
         {
-          id: jumpboxnic.id
+          id: deployPrivateEndpoints ? jumpboxnic.id : ''
           properties: {
             deleteOption: 'Delete'
           }
@@ -1470,7 +1470,7 @@ resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (dep
   location: resourceLocation
   tags: resourceTags
   properties: {
-    targetResourceId: jumpboxvm.id
+    targetResourceId: deployPrivateEndpoints ? jumpboxvm.id : ''
     dailyRecurrence: {
       time: '2100'
     }
@@ -1491,7 +1491,7 @@ module privateDnsZone './createPrivateDnsZone.bicep' = if (deployPrivateEndpoint
   name: 'createPrivateDnsZone'
   params: {
     privateDnsZoneName: deployPrivateEndpoints ? join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.') : ''
-    privateDnsZoneVnetId: vnet.id
+    privateDnsZoneVnetId: deployPrivateEndpoints ? vnet.id : ''
     privateDnsZoneVnetLinkName: privateDnsZoneVnetLinkName
     privateDnsZoneARecordName: deployPrivateEndpoints ? join(take(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.') : ''
     privateDnsZoneARecordIp: deployPrivateEndpoints ? cartsinternalapiacaenv.properties.staticIp : ''
@@ -1510,7 +1510,7 @@ resource cartsinternalapiacaenv 'Microsoft.App/managedEnvironments@2022-06-01-pr
   properties: {
     zoneRedundant: false
     vnetConfiguration: {
-      infrastructureSubnetId: vnet.properties.subnets[0].id
+      infrastructureSubnetId: deployPrivateEndpoints ? vnet.properties.subnets[0].id : ''
       internal: true
     }
   }
