@@ -626,7 +626,7 @@ jobs:
     timeout-minutes: 20
     runs-on: ubuntu-22.04
     container:
-      image: mcr.microsoft.com/playwright:v1.36.2-jammy
+      image: mcr.microsoft.com/playwright:v1.39.0-jammy
     defaults:
       run:
         working-directory: src/ContosoTraders.Ui.Website
@@ -658,8 +658,7 @@ jobs:
         run: HOME=/root npx playwright test
       - name: upload playwright report
         uses: actions/upload-artifact@v3
-        # only upload report if tests failed
-        if: steps.test.outcome != 'success'
+        if: always()
         with:
           name: playwright-report
           path: src/ContosoTraders.Ui.Website/playwright-report/
