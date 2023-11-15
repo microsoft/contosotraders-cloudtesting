@@ -1,6 +1,6 @@
 {
 	"name": "Playwright",
-	"image": "mcr.microsoft.com/playwright:v1.36.2-jammy",
+	"image": "mcr.microsoft.com/playwright:v1.39.0-jammy",
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
 			"nodeGypDependencies": true,
