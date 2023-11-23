@@ -1,0 +1,41 @@
+# This is a workflow to run a load test on Azure
+
+name: Contoso Traders AAD Load Test
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+
+env:
+  LOAD_TEST_SERVICE_NAME: contoso-traders-loadtest
+  RESOURCE_GROUP_NAME: contoso-traders-rg
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  loadTest:
+    name: Load Test
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitHub Actions 
+        uses: actions/checkout@v3
+          
+      - name: Login to Azure
+        uses: azure/login@v1
+        continue-on-error: false
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+        
+      - name: 'Azure Load Testing'
+        uses: azure/load-testing@v1
+        with:
+          loadTestConfigFile: './loadtests/aad-load-testing/config.yaml'
+          loadtestResource: ${{ env.LOAD_TEST_SERVICE_NAME }}${{ vars.SUFFIX }}
+          resourceGroup: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+
+    # publish artifacts  
+      - uses: actions/upload-artifact@v2
+        with:
+          name: loadTestResults
+          path: ${{ github.workspace }}/loadTest
