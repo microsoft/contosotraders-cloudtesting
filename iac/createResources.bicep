@@ -32,6 +32,8 @@ param sqlServerHostName string = environment().suffixes.sqlServerHostname
 // use param to conditionally deploy private endpoint resources
 param deployPrivateEndpoints bool = false
 
+
+
 // variables
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -144,6 +146,10 @@ var vnetVmSubnetName = 'subnet-vm'
 var vnetVmSubnetAddressPrefix = '10.0.2.0/23'
 var vnetLoadTestSubnetName = 'subnet-loadtest'
 var vnetLoadTestSubnetAddressPrefix = '10.0.4.0/23'
+var vnetWebSubnetName = 'subnet-web'
+var vnetWebSubnetAddressPrefix = '10.0.6.0/23'
+var vnetDBSubnetName = 'subnet-db'
+var vnetDBSubnetAddressPrefix = '10.0.8.0/23'
 
 // jumpbox vm
 var jumpboxPublicIpName = '${prefixHyphenated}-jumpbox${suffix}'
@@ -1357,6 +1363,18 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = if (deployPrivate
         name: vnetLoadTestSubnetName
         properties: {
           addressPrefix: vnetLoadTestSubnetAddressPrefix
+        }
+      }
+      {
+        name: vnetDBSubnetName
+        properties: {
+          addressPrefix: vnetDBSubnetAddressPrefix
+        }
+      }
+      {
+        name: vnetWebSubnetName
+        properties: {
+          addressPrefix: vnetWebSubnetAddressPrefix
         }
       }
     ]
