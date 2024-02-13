@@ -732,7 +732,7 @@ resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     resource productimagesstgacc_blobsvc_productdetailscontainer 'containers' = {
       name: productImagesProductDetailsContainerName
       properties: {
-        publicAccess: 'Container'
+        publicAccess: 'None'
       }
     }
 
@@ -740,7 +740,7 @@ resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     resource productimagesstgacc_blobsvc_productlistcontainer 'containers' = {
       name: productImagesProductListContainerName
       properties: {
-        publicAccess: 'Container'
+        publicAccess: 'None'
       }
     }
   }
@@ -926,7 +926,7 @@ resource imageclassifierstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = 
     resource uistgacc_blobsvc_websiteuploadscontainer 'containers' = {
       name: imageClassifierWebsiteUploadsContainerName
       properties: {
-        publicAccess: 'Container'
+        publicAccess: 'None'
       }
     }
   }
