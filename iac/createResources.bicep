@@ -152,7 +152,6 @@ var vnetDBSubnetName = 'subnet-db'
 var vnetDBSubnetAddressPrefix = '10.0.8.0/23'
 
 // jumpbox vm
-var jumpboxPublicIpName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxNsgName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxNicName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxVmName = 'jumpboxvm'
@@ -1385,20 +1384,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = if (deployPrivate
 // jumpbox vm
 // 
 
-// public ip address
-resource jumpboxpublicip 'Microsoft.Network/publicIPAddresses@2022-07-01' = if (deployPrivateEndpoints) {
-  name: jumpboxPublicIpName
-  location: resourceLocation
-  tags: resourceTags
-  sku: {
-    name: 'Standard'
-    tier: 'Regional'
-  }
-  properties: {
-    deleteOption: 'Delete'
-    publicIPAllocationMethod: 'Static'
-  }
-}
+
 
 // network security group
 resource jumpboxnsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = if (deployPrivateEndpoints) {
@@ -1440,7 +1426,7 @@ resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = if (deplo
             id: deployPrivateEndpoints ? vnet.properties.subnets[1].id : ''
           }
           publicIPAddress: {
-            id: deployPrivateEndpoints ? jumpboxpublicip.id : ''
+            id: ''
           }
         }
       }
