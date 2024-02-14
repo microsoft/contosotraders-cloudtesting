@@ -152,7 +152,6 @@ var vnetDBSubnetName = 'subnet-db'
 var vnetDBSubnetAddressPrefix = '10.0.8.0/23'
 
 // jumpbox vm
-var jumpboxNsgName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxNicName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxVmName = 'jumpboxvm'
 var jumpboxVmAdminLogin = 'localadmin'
@@ -1384,32 +1383,6 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = if (deployPrivate
 // jumpbox vm
 // 
 
-
-
-// network security group
-resource jumpboxnsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = if (deployPrivateEndpoints) {
-  name: jumpboxNsgName
-  location: resourceLocation
-  tags: resourceTags
-  properties: {
-    securityRules: [
-      {
-        name: 'allow-rdp-port-3389'
-        properties: {
-          access: 'Allow'
-          destinationAddressPrefix: 'VirtualNetwork'
-          destinationPortRange: '3389'
-          direction: 'Inbound'
-          priority: 300
-          protocol: '*'
-          sourceAddressPrefix: '*'
-          sourcePortRange: '*'
-        }
-      }
-    ]
-  }
-}
-
 // network interface controller
 resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = if (deployPrivateEndpoints) {
   name: jumpboxNicName
@@ -1431,9 +1404,6 @@ resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = if (deplo
         }
       }
     ]
-    networkSecurityGroup: {
-      id: deployPrivateEndpoints ? jumpboxnsg.id : ''
-    }
     nicType: 'Standard'
   }
 }
