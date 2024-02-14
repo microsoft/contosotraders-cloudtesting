@@ -1472,7 +1472,7 @@ module vnetBastionSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpo
           protocol: 'Tcp'
           sourcePortRange: '*'
           sourceAddressPrefix: 'Internet'
-          destinationPortRange: '443'
+          destinationPortRanges: ['443']
           destinationAddressPrefix: '*'
           access: 'Allow'
           priority: 100
@@ -1483,7 +1483,7 @@ module vnetBastionSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpo
           protocol: 'Tcp'
           sourcePortRange: '*'
           sourceAddressPrefix: 'GatewayManager'
-          destinationPortRange: '443'
+          destinationPortRanges: ['443']
           destinationAddressPrefix: '*'
           access: 'Allow'
           priority: 110
@@ -1494,7 +1494,7 @@ module vnetBastionSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpo
           protocol: 'Tcp'
           sourcePortRange: '*'
           sourceAddressPrefix: 'AzureLoadBalancer'
-          destinationPortRange: '443'
+          destinationPortRanges: ['443']
           destinationAddressPrefix: '*'
           access: 'Allow'
           priority: 120
@@ -1519,7 +1519,7 @@ module vnetBastionSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpo
           protocol: '*'
           sourcePortRange: '*'
           sourceAddressPrefix: '*'
-          destinationPortRange: '*'
+          destinationPortRanges: ['*']
           destinationAddressPrefix: '*'
           access: 'Deny'
           priority: 1000
@@ -1544,7 +1544,7 @@ module vnetBastionSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpo
           protocol: 'Tcp'
           sourcePortRange: '*'
           sourceAddressPrefix: '*'
-          destinationPortRange: '443'
+          destinationPortRanges: ['443']
           destinationAddressPrefix: 'AzureCloud'
           access: 'Allow'
           priority: 110
@@ -1582,7 +1582,7 @@ module vnetBastionSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpo
           name: 'DenyAllOutBound'
           protocol: '*'
           sourcePortRange: '*'
-          destinationPortRange: '*'
+          destinationPortRanges: ['*']
           sourceAddressPrefix: '*'
           destinationAddressPrefix: '*'
           access: 'Deny'
