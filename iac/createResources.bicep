@@ -1399,9 +1399,6 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = if (deployPrivate
         name: vnetBastionSubnetName
         properties: {
           addressPrefix: vnetBastionSubnetAddressPrefix
-          networkSecurityGroup: {
-            id: vnetBastionSubnetNsg.outputs.id
-          }
         }
       }
     ]
@@ -1461,105 +1458,6 @@ module vnetWebSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints
     }
 }
 
-module vnetBastionSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints) {
-  name: 'createBastionSubnetNsg'
-    params: {
-      location: resourceLocation
-      nsgName: '${vnetBastionSubnetName}-nsg-${resourceLocation}'
-      nsgRules: [
-        {
-          name: 'AllowHttpsInBound'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          sourceAddressPrefix: 'Internet'
-          destinationPortRanges: ['443']
-          destinationAddressPrefix: '*'
-          access: 'Allow'
-          priority: 100
-          direction: 'Inbound'
-        }
-        {
-          name: 'AllowGatewayManagerInBound'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          sourceAddressPrefix: 'GatewayManager'
-          destinationPortRanges: ['443']
-          destinationAddressPrefix: '*'
-          access: 'Allow'
-          priority: 110
-          direction: 'Inbound'
-        }
-        {
-          name: 'AllowBastionHostCommunicationInBound'
-          protocol: '*'
-          sourcePortRange: '*'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationPortRanges: [
-            '8080'
-            '5701'
-          ]
-          destinationAddressPrefix: 'VirtualNetwork'
-          access: 'Allow'
-          priority: 130
-          direction: 'Inbound'
-        }
-        {
-          name: 'AllowSshRdpOutBound'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          sourceAddressPrefix: '*'
-          destinationPortRanges: [
-            '22'
-            '3389'
-          ]
-          destinationAddressPrefix: 'VirtualNetwork'
-          access: 'Allow'
-          priority: 100
-          direction: 'Outbound'
-        }
-        {
-          name: 'AllowAzureCloudCommunicationOutBound'
-          protocol: 'Tcp'
-          sourcePortRange: '*'
-          sourceAddressPrefix: '*'
-          destinationPortRanges: ['443']
-          destinationAddressPrefix: 'AzureCloud'
-          access: 'Allow'
-          priority: 110
-          direction: 'Outbound'
-        }
-        {
-          name: 'AllowBastionHostCommunicationOutBound'
-          protocol: '*'
-          sourcePortRange: '*'
-          sourceAddressPrefix: 'VirtualNetwork'
-          destinationPortRanges: [
-            '8080'
-            '5701'
-          ]
-          destinationAddressPrefix: 'VirtualNetwork'
-          access: 'Allow'
-          priority: 120
-          direction: 'Outbound'
-        }
-        {
-          name: 'AllowGetSessionInformationOutBound'
-          protocol: '*'
-          sourcePortRange: '*'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: 'Internet'
-          destinationPortRanges: [
-            '80'
-            '443'
-          ]
-          access: 'Allow'
-          priority: 130
-          direction: 'Outbound'
-        }
-      ]
-      resourceTags: resourceTags
-    }
-}
 
 
 // Create Bastion
