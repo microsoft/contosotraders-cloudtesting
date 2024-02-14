@@ -1468,9 +1468,6 @@ resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = if (deplo
           subnet: {
             id: deployPrivateEndpoints ? vnet.properties.subnets[1].id : ''
           }
-          publicIPAddress: {
-            id: ''
-          }
         }
       }
     ]
