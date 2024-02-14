@@ -1517,7 +1517,7 @@ resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (dep
 // private dns zone
 //
 
-module privateDnsZone './createPrivateDnsZone.bicep' = if (deployPrivateEndpoints) {
+module privateDnsZone './modules/createPrivateDnsZone.bicep' = if (deployPrivateEndpoints) {
   name: 'createPrivateDnsZone'
   params: {
     privateDnsZoneName: deployPrivateEndpoints ? join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.') : ''
