@@ -60,14 +60,14 @@ You will need following to get started:
       `az ad sp create-for-rbac -n contosotraders-sp --role "ContosoTraders Write Role Assignments" --scopes /subscriptions/<AZURE-SUBSCRIPTION-ID> --sdk-auth`
       ```
 
-6. If you haven't used Azure Cognitive Services with your subscription, you'll need to accept the responsible AI terms.
-Manually create an Azure Cognitive Service resource in your subscription temporarily, and accept the Responsible AI terms. You can then delete the resource.
+6. If you haven't used Azure AI Services with your subscription, you'll need to accept the responsible AI terms.
+Manually create an Azure AI Services resource in your subscription temporarily, and accept the Responsible AI terms. You can then delete the resource.
 
-   * The Responsible AI terms are shown only once per subscription (during first Cognitive Service resource creation in subscription), and once accepted, they are not shown again.
+   * The Responsible AI terms are shown only once per subscription (during first AI Services resource creation in subscription), and once accepted, they are not shown again.
    * Currently, there exists no mechanism to accept the Responsible AI terms programmatically. It can only be done manually through the Azure portal.
    * You can read more about Responsible AI [here](https://learn.microsoft.com/azure/machine-learning/concept-responsible-ai).
 
-   ![agree-cognitive-service-screenshot](./images/agree-cognitive-service-screenshot.png)
+   ![agree-ai-services-screenshot](./images/agree-ai-services-screenshot.png)
 
 ## Prepare your GitHub Repository
 
