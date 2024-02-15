@@ -86,6 +86,7 @@ var securityProfileJson = {
 }
 
 var networkInterfaceName = '${virtualMachineName}-nic'
+var publicIPName = '${virtualMachineName}-pip'
 
 
 var diskConfigurationType = 'NEW'
@@ -106,6 +107,14 @@ var extensionPublisher = 'Microsoft.Azure.Security.WindowsAttestation'
 var extensionVersion = '1.0'
 var maaTenantName = 'GuestAttestation'
 
+resource publicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
+  name: publicIPName
+  location: location
+  properties: {
+    publicIPAllocationMethod: 'Static'
+  }
+}
+
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
   name: networkInterfaceName
@@ -117,6 +126,9 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
         properties: {
           subnet: {
             id: subnetRef
+          }
+          publicIPAddress: {
+            id: publicIP.id
           }
           privateIPAllocationMethod: 'Dynamic'
         }
@@ -163,6 +175,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-03-01' = {
           id: networkInterface.id
         }
       ]
+      
     }
     osProfile: {
       computerName: virtualMachineName
@@ -212,6 +225,14 @@ resource Microsoft_SqlVirtualMachine_sqlVirtualMachines_virtualMachine 'Microsof
     virtualMachineResourceId: virtualMachine.id
     sqlManagement: 'Full'
     sqlServerLicenseType: 'PAYG'
+    serverConfigurationsManagementSettings: {
+      sqlConnectivityUpdateSettings: {
+        connectivityType: 'Public'
+        port: 1433
+        sqlAuthUpdateUserName: adminUsername
+        sqlAuthUpdatePassword: adminPassword
+      }
+    }
     storageConfigurationSettings: {
       diskConfigurationType: diskConfigurationType
       storageWorkloadType: storageWorkloadType
