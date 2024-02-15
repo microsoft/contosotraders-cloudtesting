@@ -1444,41 +1444,80 @@ module vnetWebSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints
 }
 
 // attach NSGs to subnets
-var subnets = [
-  {
-    name: 'vnetAcaSubnetName'
-    nsgId: 'vnetAcaSubnetNsg.outputs.id'
-  }
-  {
-    name: 'vnetVmSubnetName'
-    nsgId: 'vnetVmSubnetNsg.outputs.id'
-  }
-  {
-    name: 'vnetLoadTestSubnetName'
-    nsgId: 'vnetLoadTestSubnetNsg.outputs.id'
-  }
-  {
-    name: 'vnetDBSubnetName'
-    nsgId: 'vnetDBSubnetNsg.outputs.id'
-  }
-  {
-    name: 'vnetWebSubnetName'
-    nsgId: 'vnetWebSubnetNsg.outputs.id'
-  }
-]
-
-module attachNsgs './modules/updateSubnet.bicep' = [for (subnet, i) in subnets: if (deployPrivateEndpoints) {
-  name: 'update-vnet-subnet-${vnetName}-${subnet.name}'
+module attachNsgAca './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
+  name: 'update-vnet-subnet-${vnetName}-${vnetAcaSubnetName}'
   params: {
     vnetName: vnetName
-    subnetName: subnet.name
-    properties: union(vnet.properties.subnets[i].properties, {
+    subnetName: vnetAcaSubnetName
+    // Update the nsg
+    properties: union(vnet.properties.subnets[0].properties, {
       networkSecurityGroup: {
-        id: subnet.nsgId
+        id: vnetAcaSubnetNsg.outputs.id
       }
     })
   }
-}]
+  
+}
+
+module attachNsgVM './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
+  name: 'update-vnet-subnet-${vnetName}-${vnetVmSubnetName}'
+  params: {
+    vnetName: vnetName
+    subnetName: vnetVmSubnetName
+    // Update the nsg
+    properties: union(vnet.properties.subnets[1].properties, {
+      networkSecurityGroup: {
+        id: vnetVmSubnetNsg.outputs.id
+      }
+    })
+  }
+  dependsOn: [attachNsgAca]
+}
+
+module attachNsgLoadTest './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
+  name: 'update-vnet-subnet-${vnetName}-${vnetLoadTestSubnetName}'
+  params: {
+    vnetName: vnetName
+    subnetName: vnetLoadTestSubnetName
+    // Update the nsg
+    properties: union(vnet.properties.subnets[2].properties, {
+      networkSecurityGroup: {
+        id: vnetLoadTestSubnetNsg.outputs.id
+      }
+    })
+  }
+  dependsOn: [attachNsgVM]
+}
+
+module attachNsgDB './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
+  name: 'update-vnet-subnet-${vnetName}-${vnetDBSubnetName}'
+  params: {
+    vnetName: vnetName
+    subnetName: vnetDBSubnetName
+    // Update the nsg
+    properties: union(vnet.properties.subnets[3].properties, {
+      networkSecurityGroup: {
+        id: vnetDBSubnetNsg.outputs.id
+      }
+    })
+  }
+  dependsOn: [attachNsgLoadTest]
+}
+
+module attachNsgWeb './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
+  name: 'update-vnet-subnet-${vnetName}-${vnetWebSubnetName}'
+  params: {
+    vnetName: vnetName
+    subnetName: vnetWebSubnetName
+    // Update the nsg
+    properties: union(vnet.properties.subnets[4].properties, {
+      networkSecurityGroup: {
+        id: vnetWebSubnetNsg.outputs.id
+      }
+    })
+  }
+  dependsOn: [attachNsgDB]
+}
 
 
 // Create Bastion
