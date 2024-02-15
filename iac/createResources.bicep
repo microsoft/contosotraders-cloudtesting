@@ -32,6 +32,9 @@ param sqlServerHostName string = environment().suffixes.sqlServerHostname
 // use param to conditionally deploy private endpoint resources
 param deployPrivateEndpoints bool = false
 
+// use param to conditionally deploy SQL on IAAS
+param deploySqlOnIaas bool = false
+
 
 
 // variables
@@ -161,8 +164,15 @@ var jumpboxNicName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxVmName = 'jumpboxvm'
 var jumpboxVmAdminLogin = 'localadmin'
 var jumpboxVmAdminPassword = sqlPassword
-var jumpboxVmShutdownSchduleName = 'shutdown-computevm-jumpboxvm'
+var jumpboxVmShutdownScheduleName = 'shutdown-computevm-jumpboxvm'
 var jumpboxVmShutdownScheduleTimezoneId = 'UTC'
+
+// sql vm
+var sqlVmName = '${prefixHyphenated}-sqlvm${suffix}'
+var sqlVmAdminLogin = 'localadmin'
+var sqlVmAdminPassword = sqlPassword
+var sqlVmShutdownScheduleName = 'shutdown-computevm-sqlvm'
+var sqlVmShutdownScheduleTimezoneId = 'UTC'
 
 // private dns zone
 var privateDnsZoneVnetLinkName = '${prefixHyphenated}-privatednszone-vnet-link${suffix}'
@@ -1597,7 +1607,7 @@ resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = if (deployPr
 
 // auto-shutdown schedule
 resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (deployPrivateEndpoints) {
-  name: jumpboxVmShutdownSchduleName
+  name: jumpboxVmShutdownScheduleName
   location: resourceLocation
   tags: resourceTags
   properties: {
@@ -1611,6 +1621,43 @@ resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (dep
     status: 'Enabled'
     taskType: 'ComputeVmShutdownTask'
     timeZoneId: jumpboxVmShutdownScheduleTimezoneId
+  }
+}
+
+//
+// SQL Server
+//
+
+module sqlserver './modules/createSqlVm.bicep' = if (deploySqlOnIaas) {
+  name: 'createSqlVM'
+  params: {
+    location: resourceLocation
+    resourceTags: resourceTags
+    virtualMachineName: sqlVmName
+    adminUsername: sqlVmAdminLogin
+    adminPassword: sqlVmAdminPassword
+    existingSubnetName: vnetDBSubnetName
+    existingVirtualNetworkName: vnetName
+    existingVnetResourceGroup: resourceGroup().name
+  }
+}
+
+// auto-shutdown schedule
+resource sqlvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (deploySqlOnIaas) {
+  name: sqlVmShutdownScheduleName
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    targetResourceId: deploySqlOnIaas ? sqlserver.outputs.id : ''
+    dailyRecurrence: {
+      time: '2100'
+    }
+    notificationSettings: {
+      status: 'Disabled'
+    }
+    status: 'Enabled'
+    taskType: 'ComputeVmShutdownTask'
+    timeZoneId: sqlVmShutdownScheduleTimezoneId
   }
 }
 
