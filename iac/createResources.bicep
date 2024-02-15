@@ -1354,45 +1354,30 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = if (deployPrivate
         name: vnetAcaSubnetName
         properties: {
           addressPrefix: vnetAcaSubnetAddressPrefix
-          networkSecurityGroup: {
-            id: vnetAcaSubnetNsg.outputs.id
-          }
         }
       }
       {
         name: vnetVmSubnetName
         properties: {
           addressPrefix: vnetVmSubnetAddressPrefix
-          networkSecurityGroup: {
-            id: vnetVmSubnetNsg.outputs.id
-          }
         }
       }
       {
         name: vnetLoadTestSubnetName
         properties: {
           addressPrefix: vnetLoadTestSubnetAddressPrefix
-          networkSecurityGroup: {
-            id: vnetLoadTestSubnetNsg.outputs.id
-          }
         }
       }
       {
         name: vnetDBSubnetName
         properties: {
           addressPrefix: vnetDBSubnetAddressPrefix
-          networkSecurityGroup: {
-            id: vnetDBSubnetNsg.outputs.id
-          }
         }
       }
       {
         name: vnetWebSubnetName
         properties: {
           addressPrefix: vnetWebSubnetAddressPrefix
-          networkSecurityGroup: {
-            id: vnetWebSubnetNsg.outputs.id
-          }
         }
       }
       {
@@ -1415,6 +1400,8 @@ module vnetAcaSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints
       nsgName: '${vnetAcaSubnetName}-nsg-${resourceLocation}'
       nsgRules: []
       resourceTags: resourceTags
+      subnetName: vnetAcaSubnetName
+      vnetName: vnetName
     }
 }
 
@@ -1425,6 +1412,8 @@ module vnetVmSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints)
       nsgName: '${vnetVmSubnetName}-nsg-${resourceLocation}'
       nsgRules: []
       resourceTags: resourceTags
+      subnetName: vnetVmSubnetName
+      vnetName: vnetName
     }
 }
 
@@ -1435,6 +1424,8 @@ module vnetLoadTestSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndp
       nsgName: '${vnetLoadTestSubnetName}-nsg-${resourceLocation}'
       nsgRules: []
       resourceTags: resourceTags
+      subnetName: vnetLoadTestSubnetName
+      vnetName: vnetName
     }
 }
 
@@ -1445,6 +1436,8 @@ module vnetDBSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints)
       nsgName: '${vnetDBSubnetName}-nsg-${resourceLocation}'
       nsgRules: []
       resourceTags: resourceTags
+      subnetName: vnetDBSubnetName
+      vnetName: vnetName
     }
 }
 
@@ -1455,6 +1448,8 @@ module vnetWebSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints
       nsgName: '${vnetWebSubnetName}-nsg-${resourceLocation}'
       nsgRules: []
       resourceTags: resourceTags
+      subnetName: vnetAcaSubnetName
+      vnetName: vnetName
     }
 }
 
