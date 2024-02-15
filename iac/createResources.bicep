@@ -168,7 +168,7 @@ var jumpboxVmShutdownScheduleName = 'shutdown-computevm-jumpboxvm'
 var jumpboxVmShutdownScheduleTimezoneId = 'UTC'
 
 // sql vm
-var sqlVmName = '${prefixHyphenated}-sqlvm${suffix}'
+var sqlVmName = 'sqlvm'
 var sqlVmAdminLogin = 'localadmin'
 var sqlVmAdminPassword = sqlPassword
 var sqlVmShutdownScheduleName = 'shutdown-computevm-sqlvm'
