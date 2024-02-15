@@ -1444,7 +1444,7 @@ module vnetWebSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints
 }
 
 // attach NSGs to subnets
-module attachNsg './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
+module attachNsgAca './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
   name: 'update-vnet-subnet-${vnetName}-${vnetAcaSubnetName}'
   params: {
     vnetName: vnetName
@@ -1458,6 +1458,61 @@ module attachNsg './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
   }
 }
 
+module attachNsgVM './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
+  name: 'update-vnet-subnet-${vnetName}-${vnetVmSubnetName}'
+  params: {
+    vnetName: vnetName
+    subnetName: vnetVmSubnetName
+    // Update the nsg
+    properties: union(vnet.properties.subnets[1].properties, {
+      networkSecurityGroup: {
+        id: vnetVmSubnetNsg.outputs.id
+      }
+    })
+  }
+}
+
+module attachNsgLoadTest './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
+  name: 'update-vnet-subnet-${vnetName}-${vnetLoadTestSubnetName}'
+  params: {
+    vnetName: vnetName
+    subnetName: vnetLoadTestSubnetName
+    // Update the nsg
+    properties: union(vnet.properties.subnets[2].properties, {
+      networkSecurityGroup: {
+        id: vnetLoadTestSubnetNsg.outputs.id
+      }
+    })
+  }
+}
+
+module attachNsgDB './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
+  name: 'update-vnet-subnet-${vnetName}-${vnetDBSubnetName}'
+  params: {
+    vnetName: vnetName
+    subnetName: vnetDBSubnetName
+    // Update the nsg
+    properties: union(vnet.properties.subnets[3].properties, {
+      networkSecurityGroup: {
+        id: vnetDBSubnetNsg.outputs.id
+      }
+    })
+  }
+}
+
+module attachNsgWeb './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
+  name: 'update-vnet-subnet-${vnetName}-${vnetWebSubnetName}'
+  params: {
+    vnetName: vnetName
+    subnetName: vnetWebSubnetName
+    // Update the nsg
+    properties: union(vnet.properties.subnets[4].properties, {
+      networkSecurityGroup: {
+        id: vnetWebSubnetNsg.outputs.id
+      }
+    })
+  }
+}
 
 
 // Create Bastion
