@@ -1674,8 +1674,15 @@ resource runScriptToCreateDatabases 'Microsoft.Resources/deploymentScripts@2020-
   location: resourceLocation
   kind: 'AzurePowerShell'
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${uistgacc_mi.id}': {}
+    }
   }
+  dependsOn: [
+    // we need to ensure we wait for the role assignment to be deployed
+    roleAssignment
+  ]
   properties: {
     azPowerShellVersion: '3.0'
     scriptContent: loadTextContent('./scripts/create-databases.ps1')
