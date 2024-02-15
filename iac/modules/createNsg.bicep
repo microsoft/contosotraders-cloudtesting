@@ -15,6 +15,7 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
         properties: {
           protocol: rule.protocol
           sourcePortRange: rule.sourcePortRange
+          destinationPortRange: rule.destinationPortRange
           destinationPortRanges: rule.destinationPortRanges
           sourceAddressPrefix: rule.sourceAddressPrefix
           destinationAddressPrefix: rule.destinationAddressPrefix
@@ -29,18 +30,24 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
 }
 
 // get existing vnet
-resource vnet 'Microsoft.Network/virtualNetworks@2021-02-01' existing = {
+resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
   name: vnetName
+}
+
+// Get existing subnet
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' existing = {
+  name: subnetName
+  parent: vnet
 }
 
 resource update_subnet_nsg 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' = {
   name: subnetName
   parent: vnet
-  properties: {
+  properties: union(subnet.properties, {
     networkSecurityGroup: {
       id: nsg.id
     }
-  }
+  })
 }
 
 output id string = nsg.id
