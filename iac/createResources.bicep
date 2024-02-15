@@ -85,6 +85,8 @@ var profilesDbName = 'profilesdb'
 var profilesDbServerAdminLogin = 'localadmin'
 var profilesDbServerAdminPassword = sqlPassword
 
+
+
 // azure container app (carts api)
 var cartsApiAcaName = '${prefixHyphenated}-carts${suffix}'
 var cartsApiAcaEnvName = '${prefix}acaenv${suffix}'
@@ -1663,6 +1665,43 @@ resource sqlvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (deployS
     status: 'Enabled'
     taskType: 'ComputeVmShutdownTask'
     timeZoneId: sqlVmShutdownScheduleTimezoneId
+  }
+}
+
+// run script to create databases ./scripts/create-databases.ps1
+resource runScriptToCreateDatabases 'Microsoft.Resources/deploymentScripts@2020-10-01' = if (deploySqlOnIaas) {
+  name: 'RunScriptToCreateDatabases'
+  location: resourceLocation
+  kind: 'AzurePowerShell'
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    azPowerShellVersion: '3.0'
+    scriptContent: loadTextContent('./scripts/create-databases.ps1')
+    retentionInterval: 'PT4H'
+    environmentVariables: [
+      {
+        name: 'ResourceGroupName'
+        value: resourceGroup().name
+      }
+      {
+        name: 'SqlServerName'
+        value: sqlVmName
+      }
+      {
+        name: 'AdminUsername'
+        value: sqlVmAdminLogin
+      }
+      {
+        name: 'AdminPassword'
+        value: sqlVmAdminPassword
+      }
+      {
+        name: 'databaseNames'
+        value: [cartsDbName, productsDbName, profilesDbName]
+      }
+    ]
   }
 }
 
