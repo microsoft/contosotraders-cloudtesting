@@ -32,6 +32,8 @@ param sqlServerHostName string = environment().suffixes.sqlServerHostname
 // use param to conditionally deploy private endpoint resources
 param deployPrivateEndpoints bool = false
 
+
+
 // variables
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -144,10 +146,17 @@ var vnetVmSubnetName = 'subnet-vm'
 var vnetVmSubnetAddressPrefix = '10.0.2.0/23'
 var vnetLoadTestSubnetName = 'subnet-loadtest'
 var vnetLoadTestSubnetAddressPrefix = '10.0.4.0/23'
+var vnetWebSubnetName = 'subnet-web'
+var vnetWebSubnetAddressPrefix = '10.0.6.0/23'
+var vnetDBSubnetName = 'subnet-db'
+var vnetDBSubnetAddressPrefix = '10.0.8.0/23'
+var vnetBastionSubnetName = 'AzureBastionSubnet'
+var vnetBastionSubnetAddressPrefix = '10.0.10.0/23'
+
+// bastion
+var bastionHostName = '${prefixHyphenated}-bastion${suffix}'
 
 // jumpbox vm
-var jumpboxPublicIpName = '${prefixHyphenated}-jumpbox${suffix}'
-var jumpboxNsgName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxNicName = '${prefixHyphenated}-jumpbox${suffix}'
 var jumpboxVmName = 'jumpboxvm'
 var jumpboxVmAdminLogin = 'localadmin'
@@ -1345,66 +1354,127 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = if (deployPrivate
         name: vnetAcaSubnetName
         properties: {
           addressPrefix: vnetAcaSubnetAddressPrefix
+          networkSecurityGroup: {
+            id: vnetAcaSubnetNsg.outputs.id
+          }
         }
       }
       {
         name: vnetVmSubnetName
         properties: {
           addressPrefix: vnetVmSubnetAddressPrefix
+          networkSecurityGroup: {
+            id: vnetVmSubnetNsg.outputs.id
+          }
         }
       }
       {
         name: vnetLoadTestSubnetName
         properties: {
           addressPrefix: vnetLoadTestSubnetAddressPrefix
+          networkSecurityGroup: {
+            id: vnetLoadTestSubnetNsg.outputs.id
+          }
+        }
+      }
+      {
+        name: vnetDBSubnetName
+        properties: {
+          addressPrefix: vnetDBSubnetAddressPrefix
+          networkSecurityGroup: {
+            id: vnetDBSubnetNsg.outputs.id
+          }
+        }
+      }
+      {
+        name: vnetWebSubnetName
+        properties: {
+          addressPrefix: vnetWebSubnetAddressPrefix
+          networkSecurityGroup: {
+            id: vnetWebSubnetNsg.outputs.id
+          }
+        }
+      }
+      {
+        name: vnetBastionSubnetName
+        properties: {
+          addressPrefix: vnetBastionSubnetAddressPrefix
         }
       }
     ]
   }
 }
+
+// Subnet NSGs
+// use the module ./modules/createNsg.bicep to create a NSG for each subnet in the vnet
+
+module vnetAcaSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints) {
+  name: 'createAcaSubnetNsg'
+    params: {
+      location: resourceLocation
+      nsgName: '${vnetAcaSubnetName}-nsg-${resourceLocation}'
+      nsgRules: []
+      resourceTags: resourceTags
+    }
+}
+
+module vnetVmSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints) {
+  name: 'createVmSubnetNsg'
+    params: {
+      location: resourceLocation
+      nsgName: '${vnetVmSubnetName}-nsg-${resourceLocation}'
+      nsgRules: []
+      resourceTags: resourceTags
+    }
+}
+
+module vnetLoadTestSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints) {
+  name: 'createLoadTestSubnetNsg'
+    params: {
+      location: resourceLocation
+      nsgName: '${vnetLoadTestSubnetName}-nsg-${resourceLocation}'
+      nsgRules: []
+      resourceTags: resourceTags
+    }
+}
+
+module vnetDBSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints) {
+  name: 'createDBSubnetNsg'
+    params: {
+      location: resourceLocation
+      nsgName: '${vnetDBSubnetName}-nsg-${resourceLocation}'
+      nsgRules: []
+      resourceTags: resourceTags
+    }
+}
+
+module vnetWebSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints) {
+  name: 'createWebSubnetNsg'
+    params: {
+      location: resourceLocation
+      nsgName: '${vnetWebSubnetName}-nsg-${resourceLocation}'
+      nsgRules: []
+      resourceTags: resourceTags
+    }
+}
+
+
+
+// Create Bastion
+module bastionHost './modules/createBastion.bicep' = if (deployPrivateEndpoints) {
+  name: 'createBastion'
+  params: {
+    bastionHostName: bastionHostName
+    location: resourceLocation
+    resourceTags: resourceTags
+    subnetId: vnet.properties.subnets[5].id
+  }
+}
+
 
 //
 // jumpbox vm
 // 
-
-// public ip address
-resource jumpboxpublicip 'Microsoft.Network/publicIPAddresses@2022-07-01' = if (deployPrivateEndpoints) {
-  name: jumpboxPublicIpName
-  location: resourceLocation
-  tags: resourceTags
-  sku: {
-    name: 'Standard'
-    tier: 'Regional'
-  }
-  properties: {
-    deleteOption: 'Delete'
-    publicIPAllocationMethod: 'Static'
-  }
-}
-
-// network security group
-resource jumpboxnsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = if (deployPrivateEndpoints) {
-  name: jumpboxNsgName
-  location: resourceLocation
-  tags: resourceTags
-  properties: {
-    securityRules: [
-      {
-        name: 'allow-rdp-port-3389'
-        properties: {
-          access: 'Allow'
-          destinationAddressPrefix: 'VirtualNetwork'
-          destinationPortRange: '3389'
-          direction: 'Inbound'
-          priority: 300
-          protocol: '*'
-          sourceAddressPrefix: '*'
-          sourcePortRange: '*'
-        }
-      }
-    ]
-  }
-}
 
 // network interface controller
 resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = if (deployPrivateEndpoints) {
@@ -1421,15 +1491,9 @@ resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = if (deplo
           subnet: {
             id: deployPrivateEndpoints ? vnet.properties.subnets[1].id : ''
           }
-          publicIPAddress: {
-            id: deployPrivateEndpoints ? jumpboxpublicip.id : ''
-          }
         }
       }
     ]
-    networkSecurityGroup: {
-      id: deployPrivateEndpoints ? jumpboxnsg.id : ''
-    }
     nicType: 'Standard'
   }
 }
@@ -1499,7 +1563,7 @@ resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (dep
 // private dns zone
 //
 
-module privateDnsZone './createPrivateDnsZone.bicep' = if (deployPrivateEndpoints) {
+module privateDnsZone './modules/createPrivateDnsZone.bicep' = if (deployPrivateEndpoints) {
   name: 'createPrivateDnsZone'
   params: {
     privateDnsZoneName: deployPrivateEndpoints ? join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.') : ''
