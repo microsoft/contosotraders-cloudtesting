@@ -3,6 +3,7 @@ param nsgName string
 param nsgRules array = []
 param resourceTags object
 
+
 resource nsg 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
   name: nsgName
   location: location
@@ -13,6 +14,7 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
         properties: {
           protocol: rule.protocol
           sourcePortRange: rule.sourcePortRange
+          destinationPortRange: rule.destinationPortRange
           destinationPortRanges: rule.destinationPortRanges
           sourceAddressPrefix: rule.sourceAddressPrefix
           destinationAddressPrefix: rule.destinationAddressPrefix
@@ -25,5 +27,7 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
   }
   tags: resourceTags
 }
-    
+
+
+
 output id string = nsg.id
