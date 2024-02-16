@@ -1,0 +1,79 @@
+name: contoso-traders-cloud-testing
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths-ignore: ["docs/**", "demo-scripts/**"]
+
+env:
+  ACR_NAME: jjwpptest
+  CART_VM_NAME: cartVM
+  PROD_VM_NAME: prodVM
+  VM_RESOURCE_GROUP_NAME: wpp-demo-rg
+  CARTS_ACR_REPOSITORY_NAME: contosotradersapicarts
+  PROD_ACR_REPOSITORY_NAME: contosotradersapiproducts
+jobs:
+  provision:
+    runs-on: ubuntu-22.04
+    env:
+      AADUSERNAME: ${{ secrets.AADUSERNAME }}
+      AADPASSWORD: ${{ secrets.AADPASSWORD }}
+    outputs:
+      azureAdAppClientId: ${{ steps.get-azureAdAppClientId.outputs.azureAdAppClientId }}
+      azureAdAppObjId: ${{ steps.get-azureAdAppObjId.outputs.azureAdAppObjId }}
+      cartsApiEndpoint: ${{ steps.get-cartsApiEndpoint.outputs.cartsApiEndpoint }}
+      productsApiEndpoint: ${{ steps.get-productsApiEndpoint.outputs.productsApiEndpoint }}
+      uiCdnEndpoint: ${{ steps.get-uiCdnEndpoint.outputs.uiCdnEndpoint }}
+    concurrency:
+      group: provision
+      cancel-in-progress: true
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+      - name: azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICEPRINCIPAL }}
+      
+      - name: acr login 
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.ACR_NAME }}.azurecr.io
+          username: ${{ env.ACR_NAME }}
+          password: ${{ secrets.ACRPASSWORD }}
+      
+      #
+      # section #1: deploy the carts api
+      #
+      - name: docker build
+        run: docker build src -f ./src/ContosoTraders.Api.Carts/Dockerfile -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: docker push (to acr)
+        run: docker push --all-tags ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}
+      - name: Run Docker container on Azure VM
+        uses: Azure/cli@v1.0.9
+        with:
+         azcliversion: 2.0.72
+         inlineScript: |
+          az login --service-principal -u ${{ secrets.AZURECLIENTID }} -p ${{ secrets.AZURECLIENTSECRET }} --tenant ${{ secrets.AZURETENANTID }}
+          az vm run-command invoke -g ${{ env.VM_RESOURCE_GROUP_NAME }} -n ${{ env.CART_VM_NAME }} --command-id RunShellScript --scripts "docker login --username ${{ env.ACR_NAME }} --password ${{ secrets.ACRPASSWORD }} ${{ env.ACR_NAME }}.azurecr.io && docker pull ${{ env.ACR_NAME }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }} && docker run -d -p 80:80 ${{ env.ACR_NAME }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}"
+        env:
+         AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURESUBSCRIPTIONID }}
+         
+      # section #2: deploy the products api
+      #
+      - name: docker build
+        run: docker build src -f ./src/ContosoTraders.Api.Products/Dockerfile -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:latest -t ${{ env.ACR_NAME }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}
+      - name: docker push (to acr)
+        run: docker push --all-tags ${{ env.ACR_NAME }}${{ vars.SUFFIX }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}
+      - name: Run Docker container on Azure VM
+        uses: Azure/cli@v1.0.9
+        with:
+         azcliversion: 2.0.72
+         inlineScript: |
+          az login --service-principal -u ${{ secrets.AZURECLIENTID }} -p ${{ secrets.AZURECLIENTSECRET }} --tenant ${{ secrets.AZURETENANTID }}
+          az vm run-command invoke -g ${{ env.VM_RESOURCE_GROUP_NAME }} -n ${{ env.PROD_VM_NAME }} --command-id RunShellScript --scripts "docker login --username ${{ env.ACR_NAME }} --password ${{ secrets.ACRPASSWORD }} ${{ env.ACR_NAME }}.azurecr.io && docker pull ${{ env.ACR_NAME }}.azurecr.io/${{ env.PROD_ACR_REPOSITORY_NAME }}:${{ github.sha }} && docker run -d -p 80:80 ${{ env.ACR_NAME }}.azurecr.io/${{ env.CARTS_ACR_REPOSITORY_NAME }}:${{ github.sha }}"
+        env:
+         AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURESUBSCRIPTIONID }}
+
+         
