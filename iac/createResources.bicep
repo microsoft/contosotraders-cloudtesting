@@ -1440,7 +1440,19 @@ module vnetDBSubnetNsg './modules/createNsg.bicep' = if (deployPrivateEndpoints)
     params: {
       location: resourceLocation
       nsgName: '${vnetDBSubnetName}-nsg-${resourceLocation}'
-      nsgRules: []
+      nsgRules: [
+        {
+          name: 'AllowSQLServerInbound'
+          protocol: 'Tcp'
+          sourcePortRange: '*'
+          destinationPortRange: '1433'
+          sourceAddressPrefix: 'AzureCloud'
+          destinationAddressPrefix: 'virtualNetwork'
+          access: 'Allow'
+          priority: '100'
+          direction: 'Inbound'
+        }
+      ]
       resourceTags: resourceTags
     }
 }
@@ -1689,25 +1701,22 @@ resource runScriptToCreateDatabases 'Microsoft.Resources/deploymentScripts@2020-
     retentionInterval: 'PT4H'
     environmentVariables: [
       {
-        name: 'ResourceGroupName'
-        value: resourceGroup().name
+        name: 'serverName'
+        value: sqlserver.outputs.publicIP
       }
       {
-        name: 'SqlServerName'
-        value: sqlVmName
-      }
-      {
-        name: 'AdminUsername'
+        name: 'userName'
         value: sqlVmAdminLogin
       }
       {
-        name: 'AdminPassword'
+        name: 'password'
         value: sqlVmAdminPassword
       }
       {
-        name: 'databaseNames'
-        value: [cartsDbName, productsDbName, profilesDbName]
+        name: 'DatabaseNames'
+        value: '${cartsDbName},${productsDbName},${profilesDbName}'
       }
+      
     ]
   }
 }

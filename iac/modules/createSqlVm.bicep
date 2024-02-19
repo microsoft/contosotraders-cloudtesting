@@ -33,7 +33,7 @@ param imageOffer string = 'sql2019-ws2022'
   'web-gen2'
   'enterprisedbengineonly-gen2'
 ])
-param sqlSku string = 'SQLDEV-gen2'
+param sqlSku string = 'standard-gen2'
 
 @description('The admin user name of the VM')
 param adminUsername string
@@ -253,3 +253,4 @@ resource Microsoft_SqlVirtualMachine_sqlVirtualMachines_virtualMachine 'Microsof
 
 output adminUsername string = adminUsername
 output id string = virtualMachine.id
+output publicIP string = publicIP.properties.ipAddress
