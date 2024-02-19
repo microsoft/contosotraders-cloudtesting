@@ -1456,6 +1456,7 @@ module attachNsgAca './modules/updateSubnet.bicep' = if (deployPrivateEndpoints)
       }
     })
   }
+  
 }
 
 module attachNsgVM './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
@@ -1470,6 +1471,7 @@ module attachNsgVM './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) 
       }
     })
   }
+  dependsOn: [attachNsgAca]
 }
 
 module attachNsgLoadTest './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
@@ -1484,6 +1486,7 @@ module attachNsgLoadTest './modules/updateSubnet.bicep' = if (deployPrivateEndpo
       }
     })
   }
+  dependsOn: [attachNsgVM]
 }
 
 module attachNsgDB './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
@@ -1498,6 +1501,7 @@ module attachNsgDB './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) 
       }
     })
   }
+  dependsOn: [attachNsgLoadTest]
 }
 
 module attachNsgWeb './modules/updateSubnet.bicep' = if (deployPrivateEndpoints) {
@@ -1512,6 +1516,7 @@ module attachNsgWeb './modules/updateSubnet.bicep' = if (deployPrivateEndpoints)
       }
     })
   }
+  dependsOn: [attachNsgDB]
 }
 
 
