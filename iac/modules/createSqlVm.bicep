@@ -1,6 +1,9 @@
 @description('The name of the VM')
 param virtualMachineName string = 'myVM'
 
+@description('The DNS label of the VM')
+param dnsLabel string = 'myVM'
+
 @description('The virtual machine size.')
 param virtualMachineSize string = 'Standard_D8s_v3'
 
@@ -112,8 +115,12 @@ resource publicIP 'Microsoft.Network/publicIPAddresses@2022-01-01' = {
   location: location
   properties: {
     publicIPAllocationMethod: 'Static'
+    dnsSettings: {
+      domainNameLabel: dnsLabel
+    }
   }
 }
+
 
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {

@@ -1647,12 +1647,13 @@ resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (dep
 // SQL Server
 //
 
-module sqlserver './modules/createSqlVm.bicep' = if (deploySqlOnIaas) {
-  name: 'createSqlVM'
+module productsSqlServer './modules/createSqlVm.bicep' = if (deploySqlOnIaas) {
+  name: 'createProductsSqlVM'
   params: {
     location: resourceLocation
     resourceTags: resourceTags
-    virtualMachineName: sqlVmName
+    virtualMachineName: '${sqlVmName}-products'
+    dnsLabel: productsDbServerName
     adminUsername: sqlVmAdminLogin
     adminPassword: sqlVmAdminPassword
     existingSubnetName: vnetDBSubnetName
@@ -1662,12 +1663,12 @@ module sqlserver './modules/createSqlVm.bicep' = if (deploySqlOnIaas) {
 }
 
 // auto-shutdown schedule
-resource sqlvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (deploySqlOnIaas) {
-  name: sqlVmShutdownScheduleName
+resource productsSqlvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (deploySqlOnIaas) {
+  name: '${sqlVmShutdownScheduleName}-products'
   location: resourceLocation
   tags: resourceTags
   properties: {
-    targetResourceId: deploySqlOnIaas ? sqlserver.outputs.id : ''
+    targetResourceId: deploySqlOnIaas ? productsSqlServer.outputs.id : ''
     dailyRecurrence: {
       time: '2100'
     }
@@ -1682,7 +1683,7 @@ resource sqlvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (deployS
 
 // run script to create databases ./scripts/create-databases.ps1
 resource runScriptToCreateDatabases 'Microsoft.Resources/deploymentScripts@2020-10-01' = if (deploySqlOnIaas) {
-  name: 'RunScriptToCreateDatabases'
+  name: 'RunScriptToCreateProductDatabase'
   location: resourceLocation
   kind: 'AzurePowerShell'
   identity: {
@@ -1702,7 +1703,7 @@ resource runScriptToCreateDatabases 'Microsoft.Resources/deploymentScripts@2020-
     environmentVariables: [
       {
         name: 'serverName'
-        value: sqlserver.outputs.publicIP
+        value: productsSqlServer.outputs.publicIP
       }
       {
         name: 'userName'
@@ -1714,7 +1715,7 @@ resource runScriptToCreateDatabases 'Microsoft.Resources/deploymentScripts@2020-
       }
       {
         name: 'DatabaseNames'
-        value: '${productsDbName},${profilesDbName}'
+        value: productsDbName
       }
       
     ]
