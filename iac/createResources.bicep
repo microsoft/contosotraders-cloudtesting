@@ -1714,7 +1714,7 @@ resource runScriptToCreateDatabases 'Microsoft.Resources/deploymentScripts@2020-
       }
       {
         name: 'DatabaseNames'
-        value: '${cartsDbName},${productsDbName},${profilesDbName}'
+        value: '${productsDbName},${profilesDbName}'
       }
       
     ]
