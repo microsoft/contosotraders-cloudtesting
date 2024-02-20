@@ -175,7 +175,7 @@ jobs:
         uses: azure/CLI@v1
         if: ${{ vars.DEPLOYSQLONIAAS == 'true' }}
         with:
-          inlineScript: az network nsg rule create --name allow-github-actions --nsg-name ${{ env.DB_NSG_NAME }}-${{ vars.DEPLOYMENTREGION }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --priority 300 --source-address-prefixes $(curl -s https://api.github.com/meta | jq -r '.actions[]') --destination-port-ranges 1433 --access Allow --protocol Tcp
+          inlineScript: az network nsg rule create --name allow-github-actions --nsg-name ${{ env.DB_NSG_NAME }}-${{ vars.DEPLOYMENTREGION }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --priority 300 --source-address-prefixes $(dig +short myip.opendns.com @resolver1.opendns.com) --destination-port-ranges 1433 --access Allow --protocol Tcp
       - name: seed products db
         uses: azure/sql-action@v2.2
         if: ${{ vars.DEPLOYSQLONIAAS == 'false' }}
