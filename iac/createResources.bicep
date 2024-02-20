@@ -1791,7 +1791,7 @@ resource runScriptToCreateProfileDatabase 'Microsoft.Resources/deploymentScripts
         value: sqlVmAdminPassword
       }
       {
-        name: 'DatabaseNames'
+        name: 'databaseNames'
         value: profilesDbName
       }
       

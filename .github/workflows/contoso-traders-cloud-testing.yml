@@ -41,8 +41,7 @@ env:
   UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
   UI_STORAGE_ACCOUNT_NAME: contosotradersui2
   USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
-  DB_NSG_NAME: subnet-db-nsg-
-
+ 
 jobs:
   provision:
     runs-on: ubuntu-22.04
