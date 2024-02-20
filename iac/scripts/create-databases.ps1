@@ -3,7 +3,6 @@ $ErrorActionPreference = 'Stop'
 # Create a new SQL server connection
 Write-Host "Creating a new SQL server connection..."
 $connectionString = "Server=$env:serverName;Database=master;User ID=$env:userName;Password=$env:password"
-Write-Host "Connection string: $connectionString"
 $connection = New-Object System.Data.SqlClient.SqlConnection($connectionString)
 # Split the $env.databaseNames by comma and create an array
 $databaseNames = $env:databaseNames -split ","
