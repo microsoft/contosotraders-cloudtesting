@@ -1715,7 +1715,7 @@ resource runScriptToCreateProductDatabase 'Microsoft.Resources/deploymentScripts
         value: sqlVmAdminPassword
       }
       {
-        name: 'DatabaseNames'
+        name: 'databaseNames'
         value: productsDbName
       }
       

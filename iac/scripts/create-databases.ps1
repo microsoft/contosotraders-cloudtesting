@@ -5,11 +5,15 @@ Write-Host "Creating a new SQL server connection..."
 $connectionString = "Server=$env:serverName;Database=master;User ID=$env:userName;Password=$env:password"
 $connection = New-Object System.Data.SqlClient.SqlConnection($connectionString)
 # Split the $env.databaseNames by comma and create an array
+Write-Host "Database ENV names: $env:databaseNames"
+
+Write-Host "Database names1: $databaseNames"
 $databaseNames = $env:databaseNames -split ","
 if ($databaseNames -eq $null) {
+    Write-Host "Database names is null"
     $databaseNames = @($env:databaseNames)
 }
-Write-Host "Database names: $databaseNames"
+Write-Host "Database names2: $databaseNames"
 
 
 Write-Host "Opening the SQL server connection..."
