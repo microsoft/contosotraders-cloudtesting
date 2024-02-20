@@ -74,13 +74,13 @@ var productsApiSettingNameKeyVaultEndpoint = 'KeyVaultEndpoint'
 var productsApiSettingNameManagedIdentityClientId = 'ManagedIdentityClientId'
 
 // sql azure (products db)
-var productsDbServerName = '${prefixHyphenated}-products${suffix}'
+var productsDbServerName = '${prefix}-products${suffix}'
 var productsDbName = 'productsdb'
 var productsDbServerAdminLogin = 'localadmin'
 var productsDbServerAdminPassword = sqlPassword
 
 // sql azure (profiles db)
-var profilesDbServerName = '${prefixHyphenated}-profiles${suffix}'
+var profilesDbServerName = '${prefix}-profiles${suffix}'
 var profilesDbName = 'profilesdb'
 var profilesDbServerAdminLogin = 'localadmin'
 var profilesDbServerAdminPassword = sqlPassword
@@ -170,7 +170,7 @@ var jumpboxVmShutdownScheduleName = 'shutdown-computevm-jumpboxvm'
 var jumpboxVmShutdownScheduleTimezoneId = 'UTC'
 
 // sql vm
-var sqlVmName = 'sqlvm'
+var sqlVmPrefix = 'sqlvm' // this is different to the DbServerName variables as it needs to be shorter than 15 characters
 var sqlVmAdminLogin = 'localadmin'
 var sqlVmAdminPassword = sqlPassword
 var sqlVmShutdownScheduleName = 'shutdown-computevm-sqlvm'
@@ -551,7 +551,7 @@ resource productsapiappsvc 'Microsoft.Web/sites@2022-03-01' = {
 //
 
 // sql azure server
-resource productsdbsrv 'Microsoft.Sql/servers@2022-05-01-preview' = {
+resource productsdbsrv 'Microsoft.Sql/servers@2022-05-01-preview' = if (!deploySqlOnIaas) {
   name: productsDbServerName
   location: resourceLocation
   tags: resourceTags
@@ -562,7 +562,7 @@ resource productsdbsrv 'Microsoft.Sql/servers@2022-05-01-preview' = {
   }
 
   // sql azure database
-  resource productsdbsrv_db 'databases' = {
+  resource productsdbsrv_db 'databases' =  {
     name: productsDbName
     location: resourceLocation
     tags: resourceTags
@@ -597,7 +597,7 @@ resource productsdbsrv 'Microsoft.Sql/servers@2022-05-01-preview' = {
 //
 
 // sql azure server
-resource profilesdbsrv 'Microsoft.Sql/servers@2022-05-01-preview' = {
+resource profilesdbsrv 'Microsoft.Sql/servers@2022-05-01-preview' = if (!deploySqlOnIaas) {
   name: profilesDbServerName
   location: resourceLocation
   tags: resourceTags
@@ -1644,15 +1644,16 @@ resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (dep
 }
 
 //
-// SQL Server
+// SQL Servers
 //
 
+// Products DB
 module productsSqlServer './modules/createSqlVm.bicep' = if (deploySqlOnIaas) {
   name: 'createProductsSqlVM'
   params: {
     location: resourceLocation
     resourceTags: resourceTags
-    virtualMachineName: '${sqlVmName}-products'
+    virtualMachineName: '${sqlVmPrefix}-products'
     dnsLabel: productsDbServerName
     adminUsername: sqlVmAdminLogin
     adminPassword: sqlVmAdminPassword
@@ -1682,7 +1683,7 @@ resource productsSqlvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if 
 }
 
 // run script to create databases ./scripts/create-databases.ps1
-resource runScriptToCreateDatabases 'Microsoft.Resources/deploymentScripts@2020-10-01' = if (deploySqlOnIaas) {
+resource runScriptToCreateProductDatabase 'Microsoft.Resources/deploymentScripts@2020-10-01' = if (deploySqlOnIaas) {
   name: 'RunScriptToCreateProductDatabase'
   location: resourceLocation
   kind: 'AzurePowerShell'
@@ -1716,6 +1717,82 @@ resource runScriptToCreateDatabases 'Microsoft.Resources/deploymentScripts@2020-
       {
         name: 'DatabaseNames'
         value: productsDbName
+      }
+      
+    ]
+  }
+}
+
+// Profiles DB
+module profilesSqlServer './modules/createSqlVm.bicep' = if (deploySqlOnIaas) {
+  name: 'createProfilesSqlVM'
+  params: {
+    location: resourceLocation
+    resourceTags: resourceTags
+    virtualMachineName: '${sqlVmPrefix}-profiles'
+    dnsLabel: profilesDbServerName
+    adminUsername: sqlVmAdminLogin
+    adminPassword: sqlVmAdminPassword
+    existingSubnetName: vnetDBSubnetName
+    existingVirtualNetworkName: vnetName
+    existingVnetResourceGroup: resourceGroup().name
+  }
+}
+
+// auto-shutdown schedule
+resource profilesSqlvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (deploySqlOnIaas) {
+  name: '${sqlVmShutdownScheduleName}-profiles'
+  location: resourceLocation
+  tags: resourceTags
+  properties: {
+    targetResourceId: deploySqlOnIaas ? profilesSqlServer.outputs.id : ''
+    dailyRecurrence: {
+      time: '2100'
+    }
+    notificationSettings: {
+      status: 'Disabled'
+    }
+    status: 'Enabled'
+    taskType: 'ComputeVmShutdownTask'
+    timeZoneId: sqlVmShutdownScheduleTimezoneId
+  }
+}
+
+// run script to create databases ./scripts/create-databases.ps1
+resource runScriptToCreateProfileDatabase 'Microsoft.Resources/deploymentScripts@2020-10-01' = if (deploySqlOnIaas) {
+  name: 'RunScriptToCreateProfileDatabase'
+  location: resourceLocation
+  kind: 'AzurePowerShell'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${uistgacc_mi.id}': {}
+    }
+  }
+  dependsOn: [
+    // we need to ensure we wait for the role assignment to be deployed
+    roleAssignment
+  ]
+  properties: {
+    azPowerShellVersion: '3.0'
+    scriptContent: loadTextContent('./scripts/create-databases.ps1')
+    retentionInterval: 'PT4H'
+    environmentVariables: [
+      {
+        name: 'serverName'
+        value: profilesSqlServer.outputs.publicIP
+      }
+      {
+        name: 'userName'
+        value: sqlVmAdminLogin
+      }
+      {
+        name: 'password'
+        value: sqlVmAdminPassword
+      }
+      {
+        name: 'DatabaseNames'
+        value: profilesDbName
       }
       
     ]
