@@ -27,7 +27,7 @@ param prefix string = 'contosotraders'
 param prefixHyphenated string = 'contoso-traders'
 
 // sql
-param sqlServerHostName string = deploySqlOnIaas ? '${resourceLocation}.cloudapp.azure.com' : environment().suffixes.sqlServerHostname
+param sqlServerHostName string = deploySqlOnIaas ? '.${resourceLocation}.cloudapp.azure.com' : environment().suffixes.sqlServerHostname
 
 // use param to conditionally deploy private endpoint resources
 param deployPrivateEndpoints bool = false
