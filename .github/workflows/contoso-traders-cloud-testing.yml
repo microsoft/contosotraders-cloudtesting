@@ -30,7 +30,7 @@ env:
   MSGRAPH_API_PERMISSION_USER_READ: e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope
   PRODUCTS_ACR_REPOSITORY_NAME: contosotradersapiproducts
   PRODUCTS_DB_NAME: productsdb
-  PRODUCTS_DB_SERVER_NAME: contoso-traders-products
+  PRODUCTS_DB_SERVER_NAME: contosotraders-products
   PRODUCTS_DB_USER_NAME: localadmin
   PRODUCT_DETAILS_CONTAINER_NAME: product-details
   PRODUCT_IMAGES_STORAGE_ACCOUNT_NAME: contosotradersimg
@@ -41,7 +41,7 @@ env:
   UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
   UI_STORAGE_ACCOUNT_NAME: contosotradersui2
   USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
-
+ 
 jobs:
   provision:
     runs-on: ubuntu-22.04
@@ -154,7 +154,7 @@ jobs:
           region: ${{ vars.DEPLOYMENTREGION }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
           template: ./iac/createResources.bicep
-          parameters: ./iac/createResources.parameters.json suffix=${{ vars.SUFFIX }} sqlPassword=${{ secrets.SQLPASSWORD }} deployPrivateEndpoints=${{ vars.DEPLOYPRIVATEENDPOINTS }}
+          parameters: ./iac/createResources.parameters.json suffix=${{ vars.SUFFIX }} sqlPassword=${{ secrets.SQLPASSWORD }} deployPrivateEndpoints=${{ vars.DEPLOYPRIVATEENDPOINTS }} deploySqlOnIaas=${{ vars.DEPLOYSQLONIAAS }}
       # Add the logged-in service principal to the key vault access policy
       - name: add service principal to kv access policy
         uses: azure/CLI@v1
@@ -169,10 +169,17 @@ jobs:
               --identities $(az identity show -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ vars.SUFFIX }} --query "id" -o tsv) \
               --ids $(az vmss list -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --query "[0].id" -o tsv) \
       # Seed the DBs and storage accounts
-      - name: seed products db
+      - name: seed AzureSQL products db
         uses: azure/sql-action@v2.2
+        if: ${{ vars.DEPLOYSQLONIAAS == 'false' }}
         with:
           connection-string: Server=tcp:${{ env.PRODUCTS_DB_SERVER_NAME }}${{ vars.SUFFIX }}.database.windows.net,1433;Initial Catalog=${{ env.PRODUCTS_DB_NAME }};Persist Security Info=False;User ID=${{ env.PRODUCTS_DB_USER_NAME }};Password=${{ secrets.SQLPASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+          path: ./src/ContosoTraders.Api.Products/Migration/productsdb.sql
+      - name: seed SQL VM products db
+        uses: azure/sql-action@v2.2
+        if: ${{ vars.DEPLOYSQLONIAAS == 'true' }}
+        with:
+          connection-string: Server=tcp:${{ env.PRODUCTS_DB_SERVER_NAME }}${{ vars.SUFFIX }}.${{ vars.DEPLOYMENTREGION }}.cloudapp.azure.com,1433;Initial Catalog=${{ env.PRODUCTS_DB_NAME }};Persist Security Info=False;User ID=${{ env.PRODUCTS_DB_USER_NAME }};Password=${{ secrets.SQLPASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
           path: ./src/ContosoTraders.Api.Products/Migration/productsdb.sql
       - name: seed product image (product details)
         uses: azure/CLI@v1
