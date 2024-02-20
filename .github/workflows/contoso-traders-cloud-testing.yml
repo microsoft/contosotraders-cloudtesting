@@ -41,6 +41,7 @@ env:
   UI_CDN_ENDPOINT_NAME: contoso-traders-ui2
   UI_STORAGE_ACCOUNT_NAME: contosotradersui2
   USER_ASSIGNED_MANAGED_IDENTITY_NAME: contoso-traders-mi-kv-access
+  DB_NSG_NAME: subnet-db-nsg-
 
 jobs:
   provision:
@@ -169,6 +170,12 @@ jobs:
               --identities $(az identity show -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ vars.SUFFIX }} --query "id" -o tsv) \
               --ids $(az vmss list -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --query "[0].id" -o tsv) \
       # Seed the DBs and storage accounts
+      # Add a NSG rule to allow access to the DB from the github actions runner
+      - name: add nsg rule to allow access to db
+        uses: azure/CLI@v1
+        if: ${{ vars.DEPLOYSQLONIAAS == 'true' }}
+        with:
+          inlineScript: az network nsg rule create --name allow-github-actions --nsg-name ${{ env.DB_NSG_NAME }}-${{ vars.DEPLOYMENTREGION }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --priority 300 --source-address-prefixes $(dig +short myip.opendns.com @resolver1.opendns.com') --destination-port-ranges 1433 --access Allow --protocol Tcp
       - name: seed products db
         uses: azure/sql-action@v2.2
         if: ${{ vars.DEPLOYSQLONIAAS == 'false' }}
