@@ -7,6 +7,9 @@ Write-Host "Connection string: $connectionString"
 $connection = New-Object System.Data.SqlClient.SqlConnection($connectionString)
 # Split the $env.databaseNames by comma and create an array
 $databaseNames = $env:databaseNames -split ","
+if ($databaseNames -eq $null) {
+    $databaseNames = @($env:databaseNames)
+}
 Write-Host "Database names: $databaseNames"
 
 
