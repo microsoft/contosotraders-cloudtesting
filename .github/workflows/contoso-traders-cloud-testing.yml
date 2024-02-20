@@ -170,24 +170,30 @@ jobs:
               --identities $(az identity show -g ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --name ${{ env.USER_ASSIGNED_MANAGED_IDENTITY_NAME }}${{ vars.SUFFIX }} --query "id" -o tsv) \
               --ids $(az vmss list -g ${{ env.AKS_NODES_RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --query "[0].id" -o tsv) \
       # Seed the DBs and storage accounts
-      # Add a NSG rule to allow access to the DB from the github actions runner
-      - name: add nsg rule to allow access to db
-        uses: azure/CLI@v1
-        if: ${{ vars.DEPLOYSQLONIAAS == 'true' }}
-        with:
-          inlineScript: az network nsg rule create --name allow-github-actions --nsg-name ${{ env.DB_NSG_NAME }}-${{ vars.DEPLOYMENTREGION }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --priority 300 --source-address-prefixes $(dig +short myip.opendns.com @resolver1.opendns.com) --destination-port-ranges 1433 --access Allow --protocol Tcp
-      - name: seed products db
+      - name: seed AzureSQL products db
         uses: azure/sql-action@v2.2
         if: ${{ vars.DEPLOYSQLONIAAS == 'false' }}
         with:
           connection-string: Server=tcp:${{ env.PRODUCTS_DB_SERVER_NAME }}${{ vars.SUFFIX }}.database.windows.net,1433;Initial Catalog=${{ env.PRODUCTS_DB_NAME }};Persist Security Info=False;User ID=${{ env.PRODUCTS_DB_USER_NAME }};Password=${{ secrets.SQLPASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
           path: ./src/ContosoTraders.Api.Products/Migration/productsdb.sql
-      - name: seed products db
+      # Add a NSG rule to allow access to the DB from the github actions runner
+      - name: add nsg rule to allow access to db from github runner
+        uses: azure/CLI@v1
+        if: ${{ vars.DEPLOYSQLONIAAS == 'true' }}
+        with:
+          inlineScript: az network nsg rule create --name allow-github-actions --nsg-name ${{ env.DB_NSG_NAME }}-${{ vars.DEPLOYMENTREGION }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --priority 300 --source-address-prefixes * --destination-port-ranges 1433 --access Allow --protocol Tcp
+      - name: seed SQL VM products db
         uses: azure/sql-action@v2.2
         if: ${{ vars.DEPLOYSQLONIAAS == 'true' }}
         with:
           connection-string: Server=tcp:${{ env.PRODUCTS_DB_SERVER_NAME }}${{ vars.SUFFIX }}.${{ vars.DEPLOYMENTREGION }}.cloudapp.azure.com,1433;Initial Catalog=${{ env.PRODUCTS_DB_NAME }};Persist Security Info=False;User ID=${{ env.PRODUCTS_DB_USER_NAME }};Password=${{ secrets.SQLPASSWORD }};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
           path: ./src/ContosoTraders.Api.Products/Migration/productsdb.sql
+      # Remove the NSG rule to allow access to the DB from the github actions runner
+      - name: add nsg rule to allow access to db from github runner
+        uses: azure/CLI@v1
+        if: ${{ vars.DEPLOYSQLONIAAS == 'true' }}
+        with:
+          inlineScript: az network nsg rule delete --name allow-github-actions --nsg-name ${{ env.DB_NSG_NAME }}-${{ vars.DEPLOYMENTREGION }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
       - name: seed product image (product details)
         uses: azure/CLI@v1
         with:
