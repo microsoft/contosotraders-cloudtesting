@@ -181,7 +181,7 @@ jobs:
         uses: azure/CLI@v1
         if: ${{ vars.DEPLOYSQLONIAAS == 'true' }}
         with:
-          inlineScript: az network nsg rule create --name allow-github-actions --nsg-name ${{ env.DB_NSG_NAME }}-${{ vars.DEPLOYMENTREGION }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --priority 300 --source-address-prefixes * --destination-port-ranges 1433 --access Allow --protocol Tcp
+          inlineScript: az network nsg rule create --name allow-github-actions --nsg-name ${{ env.DB_NSG_NAME }}${{ vars.DEPLOYMENTREGION }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }} --priority 300 --source-address-prefixes * --destination-port-ranges 1433 --access Allow --protocol Tcp
       - name: seed SQL VM products db
         uses: azure/sql-action@v2.2
         if: ${{ vars.DEPLOYSQLONIAAS == 'true' }}
@@ -193,7 +193,7 @@ jobs:
         uses: azure/CLI@v1
         if: ${{ vars.DEPLOYSQLONIAAS == 'true' }}
         with:
-          inlineScript: az network nsg rule delete --name allow-github-actions --nsg-name ${{ env.DB_NSG_NAME }}-${{ vars.DEPLOYMENTREGION }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
+          inlineScript: az network nsg rule delete --name allow-github-actions --nsg-name ${{ env.DB_NSG_NAME }}${{ vars.DEPLOYMENTREGION }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}${{ vars.SUFFIX }}
       - name: seed product image (product details)
         uses: azure/CLI@v1
         with:
