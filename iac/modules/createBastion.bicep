@@ -35,6 +35,12 @@ resource bastionHost 'Microsoft.Network/bastionHosts@2022-07-01' = {
         }
       }
     ]
+    sku: {
+      name: 'Standard'
+    }
+    nativeClient: {
+      enabled: true
+    }
   }
   tags: resourceTags
 }
