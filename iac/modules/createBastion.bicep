@@ -21,7 +21,16 @@ resource publicIp 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
 resource bastionHost 'Microsoft.Network/bastionHosts@2022-07-01' = {
   name: bastionHostName
   location: location
+  sku: {
+    name: 'Standard'
+  }
   properties: {
+    disableCopyPaste: false
+    enableFileCopy: true
+    enableIpConnect: true
+    enableKerberos: true
+    enableShareableLink: true
+    enableTunneling: true
     ipConfigurations: [
       {
         name: 'IpConfiguration'
