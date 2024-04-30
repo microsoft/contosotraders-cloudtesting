@@ -720,7 +720,9 @@ resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     name: 'Standard_LRS'
   }
   kind: 'StorageV2'
-
+  properties: {
+    allowBlobPublicAccess: true
+  }
   // blob service
   resource productimagesstgacc_blobsvc 'blobServices' = {
     name: 'default'
@@ -757,7 +759,9 @@ resource uistgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     name: 'Standard_LRS'
   }
   kind: 'StorageV2'
-
+  properties: {
+    allowBlobPublicAccess: true
+  }
   // blob service
   resource uistgacc_blobsvc 'blobServices' = {
     name: 'default'
@@ -905,6 +909,9 @@ resource imageclassifierstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = 
     name: 'Standard_LRS'
   }
   kind: 'StorageV2'
+  properties: {
+    allowBlobPublicAccess: true
+  }
 
   // blob service
   resource imageclassifierstgacc_blobsvc 'blobServices' = {
