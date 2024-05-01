@@ -259,14 +259,15 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 
   // secret
-  resource kv_secretCartsInternalApiEndpoint 'secrets' = if (deployPrivateEndpoints) {
-    name: kvSecretNameCartsInternalApiEndpoint
-    tags: resourceTags
-    properties: {
-      contentType: 'endpoint url (fqdn) of the (internal) carts api'
-      value: deployPrivateEndpoints ? cartsinternalapiaca.properties.configuration.ingress.fqdn : ''
+  resource kv_secretCartsInternalApiEndpoint 'secrets' =
+    if (deployPrivateEndpoints) {
+      name: kvSecretNameCartsInternalApiEndpoint
+      tags: resourceTags
+      properties: {
+        contentType: 'endpoint url (fqdn) of the (internal) carts api'
+        value: deployPrivateEndpoints ? cartsinternalapiaca.properties.configuration.ingress.fqdn : ''
+      }
     }
-  }
 
   // secret
   resource kv_secretCartsDbConnStr 'secrets' = {
@@ -309,14 +310,15 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 
   // secret
-  resource kv_secretVnetAcaSubnetId 'secrets' = if (deployPrivateEndpoints) {
-    name: kvSecretNameVnetAcaSubnetId
-    tags: resourceTags
-    properties: {
-      contentType: 'subnet id of the aca subnet'
-      value: deployPrivateEndpoints ? vnet.properties.subnets[0].id : ''
+  resource kv_secretVnetAcaSubnetId 'secrets' =
+    if (deployPrivateEndpoints) {
+      name: kvSecretNameVnetAcaSubnetId
+      tags: resourceTags
+      properties: {
+        contentType: 'subnet id of the aca subnet'
+        value: deployPrivateEndpoints ? vnet.properties.subnets[0].id : ''
+      }
     }
-  }
 
   // access policies
   resource kv_accesspolicies 'accessPolicies' = {
@@ -329,14 +331,14 @@ resource kv 'Microsoft.KeyVault/vaults@2022-07-01' = {
           tenantId: tenantId
           objectId: userassignedmiforkvaccess.properties.principalId
           permissions: {
-            secrets: [ 'get', 'list' ]
+            secrets: ['get', 'list']
           }
         }
         {
           tenantId: tenantId
           objectId: aks.properties.identityProfile.kubeletidentity.objectId
           permissions: {
-            secrets: [ 'get', 'list' ]
+            secrets: ['get', 'list']
           }
         }
       ]
@@ -712,7 +714,7 @@ resource cartsapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = {
 //
 
 // storage account (product images)
-resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: productImagesStgAccName
   location: resourceLocation
   tags: resourceTags
@@ -751,7 +753,7 @@ resource productimagesstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 //
 
 // storage account (main website)
-resource uistgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+resource uistgacc 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: uiStgAccName
   location: resourceLocation
   tags: resourceTags
@@ -825,7 +827,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
 }
 
 // storage account (new website)
-resource ui2stgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+resource ui2stgacc 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: ui2StgAccName
   location: resourceLocation
   tags: resourceTags
@@ -833,6 +835,9 @@ resource ui2stgacc 'Microsoft.Storage/storageAccounts@2022-05-01' = {
     name: 'Standard_LRS'
   }
   kind: 'StorageV2'
+  properties: {
+    allowBlobPublicAccess: true
+  }
 
   // blob service
   resource ui2stgacc_blobsvc 'blobServices' = {
@@ -901,7 +906,7 @@ resource deploymentScript2 'Microsoft.Resources/deploymentScripts@2020-10-01' = 
 //
 
 // storage account (main website)
-resource imageclassifierstgacc 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+resource imageclassifierstgacc 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: imageClassifierStgAccName
   location: resourceLocation
   tags: resourceTags
@@ -973,10 +978,18 @@ resource cdnprofile_imagesendpoint 'Microsoft.Cdn/profiles/endpoints@2022-11-01-
     originHostHeader: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
     origins: [
       {
-        name: replace(replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', ''), '.', '-')
+        name: replace(
+          replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', ''),
+          '.',
+          '-'
+        )
         properties: {
           hostName: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
-          originHostHeader: replace(replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''), '/', '')
+          originHostHeader: replace(
+            replace(productimagesstgacc.properties.primaryEndpoints.blob, 'https://', ''),
+            '/',
+            ''
+          )
         }
       }
     ]
@@ -1325,285 +1338,298 @@ resource aks_roleassignmentforchaosexp 'Microsoft.Authorization/roleAssignments@
 // virtual network
 //
 
-resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = if (deployPrivateEndpoints) {
-  name: vnetName
-  location: resourceLocation
-  tags: resourceTags
-  properties: {
-    addressSpace: {
-      addressPrefixes: [
-        vnetAddressSpace
+resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' =
+  if (deployPrivateEndpoints) {
+    name: vnetName
+    location: resourceLocation
+    tags: resourceTags
+    properties: {
+      addressSpace: {
+        addressPrefixes: [
+          vnetAddressSpace
+        ]
+      }
+      subnets: [
+        {
+          name: vnetAcaSubnetName
+          properties: {
+            addressPrefix: vnetAcaSubnetAddressPrefix
+          }
+        }
+        {
+          name: vnetVmSubnetName
+          properties: {
+            addressPrefix: vnetVmSubnetAddressPrefix
+          }
+        }
+        {
+          name: vnetLoadTestSubnetName
+          properties: {
+            addressPrefix: vnetLoadTestSubnetAddressPrefix
+          }
+        }
       ]
     }
-    subnets: [
-      {
-        name: vnetAcaSubnetName
-        properties: {
-          addressPrefix: vnetAcaSubnetAddressPrefix
-        }
-      }
-      {
-        name: vnetVmSubnetName
-        properties: {
-          addressPrefix: vnetVmSubnetAddressPrefix
-        }
-      }
-      {
-        name: vnetLoadTestSubnetName
-        properties: {
-          addressPrefix: vnetLoadTestSubnetAddressPrefix
-        }
-      }
-    ]
   }
-}
 
 //
 // jumpbox vm
 // 
 
 // public ip address
-resource jumpboxpublicip 'Microsoft.Network/publicIPAddresses@2022-07-01' = if (deployPrivateEndpoints) {
-  name: jumpboxPublicIpName
-  location: resourceLocation
-  tags: resourceTags
-  sku: {
-    name: 'Standard'
-    tier: 'Regional'
+resource jumpboxpublicip 'Microsoft.Network/publicIPAddresses@2022-07-01' =
+  if (deployPrivateEndpoints) {
+    name: jumpboxPublicIpName
+    location: resourceLocation
+    tags: resourceTags
+    sku: {
+      name: 'Standard'
+      tier: 'Regional'
+    }
+    properties: {
+      deleteOption: 'Delete'
+      publicIPAllocationMethod: 'Static'
+    }
   }
-  properties: {
-    deleteOption: 'Delete'
-    publicIPAllocationMethod: 'Static'
-  }
-}
 
 // network security group
-resource jumpboxnsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = if (deployPrivateEndpoints) {
-  name: jumpboxNsgName
-  location: resourceLocation
-  tags: resourceTags
-  properties: {
-    securityRules: [
-      {
-        name: 'allow-rdp-port-3389'
-        properties: {
-          access: 'Allow'
-          destinationAddressPrefix: 'VirtualNetwork'
-          destinationPortRange: '3389'
-          direction: 'Inbound'
-          priority: 300
-          protocol: '*'
-          sourceAddressPrefix: '*'
-          sourcePortRange: '*'
-        }
-      }
-    ]
-  }
-}
-
-// network interface controller
-resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' = if (deployPrivateEndpoints) {
-  name: jumpboxNicName
-  location: resourceLocation
-  tags: resourceTags
-  properties: {
-    ipConfigurations: [
-      {
-        name: 'nic-ip-config'
-        properties: {
-          primary: true
-          privateIPAllocationMethod: 'Dynamic'
-          subnet: {
-            id: deployPrivateEndpoints ? vnet.properties.subnets[1].id : ''
-          }
-          publicIPAddress: {
-            id: deployPrivateEndpoints ? jumpboxpublicip.id : ''
-          }
-        }
-      }
-    ]
-    networkSecurityGroup: {
-      id: deployPrivateEndpoints ? jumpboxnsg.id : ''
-    }
-    nicType: 'Standard'
-  }
-}
-
-// virtual machine
-resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' = if (deployPrivateEndpoints) {
-  name: jumpboxVmName
-  location: resourceLocation
-  tags: resourceTags
-  properties: {
-    hardwareProfile: {
-      vmSize: 'standard_b2s'
-    }
-    storageProfile: {
-      osDisk: {
-        createOption: 'FromImage'
-        managedDisk: {
-          storageAccountType: 'StandardSSD_LRS'
-        }
-      }
-      imageReference: {
-        offer: 'WindowsServer'
-        publisher: 'MicrosoftWindowsServer'
-        sku: '2019-datacenter-gensecond'
-        version: 'latest'
-      }
-    }
-    networkProfile: {
-      networkInterfaces: [
+resource jumpboxnsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' =
+  if (deployPrivateEndpoints) {
+    name: jumpboxNsgName
+    location: resourceLocation
+    tags: resourceTags
+    properties: {
+      securityRules: [
         {
-          id: deployPrivateEndpoints ? jumpboxnic.id : ''
+          name: 'allow-rdp-port-3389'
           properties: {
-            deleteOption: 'Delete'
+            access: 'Allow'
+            destinationAddressPrefix: 'VirtualNetwork'
+            destinationPortRange: '3389'
+            direction: 'Inbound'
+            priority: 300
+            protocol: '*'
+            sourceAddressPrefix: '*'
+            sourcePortRange: '*'
           }
         }
       ]
     }
-    osProfile: {
-      adminPassword: jumpboxVmAdminPassword
-      #disable-next-line adminusername-should-not-be-literal // @TODO: This is a temporary hack, until we can generate the password
-      adminUsername: jumpboxVmAdminLogin
-      computerName: jumpboxVmName
+  }
+
+// network interface controller
+resource jumpboxnic 'Microsoft.Network/networkInterfaces@2022-07-01' =
+  if (deployPrivateEndpoints) {
+    name: jumpboxNicName
+    location: resourceLocation
+    tags: resourceTags
+    properties: {
+      ipConfigurations: [
+        {
+          name: 'nic-ip-config'
+          properties: {
+            primary: true
+            privateIPAllocationMethod: 'Dynamic'
+            subnet: {
+              id: deployPrivateEndpoints ? vnet.properties.subnets[1].id : ''
+            }
+            publicIPAddress: {
+              id: deployPrivateEndpoints ? jumpboxpublicip.id : ''
+            }
+          }
+        }
+      ]
+      networkSecurityGroup: {
+        id: deployPrivateEndpoints ? jumpboxnsg.id : ''
+      }
+      nicType: 'Standard'
     }
   }
-}
+
+// virtual machine
+resource jumpboxvm 'Microsoft.Compute/virtualMachines@2022-08-01' =
+  if (deployPrivateEndpoints) {
+    name: jumpboxVmName
+    location: resourceLocation
+    tags: resourceTags
+    properties: {
+      hardwareProfile: {
+        vmSize: 'standard_b2s'
+      }
+      storageProfile: {
+        osDisk: {
+          createOption: 'FromImage'
+          managedDisk: {
+            storageAccountType: 'StandardSSD_LRS'
+          }
+        }
+        imageReference: {
+          offer: 'WindowsServer'
+          publisher: 'MicrosoftWindowsServer'
+          sku: '2019-datacenter-gensecond'
+          version: 'latest'
+        }
+      }
+      networkProfile: {
+        networkInterfaces: [
+          {
+            id: deployPrivateEndpoints ? jumpboxnic.id : ''
+            properties: {
+              deleteOption: 'Delete'
+            }
+          }
+        ]
+      }
+      osProfile: {
+        adminPassword: jumpboxVmAdminPassword
+        #disable-next-line adminusername-should-not-be-literal // @TODO: This is a temporary hack, until we can generate the password
+        adminUsername: jumpboxVmAdminLogin
+        computerName: jumpboxVmName
+      }
+    }
+  }
 
 // auto-shutdown schedule
-resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' = if (deployPrivateEndpoints) {
-  name: jumpboxVmShutdownSchduleName
-  location: resourceLocation
-  tags: resourceTags
-  properties: {
-    targetResourceId: deployPrivateEndpoints ? jumpboxvm.id : ''
-    dailyRecurrence: {
-      time: '2100'
+resource jumpboxvmschedule 'Microsoft.DevTestLab/schedules@2018-09-15' =
+  if (deployPrivateEndpoints) {
+    name: jumpboxVmShutdownSchduleName
+    location: resourceLocation
+    tags: resourceTags
+    properties: {
+      targetResourceId: deployPrivateEndpoints ? jumpboxvm.id : ''
+      dailyRecurrence: {
+        time: '2100'
+      }
+      notificationSettings: {
+        status: 'Disabled'
+      }
+      status: 'Enabled'
+      taskType: 'ComputeVmShutdownTask'
+      timeZoneId: jumpboxVmShutdownScheduleTimezoneId
     }
-    notificationSettings: {
-      status: 'Disabled'
-    }
-    status: 'Enabled'
-    taskType: 'ComputeVmShutdownTask'
-    timeZoneId: jumpboxVmShutdownScheduleTimezoneId
   }
-}
 
 //
 // private dns zone
 //
 
-module privateDnsZone './createPrivateDnsZone.bicep' = if (deployPrivateEndpoints) {
-  name: 'createPrivateDnsZone'
-  params: {
-    privateDnsZoneName: deployPrivateEndpoints ? join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.') : ''
-    privateDnsZoneVnetId: deployPrivateEndpoints ? vnet.id : ''
-    privateDnsZoneVnetLinkName: privateDnsZoneVnetLinkName
-    privateDnsZoneARecordName: deployPrivateEndpoints ? join(take(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.') : ''
-    privateDnsZoneARecordIp: deployPrivateEndpoints ? cartsinternalapiacaenv.properties.staticIp : ''
-    resourceTags: resourceTags
+module privateDnsZone './createPrivateDnsZone.bicep' =
+  if (deployPrivateEndpoints) {
+    name: 'createPrivateDnsZone'
+    params: {
+      privateDnsZoneName: deployPrivateEndpoints
+        ? join(skip(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.')
+        : ''
+      privateDnsZoneVnetId: deployPrivateEndpoints ? vnet.id : ''
+      privateDnsZoneVnetLinkName: privateDnsZoneVnetLinkName
+      privateDnsZoneARecordName: deployPrivateEndpoints
+        ? join(take(split(cartsinternalapiaca.properties.configuration.ingress.fqdn, '.'), 2), '.')
+        : ''
+      privateDnsZoneARecordIp: deployPrivateEndpoints ? cartsinternalapiacaenv.properties.staticIp : ''
+      resourceTags: resourceTags
+    }
   }
-}
 
 // aca environment (internal)
-resource cartsinternalapiacaenv 'Microsoft.App/managedEnvironments@2022-06-01-preview' = if (deployPrivateEndpoints) {
-  name: cartsInternalApiAcaEnvName
-  location: resourceLocation
-  tags: resourceTags
-  sku: {
-    name: 'Consumption'
-  }
-  properties: {
-    zoneRedundant: false
-    vnetConfiguration: {
-      infrastructureSubnetId: deployPrivateEndpoints ? vnet.properties.subnets[0].id : ''
-      internal: true
+resource cartsinternalapiacaenv 'Microsoft.App/managedEnvironments@2022-06-01-preview' =
+  if (deployPrivateEndpoints) {
+    name: cartsInternalApiAcaEnvName
+    location: resourceLocation
+    tags: resourceTags
+    sku: {
+      name: 'Consumption'
+    }
+    properties: {
+      zoneRedundant: false
+      vnetConfiguration: {
+        infrastructureSubnetId: deployPrivateEndpoints ? vnet.properties.subnets[0].id : ''
+        internal: true
+      }
     }
   }
-}
 
 // aca (internal)
-resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' = if (deployPrivateEndpoints) {
-  name: cartsInternalApiAcaName
-  location: resourceLocation
-  tags: resourceTags
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${userassignedmiforkvaccess.id}': {}
-    }
-  }
-  properties: {
-    configuration: {
-      activeRevisionsMode: 'Single'
-      ingress: {
-        external: true
-        allowInsecure: false
-        targetPort: 80
-        traffic: [
-          {
-            latestRevision: true
-            weight: 100
-          }
-        ]
+resource cartsinternalapiaca 'Microsoft.App/containerApps@2022-06-01-preview' =
+  if (deployPrivateEndpoints) {
+    name: cartsInternalApiAcaName
+    location: resourceLocation
+    tags: resourceTags
+    identity: {
+      type: 'UserAssigned'
+      userAssignedIdentities: {
+        '${userassignedmiforkvaccess.id}': {}
       }
-      registries: [
-        {
-          passwordSecretRef: cartsInternalApiAcaSecretAcrPassword
-          server: acr.properties.loginServer
-          username: acr.name
-        }
-      ]
-      secrets: [
-        {
-          name: cartsInternalApiAcaSecretAcrPassword
-          value: acr.listCredentials().passwords[0].value
-        }
-      ]
     }
-    environmentId: cartsinternalapiacaenv.id
-    template: {
-      scale: {
-        minReplicas: 1
-        maxReplicas: 3
-        rules: [
-          {
-            name: 'http-scaling-rule'
-            http: {
-              metadata: {
-                concurrentRequests: '3'
-              }
-            }
-          }
-        ]
-      }
-      containers: [
-        {
-          env: [
+    properties: {
+      configuration: {
+        activeRevisionsMode: 'Single'
+        ingress: {
+          external: true
+          allowInsecure: false
+          targetPort: 80
+          traffic: [
             {
-              name: cartsInternalApiSettingNameKeyVaultEndpoint
-              value: kv.properties.vaultUri
-            }
-            {
-              name: cartsInternalApiSettingNameManagedIdentityClientId
-              value: userassignedmiforkvaccess.properties.clientId
+              latestRevision: true
+              weight: 100
             }
           ]
-          // using a public image initially because no images have been pushed to our private ACR yet
-          // at this point. At a later point, our github workflow will update the ACA app to use the 
-          // images from our private ACR.
-          image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
-          name: cartsInternalApiAcaContainerDetailsName
-          resources: {
-            cpu: json('0.5')
-            memory: '1.0Gi'
-          }
         }
-      ]
+        registries: [
+          {
+            passwordSecretRef: cartsInternalApiAcaSecretAcrPassword
+            server: acr.properties.loginServer
+            username: acr.name
+          }
+        ]
+        secrets: [
+          {
+            name: cartsInternalApiAcaSecretAcrPassword
+            value: acr.listCredentials().passwords[0].value
+          }
+        ]
+      }
+      environmentId: cartsinternalapiacaenv.id
+      template: {
+        scale: {
+          minReplicas: 1
+          maxReplicas: 3
+          rules: [
+            {
+              name: 'http-scaling-rule'
+              http: {
+                metadata: {
+                  concurrentRequests: '3'
+                }
+              }
+            }
+          ]
+        }
+        containers: [
+          {
+            env: [
+              {
+                name: cartsInternalApiSettingNameKeyVaultEndpoint
+                value: kv.properties.vaultUri
+              }
+              {
+                name: cartsInternalApiSettingNameManagedIdentityClientId
+                value: userassignedmiforkvaccess.properties.clientId
+              }
+            ]
+            // using a public image initially because no images have been pushed to our private ACR yet
+            // at this point. At a later point, our github workflow will update the ACA app to use the 
+            // images from our private ACR.
+            image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+            name: cartsInternalApiAcaContainerDetailsName
+            resources: {
+              cpu: json('0.5')
+              memory: '1.0Gi'
+            }
+          }
+        ]
+      }
     }
   }
-}
 
 //
 // chaos studio
