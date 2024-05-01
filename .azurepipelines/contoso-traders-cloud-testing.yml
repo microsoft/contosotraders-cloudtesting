@@ -515,6 +515,8 @@ stages:
           - script: npm ci
             displayName: npm ci
             workingDirectory: src/ContosoTraders.Ui.Website
+          - script: echo "##vso[task.setvariable variable=REACT_APP_BINGMAPSKEY]$(BINGMAPSKEY)"
+            displayName: set REACT_APP_BINGMAPSKEY            
           - script: npm run build
             displayName: npm run build
             workingDirectory: src/ContosoTraders.Ui.Website
